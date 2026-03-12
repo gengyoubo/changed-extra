@@ -1,0 +1,28 @@
+{
+    "changed_addon.owner.unknown":"Not free for use, Unknown owner",
+    "changed_addon.owner.free":"Free For Use, No Owner",
+    "changed_addon.owner.foxyas":"Free for use but made By @Foxyas",
+    "changed_addon.words1":"No form linked, please link one with §e<Shift+Click>",
+
+    "tooltip.signal_catcher.hold_shift": "§6Hold <Shift> for Info",
+    "tooltip.signal_catcher.scan_normal": "§b<Right Click>§r: Scan §a32§r block area",
+    "tooltip.signal_catcher.scan_super": "§c<Shift + Right Click>§r: Super scan §e120§r block area",
+    "tooltip.signal_catcher.scan_hint": "§7Automatically marks found signal blocks",
+    "tooltip.signal_catcher.coords": "§oSignal Coords: §l[%d, %d, %d]",
+    "tooltip.signal_catcher.distance": "§oDistance: §l%d blocks",
+    "tooltip.signal_catcher.click_hint": "Click coords to copy teleport command",
+    "tooltip.signal_catcher.no_signal": "§7No signal block found",
+    "tooltip.signal_catcher.scan_prompt": "§7Use <Right Click> to scan",
+    
+    "tooltip.litix_camonia.hold_shift": "§6Hold <Shift> for Effects",
+    "tooltip.litix_camonia.effect": "§766%%§r chance to untransfur §c44%%§r chance to deal §414§r damage",
+    "tooltip.litix_camonia.warning": "§c§lHigh Risk! Gamble with blood, reclaim humanity",
+    
+    "tooltip.laethin.hold_shift": "§6Hold <Shift> for Details",
+    "tooltip.laethin.desc": "§nStable§r Unstable Untransfur Powder",
+
+    "tooltip.goo_core_block.desc": "A Gooey Core which appears to be covered in obsidian",
+
+    "message.signal_catcher.no_location": "§o§bNo Location Found §l[Not Close Enough]",
+    "message.signal_catcher.no_signal_block": "No Signal Block Found"
+}

@@ -1,0 +1,39 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All rights reserved"
+[[mods]]
+modId="changede"
+version="0.1.0"
+displayName="CE"
+#updateJSONURL=""
+#displayURL="" 
+#logoFile="examplemod.png" #optional
+#credits="" #optional
+authors="gengyoubo"
+description='''略'''
+[[mixins]]
+config="changede.mixins.json"
+[[dependencies.changede]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1]"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.changede]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)" 
+    side="BOTH"
+[[dependencies.changede]]
+    modId="changed"
+    mandatory=true
+    versionRange="[0.15.0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.changede]]
+    modId="changed_addon"
+    mandatory=true
+    versionRange="[2.7.3,)"
+    ordering="BEFORE"
+    side="BOTH"
+

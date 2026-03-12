@@ -1,0 +1,171 @@
+buildscript {
+    repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+}
+
+mixin {
+    //add sourceSets.main, "changede.refmap.json"
+    config "mixins/changede.mixins.json"
+    env {
+        remapRefMap = true
+    }
+}
+version = "0.1.0"
+group = "github.com.gengyoubo"
+
+base {
+    archivesName = "changede"
+
+}
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+dependencies {
+    //原版
+    minecraft "net.minecraftforge:forge:1.20.1-47.4.10"
+    //changed类
+    implementation fg.deobf("curse.maven:changed-addon-plus-711303:7721349")
+    implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:7692829")
+    //模组外扩展
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.console.level', 'info'
+
+            mods {
+                changede {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            args '--nogui'
+
+            mods {
+                changede {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+repositories {
+    mavenCentral()
+    flatDir {
+        dir 'libs'
+    }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        url "https://maven.blamejared.com"
+    }
+    maven { url "https://maven.theillusivec4.top/" }
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://cursemaven.com/" }
+    maven { url "https://maven.shadowsoffire.dev/releases" }
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+}
+
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+            forge_version: forge_version, forge_version_range: forge_version_range,
+            loader_version_range: loader_version_range,
+            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors: mod_authors, mod_description: mod_description,
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "changede",
+                "Specification-Vendor": "gengyoubo",
+                "Specification-Version": "0.1.0",
+                "Implementation-Title": "github.com.gengyoubo",
+                "Implementation-Version": project.version,
+                "Implementation-Vendor": "gengyoubo",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs": "mixins/changede.mixins.json"  // 必须！
+        ])
+    }
+    
+    // 显式包含 resources 目录下的所有文件
+    from(sourceSets.main.resources) {
+        include 'mixins/**'      // 包含 mixins 目录
+        include 'assets/**'      // 包含 assets 目录
+        include 'META-INF/**'    // 包含 META-INF 目录
+    }
+    
+    // 包含编译后的 class 文件
+    from(sourceSets.main.output) {
+        exclude '**/*.refmap.json'  // 排除 refmap，后面单独处理
+    }
+    
+    // 包含 refmap 文件（确保它在正确的位置）
+    from("${buildDir}/classes/java/main") {
+        include '**/*.refmap.json'
+        into 'META-INF'
+    }
+    
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    finalizedBy 'reobfJar'
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
