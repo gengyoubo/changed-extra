@@ -12,13 +12,14 @@ import net.minecraft.network.chat.MutableComponent;
 public class TransfurVariantsInfoMixin {
 
     @Redirect(
-        method = "*",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/network/chat/Component;literal(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
-        ),
-        remap = false
-    )
+    method = "*",
+    at = @At(
+        value = "INVOKE",
+        target = "Lnet/minecraft/network/chat/Component;literal(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+    ),
+    remap = false,
+    require = 0
+)
     private static MutableComponent changede$replaceLiteral(String text) {
 
         if (text.equals("Not free for use, Unknown owner")) {

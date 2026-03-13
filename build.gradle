@@ -19,7 +19,7 @@ plugins {
 }
 
 mixin {
-    //add sourceSets.main, "changede.refmap.json"
+    add sourceSets.main, "changede.refmap.json"
     config "mixins/changede.mixins.json"
     env {
         remapRefMap = true
