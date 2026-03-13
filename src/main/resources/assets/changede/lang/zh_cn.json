@@ -72,5 +72,9 @@
     "tooltip.goo_core_block.desc": "一个粘糊糊的核心，似乎被黑曜石覆盖着",
 
     "message.signal_catcher.no_location": "§o§b未找到信号位置 §l[距离不够近]",
-    "message.signal_catcher.no_signal_block": "未找到信号块"
+    "message.signal_catcher.no_signal_block": "未找到信号块",
+
+    "enchantment.changede.xpboost":"经验汲取",
+    "enchantment.changede.scorchingheat":"灼热",
+    "enchantment.changede.salvage":"抢救"
 }

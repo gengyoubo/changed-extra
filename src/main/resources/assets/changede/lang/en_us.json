@@ -24,5 +24,9 @@
     "tooltip.goo_core_block.desc": "A Gooey Core which appears to be covered in obsidian",
 
     "message.signal_catcher.no_location": "§o§bNo Location Found §l[Not Close Enough]",
-    "message.signal_catcher.no_signal_block": "No Signal Block Found"
+    "message.signal_catcher.no_signal_block": "No Signal Block Found",
+
+    "enchantment.changede.xpboost":"XPBoost",
+    "enchantment.changede.scorchingheat":"Scorching Heat",
+    "enchantment.changede.salvage":"Salvage"
 }
