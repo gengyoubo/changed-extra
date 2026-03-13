@@ -1,0 +1,55 @@
+package github.com.gengyoubo.events;
+
+import github.com.gengyoubo.ModEnchantments;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+@Mod.EventBusSubscriber(modid = "changede")
+public class SWEvents {
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+
+        Entity source = event.getSource().getEntity();
+        LivingEntity target = event.getEntity();
+
+        float damage = event.getAmount();
+
+        // ===== 攻击加成 =====
+        if (source instanceof LivingEntity attacker) {
+
+            int strong = 0;
+
+            for (ItemStack stack : attacker.getAllSlots()) {
+
+                strong += EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SOSTRONG.get(), stack) * 2;
+
+                strong += EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.PREETTYSTRONG.get(), stack);
+            }
+
+            damage += strong;
+        }
+
+        // ===== 防御减伤 =====
+        int weak = 0;
+
+        for (ItemStack stack : target.getAllSlots()) {
+
+            weak += EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SOWEEK.get(), stack) * 2;
+
+            weak += EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.PRETTYWEEK.get(), stack);
+        }
+
+        damage -= weak;
+
+        if (damage < 1F) {
+            damage = 1F;
+        }
+
+        event.setAmount(damage);
+    }
+}

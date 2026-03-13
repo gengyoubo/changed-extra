@@ -1,8 +1,8 @@
 package github.com.gengyoubo.events;
 
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import github.com.gengyoubo.ModCreativeTabs;
 import github.com.gengyoubo.ModEnchantments;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,22 +12,25 @@ import net.minecraftforge.fml.common.Mod;
 public class ModCreativeTabEvents {
 
     @SubscribeEvent
-    public static void addBooks(BuildCreativeModeTabContentsEvent event) {
+public static void addBooks(BuildCreativeModeTabContentsEvent event) {
 
-        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+    if (event.getTab() == ModCreativeTabs.EE.get()) {
 
-            for (int i = 1; i <= ModEnchantments.SCORCHINGHEAT.get().getMaxLevel(); i++) {
+        for (var enchantmentEntry : ModEnchantments.ENCHANTMENTS.getEntries()) {
 
-    event.accept(
-        EnchantedBookItem.createForEnchantment(
-            new EnchantmentInstance(
-                ModEnchantments.SCORCHINGHEAT.get(), i
-            )
-        )
-    );
+            var enchantment = enchantmentEntry.get();
 
-}
+            for (int level = 1; level <= enchantment.getMaxLevel(); level++) {
+
+                event.accept(
+                        EnchantedBookItem.createForEnchantment(
+                                new EnchantmentInstance(enchantment, level)
+                        )
+                );
+
+            }
 
         }
+
     }
-}
+}}

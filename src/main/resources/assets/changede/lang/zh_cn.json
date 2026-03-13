@@ -76,5 +76,13 @@
 
     "enchantment.changede.xpboost":"经验汲取",
     "enchantment.changede.scorchingheat":"灼热",
-    "enchantment.changede.salvage":"抢救"
+    "enchantment.changede.salvage":"抢救",
+    "enchantment.changede.sostrong":"这么强？",
+    "enchantment.changede.soweak":"这么弱？",
+    "enchantment.changede.prettyweek":"有点弱",
+    "enchantment.changede.prettywtrong":"有点强",
+
+    "creativetab.changede1": "CE通用",
+    "creativetab.changede2": "CE彩蛋",
+    "creativetab.changede3": "CE扩展"
 }

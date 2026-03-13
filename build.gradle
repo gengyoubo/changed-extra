@@ -42,6 +42,14 @@ dependencies {
     implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:7692829")
     //模组外扩展
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    //优化
+    runtimeOnly  fg.deobf("curse.maven:modernfix-790626:7515215")
+    runtimeOnly  fg.deobf("curse.maven:embeddium-908741:5681725")
+    runtimeOnly  fg.deobf("curse.maven:ruok-910904:7637298")
+    runtimeOnly  fg.deobf("curse.maven:cloth-config-348521:5729105")
+    runtimeOnly  fg.deobf("curse.maven:rubidium-extra-654373:6101745")
+    runtimeOnly  fg.deobf("curse.maven:chloride-931925:7378010")
+    runtimeOnly  fg.deobf("curse.maven:ferritecore-429235:4810975")
 }
 minecraft {
     mappings channel: mapping_channel, version: mapping_version

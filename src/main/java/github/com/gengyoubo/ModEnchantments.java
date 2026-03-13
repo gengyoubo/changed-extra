@@ -1,7 +1,11 @@
 package github.com.gengyoubo;
 
+import github.com.gengyoubo.Enchantment.PrettyStrongEnchantment;
+import github.com.gengyoubo.Enchantment.PrettyWeekEnchantment;
 import github.com.gengyoubo.Enchantment.SalvageEnchantment;
 import github.com.gengyoubo.Enchantment.ScorchingHeatEnchantment;
+import github.com.gengyoubo.Enchantment.SoStrongEnchantment;
+import github.com.gengyoubo.Enchantment.SoWeakEnchantment;
 import github.com.gengyoubo.Enchantment.XPBoostEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.DeferredRegister;
@@ -21,4 +25,17 @@ public class ModEnchantments {
 
     public static final RegistryObject<Enchantment> XPBOOST =
             ENCHANTMENTS.register("xpboost", XPBoostEnchantment::new);
+
+   public static final RegistryObject<Enchantment> SOSTRONG =
+            ENCHANTMENTS.register("sostrong", SoStrongEnchantment::new);
+            
+   public static final RegistryObject<Enchantment> SOWEEK =
+            ENCHANTMENTS.register("soweak", SoWeakEnchantment::new);
+
+   public static final RegistryObject<Enchantment> PRETTYWEEK =
+            ENCHANTMENTS.register("prettyweek", PrettyWeekEnchantment::new);
+
+   public static final RegistryObject<Enchantment> PREETTYSTRONG =
+            ENCHANTMENTS.register("prettywtrong", PrettyStrongEnchantment::new);
+
 }

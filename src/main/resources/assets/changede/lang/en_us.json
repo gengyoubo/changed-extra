@@ -28,5 +28,13 @@
 
     "enchantment.changede.xpboost":"XPBoost",
     "enchantment.changede.scorchingheat":"Scorching Heat",
-    "enchantment.changede.salvage":"Salvage"
+    "enchantment.changede.salvage":"Salvage",
+    "enchantment.changede.sostrong":"That strong?",
+    "enchantment.changede.soweak":"That weak?",
+    "enchantment.changede.prettyweek":"Pretty weak",
+    "enchantment.changede.prettywtrong":"Pretty strong",
+
+    "creativetab.changede1": "CE basic",
+    "creativetab.changede2": "CE easter egg",
+    "creativetab.changede3": "CE extra"
 }

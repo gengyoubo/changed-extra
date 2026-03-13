@@ -8,7 +8,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 public class ScorchingHeatEnchantment extends Enchantment{
     public ScorchingHeatEnchantment() {
         super(
-            Rarity.RARE,
+            Rarity.UNCOMMON,
             EnchantmentCategory.DIGGER,
             new EquipmentSlot[]{EquipmentSlot.MAINHAND}
         );
