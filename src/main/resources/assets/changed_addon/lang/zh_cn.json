@@ -23,6 +23,11 @@
 
     "block.changed_addon.snepsi_can.desc": "猫离子？它的拼写不应该是猫慎（谨慎使用）吗？上面写不要饮用，含有胶液？",
     "block.changed_addon.deepslate_iridium_ore":"深层铱矿石",
-    "block.changed_addon.deepslate_painite_ore":"深层硅硼钙铝石矿石"
+    "block.changed_addon.deepslate_painite_ore":"深层硅硼钙铝石矿石",
+
+    "enchantment.changed_addon.transfur_aspect": "胶兽感染",
+    "enchantment.changed_addon.transfur_aspect.desc": "对类人生物造成兽化伤害，感染类型由攻击者的变体决定",
+    "enchantment.changed_addon.transfur_aspect.jei_desc": "对类人生物造成 %1$s 点兽化伤害，感染类型由攻击者的变体决定",
+    "enchantment.changed_addon.changed_lure": "胶兽诱钓"
 
 }

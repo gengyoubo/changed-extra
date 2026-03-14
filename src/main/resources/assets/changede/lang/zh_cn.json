@@ -8,6 +8,15 @@
     "changed_addon.owner.foxyas":"允许使用，由Foxyas制作",
     "changed_addon.words1":"未关联任何变体，请使用§e<Shift+点击>关链接一个变体",
 
+    "text.changed_addon.none":"无变化",
+    "text.changed_addon.true":"有",
+    "text.changed_addon.false":"无",
+    "text.changed_addon.oc_transfur":"其他模组特有",
+    "text.changed_addon.boss_version":"首领级",
+    "text.changed_addon.mining_strength.strong": "快",
+  "text.changed_addon.mining_strength.normal": "普通",
+  "text.changed_addon.mining_strength.weak": "慢",
+
     "item.changed_addon.luminara_bloom_petals":"流明花瓣",
     "item.changed_addon.latex_syringe.tooltip":"按住§r§6<Shift>§r显示%s的具体属性",
     "item.changed_addon.anti_latex_base.description":"由胶液基底和某种物质制成",

@@ -4,6 +4,15 @@
     "changed_addon.owner.foxyas":"Free for use but made By @Foxyas",
     "changed_addon.words1":"No form linked, please link one with §e<Shift+Click>",
 
+    "text.changed_addon.none": "None",
+  "text.changed_addon.true": "True",
+  "text.changed_addon.false": "False",
+  "text.changed_addon.oc_transfur": "OC Transfur",
+  "text.changed_addon.boss_version": "Boss Version",
+  "text.changed_addon.mining_strength.strong": "strong",
+  "text.changed_addon.mining_strength.normal": "normal",
+  "text.changed_addon.mining_strength.weak": "weak",
+
     "tooltip.signal_catcher.hold_shift": "§6Hold <Shift> for Info",
     "tooltip.signal_catcher.scan_normal": "§b<Right Click>§r: Scan §a32§r block area",
     "tooltip.signal_catcher.scan_super": "§c<Shift + Right Click>§r: Super scan §e120§r block area",

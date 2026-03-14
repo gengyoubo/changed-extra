@@ -25,7 +25,7 @@ mixin {
         remapRefMap = true
     }
 }
-version = "0.1.1"
+version = "0.1.2"
 group = "github.com.gengyoubo"
 
 base {
@@ -130,7 +130,7 @@ jar {
         attributes([
                 "Specification-Title": "changede",
                 "Specification-Vendor": "gengyoubo",
-                "Specification-Version": "0.1.1",
+                "Specification-Version": "0.1.2",
                 "Implementation-Title": "github.com.gengyoubo",
                 "Implementation-Version": project.version,
                 "Implementation-Vendor": "gengyoubo",
