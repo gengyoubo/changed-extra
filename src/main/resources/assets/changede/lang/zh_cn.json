@@ -14,8 +14,8 @@
     "text.changed_addon.oc_transfur":"其他模组特有",
     "text.changed_addon.boss_version":"首领级",
     "text.changed_addon.mining_strength.strong": "快",
-  "text.changed_addon.mining_strength.normal": "普通",
-  "text.changed_addon.mining_strength.weak": "慢",
+    "text.changed_addon.mining_strength.normal": "普通",
+    "text.changed_addon.mining_strength.weak": "慢",
 
     "item.changed_addon.luminara_bloom_petals":"流明花瓣",
     "item.changed_addon.latex_syringe.tooltip":"按住§r§6<Shift>§r显示%s的具体属性",
@@ -90,6 +90,13 @@
     "enchantment.changede.soweak":"这么弱？",
     "enchantment.changede.prettyweek":"有点弱",
     "enchantment.changede.prettywtrong":"有点强",
+
+    "advancements.changede.title1":"这么强?",
+    "advancements.changede.descr1":"一个物品同时拥有[灼热][经验汲取][抢救]附魔",
+    "advancements.changede.title2":"?!强强!?",
+    "advancements.changede.descr2":"一个物品同时拥有[这么强？][有点强]附魔",
+    "advancements.changede.title3":"?!弱弱!?",
+    "advancements.changede.descr3":"一个物品同时拥有[这么弱？][有点弱]附魔",
 
     "creativetab.changede1": "CE通用",
     "creativetab.changede2": "CE彩蛋",
