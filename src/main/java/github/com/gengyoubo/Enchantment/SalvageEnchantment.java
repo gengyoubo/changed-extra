@@ -1,4 +1,4 @@
-package github.com.gengyoubo.Enchantment;
+package github.com.gengyoubo.enchantment;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;

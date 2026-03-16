@@ -1,12 +1,12 @@
 package github.com.gengyoubo;
 
-import github.com.gengyoubo.Enchantment.PrettyStrongEnchantment;
-import github.com.gengyoubo.Enchantment.PrettyWeekEnchantment;
-import github.com.gengyoubo.Enchantment.SalvageEnchantment;
-import github.com.gengyoubo.Enchantment.ScorchingHeatEnchantment;
-import github.com.gengyoubo.Enchantment.SoStrongEnchantment;
-import github.com.gengyoubo.Enchantment.SoWeakEnchantment;
-import github.com.gengyoubo.Enchantment.XPBoostEnchantment;
+import github.com.gengyoubo.enchantment.PrettyStrongEnchantment;
+import github.com.gengyoubo.enchantment.PrettyWeekEnchantment;
+import github.com.gengyoubo.enchantment.SalvageEnchantment;
+import github.com.gengyoubo.enchantment.ScorchingHeatEnchantment;
+import github.com.gengyoubo.enchantment.SoStrongEnchantment;
+import github.com.gengyoubo.enchantment.SoWeakEnchantment;
+import github.com.gengyoubo.enchantment.XPBoostEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

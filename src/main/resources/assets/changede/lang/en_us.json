@@ -43,6 +43,12 @@
     "enchantment.changede.prettyweek":"Pretty weak",
     "enchantment.changede.prettywtrong":"Pretty strong",
 
+    "item.changede.inactive_dark_latex":"Inactive Dark Latex",
+    "item.changede.inactive_white_latex":"Inactive White Latex",
+    "item.changede.latex_gray":"Latex Gray",
+    "item.changede.latex_ingot": "Latex Ingot",
+    "item.changede.unbaked_latex_ingot": "Unbaked Latex Ingot",
+
     "creativetab.changede1": "CE basic",
     "creativetab.changede2": "CE easter egg",
     "creativetab.changede3": "CE extra"

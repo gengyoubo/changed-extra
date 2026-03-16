@@ -50,6 +50,9 @@ dependencies {
     runtimeOnly  fg.deobf("curse.maven:rubidium-extra-654373:6101745")
     runtimeOnly  fg.deobf("curse.maven:chloride-931925:7378010")
     runtimeOnly  fg.deobf("curse.maven:ferritecore-429235:4810975")
+    //其他模组
+    //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
+    implementation fg.deobf("curse.maven:jei-238222:7391695")
 }
 minecraft {
     mappings channel: mapping_channel, version: mapping_version

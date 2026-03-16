@@ -98,6 +98,12 @@
     "advancements.changede.title3":"?!弱弱!?",
     "advancements.changede.descr3":"一个物品同时拥有[这么弱？][有点弱]附魔",
 
+    "item.changede.inactive_dark_latex":"处理黑胶",
+    "item.changede.inactive_white_latex":"处理白胶",
+    "item.changede.latex_gray":"胶灰",
+    "item.changede.latex_ingot": "胶锭",
+    "item.changede.unbaked_latex_ingot": "未塑性的胶锭",
+    
     "creativetab.changede1": "CE通用",
     "creativetab.changede2": "CE彩蛋",
     "creativetab.changede3": "CE扩展"
