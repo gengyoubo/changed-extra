@@ -2,7 +2,7 @@ package github.com.gengyoubo.events;
 
 import java.util.Optional;
 
-import github.com.gengyoubo.ModEnchantments;
+import github.com.gengyoubo.CERegister;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -28,7 +28,7 @@ public static void onBreak(BlockEvent.BreakEvent event) {
     ItemStack tool = player.getMainHandItem();
 
     int ench = EnchantmentHelper.getTagEnchantmentLevel(
-            ModEnchantments.SCORCHINGHEAT.get(), tool);
+            CERegister.SCORCHINGHEAT.get(), tool);
 
     if (ench <= 0) return;
 

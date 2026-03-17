@@ -11,13 +11,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod("changede")
 public class changede {
-    public changede() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModEnchantments.ENCHANTMENTS.register(
-                FMLJavaModLoadingContext.get().getModEventBus()
-        );
-        ModCreativeTabs.CREATIVE_MODE_TABS.register(bus);
-        ModItem.ITEMS.register(bus);
+    public changede(FMLJavaModLoadingContext context) {
+        IEventBus bus = context.getModEventBus();
+        CERegister.ENCHANTMENTS.register(bus);
+        CERegister.CREATIVE_MODE_TABS.register(bus);
+        CERegister.ITEMS.register(bus);
         MinecraftForge.EVENT_BUS.register(new SalvageEvents());
         MinecraftForge.EVENT_BUS.register(new ScorchingHeatEvents());
         MinecraftForge.EVENT_BUS.register(new XPBoostEvents());

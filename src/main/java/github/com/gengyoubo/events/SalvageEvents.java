@@ -1,11 +1,10 @@
 package github.com.gengyoubo.events;
 
-import github.com.gengyoubo.ModEnchantments;
+import github.com.gengyoubo.CERegister;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,13 +18,15 @@ public class SalvageEvents {
 
         ItemStack stack = event.getOriginal();
 
-        if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SALVAGE.get(), stack) > 0) {
+        if (stack.getEnchantmentLevel(CERegister.SALVAGE.get()) > 0) {
 
-            Player player = (Player) event.getEntity();
+            Player player = event.getEntity();
 
             stack.setDamageValue(stack.getMaxDamage());
-
-            player.setItemInHand(event.getHand(), stack);
+            InteractionHand hand = event.getHand();
+            if (hand != null) {
+                player.setItemInHand(hand, stack);
+            }
         }
     }
 
@@ -35,7 +36,7 @@ public class SalvageEvents {
         Player player = event.getPlayer();
         ItemStack stack = player.getMainHandItem();
 
-        if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SALVAGE.get(), stack) > 0) {
+        if (stack.getEnchantmentLevel(CERegister.SALVAGE.get()) > 0) {
 
             if (stack.getDamageValue() >= stack.getMaxDamage()) {
 

@@ -1,9 +1,8 @@
 package github.com.gengyoubo.events;
 
-import github.com.gengyoubo.ModEnchantments;
+import github.com.gengyoubo.CERegister;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,7 +16,7 @@ public static void onBlockXP(BlockEvent.BreakEvent event) {
     ItemStack tool = player.getMainHandItem();
 
     int level =
-        EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.XPBOOST.get(), tool);
+            tool.getEnchantmentLevel(CERegister.XPBOOST.get() );
 
     if (level <= 0) return;
 

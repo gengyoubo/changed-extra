@@ -24,25 +24,15 @@ public class ClientEventMixin {
 
         String clean = text.replaceAll("§.", "");
 
-        switch (clean) {
+        return switch (clean) {
+            case "None" -> Component.translatable("text.changed_addon.none");
+            case "True" -> Component.translatable("text.changed_addon.true");
+            case "False" -> Component.translatable("text.changed_addon.false");
+            case "OC Transfur" -> Component.translatable("text.changed_addon.oc_transfur");
+            case "Boss Version" -> Component.translatable("text.changed_addon.boss_version");
+            default -> Component.literal(text);
+        };
 
-            case "None":
-                return Component.translatable("text.changed_addon.none");
-
-            case "True":
-                return Component.translatable("text.changed_addon.true");
-
-            case "False":
-                return Component.translatable("text.changed_addon.false");
-
-            case "OC Transfur":
-                return Component.translatable("text.changed_addon.oc_transfur");
-
-            case "Boss Version":
-                return Component.translatable("text.changed_addon.boss_version");
-        }
-
-        return Component.literal(text);
     }
 
 

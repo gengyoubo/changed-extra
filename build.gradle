@@ -25,12 +25,11 @@ mixin {
         remapRefMap = true
     }
 }
-version = "0.1.3"
-group = "github.com.gengyoubo"
+version = mod_version
+group = mod_group_id
 
 base {
     archivesName = "changede"
-
 }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
@@ -56,25 +55,19 @@ dependencies {
 }
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
-
     runs {
         client {
             workingDirectory project.file('run')
-
             property 'forge.logging.console.level', 'info'
-
             mods {
                 changede {
                     source sourceSets.main
                 }
             }
         }
-
         server {
             workingDirectory project.file('run')
-
             args '--nogui'
-
             mods {
                 changede {
                     source sourceSets.main
@@ -113,57 +106,58 @@ repositories {
     maven { url "https://maven.shadowsoffire.dev/releases" }
     maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
 }
-
-
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version, forge_version_range: forge_version_range,
+            minecraft_version: minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            forge_version: forge_version,
+            forge_version_range: forge_version_range,
             loader_version_range: loader_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
+            mod_id: mod_id,
+            mod_name: mod_name,
+            mod_license: mod_license,
+            mod_version: mod_version,
+            mod_authors: mod_authors,
+            mod_description: mod_description,
     ]
     inputs.properties replaceProperties
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
 }
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:deprecation"
+}
 jar {
     manifest {
         attributes([
-                "Specification-Title": "changede",
-                "Specification-Vendor": "gengyoubo",
-                "Specification-Version": "0.1.3",
-                "Implementation-Title": "github.com.gengyoubo",
+                "Specification-Title": mod_name,
+                "Specification-Vendor": mod_authors,
+                "Specification-Version": mod_version,
+                "Implementation-Title": mod_group_id,
                 "Implementation-Version": project.version,
-                "Implementation-Vendor": "gengyoubo",
+                "Implementation-Vendor": mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "mixins/changede.mixins.json"  // 必须！
-        ])
-    }
-    
+                "MixinConfigs": "mixins/changede.mixins.json"
+    ])}
     // 显式包含 resources 目录下的所有文件
     from(sourceSets.main.resources) {
         include 'mixins/**'      // 包含 mixins 目录
         include 'assets/**'      // 包含 assets 目录
         include 'META-INF/**'    // 包含 META-INF 目录
     }
-    
     // 包含编译后的 class 文件
     from(sourceSets.main.output) {
         exclude '**/*.refmap.json'  // 排除 refmap，后面单独处理
     }
-    
     // 包含 refmap 文件（确保它在正确的位置）
     from("${buildDir}/classes/java/main") {
         include '**/*.refmap.json'
         into 'META-INF'
     }
-    
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     finalizedBy 'reobfJar'
 }
-
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
@@ -176,7 +170,6 @@ publishing {
         }
     }
 }
-
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }

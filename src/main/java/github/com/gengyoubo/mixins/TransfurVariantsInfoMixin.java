@@ -10,31 +10,26 @@ import net.minecraft.network.chat.MutableComponent;
 
 @Mixin(value = TransfurVariantsInfo.class, remap = false)
 public class TransfurVariantsInfoMixin {
-
+    //可能会有漏洞
+    @SuppressWarnings("MixinAnnotationTarget")
     @Redirect(
-    method = "*",
-    at = @At(
-        value = "INVOKE",
-        target = "Lnet/minecraft/network/chat/Component;literal(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
-    ),
-    remap = false,
-    require = 0
-)
+            method = "*",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/network/chat/Component;literal(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+            ),
+            remap = false,
+            require = 0
+    )
     private static MutableComponent changede$replaceLiteral(String text) {
 
-        if (text.equals("Not free for use, Unknown owner")) {
-            return Component.translatable("changed_addon.owner.unknown");
-        }
-
-        if (text.equals("Free For Use, No Owner")) {
-            return Component.translatable("changed_addon.owner.free");
-        }
-        if (text.equals("Free for use but made By @Foxyas")) {
-            return Component.translatable("changed_addon.owner.foxyas");
-        }
-        if (text.equals("No form linked, please link one with §e<Shift+Click>")) {
-            return Component.translatable("changed_addon.words1");
-        }
-        return Component.literal(text);
+        return switch (text) {
+            case "Not free for use, Unknown owner" -> Component.translatable("changed_addon.owner.unknown");
+            case "Free For Use, No Owner" -> Component.translatable("changed_addon.owner.free");
+            case "Free for use but made By @Foxyas" -> Component.translatable("changed_addon.owner.foxyas");
+            case "No form linked, please link one with §e<Shift+Click>" ->
+                    Component.translatable("changed_addon.words1");
+            default -> Component.literal(text);
+        };
     }
 }

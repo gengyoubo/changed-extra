@@ -1,10 +1,9 @@
 package github.com.gengyoubo.events;
 
-import github.com.gengyoubo.ModEnchantments;
+import github.com.gengyoubo.CERegister;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,9 +25,9 @@ public class SWEvents {
 
             for (ItemStack stack : attacker.getAllSlots()) {
 
-                strong += EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SOSTRONG.get(), stack) * 2;
+                strong += stack.getEnchantmentLevel(CERegister.SOSTRONG.get()) * 2;
 
-                strong += EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.PREETTYSTRONG.get(), stack);
+                strong += stack.getEnchantmentLevel(CERegister.PREETTYSTRONG.get());
             }
 
             damage += strong;
@@ -39,9 +38,9 @@ public class SWEvents {
 
         for (ItemStack stack : target.getAllSlots()) {
 
-            weak += EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SOWEEK.get(), stack) * 2;
+            weak += stack.getEnchantmentLevel(CERegister.SOWEEK.get()) * 2;
 
-            weak += EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.PRETTYWEEK.get(), stack);
+            weak += stack.getEnchantmentLevel(CERegister.PRETTYWEEK.get());
         }
 
         damage -= weak;
