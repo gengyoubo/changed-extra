@@ -36,6 +36,6 @@ public class ModEnchantments {
             ENCHANTMENTS.register("prettyweek", PrettyWeekEnchantment::new);
 
    public static final RegistryObject<Enchantment> PREETTYSTRONG =
-            ENCHANTMENTS.register("prettywtrong", PrettyStrongEnchantment::new);
+            ENCHANTMENTS.register("prettystrong", PrettyStrongEnchantment::new);
 
 }
