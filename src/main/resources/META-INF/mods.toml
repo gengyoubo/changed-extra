@@ -3,12 +3,11 @@ loaderVersion="[47,)"
 license="MIT License"
 [[mods]]
 modId="changede"
-version="0.1.4"
+version="0.1.5"
 displayName="Changed Extra"
-#updateJSONURL=""
-#displayURL="" 
+updateJSONURL="https://github.com/gengyoubo/changed-extra/releases"
+displayURL="https://github.com/gengyoubo/changed-extra"
 #logoFile="examplemod.png" #optional
-#credits="" #optional
 authors="gengyoubo"
 description='''略'''
 [[mixins]]
