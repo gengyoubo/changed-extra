@@ -158,5 +158,8 @@
     "mode.projectextended.trident.4": "冲击波",
     "warning.projectextended.blacklist.condenser": "警告：此项目已从能量凝聚器中列入黑名单。它不能用作目标锁，但可用于 EMC",
     "warning.projectextended.blacklist.transmutation": "警告：此物品已从转化桌中列入黑名单。它不能被学习，但可用于EMC",
-    "mode.projecte.current": "模式: %1$s"
+    "mode.projecte.current": "模式: %1$s",
+
+    "gamerule.latex_start": "胶兽开局",
+    "gamerule.latex_start.description": "玩家进入游戏时是否自动变成随机胶兽形态"
 }

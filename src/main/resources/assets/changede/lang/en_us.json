@@ -54,5 +54,8 @@
 
     "creativetab.changede1": "CE basic",
     "creativetab.changede2": "CE easter egg",
-    "creativetab.changede3": "CE extra"
+    "creativetab.changede3": "CE extra",
+
+  "gamerule.latex_start": "Latex Start",
+  "gamerule.latex_start.description": "Whether players start the game already transformed into a random latex form"
 }

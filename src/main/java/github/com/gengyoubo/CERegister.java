@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.level.GameRules;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -95,6 +96,16 @@ public class CERegister {
                             })
                             .build()
             );
+    //游戏规则
+    public static void register() {
+        LATEX_START = GameRules.register(
+                "latex_start", // 规则ID（/gamerule 用）
+                GameRules.Category.PLAYER, // 分类
+                GameRules.BooleanValue.create(true) // 默认值
+        );
+    }
+    public static GameRules.Key<GameRules.BooleanValue> LATEX_START;
+
     //其他
     public static final EnchantmentCategory MELEE =
             EnchantmentCategory.create(

@@ -2,13 +2,10 @@ package github.com.gengyoubo;
 
 import github.com.gengyoubo.commands.ReloadEMCCMD;
 import github.com.gengyoubo.events.*;
-import moze_intel.projecte.gameObjs.items.ItemPE;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod("changede")
@@ -19,6 +16,8 @@ public class changede {
         CERegister.ENCHANTMENTS.register(bus);
         CERegister.CREATIVE_MODE_TABS.register(bus);
         CERegister.ITEMS.register(bus);
+        CERegister.register();
+        bus.addListener(latexStartEvents::setup);
         MinecraftForge.EVENT_BUS.register(new SalvageEvents());
         MinecraftForge.EVENT_BUS.register(new ScorchingHeatEvents());
         MinecraftForge.EVENT_BUS.register(new XPBoostEvents());
@@ -26,7 +25,7 @@ public class changede {
         //联动等价交换
         if (PROJECTE) {
             new ReloadEMCCMD();
-            MinecraftForge.EVENT_BUS.register(new addEMC());
+            MinecraftForge.EVENT_BUS.register(new addEMCEvents());
         }
     }
 }
