@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="[47,)"
-license="CC BY-NC"
+license="MIT License"
 [[mods]]
 modId="changede"
 version="0.1.4"

@@ -43,6 +43,9 @@
     "enchantment.changede.prettyweek":"Pretty weak",
     "enchantment.changede.prettystrong":"Pretty strong",
 
+  "pe.command.reload.started": "reload EMC",
+  "pe.command.reload.success": "success",
+
     "item.changede.inactive_dark_latex":"Inactive Dark Latex",
     "item.changede.inactive_white_latex":"Inactive White Latex",
     "item.changede.latex_gray":"Latex Gray",

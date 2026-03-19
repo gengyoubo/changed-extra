@@ -5,10 +5,10 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "changede.refmap.json",
   "mixins": [
-    "SignalCatcherItemMixin",
-    "GooCoreBlockMixin",
     "ClientEventMixin",
-    "TransfurVariantsInfoMixin" 
+    "GooCoreBlockMixin",
+    "SignalCatcherItemMixin",
+    "TransfurVariantsInfoMixin"
   ],
   "injectors": {
     "defaultRequire": 1
