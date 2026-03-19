@@ -101,7 +101,7 @@ public class CERegister {
         LATEX_START = GameRules.register(
                 "latex_start", // 规则ID（/gamerule 用）
                 GameRules.Category.PLAYER, // 分类
-                GameRules.BooleanValue.create(true) // 默认值
+                GameRules.BooleanValue.create(false) // 默认值
         );
     }
     public static GameRules.Key<GameRules.BooleanValue> LATEX_START;
