@@ -3,7 +3,7 @@ loaderVersion="[47,)"
 license="MIT License"
 [[mods]]
 modId="changede"
-version="0.1.5"
+version="0.1.6"
 displayName="Changed Extra"
 updateJSONURL="https://github.com/gengyoubo/changed-extra/releases"
 displayURL="https://github.com/gengyoubo/changed-extra"
