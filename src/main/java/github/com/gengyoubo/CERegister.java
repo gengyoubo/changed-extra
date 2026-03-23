@@ -1,6 +1,5 @@
 package github.com.gengyoubo;
 
-import github.com.gengyoubo.LP.CELPRegister;
 import github.com.gengyoubo.enchantment.*;
 import github.com.gengyoubo.items.*;
 import net.minecraft.core.registries.Registries;
@@ -83,7 +82,7 @@ public class CERegister {
                             .title(Component.translatable("creativetab.changede3"))
                             .icon(() -> new ItemStack(Items.AIR))
                             .displayItems((parameters, output) -> {
-                                output.accept(CELPRegister.BASIC_WIRE_ITEM.get());
+
                             })
                             .build()
             );

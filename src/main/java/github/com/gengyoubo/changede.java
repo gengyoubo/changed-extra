@@ -1,6 +1,5 @@
 package github.com.gengyoubo;
 
-import github.com.gengyoubo.LP.CELPRegister;
 import github.com.gengyoubo.commands.ReloadEMCCMD;
 import github.com.gengyoubo.events.*;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,7 +16,6 @@ public class changede {
         CERegister.ENCHANTMENTS.register(bus);
         CERegister.CREATIVE_MODE_TABS.register(bus);
         CERegister.ITEMS.register(bus);
-        CELPRegister.WIRE_BLOCKS.register(bus);
         CERegister.register();
         bus.addListener(latexStartEvents::setup);
         MinecraftForge.EVENT_BUS.register(new SalvageEvents());
