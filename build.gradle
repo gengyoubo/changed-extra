@@ -20,7 +20,8 @@ plugins {
 
 mixin {
     add sourceSets.main, "changede.refmap.json"
-    config "mixins/changede.mixins.json"
+    config "mixins/changede.mixins.json"      // 第一个配置文件
+    config "mixins/changede-proext.mixins.json"  // 第二个配置文件
     env {
         remapRefMap = true
     }
@@ -41,16 +42,18 @@ dependencies {
     //优化
     runtimeOnly  fg.deobf("curse.maven:modernfix-790626:7515215")
     runtimeOnly  fg.deobf("curse.maven:embeddium-908741:5681725")
-    runtimeOnly  fg.deobf("curse.maven:ruok-910904:7637298")
+    //runtimeOnly  fg.deobf("curse.maven:ruok-910904:7637298")
     runtimeOnly  fg.deobf("curse.maven:cloth-config-348521:5729105")
     runtimeOnly  fg.deobf("curse.maven:rubidium-extra-654373:6101745")
     runtimeOnly  fg.deobf("curse.maven:chloride-931925:7378010")
     runtimeOnly  fg.deobf("curse.maven:ferritecore-429235:4810975")
     //等价交换
     compileOnly fg.deobf("curse.maven:projecte-226410:4901949")
+    compileOnly fg.deobf("curse.maven:projectextended-353775:4860891")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")
+    //implementation fg.deobf("curse.maven:bakeries-1191781:7657697")
 }
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
@@ -137,7 +140,7 @@ jar {
                 "Implementation-Version": project.version,
                 "Implementation-Vendor": mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "mixins/changede.mixins.json"
+                "MixinConfigs": "mixins/changede.mixins.json,mixins/changede-proext.mixins.json"
         ])}
     // 显式包含 resources 目录下的所有文件
     from(sourceSets.main.resources) {
