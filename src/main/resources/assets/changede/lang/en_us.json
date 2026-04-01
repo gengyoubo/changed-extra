@@ -45,6 +45,11 @@
 
   "pe.command.reload.started": "reload EMC",
   "pe.command.reload.success": "success",
+  "message.changede.shield.rebound_success": "Backfire",
+  "advancements.changede.shield_rebound.title": "Backfire",
+  "advancements.changede.shield_rebound.description": "Successfully reflect damage with a charged matter shield",
+  "advancements.changede.shield_disable_fail.title": "That won't work on me either",
+  "advancements.changede.shield_disable_fail.description": "Prevent your red matter shield from being disabled",
 
     "item.changede.inactive_dark_latex":"Inactive Dark Latex",
     "item.changede.inactive_white_latex":"Inactive White Latex",

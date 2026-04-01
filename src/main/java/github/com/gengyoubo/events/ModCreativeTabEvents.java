@@ -1,8 +1,8 @@
 package github.com.gengyoubo.events;
 
 import github.com.gengyoubo.CERegister;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

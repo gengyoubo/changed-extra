@@ -1,15 +1,10 @@
 package github.com.gengyoubo.projectextended;
 
-import gg.galaxygaming.projectextended.common.items.PEShield;
-import gg.galaxygaming.projectextended.common.items.PETrident;
 import github.com.gengyoubo.projectextended.items.CEShield;
 import github.com.gengyoubo.projectextended.items.CETrident;
 import moze_intel.projecte.gameObjs.EnumMatterType;
 import moze_intel.projecte.gameObjs.registration.impl.ItemDeferredRegister;
 import moze_intel.projecte.gameObjs.registration.impl.ItemRegistryObject;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class PERegister {
     public static final ItemDeferredRegister ITEMS = new ItemDeferredRegister("projectextended");

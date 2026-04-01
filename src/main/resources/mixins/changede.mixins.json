@@ -6,7 +6,6 @@
   "refmap": "changede.refmap.json",
   "mixins": [
     "ClientEventMixin",
-    "FakeModCountMixin",
     "GooCoreBlockMixin",
     "SignalCatcherItemMixin",
     "TransfurVariantsInfoMixin"

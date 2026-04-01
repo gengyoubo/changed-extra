@@ -111,6 +111,11 @@
 
     "pe.command.reload.started": "重新加载EMC值，预计会出现滞后",
     "pe.command.reload.success": "RMC重载完成。向客户端发生更新数据",
+    "message.changede.shield.rebound_success": "弄巧成拙",
+    "advancements.changede.shield_rebound.title": "弄巧成拙",
+    "advancements.changede.shield_rebound.description": "成功用充能物质盾把伤害反弹回去",
+    "advancements.changede.shield_disable_fail.title": "这一套我也不吃",
+    "advancements.changede.shield_disable_fail.description": "红物质盾免伤模式下成功抵抗破盾",
     "advancements.projectextended.alchemical_barrel": "桶装存储！",
     "advancements.projectextended.alchemical_barrel.description": " 一个\"小\"桶升级 ",
     "block.projectextended.alchemical_barrel": "炼金术桶",
@@ -159,6 +164,11 @@
     "warning.projectextended.blacklist.condenser": "警告：此项目已从能量凝聚器中列入黑名单。它不能用作目标锁，但可用于 EMC",
     "warning.projectextended.blacklist.transmutation": "警告：此物品已从转化桌中列入黑名单。它不能被学习，但可用于EMC",
     "mode.projecte.current": "模式: %1$s",
+
+    "mode.projectextended.shield.1": "普通",
+    "mode.projectextended.shield.2": "弹反",
+    "mode.projectextended.shield.3": "免疫伤害",
+
 
     "gamerule.latex_start": "胶兽开局",
     "gamerule.latex_start.description": "玩家进入游戏时是否自动变成随机胶兽形态(其他游戏规则发生变化)\n1. gamerule changed:keepConscious true(一直为开)\n2. gamerule changed:keepForm false(默认为关，如果在玩家死亡时为人类将会退化为胶兽)"
