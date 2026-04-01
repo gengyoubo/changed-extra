@@ -1,0 +1,23 @@
+{
+  "display": {
+    "background": "minecraft:textures/block/stone.png",
+    "icon": {
+      "item": "projectextended:red_matter_shield"
+    },
+    "title": {
+      "translate": "advancements.changede.shield_rebound.title"
+    },
+    "description": {
+      "translate": "advancements.changede.shield_rebound.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "experience": 1,
+  "cookingtime": 60,
+  "ingredient": {
+    "item": "changede:inactive_dark_latex"
+  },
+  "result": "changede:latex_gray"
+}
