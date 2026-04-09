@@ -11,7 +11,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod("changede")
 public class changede {
     public static final Boolean PROJECTE =ModList.get().isLoaded("projecte");
-    public changede(FMLJavaModLoadingContext context) {
+    public changede(FMLJavaModLoadingContext context) throws Exception {
         IEventBus bus = context.getModEventBus();
         CERegister.ENCHANTMENTS.register(bus);
         CERegister.CREATIVE_MODE_TABS.register(bus);

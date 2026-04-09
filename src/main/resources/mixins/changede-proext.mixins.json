@@ -5,8 +5,9 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "changede.refmap.json",
   "mixins": [
-    "ProjectExtendedItemsMixin",
-    "PlayerShieldDisableMixin"
+    "LivingEntityTotemMixin",
+    "PlayerShieldDisableMixin",
+    "ProjectExtendedItemsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

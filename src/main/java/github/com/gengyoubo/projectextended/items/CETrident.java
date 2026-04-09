@@ -22,8 +22,7 @@ public class CETrident extends PETrident {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment.category == EnchantmentCategory.TRIDENT || enchantment.category == EnchantmentCategory.BREAKABLE;
-
+        return enchantment.category == EnchantmentCategory.BREAKABLE;
     }
 
     @Override
