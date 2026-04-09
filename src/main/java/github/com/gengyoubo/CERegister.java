@@ -2,6 +2,9 @@ package github.com.gengyoubo;
 
 import github.com.gengyoubo.enchantment.*;
 import github.com.gengyoubo.items.*;
+import github.com.gengyoubo.projectextended.PERegister;
+import github.com.gengyoubo.projectextended.PTotemOfUndying;
+import github.com.gengyoubo.projectextended.items.CETotemOfUndying;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -73,6 +76,9 @@ public class CERegister {
                                 output.accept(CERegister.LATEX_GRAY.get());
                                 output.accept(CERegister.LATEX_INGOT.get());
                                 output.accept(CERegister.UNBAKED_LATEX_INGOT.get());
+                                output.accept(PTotemOfUndying.DARK_MATTER_TOTEM_OF_UNDYING.get());
+                                output.accept(PTotemOfUndying.RED_MATTER_TOTEM_OF_UNDYING.get());
+                                output.accept(PTotemOfUndying.MATTER_TOTEM_OF_UNDYING_TRUE.get());
                             })
                             .build()
             );

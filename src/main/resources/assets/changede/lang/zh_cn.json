@@ -17,6 +17,10 @@
     "text.changed_addon.mining_strength.normal": "普通",
     "text.changed_addon.mining_strength.weak": "慢",
 
+    "item.changede.dark_matter_totem_of_undying": "暗物质不死图腾",
+    "item.changede.red_matter_totem_of_undying": "红物质不死图腾",
+    "item.changede.matter_totem_of_undying_true": "真·不死图腾",
+
     "item.changed_addon.luminara_bloom_petals":"流明花瓣",
     "item.changed_addon.latex_syringe.tooltip":"按住§r§6<Shift>§r显示%s的具体属性",
     "item.changed_addon.anti_latex_base.description":"由胶液基底和某种物质制成",
@@ -116,6 +120,7 @@
     "advancements.changede.shield_rebound.description": "成功用充能物质盾把伤害反弹回去",
     "advancements.changede.shield_disable_fail.title": "这一套我也不吃",
     "advancements.changede.shield_disable_fail.description": "红物质盾免伤模式下成功抵抗破盾",
+    "block.projectextended.interdiction_lantern": "禁止灯笼",
     "advancements.projectextended.alchemical_barrel": "桶装存储！",
     "advancements.projectextended.alchemical_barrel.description": " 一个\"小\"桶升级 ",
     "block.projectextended.alchemical_barrel": "炼金术桶",

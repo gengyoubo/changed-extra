@@ -2,6 +2,7 @@ package github.com.gengyoubo.projectextended.mixins;
 
 import gg.galaxygaming.projectextended.ProjectExtended;
 import github.com.gengyoubo.projectextended.PERegister;
+import github.com.gengyoubo.projectextended.PTotemOfUndying;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -21,5 +22,6 @@ public class ProjectExtendedItemsMixin {
             net.minecraftforge.eventbus.api.IEventBus bus
     ) {
         PERegister.ITEMS.register(bus);
+        PTotemOfUndying.ITEMS.register(bus);
     }
 }
