@@ -20,6 +20,6 @@ public class WireBlock extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new WireBlockEntity(pos, state);
+        return new EnergyPipeBlockEntity(pos, state);
     }
 }

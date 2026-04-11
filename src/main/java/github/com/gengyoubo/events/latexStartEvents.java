@@ -43,7 +43,7 @@ public class latexStartEvents {
         if (ProcessTransfur.isPlayerTransfurred(player)) return;
         TransfurVariant<?> variant;
         if (data.contains("latex_start_variant")) {
-            ResourceLocation id = new ResourceLocation(data.getString("latex_start_variant"));
+            ResourceLocation id = ResourceLocation.parse(data.getString("latex_start_variant"));
             variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(id);
         }else {
             variant = latexStartEvents.getRandomForm(player.getRandom());

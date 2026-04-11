@@ -84,6 +84,7 @@ public class CERegister {
                             .icon(() -> new ItemStack(Items.AIR))
                             .displayItems((parameters, output) -> {
                                 output.accept(CELPRegister.BASIC_WIRE_ITEM.get());
+                                output.accept(CELPRegister.BASIC_GENERATOR_ITEM.get());
                             })
                             .build()
             );
