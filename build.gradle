@@ -20,7 +20,8 @@ plugins {
 
 mixin {
     add sourceSets.main, "changede.refmap.json"
-    config "mixins/changede.mixins.json"
+    config "mixins/changede.mixins.json"      // 第一个配置文件
+    config "mixins/changede-proext.mixins.json"  // 第二个配置文件
     env {
         remapRefMap = true
     }
@@ -28,9 +29,6 @@ mixin {
 version = mod_version
 group = mod_group_id
 
-base {
-    archivesName = "changede"
-}
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 dependencies {
@@ -44,16 +42,18 @@ dependencies {
     //优化
     runtimeOnly  fg.deobf("curse.maven:modernfix-790626:7515215")
     runtimeOnly  fg.deobf("curse.maven:embeddium-908741:5681725")
-    runtimeOnly  fg.deobf("curse.maven:ruok-910904:7637298")
+    //runtimeOnly  fg.deobf("curse.maven:ruok-910904:7637298")
     runtimeOnly  fg.deobf("curse.maven:cloth-config-348521:5729105")
     runtimeOnly  fg.deobf("curse.maven:rubidium-extra-654373:6101745")
     runtimeOnly  fg.deobf("curse.maven:chloride-931925:7378010")
     runtimeOnly  fg.deobf("curse.maven:ferritecore-429235:4810975")
     //等价交换
-    compileOnly fg.deobf("curse.maven:projecte-226410:4901949")
+    implementation fg.deobf("curse.maven:projecte-226410:4901949")
+    implementation fg.deobf("curse.maven:projectextended-353775:4860891")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")
+    //implementation fg.deobf("curse.maven:bakeries-1191781:7657697")
 }
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
@@ -140,8 +140,8 @@ jar {
                 "Implementation-Version": project.version,
                 "Implementation-Vendor": mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "mixins/changede.mixins.json"
-    ])}
+                "MixinConfigs": "mixins/changede.mixins.json,mixins/changede-proext.mixins.json"
+        ])}
     // 显式包含 resources 目录下的所有文件
     from(sourceSets.main.resources) {
         include 'mixins/**'      // 包含 mixins 目录
@@ -159,6 +159,13 @@ jar {
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     finalizedBy 'reobfJar'
+
+    //模组名称
+    archiveBaseName.set("changed-extra")
+    //模组版本
+    archiveVersion.set(mod_version)
+    //模组分支(主分支为main)
+    archiveClassifier.set("b")
 }
 publishing {
     publications {

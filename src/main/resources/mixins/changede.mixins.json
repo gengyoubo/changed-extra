@@ -15,5 +15,7 @@
   },
   "overwrites": {
     "conformVisibility": true
-  }
+  },
+  "client": [
+  ]
 }

@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ClientEvent.class)
 public class ClientEventMixin {
-
     @Redirect(
         method = "showExtraTransfurInfo",
         remap = false,
@@ -20,9 +19,9 @@ public class ClientEventMixin {
             target = "Lnet/minecraft/network/chat/Component;literal(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
         )
     )
-    private static MutableComponent redirectLiteral(String text) {
+    private static MutableComponent redirectLiteral(String p_237114_) {
 
-        String clean = text.replaceAll("§.", "");
+        String clean = p_237114_.replaceAll("§.", "");
 
         return switch (clean) {
             case "None" -> Component.translatable("text.changed_addon.none");
@@ -30,7 +29,7 @@ public class ClientEventMixin {
             case "False" -> Component.translatable("text.changed_addon.false");
             case "OC Transfur" -> Component.translatable("text.changed_addon.oc_transfur");
             case "Boss Version" -> Component.translatable("text.changed_addon.boss_version");
-            default -> Component.literal(text);
+            default -> Component.literal(p_237114_);
         };
 
     }

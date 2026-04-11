@@ -9,8 +9,5 @@ public class addEMCEvents {
     public static void onItemPickup(EntityItemPickupEvent event) {
         ItemStack stack = event.getItem().getItem();
 
-//        if (stack.getItem() instanceof InactiveDarkLatex) {
-//            ItemPE.setEmc(stack, 1024);
-//        }
     }
 }
