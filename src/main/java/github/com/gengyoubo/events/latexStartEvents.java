@@ -1,6 +1,7 @@
 package github.com.gengyoubo.events;
 
 import github.com.gengyoubo.CERegister;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
@@ -24,34 +25,35 @@ import java.util.Set;
 public class latexStartEvents {
     public static final List<TransfurVariant<?>> FORM_VARIANTS = new ArrayList<>();
     public static boolean isLatexStart(Level level) {
-        return level.getGameRules().getBoolean(CERegister.LATEX_START);
+        return !level.getGameRules().getBoolean(CERegister.LATEX_START);
     }
     @SubscribeEvent
     public static void onPlayerJoin(EntityJoinLevelEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if (player.level().isClientSide) return;
-        if (!latexStartEvents.isLatexStart(player.level())) return;
+        if (latexStartEvents.isLatexStart(player.level())) return;
+
         var rules = player.level().getGameRules();
-        rules.getRule(ChangedGameRules.RULE_KEEP_BRAIN)
-                .set(true, player.server);
+        rules.getRule(ChangedGameRules.RULE_KEEP_BRAIN).set(true, player.server);
+
         CompoundTag data = player.getPersistentData();
         if (!data.contains("latex_start_variant") && ProcessTransfur.isPlayerTransfurred(player)) {
-            ProcessTransfur.getPlayerTransfurVariantSafe(player).ifPresent(v -> {
-                data.putString("latex_start_variant", v.getFormId().toString());
-            });
+            ProcessTransfur.getPlayerTransfurVariantSafe(player)
+                    .ifPresent(v -> data.putString("latex_start_variant", v.getFormId().toString()));
         }
         if (ProcessTransfur.isPlayerTransfurred(player)) return;
+
         TransfurVariant<?> variant;
         if (data.contains("latex_start_variant")) {
-            ResourceLocation id = new ResourceLocation(data.getString("latex_start_variant"));
+            ResourceLocation id = ResourceLocation.parse(data.getString("latex_start_variant"));
             variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(id);
-        }else {
+        } else {
             variant = latexStartEvents.getRandomForm(player.getRandom());
         }
-        //在这个操作后variant绝不会是null
+
         assert variant != null;
         player.getPersistentData().putString("latex_start_variant", variant.getFormId().toString());
-        ProcessTransfur.setPlayerTransfurVariant(player, variant);
+        ProcessTransfur.setPlayerTransfurVariant(player, variant, (TransfurContext) null);
         System.out.println("已分配玩家变体: " + variant.getFormId());
     }
     @SubscribeEvent

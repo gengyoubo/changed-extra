@@ -1,7 +1,5 @@
 package github.com.gengyoubo.events;
 
-import java.util.Optional;
-
 import github.com.gengyoubo.CERegister;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = "changede")
 public class ScorchingHeatEvents {

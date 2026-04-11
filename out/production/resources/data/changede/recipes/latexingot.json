@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "experience": 100,
+  "cookingtime": 60,
+  "ingredient": {
+    "item": "changede:unbaked_latex_ingot"
+  },
+  "result": "changede:latex_ingot"
+}

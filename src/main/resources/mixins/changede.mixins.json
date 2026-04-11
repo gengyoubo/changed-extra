@@ -7,7 +7,6 @@
   "mixins": [
     "ClientEventMixin",
     "GooCoreBlockMixin",
-    "KeepFormMixin",
     "SignalCatcherItemMixin",
     "TransfurVariantsInfoMixin"
   ],
@@ -16,5 +15,7 @@
   },
   "overwrites": {
     "conformVisibility": true
-  }
+  },
+  "client": [
+  ]
 }
