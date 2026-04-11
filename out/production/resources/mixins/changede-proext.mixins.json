@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "github.com.gengyoubo.projectextended.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "changede.refmap.json",
+  "mixins": [
+    "ProjectExtendedItemsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "conformVisibility": true
+  }
+}
