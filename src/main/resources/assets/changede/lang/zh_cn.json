@@ -109,6 +109,9 @@
     "item.changede.latex_ingot": "胶锭",
     "item.changede.unbaked_latex_ingot": "未塑性的胶锭",
 
+    "block.changede.basic_generator": "基础胶液发电机",
+    "block.changede.basic_wire": "基础管道",
+
     "creativetab.changede1": "CE通用",
     "creativetab.changede2": "CE彩蛋",
     "creativetab.changede3": "CE扩展",
