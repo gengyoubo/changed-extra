@@ -1,5 +1,6 @@
 package github.com.gengyoubo.LP.BlockEntity.WireBlockEntity;
 
+import github.com.gengyoubo.LP.CELPRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,7 +10,7 @@ public class FluidPipeBlockEntity extends BasePipeBlockEntity {
     private FluidStack fluid = FluidStack.EMPTY;
 
     public FluidPipeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.FLUID_PIPE.get(), pos, state, TransportType.FLUID);
+        super(CELPRegister.BASIC_WIRE_ENTITIES.get(), pos, state, TransportType.FLUID);
     }
 
     @Override
