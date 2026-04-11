@@ -45,6 +45,11 @@
 
   "pe.command.reload.started": "reload EMC",
   "pe.command.reload.success": "success",
+  "message.changede.shield.rebound_success": "Backfire",
+  "advancements.changede.shield_rebound.title": "Backfire",
+  "advancements.changede.shield_rebound.description": "Successfully reflect damage with a charged matter shield",
+  "advancements.changede.shield_disable_fail.title": "That won't work on me either",
+  "advancements.changede.shield_disable_fail.description": "Prevent your red matter shield from being disabled",
 
     "item.changede.inactive_dark_latex":"Inactive Dark Latex",
     "item.changede.inactive_white_latex":"Inactive White Latex",
@@ -57,5 +62,5 @@
     "creativetab.changede3": "CE extra",
 
   "gamerule.latex_start": "Latex Start",
-  "gamerule.latex_start.description": "Whether the player automatically transforms into a random gel beast form upon entering the game (other game rules are altered)\n1. gamerule changed:keepConscious+(always true)\n2. gamerule changed:keepForm+ (default is false; if the player is human when they die, they will degenerate into a latex"
+  "gamerule.latex_start.description": "Whether the player automatically transforms into a random gel beast form upon entering the game (other game rules are altered)\n1. gamerule changed:keepConscious true (always true)\n2. gamerule changed:keepForm false (default is false; if the player is human when they die, they will degenerate into a latex"
 }
