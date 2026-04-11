@@ -5,11 +5,11 @@
       "item": "minecraft:gunpowder"
     },
     {
-      "item": "changed:dark_latex_goo"
+      "item": "changed:white_latex_goo"
     }
   ],
   "result": {
-    "item": "changede:inactive_dark_latex",
+    "item": "changede:inactive_white_latex",
     "count": 1
   }
 }
