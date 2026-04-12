@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class FluidPipeBlockEntity extends BasePipeBlockEntity {
 
-    private FluidStack fluid = FluidStack.EMPTY;
+    private final FluidStack fluid = FluidStack.EMPTY;
 
     public FluidPipeBlockEntity(BlockPos pos, BlockState state) {
         super(CELPRegister.BASIC_WIRE_ENTITIES.get(), pos, state, TransportType.FLUID);

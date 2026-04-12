@@ -1,7 +1,6 @@
 package github.com.gengyoubo.LP.procedures;
 
 import net.ltxprogrammer.changed.init.ChangedItems;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;

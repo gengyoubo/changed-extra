@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 public enum EnumMatterTypeExtend implements StringRepresentable, Tier {
-    TRUE("true_matter", 5.0F, 14.0F, 12.0F, 4,PETags.Blocks.NEEDS_DARK_MATTER_TOOL, Tiers.NETHERITE, (ResourceLocation)null, MapColor.COLOR_BLACK);
+    TRUE("true_matter", 5.0F, 14.0F, 12.0F, 4,PETags.Blocks.NEEDS_DARK_MATTER_TOOL, Tiers.NETHERITE, null, MapColor.COLOR_BLACK);
     private final String name;
     private final float attackDamage;
     private final float efficiency;
@@ -26,7 +26,7 @@ public enum EnumMatterTypeExtend implements StringRepresentable, Tier {
     private final int harvestLevel;
     private final TagKey<Block> neededTag;
     private final MapColor mapColor;
-    private EnumMatterTypeExtend(String name, float attackDamage, float efficiency, float chargeModifier, int harvestLevel, @Nullable TagKey<Block> neededTag, Tier previous, ResourceLocation next, MapColor mapColor) {
+    EnumMatterTypeExtend(String name, float attackDamage, float efficiency, float chargeModifier, int harvestLevel, @Nullable TagKey<Block> neededTag, Tier previous, ResourceLocation next, MapColor mapColor) {
         this.name = name;
         this.attackDamage = attackDamage;
         this.efficiency = efficiency;

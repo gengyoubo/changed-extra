@@ -12,9 +12,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class CEScreen {
     @SubscribeEvent
     public static void clientLoad(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            MenuScreens.register(CEMenus.BASIC_GENERATOR_BLOCK_ENTITY.get(), BasicGeneratorBlockEntityScreen::new);
-        });
+        event.enqueueWork(() -> MenuScreens.register(CEMenus.BASIC_GENERATOR_BLOCK_ENTITY.get(), BasicGeneratorBlockEntityScreen::new));
     }
 
 }

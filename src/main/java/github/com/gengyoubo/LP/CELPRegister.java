@@ -2,7 +2,6 @@ package github.com.gengyoubo.LP;
 
 import github.com.gengyoubo.LP.Block.BasicGeneratorBlock;
 import github.com.gengyoubo.LP.BlockEntity.GeneratorBlockEntity.BasicGeneratorBlockEntity;
-import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.BasePipeBlockEntity;
 import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.EnergyPipeBlockEntity;
 import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.WireBlock;
 import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.WireType;
