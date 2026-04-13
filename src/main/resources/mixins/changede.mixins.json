@@ -5,9 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "changede.refmap.json",
   "mixins": [
-    "ClientEventMixin",
     "GooCoreBlockMixin",
-    "SignalCatcherItemMixin",
     "TransfurVariantsInfoMixin"
   ],
   "injectors": {
@@ -16,6 +14,11 @@
   "overwrites": {
     "conformVisibility": true
   },
+  "server": [
+  "UniversalDistServerDistMixin"
+  ],
   "client": [
+    "ClientEventMixin",
+    "SignalCatcherItemMixin"
   ]
 }

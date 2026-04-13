@@ -2,14 +2,12 @@ package github.com.gengyoubo.LP.Block;
 
 import github.com.gengyoubo.LP.CELPRegister;
 import github.com.gengyoubo.LP.BlockEntity.GeneratorBlockEntity.BasicGeneratorBlockEntity;
+import github.com.gengyoubo.LP.BlockEntity.GeneratorBlockEntity.GeneratorBlockEntity;
 import github.com.gengyoubo.LP.world.Menu.BasicGeneratorBlockEntityMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -23,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,6 +40,27 @@ public class BasicGeneratorBlock extends BaseEntityBlock implements EntityBlock 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new BasicGeneratorBlockEntity(pos, state);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof GeneratorBlockEntity generatorBlockEntity) {
+                for (int slot = 0; slot < generatorBlockEntity.getItemHandler().getSlots(); slot++) {
+                    Containers.dropItemStack(
+                            level,
+                            pos.getX(),
+                            pos.getY(),
+                            pos.getZ(),
+                            generatorBlockEntity.getItemHandler().getStackInSlot(slot)
+                    );
+                }
+            }
+        }
+
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

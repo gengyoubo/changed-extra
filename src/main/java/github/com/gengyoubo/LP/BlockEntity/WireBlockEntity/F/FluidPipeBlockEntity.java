@@ -1,11 +1,13 @@
-package github.com.gengyoubo.LP.BlockEntity.WireBlockEntity;
+package github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.F;
 
+import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.BasePipeBlockEntity;
+import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.TransportType;
 import github.com.gengyoubo.LP.CELPRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FluidPipeBlockEntity extends BasePipeBlockEntity {
+public abstract class FluidPipeBlockEntity extends BasePipeBlockEntity {
 
     private final FluidStack fluid = FluidStack.EMPTY;
 

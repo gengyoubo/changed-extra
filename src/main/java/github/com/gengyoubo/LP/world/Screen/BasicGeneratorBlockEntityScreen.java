@@ -1,14 +1,18 @@
 package github.com.gengyoubo.LP.world.Screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import github.com.gengyoubo.LP.BlockEntity.RedstoneMode;
+import github.com.gengyoubo.LP.network.CENetwork;
+import github.com.gengyoubo.LP.network.packet.CycleGeneratorRedstoneModePacket;
 import github.com.gengyoubo.LP.procedures.CloseTextures;
 import github.com.gengyoubo.LP.world.Menu.BasicGeneratorBlockEntityMenu;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,17 +20,13 @@ import java.util.HashMap;
 
 public class BasicGeneratorBlockEntityScreen extends AbstractContainerScreen<BasicGeneratorBlockEntityMenu> {
 
-    private final static HashMap<String, Object> guistate = BasicGeneratorBlockEntityMenu.guistate;
-
+    private static final HashMap<String, Object> guistate = BasicGeneratorBlockEntityMenu.guistate;
     private final Player entity;
+    private Button redstoneModeButton;
 
     public BasicGeneratorBlockEntityScreen(BasicGeneratorBlockEntityMenu container, Inventory inventory, Component text) {
         super(container, inventory, text);
-        Level world = container.world;
-        int x = container.x;
-        int y = container.y;
-        int z = container.z;
-        this.entity = container.entity;
+        this.entity = inventory.player;
         this.imageWidth = 230;
         this.imageHeight = 180;
     }
@@ -81,14 +81,53 @@ public class BasicGeneratorBlockEntityScreen extends AbstractContainerScreen<Bas
         return super.keyPressed(key, b, c);
     }
 
+    private static String getRedstoneModeLabel(RedstoneMode mode) {
+        return switch (mode) {
+            case ALWAYS_ON -> "Redstone: Always On";
+            case ALWAYS_OFF -> "Redstone: Always Off";
+            case ON_WITH_REDSTONE -> "Redstone: On with Signal";
+            case OFF_WITH_REDSTONE -> "Redstone: Off with Signal";
+        };
+    }
+
+    private static String getShortRedstoneModeLabel(RedstoneMode mode) {
+        return switch (mode) {
+            case ALWAYS_ON -> "Always On";
+            case ALWAYS_OFF -> "Always Off";
+            case ON_WITH_REDSTONE -> "Signal On";
+            case OFF_WITH_REDSTONE -> "Signal Off";
+        };
+    }
+
     @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        guiGraphics.drawString(this.font, "Generator", 10, 10, 0x404040, false);
+        //Latex Power
+        String energyText = menu.getEnergyStored() + " / " + menu.getMaxEnergyStored() + " LP";
+        guiGraphics.drawString(this.font, energyText, 10, 24, 0x404040, false);
+        guiGraphics.drawString(this.font, getRedstoneModeLabel(menu.getRedstoneMode()), 10, 38, 0x404040, false);
     }
 
     @Override
     public void init() {
         super.init();
-
+        redstoneModeButton = Button.builder(
+                CommonComponents.EMPTY,
+                button -> CENetwork.sendToServer(new CycleGeneratorRedstoneModePacket(menu.getBlockPos()))
+        ).bounds(this.leftPos + 150, this.topPos + 20, 70, 20).build();
+        updateRedstoneModeButton();
+        this.addRenderableWidget(redstoneModeButton);
     }
 
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        updateRedstoneModeButton();
+    }
+
+    private void updateRedstoneModeButton() {
+        if (redstoneModeButton != null) {
+            redstoneModeButton.setMessage(Component.literal(getShortRedstoneModeLabel(menu.getRedstoneMode())));
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package github.com.gengyoubo.events;
 
 import github.com.gengyoubo.CERegister;
+import github.com.gengyoubo.changede;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
@@ -54,7 +55,7 @@ public class latexStartEvents {
         assert variant != null;
         player.getPersistentData().putString("latex_start_variant", variant.getFormId().toString());
         ProcessTransfur.setPlayerTransfurVariant(player, variant, (TransfurContext) null);
-        System.out.println("已分配玩家变体: " + variant.getFormId());
+        changede.LOGGER.debug("已分配玩家变体: {}", variant.getFormId());
     }
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
@@ -67,7 +68,7 @@ public class latexStartEvents {
                 oldData.getString("latex_start_variant"));
     }
     public static void setup(final FMLCommonSetupEvent event) {
-        System.out.println("start program!");
+        changede.LOGGER.debug("start program!");
         event.enqueueWork(() -> {
             var registry = ChangedRegistry.TRANSFUR_VARIANT.get();
             FORM_VARIANTS.clear();
@@ -79,13 +80,13 @@ public class latexStartEvents {
                 if (!path.startsWith("form_")) continue;
                 // ❌ 黑名单过滤
                 if (BLACKLIST.contains(path)) {
-                    System.out.println("黑名单跳过: " + id);
+                    changede.LOGGER.debug("黑名单跳过: {}", id);
                     continue;
                 }
                 FORM_VARIANTS.add(variant);
-                System.out.println("加入: " + id);
+                changede.LOGGER.debug("加入: {}", id);
             }
-            System.out.println("最终数量: " + FORM_VARIANTS.size());
+            changede.LOGGER.debug("最终数量: {}", FORM_VARIANTS.size());
         });
     }
     public static TransfurVariant<?> getRandomForm(RandomSource random) {

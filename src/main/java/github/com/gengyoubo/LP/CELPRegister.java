@@ -1,10 +1,9 @@
 package github.com.gengyoubo.LP;
 
+import github.com.gengyoubo.LP.Block.BasicEnergyPipeBlock;
 import github.com.gengyoubo.LP.Block.BasicGeneratorBlock;
 import github.com.gengyoubo.LP.BlockEntity.GeneratorBlockEntity.BasicGeneratorBlockEntity;
-import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.EnergyPipeBlockEntity;
-import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.WireBlock;
-import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.WireType;
+import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.E.BasicEnergyPipeBlockEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -30,7 +29,7 @@ public class CELPRegister {
 
     public static final RegistryObject<Block> BASIC_WIRE =
             BLOCKS.register("basic_wire",
-                    () -> new WireBlock(WireType.BASIC, BlockBehaviour.Properties.of()));
+                    () -> new BasicEnergyPipeBlock(BlockBehaviour.Properties.of()));
 
     public static final RegistryObject<Item> BASIC_WIRE_ITEM =
             ITEMS.register("basic_wire",
@@ -43,13 +42,14 @@ public class CELPRegister {
             ITEMS.register("basic_generator",
                     () -> new BlockItem(BASIC_GENERATOR.get(), new Item.Properties()));
 
-    public static final RegistryObject<BlockEntityType<EnergyPipeBlockEntity>> BASIC_WIRE_ENTITIES =
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<BasicEnergyPipeBlockEntity>> BASIC_WIRE_ENTITIES =
             BLOCK_ENTITIES.register("wire",
                     () -> BlockEntityType.Builder.of(
-                            EnergyPipeBlockEntity::new,
+                            BasicEnergyPipeBlockEntity::new,
                             BASIC_WIRE.get()
                     ).build(null));
-
+    @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<BasicGeneratorBlockEntity>> BASIC_GENERATOR_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("basic_generator",
                     () -> BlockEntityType.Builder.of(
