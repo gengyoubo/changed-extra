@@ -12,7 +12,7 @@ public abstract class FluidPipeBlockEntity extends BasePipeBlockEntity {
     private final FluidStack fluid = FluidStack.EMPTY;
 
     public FluidPipeBlockEntity(BlockPos pos, BlockState state) {
-        super(CELPRegister.BASIC_WIRE_ENTITIES.get(), pos, state, TransportType.FLUID);
+        super(CELPRegister.BASIC_WIRE_BLOCK_ENTITIES.get(), pos, state, TransportType.FLUID);
     }
 
     @Override

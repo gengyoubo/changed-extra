@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class ItemPipeBlockEntity extends BasePipeBlockEntity {
 
     public ItemPipeBlockEntity(BlockPos pos, BlockState state) {
-        super(CELPRegister.BASIC_WIRE_ENTITIES.get(), pos, state, TransportType.ITEM);
+        super(CELPRegister.BASIC_WIRE_BLOCK_ENTITIES.get(), pos, state, TransportType.ITEM);
     }
 
     @Override

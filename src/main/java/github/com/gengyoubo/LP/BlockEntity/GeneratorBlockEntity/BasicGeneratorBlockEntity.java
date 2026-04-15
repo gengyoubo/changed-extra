@@ -5,8 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BasicGeneratorBlockEntity extends GeneratorBlockEntity {
-    private static final int CAPACITY = 10_000;
-    private static final int GENERATION_PER_TICK = 20;
+    private static final int CAPACITY = 10_000, GENERATION_PER_TICK = 200;
 
     public BasicGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(CELPRegister.BASIC_GENERATOR_BLOCK_ENTITY.get(), pos, state, CAPACITY);

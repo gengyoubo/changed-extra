@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/changed-extra.main.iml" filepath="$PROJECT_DIR$/.idea/modules/changed-extra.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/changed-extra.test.iml" filepath="$PROJECT_DIR$/.idea/modules/changed-extra.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/github.com.gengyoubo.changed-extra.main.iml" filepath="$PROJECT_DIR$/.idea/modules/github.com.gengyoubo.changed-extra.main.iml" />
     </modules>
   </component>
 </project>

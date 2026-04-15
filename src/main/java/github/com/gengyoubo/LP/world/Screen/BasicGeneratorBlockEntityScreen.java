@@ -81,15 +81,6 @@ public class BasicGeneratorBlockEntityScreen extends AbstractContainerScreen<Bas
         return super.keyPressed(key, b, c);
     }
 
-    private static String getRedstoneModeLabel(RedstoneMode mode) {
-        return switch (mode) {
-            case ALWAYS_ON -> "Redstone: Always On";
-            case ALWAYS_OFF -> "Redstone: Always Off";
-            case ON_WITH_REDSTONE -> "Redstone: On with Signal";
-            case OFF_WITH_REDSTONE -> "Redstone: Off with Signal";
-        };
-    }
-
     private static String getShortRedstoneModeLabel(RedstoneMode mode) {
         return switch (mode) {
             case ALWAYS_ON -> "Always On";
@@ -105,7 +96,6 @@ public class BasicGeneratorBlockEntityScreen extends AbstractContainerScreen<Bas
         //Latex Power
         String energyText = menu.getEnergyStored() + " / " + menu.getMaxEnergyStored() + " LP";
         guiGraphics.drawString(this.font, energyText, 10, 24, 0x404040, false);
-        guiGraphics.drawString(this.font, getRedstoneModeLabel(menu.getRedstoneMode()), 10, 38, 0x404040, false);
     }
 
     @Override

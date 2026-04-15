@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BaseEnergyBlockEntity extends BlockEntity implements ILatexEnergyHandler {
     protected final LatexEnergyStorage energy;
-
     public BaseEnergyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int capacity) {
         super(type, pos, state);
         this.energy = new LatexEnergyStorage(capacity);

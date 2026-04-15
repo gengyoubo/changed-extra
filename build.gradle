@@ -35,8 +35,8 @@ dependencies {
     //原版
     minecraft "net.minecraftforge:forge:1.20.1-47.4.10"
     //changed类
-    implementation fg.deobf("curse.maven:changed-addon-plus-711303:7721349")
-    implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:7692829")
+    implementation fg.deobf("curse.maven:changed-addon-plus-711303:7911538")
+    implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:7906615")
     //模组外扩展
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     //优化
@@ -165,7 +165,7 @@ jar {
     //模组版本
     archiveVersion.set(mod_version)
     //模组分支(主分支为main)
-    archiveClassifier.set("b")
+    //archiveClassifier.set("b")
 }
 publishing {
     publications {

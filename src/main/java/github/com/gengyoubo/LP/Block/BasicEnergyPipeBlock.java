@@ -37,7 +37,7 @@ public class BasicEnergyPipeBlock extends BaseEntityBlock {
             @NotNull BlockState state,
             @NotNull BlockEntityType<T> type
     ) {
-        if (type != CELPRegister.BASIC_WIRE_ENTITIES.get()) {
+        if (type != CELPRegister.BASIC_WIRE_BLOCK_ENTITIES.get()) {
             return null;
         }
 
