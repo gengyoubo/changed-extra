@@ -6,6 +6,7 @@
   "refmap": "changede.refmap.json",
   "mixins": [
     "GooCoreBlockMixin",
+    "PatreonBenefitsMixin",
     "TransfurVariantsInfoMixin"
   ],
   "injectors": {

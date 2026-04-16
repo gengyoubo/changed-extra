@@ -6,6 +6,7 @@ import github.com.gengyoubo.LP.network.CENetwork;
 import github.com.gengyoubo.LP.world.Menu.CEMenus;
 import github.com.gengyoubo.commands.ReloadEMCCMD;
 import github.com.gengyoubo.events.*;
+import github.com.gengyoubo.projectextended.PTotemOfUndying;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;

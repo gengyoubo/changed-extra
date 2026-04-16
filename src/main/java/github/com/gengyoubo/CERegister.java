@@ -3,6 +3,7 @@ package github.com.gengyoubo;
 import github.com.gengyoubo.LP.CELPRegister;
 import github.com.gengyoubo.enchantment.*;
 import github.com.gengyoubo.items.*;
+import github.com.gengyoubo.projectextended.PTotemOfUndying;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -67,7 +68,7 @@ public class CERegister {
             CREATIVE_MODE_TABS.register("basic", () ->
                     CreativeModeTab.builder()
                             .title(Component.translatable("creativetab.changede1"))
-                            .icon(() -> new ItemStack(Items.AIR))
+                            .icon(() -> new ItemStack(CERegister.LATEX_INGOT.get()))
                             .displayItems((parameters, output) -> {
                                 output.accept(CERegister.INACTIVE_DARK_LATEX.get());
                                 output.accept(CERegister.INACTIVE_WHITE_LATEX.get());
@@ -81,10 +82,11 @@ public class CERegister {
             CREATIVE_MODE_TABS.register("extra", () ->
                     CreativeModeTab.builder()
                             .title(Component.translatable("creativetab.changede3"))
-                            .icon(() -> new ItemStack(Items.AIR))
+                            .icon(() -> new ItemStack(CELPRegister.ELECTRIC_FURNACE_ITEM.get()))
                             .displayItems((parameters, output) -> {
                                 output.accept(CELPRegister.BASIC_WIRE_ITEM.get());
                                 output.accept(CELPRegister.BASIC_GENERATOR_ITEM.get());
+                                output.accept(CELPRegister.ELECTRIC_FURNACE_ITEM.get());
                             })
                             .build()
             );
@@ -92,9 +94,11 @@ public class CERegister {
             CREATIVE_MODE_TABS.register("easter_egg", () ->
                     CreativeModeTab.builder()
                             .title(Component.translatable("creativetab.changede2"))
-                            .icon(() -> new ItemStack(Items.AIR))
+                            .icon(() -> new ItemStack(PTotemOfUndying.MATTER_TOTEM_OF_UNDYING_TRUE.get()))
                             .displayItems((parameters, output) -> {
-
+                                output.accept(PTotemOfUndying.DARK_MATTER_TOTEM_OF_UNDYING.get());
+                                output.accept(PTotemOfUndying.RED_MATTER_TOTEM_OF_UNDYING.get());
+                                output.accept(PTotemOfUndying.MATTER_TOTEM_OF_UNDYING_TRUE.get());
                             })
                             .build()
             );
