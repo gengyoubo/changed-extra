@@ -6,8 +6,7 @@
   "refmap": "changede.refmap.json",
   "mixins": [
     "LivingEntityTotemMixin",
-    "PlayerShieldDisableMixin",
-    "ProjectExtendedItemsMixin"
+    "PlayerShieldDisableMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -6,6 +6,7 @@ import github.com.gengyoubo.LP.network.CENetwork;
 import github.com.gengyoubo.LP.world.Menu.CEMenus;
 import github.com.gengyoubo.commands.ReloadEMCCMD;
 import github.com.gengyoubo.events.*;
+import github.com.gengyoubo.projectextended.PERegister;
 import github.com.gengyoubo.projectextended.PTotemOfUndying;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 @Mod("changede")
 public class changede {
     public static final Boolean PROJECTE =ModList.get().isLoaded("projecte");
+    public static final Boolean PE=ModList.get().isLoaded("projectextended");
     public static final Logger LOGGER = LogUtils.getLogger();
     public changede(FMLJavaModLoadingContext context) {
         IEventBus bus = context.getModEventBus();
@@ -42,6 +44,10 @@ public class changede {
         if (PROJECTE) {
             new ReloadEMCCMD();
             MinecraftForge.EVENT_BUS.register(new addEMCEvents());
+            PTotemOfUndying.ITEMS.register(bus);
+            if(PE){
+                PERegister.ITEMS.register(bus);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package github.com.gengyoubo.projectextended.mixins;
 
+import github.com.gengyoubo.changede;
 import github.com.gengyoubo.projectextended.items.CETotemOfUndying;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -39,6 +40,9 @@ public abstract class LivingEntityTotemMixin {
 
     @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
     private void changede$useMatterTotem(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        if(!changede.PROJECTE) {
+            return;
+        }
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return;
         }
@@ -76,6 +80,9 @@ public abstract class LivingEntityTotemMixin {
 
     @Unique
     private void changede$spawnActivationParticles(LivingEntity livingEntity, CETotemOfUndying totem) {
+        if(changede.PROJECTE) {
+            return;
+        }
         if (!(livingEntity.level() instanceof ServerLevel serverLevel) || !totem.isTrueMatterTotem()) {
             return;
         }

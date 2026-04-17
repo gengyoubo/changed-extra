@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.List;
 
 public enum EnumMatterTypeExtend implements StringRepresentable, Tier {
+    DARK_MATTER("dark_matter", 3.0F, 14.0F, 12.0F, 4, PETags.Blocks.NEEDS_DARK_MATTER_TOOL, Tiers.NETHERITE, PECore.rl("red_matter"), MapColor.COLOR_BLACK),
+    RED_MATTER("red_matter", 4.0F, 16.0F, 14.0F, 5, PETags.Blocks.NEEDS_RED_MATTER_TOOL, DARK_MATTER, (ResourceLocation)null, MapColor.COLOR_RED),
     TRUE("true_matter", 5.0F, 14.0F, 12.0F, 4,PETags.Blocks.NEEDS_DARK_MATTER_TOOL, Tiers.NETHERITE, null, MapColor.COLOR_BLACK);
     private final String name;
     private final float attackDamage;

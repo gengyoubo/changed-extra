@@ -1,5 +1,6 @@
 package github.com.gengyoubo.projectextended.events;
 
+import github.com.gengyoubo.changede;
 import github.com.gengyoubo.projectextended.PTotemOfUndying;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -12,6 +13,9 @@ import net.minecraftforge.fml.common.Mod;
 public class CETotemClientEvents {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        if (!changede.PROJECTE){
+            return;
+        }
         event.register((stack, tintIndex) -> {
             if (tintIndex == 0) {
                 return 0xFFFFFF;

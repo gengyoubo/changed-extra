@@ -90,18 +90,31 @@ public class CERegister {
                             })
                             .build()
             );
+
     public static final RegistryObject<CreativeModeTab> EE =
-            CREATIVE_MODE_TABS.register("easter_egg", () ->
-                    CreativeModeTab.builder()
-                            .title(Component.translatable("creativetab.changede2"))
-                            .icon(() -> new ItemStack(PTotemOfUndying.MATTER_TOTEM_OF_UNDYING_TRUE.get()))
-                            .displayItems((parameters, output) -> {
-                                output.accept(PTotemOfUndying.DARK_MATTER_TOTEM_OF_UNDYING.get());
-                                output.accept(PTotemOfUndying.RED_MATTER_TOTEM_OF_UNDYING.get());
-                                output.accept(PTotemOfUndying.MATTER_TOTEM_OF_UNDYING_TRUE.get());
-                            })
-                            .build()
-            );
+            CREATIVE_MODE_TABS.register("easter_egg", () -> {
+
+                // ✅ 只有在 ProjectE 存在时才创建
+                if (changede.PROJECTE) {
+                    return CreativeModeTab.builder()
+                            .title(Component.literal("Disabled"))
+                            .icon(() -> ItemStack.EMPTY)
+                            .build();
+                }
+
+                return CreativeModeTab.builder()
+                        .title(Component.translatable("creativetab.changede2"))
+                        .icon(() -> new ItemStack(
+                                PTotemOfUndying.MATTER_TOTEM_OF_UNDYING_TRUE.get()
+                        ))
+                        .displayItems((parameters, output) -> {
+                            output.accept(PTotemOfUndying.DARK_MATTER_TOTEM_OF_UNDYING.get());
+                            output.accept(PTotemOfUndying.RED_MATTER_TOTEM_OF_UNDYING.get());
+                            output.accept(PTotemOfUndying.MATTER_TOTEM_OF_UNDYING_TRUE.get());
+                        })
+                        .build();
+            });
+
     //游戏规则
     public static void register() {
         LATEX_START = GameRules.register(

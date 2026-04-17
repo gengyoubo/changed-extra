@@ -21,11 +21,22 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class ElectricFurnaceMenu extends AbstractContainerMenu {
-    private final Level world;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+public class ElectricFurnaceMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
+    public static final HashMap<String, Object> guistate = new HashMap<>();
+
+    public final Level world;
+    public final Player entity;
+    private final Map<Integer, Slot> customSlots = new HashMap<>();
+    public int x;
+    public int y;
     private final BlockPos pos;
-    private final ContainerLevelAccess access;
+    public int z;
     private final ContainerData data;
+    private ContainerLevelAccess access = ContainerLevelAccess.NULL;
     private IItemHandler internal = new ItemStackHandler(2);
 
     public ElectricFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
@@ -38,8 +49,12 @@ public class ElectricFurnaceMenu extends AbstractContainerMenu {
 
     public ElectricFurnaceMenu(int id, Inventory inv, BlockPos pos, ContainerData data) {
         super(CEMenus.ELECTRIC_FURNACE.get(), id);
+        this.entity = inv.player;
         this.world = inv.player.level();
         this.pos = pos;
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.z = pos.getZ();
         this.access = ContainerLevelAccess.create(world, pos);
         this.data = data;
 
@@ -77,70 +92,47 @@ public class ElectricFurnaceMenu extends AbstractContainerMenu {
         };
     }
 
+    private static FriendlyByteBuf writePos(BlockPos pos) {
+        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
+        buffer.writeBlockPos(pos);
+        return buffer;
+    }
+
     private void bindBlockEntityInventory() {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity != null) {
-            blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> this.internal = handler);
+            blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(capability -> this.internal = capability);
         }
     }
 
     private void addFurnaceSlots() {
-        this.addSlot(new SlotItemHandler(internal, 0, 56, 35));
-        this.addSlot(new SlotItemHandler(internal, 1, 116, 35) {
+        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 44, 32)));
+        this.customSlots.put(1, this.addSlot(new SlotItemHandler(internal, 1, 116, 32) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
                 return false;
             }
-        });
+        }));
     }
 
     private void addPlayerInventory(Inventory inv) {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(inv, col + (row + 1) * 9, 8 + col * 18, 84 + row * 18));
+        for (int si = 0; si < 3; ++si) {
+            for (int sj = 0; sj < 9; ++sj) {
+                this.addSlot(new Slot(inv, sj + (si + 1) * 9, 8 + sj * 18, 84 + si * 18));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory inv) {
-        for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(inv, col, 8 + col * 18, 142));
+        for (int si = 0; si < 9; ++si) {
+            this.addSlot(new Slot(inv, si, 8 + si * 18, 142));
         }
     }
 
     @Override
     public boolean stillValid(@NotNull Player player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        return blockEntity != null && AbstractContainerMenu.stillValid(access, player, blockEntity.getBlockState().getBlock());
-    }
-
-    @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        ItemStack result = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
-
-        if (slot != null && slot.hasItem()) {
-            ItemStack stack = slot.getItem();
-            result = stack.copy();
-
-            if (index < 2) {
-                if (!this.moveItemStackTo(stack, 2, this.slots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.moveItemStackTo(stack, 0, 1, false)) {
-                return ItemStack.EMPTY;
-            }
-
-            if (stack.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
-
-            slot.onTake(player, stack);
-        }
-
-        return result;
+        return blockEntity != null && AbstractContainerMenu.stillValid(this.access, player, blockEntity.getBlockState().getBlock());
     }
 
     public int getEnergyStored() {
@@ -170,5 +162,45 @@ public class ElectricFurnaceMenu extends AbstractContainerMenu {
 
     public BlockPos getBlockPos() {
         return pos;
+    }
+
+    @Override
+    public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index < 2) {
+                if (!this.moveItemStackTo(itemstack1, 2, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onQuickCraft(itemstack1, itemstack);
+            } else if (!this.moveItemStackTo(itemstack1, 0, 2, false)) {
+                if (index < 29) {
+                    if (!this.moveItemStackTo(itemstack1, 29, this.slots.size(), true)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (!this.moveItemStackTo(itemstack1, 2, 29, false)) {
+                    return ItemStack.EMPTY;
+                }
+                return ItemStack.EMPTY;
+            }
+            if (itemstack1.getCount() == 0) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+            slot.onTake(playerIn, itemstack1);
+        }
+        return itemstack;
+    }
+
+    @Override
+    public Map<Integer, Slot> get() {
+        return customSlots;
     }
 }

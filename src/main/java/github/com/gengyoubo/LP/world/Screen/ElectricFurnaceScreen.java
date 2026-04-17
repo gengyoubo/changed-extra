@@ -1,31 +1,36 @@
 package github.com.gengyoubo.LP.world.Screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import github.com.gengyoubo.LP.world.Menu.ElectricFurnaceMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurnaceMenu> {
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.parse("changede:textures/screens/basic_generator_block_entity.png");
+import java.util.HashMap;
 
-    public ElectricFurnaceScreen(ElectricFurnaceMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
+public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurnaceMenu> {
+    private static final HashMap<String, Object> guistate = ElectricFurnaceMenu.guistate;
+    private static final ResourceLocation texture = ResourceLocation.parse("changede:textures/screens/electric_furnace_block.png");
+    private final Level world;
+    private final int x;
+    private final int y;
+    private final int z;
+    private final Player entity;
+
+    public ElectricFurnaceScreen(ElectricFurnaceMenu container, Inventory inventory, Component text) {
+        super(container, inventory, text);
+        this.world = container.world;
+        this.x = container.x;
+        this.y = container.y;
+        this.z = container.z;
+        this.entity = container.entity;
         this.imageWidth = 176;
         this.imageHeight = 166;
-    }
-
-    @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        guiGraphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 230, 180);
-
-        int progressWidth = menu.getScaledProgress(24);
-        if (progressWidth > 0) {
-            guiGraphics.fill(this.leftPos + 79, this.topPos + 34, this.leftPos + 79 + progressWidth, this.topPos + 50, 0xFFFFA500);
-        }
     }
 
     @Override
@@ -36,8 +41,31 @@ public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurna
     }
 
     @Override
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {
+        RenderSystem.setShaderColor(1, 1, 1, 1);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        guiGraphics.blit(texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+        RenderSystem.disableBlend();
+    }
+
+    @Override
+    public boolean keyPressed(int key, int b, int c) {
+        if (key == 256) {
+            if (this.minecraft != null && this.minecraft.player != null) {
+                this.minecraft.player.closeContainer();
+            }
+            return true;
+        }
+        return super.keyPressed(key, b, c);
+    }
+
+    @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(this.font, "Electric Furnace", 8, 6, 0x404040, false);
-        guiGraphics.drawString(this.font, menu.getEnergyStored() + " / " + menu.getMaxEnergyStored() + " LP", 8, 18, 0x404040, false);
+    }
+
+    @Override
+    public void init() {
+        super.init();
     }
 }
