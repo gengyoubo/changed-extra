@@ -27,7 +27,7 @@ public class PatreonBenefitsMixin {
     @Final @Shadow private static Map<UUID, PatreonBenefits.Tier> CACHED_LEVELS;
     @Final @Shadow private static Logger LOGGER;
 
-    @Inject(method = "loadBenefits", at = @At("TAIL"))
+    @Inject(method = "loadBenefits", at = @At("HEAD"))
     private static void loadCustomBenefits(CallbackInfo ci) {
         String customBase = "https://raw.githubusercontent.com/gengyoubo/changed-extra/main/patreon-benefits/";
         HttpClient client = HttpClient.newHttpClient();
