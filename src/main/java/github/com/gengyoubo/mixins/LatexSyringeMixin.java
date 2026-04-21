@@ -21,13 +21,10 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value= LatexSyringe.class, remap=false)
 public class LatexSyringeMixin {
@@ -79,7 +76,7 @@ public class LatexSyringeMixin {
                 stack.shrink(1);
             }
 
-            stack = new ItemStack((ItemLike) ChangedItems.SYRINGE.get());
+            stack = new ItemStack(ChangedItems.SYRINGE.get());
         }
 
         return stack;

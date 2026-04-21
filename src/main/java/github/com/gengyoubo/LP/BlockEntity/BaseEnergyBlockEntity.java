@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class BaseEnergyBlockEntity extends BlockEntity implements ILatexEnergyHandler {
     protected final LatexEnergyStorage energy;
@@ -68,13 +69,13 @@ public class BaseEnergyBlockEntity extends BlockEntity implements ILatexEnergyHa
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putInt("Energy", energy.getEnergyStored());
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         energy.receiveEnergy(tag.getInt("Energy"), null);
     }

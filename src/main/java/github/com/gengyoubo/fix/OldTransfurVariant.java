@@ -22,16 +22,16 @@ import net.ltxprogrammer.changed.entity.latex.LatexType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class OldTransfurVariant<T extends ChangedEntity>  extends TransfurVariant<T>{
     private static final AtomicInteger NEXT_ENTITY_ID = new AtomicInteger(-70000000);
     // Variant properties
-    public final Supplier<? extends EntityType<? extends ChangedEntity>> ctor;
+    public final Supplier<EntityType<T>> ctor;
     public final LatexType type;
     public final float jumpStrength;
     public final TransfurVariant.BreatheMode breatheMode;
@@ -127,20 +127,38 @@ public class OldTransfurVariant<T extends ChangedEntity>  extends TransfurVarian
         return fallbackSound;
     }
 
+    private static EntityType<? extends ChangedEntity> resolveChangedEntityType(@javax.annotation.Nullable ResourceLocation entityTypeId) {
+        if (entityTypeId == null) return null;
+        EntityType<?> rawType = ForgeRegistries.ENTITY_TYPES.getValue(entityTypeId);
+        if (rawType == null) return null;
+        if (!ChangedEntity.class.isAssignableFrom(rawType.getBaseClass())) return null;
+
+        @SuppressWarnings("unchecked")
+        EntityType<? extends ChangedEntity> casted = (EntityType<? extends ChangedEntity>) rawType;
+        return casted;
+    }
+
     public static OldTransfurVariant<?> fromJson(ResourceLocation id, JsonObject root, List<AbstractAbility<?>> injectAbilities) {
+        assert ChangedEntitiesFix.SPECIAL_LATEX.getId() != null;
         ResourceLocation entityType = ResourceLocation.tryParse(GsonHelper.getAsString(root, "entity", ChangedEntitiesFix.SPECIAL_LATEX.getId().toString()));
-        EntityType<? extends ChangedEntity> resolvedEntityType = entityType != null ? (EntityType<? extends ChangedEntity>) ForgeRegistries.ENTITY_TYPES.getValue(entityType) : null;
+        EntityType<? extends ChangedEntity> resolvedEntityType = resolveChangedEntityType(entityType);
         if (resolvedEntityType == null) {
             Changed.LOGGER.warn("Invalid entity type '{}' for variant {}. Falling back to {}.",
                     entityType, id, ChangedEntitiesFix.SPECIAL_LATEX.getId());
             resolvedEntityType = ChangedEntitiesFix.SPECIAL_LATEX.get();
         }
-        final EntityType<? extends ChangedEntity> parsedEntityType = resolvedEntityType;
+        @SuppressWarnings("unchecked")
+        final EntityType<ChangedEntity> parsedEntityType = (EntityType<ChangedEntity>) resolvedEntityType;
 
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
         GsonHelper.getAsJsonArray(root, "scares", new JsonArray()).forEach(element -> {
             try {
-                scares.add((Class<? extends PathfinderMob>) Class.forName(element.getAsString()));
+                Class<?> clazz = Class.forName(element.getAsString());
+                if (PathfinderMob.class.isAssignableFrom(clazz)) {
+                    scares.add(clazz.asSubclass(PathfinderMob.class));
+                } else {
+                    Changed.LOGGER.warn("Invalid scare class (not PathfinderMob): {}", element.getAsString());
+                }
             } catch (Exception e) {
                 Changed.LOGGER.error("Invalid class given: {}", element.getAsString());
             }
@@ -148,10 +166,18 @@ public class OldTransfurVariant<T extends ChangedEntity>  extends TransfurVarian
 
         List<AbstractAbility<?>> abilities = new ArrayList<>(injectAbilities);
         GsonHelper.getAsJsonArray(root, "abilities", new JsonArray()).forEach(element -> {
-            abilities.add(ChangedRegistry.ABILITY.get().getValue(ResourceLocation.tryParse(element.getAsString())));
+            ResourceLocation abilityId = ResourceLocation.tryParse(element.getAsString());
+            if (abilityId == null) return;
+            AbstractAbility<?> ability = ChangedRegistry.ABILITY.get().getValue(abilityId);
+            if (ability != null) {
+                abilities.add(ability);
+            }
         });
 
-        List<Function<EntityType<?>, ? extends AbstractAbility<?>>> nAbilitiesList = abilities.stream().map(a -> (Function<EntityType<?>, AbstractAbility<?>>) type -> a).collect(Collectors.toList());
+        List<Function<EntityType<?>, ? extends AbstractAbility<?>>> nAbilitiesList = new ArrayList<>();
+        abilities.stream()
+                .filter(Objects::nonNull)
+                .forEach(ability -> nAbilitiesList.add(type -> ability));
 
         boolean nightVision = GsonHelper.getAsBoolean(root, "nightVision", false);
         boolean weakMining = GsonHelper.getAsBoolean(root, "weakMining", false);
@@ -251,15 +277,7 @@ public class OldTransfurVariant<T extends ChangedEntity>  extends TransfurVarian
     }
 
     public EntityType<T> getEntityType() {
-        return (EntityType<T>) ctor.get();
-    }
-
-    private T createChangedEntity(Level level) {
-        T entity = (T)(((EntityType)this.ctor.get()).create(level));
-        entity.setId(getNextEntId());
-        entity.setSilent(true);
-        entity.goalSelector.removeAllGoals((goal) -> true);
-        return entity;
+        return ctor.get();
     }
 
     public static class UniversalAbilitiesEvent extends Event implements IModBusEvent {
@@ -322,10 +340,8 @@ public class OldTransfurVariant<T extends ChangedEntity>  extends TransfurVarian
         }
 
         public static <T extends ChangedEntity> OldTransfurVariant.Builder<T> of(Supplier<EntityType<T>> entityType) {
-            return new OldTransfurVariant.Builder<T>(entityType);
+            return new OldTransfurVariant.Builder<>(entityType);
         }
-
-        public void ignored() {}
 
         public OldTransfurVariant.Builder<T> jumpStrength(float factor) {
             this.jumpStrength = factor; return this;

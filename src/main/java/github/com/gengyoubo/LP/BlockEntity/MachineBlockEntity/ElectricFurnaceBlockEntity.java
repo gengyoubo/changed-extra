@@ -126,14 +126,14 @@ public class ElectricFurnaceBlockEntity extends MachineBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Inventory", itemHandler.serializeNBT());
         tag.putInt("Progress", progress);
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         itemHandler.deserializeNBT(tag.getCompound("Inventory"));
         progress = tag.getInt("Progress");

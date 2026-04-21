@@ -26,7 +26,9 @@ public class DynamicClient {
     }
 
     @OnlyIn(Dist.CLIENT)
+    @SuppressWarnings("UnstableApiUsage")
     private static class Internal {
+        @SuppressWarnings("UnstableApiUsage")
         public static void lateRegisterLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier) {
             ForgeHooksClient.registerLayerDefinition(layerLocation, supplier);
         }

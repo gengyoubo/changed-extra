@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tier;
+import org.jetbrains.annotations.NotNull;
 
 public class CETotemOfUndying extends Item {
     public static final int DARK_MATTER_COOLDOWN = 20 * 60 * 10;
@@ -48,7 +49,7 @@ public class CETotemOfUndying extends Item {
     }
 
     @Override
-    public Component getName(ItemStack stack) {
+    public @NotNull Component getName(@NotNull ItemStack stack) {
         if (this.isTrueMatterTotem()) {
             long time = System.currentTimeMillis() / 50L;
             float hue = (time % 10L) / 10.0F;

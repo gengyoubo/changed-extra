@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerSpecialVariantMixin {
+    @Unique
     private static final String SPECIAL_FORM_PREFIX = "special/form_";
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))

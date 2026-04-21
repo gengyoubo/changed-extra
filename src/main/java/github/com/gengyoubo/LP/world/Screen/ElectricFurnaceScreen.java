@@ -16,19 +16,14 @@ import java.util.HashMap;
 public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurnaceMenu> {
     private static final HashMap<String, Object> guistate = ElectricFurnaceMenu.guistate;
     private static final ResourceLocation texture = ResourceLocation.parse("changede:textures/screens/electric_furnace_block_entity.png");
-    private final Level world;
-    private final int x;
-    private final int y;
-    private final int z;
-    private final Player entity;
 
     public ElectricFurnaceScreen(ElectricFurnaceMenu container, Inventory inventory, Component text) {
         super(container, inventory, text);
-        this.world = container.world;
-        this.x = container.x;
-        this.y = container.y;
-        this.z = container.z;
-        this.entity = container.entity;
+        Level world = container.world;
+        int x = container.x;
+        int y = container.y;
+        int z = container.z;
+        Player entity = container.entity;
         this.imageWidth = 176;
         this.imageHeight = 166;
     }

@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -22,7 +23,6 @@ public class SpecialLatexModel extends AdvancedHumanoidModel<SpecialLatex> {
     private final ModelPart leftArm;
     private final ModelPart head;
     private final ModelPart torso;
-    private final ModelPart tail;
     private final HumanoidAnimator<SpecialLatex, SpecialLatexModel> animator;
 
     public SpecialLatexModel(ModelPart root, PatreonBenefits.ModelData form) {
@@ -31,7 +31,7 @@ public class SpecialLatexModel extends AdvancedHumanoidModel<SpecialLatex> {
         this.leftLeg = root.getChild("LeftLeg");
         this.head = root.getChild("Head");
         this.torso = root.getChild("Torso");
-        this.tail = form.animationData().hasTail() ? torso.getChild("Tail") : null;
+        ModelPart tail = form.animationData().hasTail() ? torso.getChild("Tail") : null;
         this.rightArm = root.getChild("RightArm");
         this.leftArm = root.getChild("LeftArm");
 
@@ -73,13 +73,13 @@ public class SpecialLatexModel extends AdvancedHumanoidModel<SpecialLatex> {
     }
 
     @Override
-    public void setupAnim(SpecialLatex entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull SpecialLatex entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     @Override
-    public ModelPart getArm(HumanoidArm arm) {
+    public @NotNull ModelPart getArm(HumanoidArm arm) {
         return arm == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
     }
 
@@ -89,7 +89,7 @@ public class SpecialLatexModel extends AdvancedHumanoidModel<SpecialLatex> {
     }
 
     @Override
-    public ModelPart getHead() {
+    public @NotNull ModelPart getHead() {
         return this.head;
     }
 
@@ -99,7 +99,7 @@ public class SpecialLatexModel extends AdvancedHumanoidModel<SpecialLatex> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         this.rightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         this.leftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         this.head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

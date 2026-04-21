@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -35,7 +36,8 @@ public class CommandTransfurMixin {
     @Shadow
     private static SimpleCommandExceptionType NO_SPECIAL_FORM;
 
-    private static TransfurVariant<?> resolveSpecialVariantForCommand(ResourceLocation form, ServerPlayer player) throws CommandSyntaxException {
+    @Unique
+    private static TransfurVariant<?> changed_extra$resolveSpecialVariantForCommand(ResourceLocation form, ServerPlayer player) throws CommandSyntaxException {
         ResourceLocation key = form.equals(TransfurVariant.SPECIAL_LATEX)
                 ? PatreonBenefitsFix.getSpecialFormId(player.getUUID())
                 : form;
@@ -69,7 +71,7 @@ public class CommandTransfurMixin {
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
 
-        TransfurVariant<?> transfurVariant = resolveSpecialVariantForCommand(form, player);
+        TransfurVariant<?> transfurVariant = changed_extra$resolveSpecialVariantForCommand(form, player);
 
         ProcessTransfur.transfur(player, ImmediateTransfurDecision.safe(transfurVariant, cause, (newEntity) -> {
             if (newEntity.getChangedEntity() instanceof SpecialLatex specialLatex) {
@@ -100,7 +102,7 @@ public class CommandTransfurMixin {
         if (transfurCause == null)
             throw NOT_CAUSE.create();
 
-        TransfurVariant<?> transfurVariant = resolveSpecialVariantForCommand(form, player);
+        TransfurVariant<?> transfurVariant = changed_extra$resolveSpecialVariantForCommand(form, player);
 
         ProcessTransfur.progressTransfur(
                 player,

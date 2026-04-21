@@ -3,7 +3,6 @@ package github.com.gengyoubo.fix;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -15,9 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -25,7 +22,6 @@ public class ChangedEntitiesFix {
     public static final DeferredRegister<EntityType<?>> REGISTRY;
     public static final RegistryObject<EntityType<SpecialLatex>> SPECIAL_LATEX;
     private static final List<Pair<Supplier<EntityType<? extends ChangedEntity>>, Supplier<AttributeSupplier.Builder>>> ATTR_FUNC_REGISTRY = new ArrayList<>();
-    private static final Map<ResourceLocation, Pair<Integer, Integer>> ENTITY_COLOR_MAP = new HashMap<>();
 
     static {
         REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, "changed");
@@ -39,9 +35,6 @@ public class ChangedEntitiesFix {
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
         ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createLatexAttributes));
         return entityType;
-    }
-    public static void registerEntityColor(ResourceLocation location, int background, int highlight) {
-        ENTITY_COLOR_MAP.put(location, Pair.of(background, highlight));
     }
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {

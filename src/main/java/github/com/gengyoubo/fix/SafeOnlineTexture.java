@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -24,7 +25,7 @@ public class SafeOnlineTexture extends AbstractTexture {
     }
 
     @Override
-    public void load(ResourceManager resourceManager) {
+    public void load(@NotNull ResourceManager resourceManager) {
         NativeImage image = null;
         try {
             URLConnection connection = uri.toURL().openConnection();
@@ -52,11 +53,9 @@ public class SafeOnlineTexture extends AbstractTexture {
     }
 
     private void uploadImage(NativeImage image) {
-        try {
+        try (image) {
             TextureUtil.prepareImage(this.getId(), image.getWidth(), image.getHeight());
             image.upload(0, 0, 0, true);
-        } finally {
-            image.close();
         }
     }
 }

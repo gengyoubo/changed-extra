@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -17,10 +18,12 @@ import java.util.UUID;
 
 @Mixin(value = TransfurVariant.class, remap = false)
 public abstract class TransfurVariantSpecialLatexMixin {
+    @Unique
     private static final String SPECIAL_FORM_PREFIX = "special/form_";
 
-    private static void bindSpecialForm(SpecialLatex specialLatex, ResourceLocation formId, UUID fallbackUuid) {
-        if (formId != null && PatreonBenefitsFix.isSpecialFormId(formId)) {
+    @Unique
+    private static void changed_extra$bindSpecialForm(SpecialLatex specialLatex, ResourceLocation formId, UUID fallbackUuid) {
+        if (PatreonBenefitsFix.isSpecialFormId(formId)) {
             String path = formId.getPath();
             if (path.startsWith(SPECIAL_FORM_PREFIX)) {
                 try {
@@ -40,7 +43,7 @@ public abstract class TransfurVariantSpecialLatexMixin {
     private void changede$bindSpecialFormOnGenerateForm(Player player, Level level, CallbackInfoReturnable<ChangedEntity> cir) {
         ChangedEntity entity = cir.getReturnValue();
         if (entity instanceof SpecialLatex specialLatex) {
-            bindSpecialForm(specialLatex, ((TransfurVariant<?>)(Object)this).getFormId(), player.getUUID());
+            changed_extra$bindSpecialForm(specialLatex, ((TransfurVariant<?>)(Object)this).getFormId(), player.getUUID());
         }
     }
 
@@ -49,7 +52,7 @@ public abstract class TransfurVariantSpecialLatexMixin {
         ChangedEntity changedEntity = cir.getReturnValue();
         if (changedEntity instanceof SpecialLatex specialLatex) {
             UUID fallbackUuid = entity instanceof Player player ? player.getUUID() : null;
-            bindSpecialForm(specialLatex, ((TransfurVariant<?>)(Object)this).getFormId(), fallbackUuid);
+            changed_extra$bindSpecialForm(specialLatex, ((TransfurVariant<?>)(Object)this).getFormId(), fallbackUuid);
         }
     }
 }

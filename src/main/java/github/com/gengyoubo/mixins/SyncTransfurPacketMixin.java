@@ -33,10 +33,11 @@ public abstract class SyncTransfurPacketMixin {
      * @reason Support dynamic special/form_uuid variants that are not in TRANSFUR_VARIANT registry IDs.
      */
     @Inject(method = "handle", at = @At("HEAD"), cancellable = true)
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private void changede$handle(
             NetworkEvent.Context context,
             CompletableFuture<net.minecraft.world.level.Level> levelFuture,
-            Executor executor,
+            Executor sidedExecutor,
             CallbackInfoReturnable<CompletableFuture<Void>> cir
     ) {
         if (context.getDirection().getReceptionSide().isClient()) {

@@ -19,7 +19,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URI;
@@ -122,7 +121,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
                                             HttpResponse.BodyHandlers.ofString()).body()
                             ).getAsJsonObject();
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Changed.LOGGER.error(e);
                             return new JsonObject();
                         }
                     },

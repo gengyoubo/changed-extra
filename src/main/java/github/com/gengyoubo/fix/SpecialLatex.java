@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class SpecialLatex extends ChangedEntity {
         }
     }
 
-    public EntityDimensions getDimensions(Pose pose) {
+    public @NotNull EntityDimensions getDimensions(Pose pose) {
         if (specialLatexForm == null)
             return super.getDimensions(pose);
 
@@ -67,7 +68,6 @@ public class SpecialLatex extends ChangedEntity {
         if (this.isVisuallySwimming())
             return EntityDimensions.scalable(core.width, core.width);
         return switch (pose) {
-            case STANDING -> core;
             case SLEEPING -> SLEEPING_DIMENSIONS;
             case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
             case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);

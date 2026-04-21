@@ -16,6 +16,7 @@ import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +34,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.Objects;
 
 public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex, SpecialLatexModel> {
     private static final Map<Pair<UUID, String>, SpecialLatexRenderer> SPECIAL_RENDERERS = new HashMap<>();
@@ -46,9 +46,13 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     private final boolean isDelegate;
 
     public SpecialLatexRenderer(EntityRendererProvider.Context context) {
-        super(context, null, (ArmorModelPicker) null, 0.0f);
+        super(context, null, nullArmorPicker(), 0.0f);
         this.isDelegate = true;
         this.context = context;
+    }
+
+    private static ArmorModelPicker<SpecialLatex, ? extends LatexHumanoidArmorModel<? super SpecialLatex, ?>> nullArmorPicker() {
+        return null;
     }
 
     public SpecialLatexRenderer(EntityRendererProvider.Context context, PatreonBenefits.ModelData modelData) {
@@ -217,20 +221,20 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
 
     @Override
     @Nullable
-    public RenderType getRenderType(SpecialLatex entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+    public RenderType getRenderType(@NotNull SpecialLatex entity, boolean bodyVisible, boolean translucent, boolean glowing) {
         Optional<RenderType> opt = runIfValidFunction(entity, renderer -> renderer.getRenderType(entity, bodyVisible, translucent, glowing));
         return opt.orElseGet(() -> super.getRenderType(entity, bodyVisible, translucent, glowing));
     }
 
     @Override
-    public void render(SpecialLatex entity, float yRot, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
+    public void render(@NotNull SpecialLatex entity, float yRot, float partialTicks, @NotNull PoseStack pose, @NotNull MultiBufferSource buffer, int packedLight) {
         if (runIfValidConsumer(entity, renderer -> renderer.render(entity, yRot, partialTicks, pose, buffer, packedLight))) {
             super.render(entity, yRot, partialTicks, pose, buffer, packedLight);
         }
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(SpecialLatex latex) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull SpecialLatex latex) {
         PatreonBenefits.ModelData modelData = chooseModelData(latex);
         return modelData != null ? modelData.texture() : DELAYED_TEXTURE;
     }
@@ -238,7 +242,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     @Override
     public AdvancedHumanoidModel<SpecialLatex> getModel(ChangedEntity entity) {
         if (entity instanceof SpecialLatex specialLatex) {
-            Optional<AdvancedHumanoidModel<SpecialLatex>> delegated = runIfValidFunction(specialLatex, renderer -> renderer.getModel());
+            Optional<AdvancedHumanoidModel<SpecialLatex>> delegated = runIfValidFunction(specialLatex, LivingEntityRenderer::getModel);
             if (delegated.isPresent()) {
                 return delegated.get();
             }
@@ -250,7 +254,6 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
 
             return SPECIAL_RENDERERS.values().stream()
                     .map(renderer -> (AdvancedHumanoidModel<SpecialLatex>) renderer.getModel())
-                    .filter(Objects::nonNull)
                     .findFirst()
                     .orElseGet(() -> {
                         try {
@@ -290,7 +293,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
         }
 
         @Override
-        public ModelPart getArm(HumanoidArm arm) {
+        public @NotNull ModelPart getArm(HumanoidArm arm) {
             return nullPart;
         }
 
@@ -300,7 +303,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
         }
 
         @Override
-        public ModelPart getHead() {
+        public @NotNull ModelPart getHead() {
             return nullPart;
         }
 
@@ -353,7 +356,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
         }
 
         @Override
-        public ModelPart getArm(HumanoidArm arm) {
+        public @NotNull ModelPart getArm(HumanoidArm arm) {
             return nullPart;
         }
 
@@ -363,7 +366,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
         }
 
         @Override
-        public ModelPart getHead() {
+        public @NotNull ModelPart getHead() {
             return nullPart;
         }
 

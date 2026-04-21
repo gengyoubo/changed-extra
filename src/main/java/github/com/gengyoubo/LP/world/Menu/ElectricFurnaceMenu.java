@@ -36,7 +36,7 @@ public class ElectricFurnaceMenu extends AbstractContainerMenu implements Suppli
     private final BlockPos pos;
     public int z;
     private final ContainerData data;
-    private ContainerLevelAccess access = ContainerLevelAccess.NULL;
+    private final ContainerLevelAccess access;
     private IItemHandler internal = new ItemStackHandler(2);
 
     public ElectricFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
@@ -168,7 +168,7 @@ public class ElectricFurnaceMenu extends AbstractContainerMenu implements Suppli
     public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             if (index < 2) {
