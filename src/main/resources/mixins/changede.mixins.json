@@ -5,8 +5,14 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "changede.refmap.json",
   "mixins": [
+    "CommandTransfurMixin",
     "GooCoreBlockMixin",
+    "LatexSyringeMixin",
     "PatreonBenefitsMixin",
+    "ServerPlayerSpecialVariantMixin",
+    "SyncTransfurPacketListingAccessor",
+    "SyncTransfurPacketMixin",
+    "TransfurVariantSpecialLatexMixin",
     "TransfurVariantsInfoMixin"
   ],
   "injectors": {

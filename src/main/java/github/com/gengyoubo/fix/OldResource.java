@@ -1,0 +1,21 @@
+package github.com.gengyoubo.fix;
+
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+
+import javax.annotation.Nullable;
+import java.io.Closeable;
+import java.io.InputStream;
+
+public interface OldResource extends Closeable {
+    ResourceLocation getLocation();
+
+    InputStream getInputStream();
+
+    boolean hasMetadata();
+
+    @Nullable
+    <T> T getMetadata(MetadataSectionSerializer<T> p_10725_);
+
+    String getSourceName();
+}

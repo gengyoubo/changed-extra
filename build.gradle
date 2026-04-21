@@ -49,12 +49,13 @@ dependencies {
     runtimeOnly  fg.deobf("curse.maven:ferritecore-429235:4810975")
     //等价交换
     implementation fg.deobf("curse.maven:projecte-226410:4901949")
-    implementation fg.deobf("curse.maven:projectextended-353775:4860891")
+    compileOnly fg.deobf("curse.maven:projectextended-353775:4860891")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")
     //implementation fg.deobf("curse.maven:bakeries-1191781:7657697")
     implementation fg.deobf("curse.maven:oauth-513857:4575495")
+    //compileOnly()
 }
 minecraft {
     mappings channel: mapping_channel, version: mapping_version

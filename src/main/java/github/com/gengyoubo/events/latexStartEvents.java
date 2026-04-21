@@ -2,10 +2,12 @@ package github.com.gengyoubo.events;
 
 import github.com.gengyoubo.CERegister;
 import github.com.gengyoubo.changede;
+import github.com.gengyoubo.fix.PatreonBenefitsFix;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -47,12 +49,17 @@ public class latexStartEvents {
         TransfurVariant<?> variant;
         if (data.contains("latex_start_variant")) {
             ResourceLocation id = ResourceLocation.parse(data.getString("latex_start_variant"));
-            variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(id);
+            variant = PatreonBenefitsFix.resolveVariant(id);
+            if (variant == null) {
+                changede.LOGGER.warn("Saved latex_start_variant {} is unavailable, selecting fallback.", id);
+                variant = latexStartEvents.getRandomForm(player.getRandom());
+            }
         } else {
             variant = latexStartEvents.getRandomForm(player.getRandom());
         }
-
-        assert variant != null;
+        if (variant == null) {
+            variant = ChangedTransfurVariants.FALLBACK_VARIANT.get();
+        }
         player.getPersistentData().putString("latex_start_variant", variant.getFormId().toString());
         ProcessTransfur.setPlayerTransfurVariant(player, variant, (TransfurContext) null);
         changede.LOGGER.debug("已分配玩家变体: {}", variant.getFormId());
