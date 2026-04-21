@@ -58,7 +58,7 @@ public abstract class SyncTransfurPacketMixin {
                     variant = PatreonBenefitsFix.getPlayerSpecialVariant(player.getUUID());
                     usedSpecialFallback = variant != null;
                 }
-                Changed.LOGGER.info(
+                Changed.LOGGER.debug(
                         "SyncTransfurPacket client entityId={} player={} formId={} variant={} fallback={}",
                         entityId,
                         player.getScoreboardName(),
@@ -80,7 +80,7 @@ public abstract class SyncTransfurPacketMixin {
                         specialLatex.setSpecialForm(player.getUUID());
                     }
                 } else {
-                    Changed.LOGGER.warn("SyncTransfurPacket failed to set transfur variant for player={}", player.getScoreboardName());
+                    Changed.LOGGER.debug("SyncTransfurPacket failed to set transfur variant for player={}", player.getScoreboardName());
                 }
             })));
             return;

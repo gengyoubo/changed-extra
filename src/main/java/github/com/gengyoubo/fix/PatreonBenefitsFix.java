@@ -7,12 +7,10 @@ import com.google.gson.JsonParser;
 import github.com.gengyoubo.changede;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,12 +27,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class PatreonBenefitsFix extends PatreonBenefits {
     public static final DeferredRegister<AbstractAbility<?>> REGISTRY= ChangedRegistry.ABILITY.createDeferred("changed");
@@ -249,9 +243,6 @@ public class PatreonBenefitsFix extends PatreonBenefits {
             Map<String, PatreonBenefits.ModelData> modelData,
             OldTransfurVariant<?> variant
     ) {
-        private static final Map<Dist, AtomicBoolean> UPDATE_FLAG = new HashMap<>();
-        private static final AtomicBoolean UPDATE_PLAYER_JOIN_FLAG = new AtomicBoolean(false);
-
         public static void loadBenefits() throws Exception {
             if (!Changed.config.common.downloadPatreonContent.get()) return;
             // Load levels

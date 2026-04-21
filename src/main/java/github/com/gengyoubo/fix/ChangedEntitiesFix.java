@@ -24,26 +24,14 @@ import java.util.function.Supplier;
 public class ChangedEntitiesFix {
     public static final DeferredRegister<EntityType<?>> REGISTRY;
     public static final RegistryObject<EntityType<SpecialLatex>> SPECIAL_LATEX;
-    private static final List<Pair<Supplier<EntityType<? extends ChangedEntity>>, Supplier<AttributeSupplier.Builder>>> ATTR_FUNC_REGISTRY = new ArrayList();
-    private static final Map<ResourceLocation, Pair<Integer, Integer>> ENTITY_COLOR_MAP = new HashMap();
+    private static final List<Pair<Supplier<EntityType<? extends ChangedEntity>>, Supplier<AttributeSupplier.Builder>>> ATTR_FUNC_REGISTRY = new ArrayList<>();
+    private static final Map<ResourceLocation, Pair<Integer, Integer>> ENTITY_COLOR_MAP = new HashMap<>();
 
     static {
         REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, "changed");
         SPECIAL_LATEX=registerNoEgg("special_latex",
                 EntityType.Builder.of(SpecialLatex::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F));
     }
-    private static <T extends ChangedEntity> RegistryObject<EntityType<T>> registerNoEgg(
-            String name,
-            int eggBack,
-            int eggHighlight,
-            EntityType.Builder<T> builder) {
-        String regName = Changed.modResource(name).toString();
-        ENTITY_COLOR_MAP.put(Changed.modResource(name), new Pair<>(eggBack, eggHighlight));
-        RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
-        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createLatexAttributes));
-        return entityType;
-    }
-
     private static <T extends ChangedEntity> RegistryObject<EntityType<T>> registerNoEgg(
             String name,
             EntityType.Builder<T> builder) {

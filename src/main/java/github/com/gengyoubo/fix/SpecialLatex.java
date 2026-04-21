@@ -10,7 +10,6 @@ import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
@@ -35,8 +34,6 @@ public class SpecialLatex extends ChangedEntity {
         super(p_19870_, p_19871_);
     }
 
-    public static void init() {}
-
     public PatreonBenefits.EntityData getCurrentData() {
         if (specialLatexForm == null)
             return null;
@@ -50,14 +47,14 @@ public class SpecialLatex extends ChangedEntity {
             this.wantedState = this.specialLatexForm.defaultState();
             this.possibleModels.clear();
             this.possibleModels.addAll(this.specialLatexForm.modelData().keySet());
-            Changed.LOGGER.info(
+            Changed.LOGGER.debug(
                     "SpecialLatex bound form uuid={} defaultState={} modelStates={}",
                     uuid,
                     this.wantedState,
                     this.possibleModels
             );
         } else {
-            Changed.LOGGER.warn("SpecialLatex failed to bind form for uuid={}", uuid);
+            Changed.LOGGER.debug("SpecialLatex failed to bind form for uuid={}", uuid);
         }
     }
 
@@ -138,7 +135,7 @@ public class SpecialLatex extends ChangedEntity {
                 if (specialVariant != null) {
                     event.variant = specialVariant;
                 } else {
-                    Changed.LOGGER.warn("No special variant data for player {}. Keeping assigned variant {}.", player.getUUID(), event.variant.getFormId());
+                    Changed.LOGGER.debug("No special variant data for player {}. Keeping assigned variant {}.", player.getUUID(), event.variant.getFormId());
                 }
             }
         }
@@ -151,9 +148,6 @@ public class SpecialLatex extends ChangedEntity {
             ProcessTransfur.getPlayerTransfurVariantSafe(player).ifPresent(instance -> {
                 if (instance.getChangedEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm == null) {
                     specialLatex.setSpecialForm(player.getUUID());
-                    if (specialLatex.specialLatexForm == null) {
-                        Changed.LOGGER.warn("SpecialLatex has no form data for player {}", player.getUUID());
-                    }
                 }
             });
         }

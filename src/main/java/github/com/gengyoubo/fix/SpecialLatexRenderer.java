@@ -41,6 +41,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     private static final ResourceLocation DELAYED_TEXTURE = Changed.modResource("textures/delay_loaded_latex.png");
     private static final String SPECIAL_FORM_PREFIX = "special/form_";
     private static final Set<ResourceLocation> LOGGED_MODEL_LOADS = ConcurrentHashMap.newKeySet();
+    private static final DummySpecialModel DUMMY_SPECIAL_MODEL = new DummySpecialModel();
     private final EntityRendererProvider.Context context;
     private final boolean isDelegate;
 
@@ -65,7 +66,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     private static PatreonBenefits.ModelData ensureModelIsLoaded(PatreonBenefits.ModelData modelData) {
         ResourceLocation layerId = modelData.modelLayerLocation().model;
         if (layerId != null && LOGGED_MODEL_LOADS.add(layerId)) {
-            Changed.LOGGER.info(
+            Changed.LOGGER.debug(
                     "SpecialLatexRenderer loading model layer={} texture={} emissivePresent={}",
                     layerId,
                     modelData.texture(),
@@ -84,7 +85,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
         try {
             return new SpecialLatexModel(context.bakeLayer(loaded.modelLayerLocation().get()), loaded);
         } catch (IllegalArgumentException layerMissing) {
-            Changed.LOGGER.warn("Layer bake failed for {}. Falling back to direct model bake", loaded.modelLayerLocation().model, layerMissing);
+            Changed.LOGGER.debug("Layer bake failed for {}. Falling back to direct model bake", loaded.modelLayerLocation().model);
             try {
                 DelayLoadedModel delayModel = loaded.model().get();
                 return new SpecialLatexModel(
@@ -97,35 +98,8 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
         }
     }
 
-    private static ArmorModelPicker<SpecialLatex, ? extends LatexHumanoidArmorModel<? super SpecialLatex, ?>> createNoopArmorPicker() {
-        return new ArmorModelPicker<SpecialLatex, DummyArmorModel>() {
-            private final DummyArmorModel dummy = new DummyArmorModel();
-            private final Map<ArmorModel, DummyArmorModel> modelSet = Map.of(ArmorModel.ARMOR_OUTER, dummy);
-
-            @Override
-            public DummyArmorModel getModelForSlot(SpecialLatex entity, EquipmentSlot slot) {
-                return dummy;
-            }
-
-            @Override
-            public Map<ArmorModel, ? extends DummyArmorModel> getModelSetForSlot(SpecialLatex entity, EquipmentSlot slot) {
-                return modelSet;
-            }
-
-            @Override
-            public void forEach(SpecialLatex entity, java.util.function.Predicate<ArmorModel> predicate, java.util.function.BiConsumer<ArmorModel, ? super DummyArmorModel> consumer) {
-                modelSet.forEach((armorModel, model) -> {
-                    if (predicate.test(armorModel)) {
-                        consumer.accept(armorModel, model);
-                    }
-                });
-            }
-
-            @Override
-            public void prepareAndSetupModels(SpecialLatex entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-                // Intentionally no-op: this picker only prevents crashes when dynamic armor layers are missing.
-            }
-        };
+    private static ArmorModelPicker<SpecialLatex, DummyArmorModel> createNoopArmorPicker() {
+        return new NoopArmorModelPicker();
     }
 
     private PatreonBenefits.ModelData chooseModelData(SpecialLatex entity) {
@@ -167,7 +141,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
             return created;
         } catch (IllegalArgumentException ex) {
             BROKEN_RENDERERS.add(key);
-            Changed.LOGGER.warn("Failed to bake special model layer for {} state={}, fallback to default renderer", uuid, stateKey, ex);
+            Changed.LOGGER.debug("Failed to bake special model layer for {} state={}, fallback to default renderer", uuid, stateKey);
             return null;
         }
     }
@@ -275,7 +249,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
             }
 
             return SPECIAL_RENDERERS.values().stream()
-                    .map(renderer -> renderer.getModel())
+                    .map(renderer -> (AdvancedHumanoidModel<SpecialLatex>) renderer.getModel())
                     .filter(Objects::nonNull)
                     .findFirst()
                     .orElseGet(() -> {
@@ -289,9 +263,9 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
                                 );
                             }
                         } catch (Exception ex) {
-                            Changed.LOGGER.warn("Failed to create emergency SpecialLatex model fallback", ex);
+                            Changed.LOGGER.debug("Failed to create emergency SpecialLatex model fallback");
                         }
-                        throw new IllegalStateException("No available SpecialLatex model fallback");
+                        return DUMMY_SPECIAL_MODEL;
                     });
         }
         return super.getModel(entity);
@@ -312,6 +286,69 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
 
         @Override
         public HumanoidAnimator<SpecialLatex, DummyArmorModel> getAnimator(SpecialLatex entity) {
+            return animator;
+        }
+
+        @Override
+        public ModelPart getArm(HumanoidArm arm) {
+            return nullPart;
+        }
+
+        @Override
+        public ModelPart getLeg(HumanoidArm arm) {
+            return nullPart;
+        }
+
+        @Override
+        public ModelPart getHead() {
+            return nullPart;
+        }
+
+        @Override
+        public ModelPart getTorso() {
+            return nullPart;
+        }
+    }
+
+    private static class NoopArmorModelPicker extends ArmorModelPicker<SpecialLatex, DummyArmorModel> {
+        private final DummyArmorModel dummy = new DummyArmorModel();
+        private final Map<ArmorModel, DummyArmorModel> modelSet = Map.of(ArmorModel.ARMOR_OUTER, dummy);
+
+        @Override
+        public DummyArmorModel getModelForSlot(SpecialLatex entity, EquipmentSlot slot) {
+            return dummy;
+        }
+
+        @Override
+        public Map<ArmorModel, ? extends DummyArmorModel> getModelSetForSlot(SpecialLatex entity, EquipmentSlot slot) {
+            return modelSet;
+        }
+
+        @Override
+        public void forEach(SpecialLatex entity, java.util.function.Predicate<ArmorModel> predicate, java.util.function.BiConsumer<ArmorModel, ? super DummyArmorModel> consumer) {
+            modelSet.forEach((armorModel, model) -> {
+                if (predicate.test(armorModel)) {
+                    consumer.accept(armorModel, model);
+                }
+            });
+        }
+
+        @Override
+        public void prepareAndSetupModels(SpecialLatex entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+            // Intentionally no-op: this picker only prevents crashes when dynamic armor layers are missing.
+        }
+    }
+
+    private static class DummySpecialModel extends AdvancedHumanoidModel<SpecialLatex> {
+        private final ModelPart nullPart = AdvancedHumanoidModel.createNullPart("dummy_special");
+        private final HumanoidAnimator<SpecialLatex, DummySpecialModel> animator = HumanoidAnimator.of(this);
+
+        private DummySpecialModel() {
+            super(AdvancedHumanoidModel.createNullPart("dummy_special_root"));
+        }
+
+        @Override
+        public HumanoidAnimator<SpecialLatex, DummySpecialModel> getAnimator(SpecialLatex entity) {
             return animator;
         }
 
