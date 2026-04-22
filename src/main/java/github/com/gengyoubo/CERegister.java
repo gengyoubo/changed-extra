@@ -30,6 +30,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class CERegister {
+    public static final DeferredRegister<Item> ITEMS =
+            DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "changede");
+    public static final DeferredRegister<Enchantment> ENCHANTMENTS =
+            DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, "changede");
+    private static final String PROJECT_E_MODID = "projecte";
+    private static final String PTOTEM_CLASS = "github.com.gengyoubo.projectextended.PTotemOfUndying";
     public static final RegistryObject<Item> INACTIVE_DARK_LATEX =
             ITEMS.register("inactive_dark_latex", InactiveDarkLatex::new);
     public static final RegistryObject<Item> INACTIVE_WHITE_LATEX =
@@ -38,9 +46,6 @@ public class CERegister {
             ITEMS.register("latex_gray", LatexGray::new);
     public static final RegistryObject<Item> LATEX_INGOT =
             ITEMS.register("latex_ingot", LatexIngot::new);
-
-    public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
     public static final RegistryObject<Item> UNBAKED_LATEX_INGOT =
             ITEMS.register("unbaked_latex_ingot", UnbakedLatexIngot::new);
     public static final EnchantmentCategory MELEE =
@@ -48,8 +53,6 @@ public class CERegister {
                     "melee",
                     item -> item instanceof SwordItem || item instanceof AxeItem
             );
-    private static final String PROJECT_E_MODID = "projecte";
-    private static final String PTOTEM_CLASS = "github.com.gengyoubo.projectextended.PTotemOfUndying";
     public static final RegistryObject<CreativeModeTab> EE =
             CREATIVE_MODE_TABS.register("easter_egg", () ->
                     CreativeModeTab.builder()
@@ -62,9 +65,6 @@ public class CERegister {
                             })
                             .build()
             );
-
-    public static final DeferredRegister<Enchantment> ENCHANTMENTS =
-            DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, "changede");
     public static final RegistryObject<Enchantment> SALVAGE =
             ENCHANTMENTS.register("salvage", SalvageEnchantment::new);
     public static final RegistryObject<Enchantment> SCORCHINGHEAT =
@@ -80,8 +80,7 @@ public class CERegister {
     public static final RegistryObject<Enchantment> PREETTYSTRONG =
             ENCHANTMENTS.register("prettystrong", PrettyStrongEnchantment::new);
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "changede");
+
 
     public static final RegistryObject<CreativeModeTab> BASIC =
             CREATIVE_MODE_TABS.register("basic", () ->
