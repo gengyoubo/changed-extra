@@ -1,7 +1,7 @@
 package github.com.gengyoubo.mixins;
 
-import github.com.gengyoubo.fix.PatreonBenefitsFix;
-import github.com.gengyoubo.fix.SpecialLatex;
+import github.com.gengyoubo.fix.SpecialLatex.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatex.SpecialLatex;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;

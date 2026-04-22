@@ -1,4 +1,4 @@
-package github.com.gengyoubo.fix;
+package github.com.gengyoubo.fix.SpecialLatex;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

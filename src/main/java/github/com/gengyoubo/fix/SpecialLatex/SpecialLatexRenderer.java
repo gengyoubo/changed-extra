@@ -1,4 +1,4 @@
-package github.com.gengyoubo.fix;
+package github.com.gengyoubo.fix.SpecialLatex;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;

@@ -1,4 +1,4 @@
-package github.com.gengyoubo.fix;
+package github.com.gengyoubo.fix.SpecialLatex;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;

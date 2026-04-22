@@ -1,7 +1,7 @@
 package github.com.gengyoubo.commands;
 
 import com.mojang.brigadier.Command;
-import github.com.gengyoubo.fix.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatex.PatreonBenefitsFix;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.UuidArgument;

@@ -1,6 +1,6 @@
 package github.com.gengyoubo.mixins;
 
-import github.com.gengyoubo.fix.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatex.PatreonBenefitsFix;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;

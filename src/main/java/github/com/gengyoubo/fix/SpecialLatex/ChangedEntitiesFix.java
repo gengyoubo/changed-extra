@@ -1,4 +1,4 @@
-package github.com.gengyoubo.fix;
+package github.com.gengyoubo.fix.SpecialLatex;
 
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;

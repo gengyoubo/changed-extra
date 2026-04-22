@@ -1,4 +1,4 @@
-package github.com.gengyoubo.fix;
+package github.com.gengyoubo.fix.SpecialLatex;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.SimpleAbility;

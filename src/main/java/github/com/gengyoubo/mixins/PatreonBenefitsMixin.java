@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import github.com.gengyoubo.fix.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatex.PatreonBenefitsFix;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import org.spongepowered.asm.mixin.*;
