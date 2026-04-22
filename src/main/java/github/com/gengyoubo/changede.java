@@ -4,20 +4,14 @@ import com.mojang.logging.LogUtils;
 import github.com.gengyoubo.LP.CELPRegister;
 import github.com.gengyoubo.LP.network.CENetwork;
 import github.com.gengyoubo.LP.world.Menu.CEMenus;
-import github.com.gengyoubo.commands.ReloadEMCCMD;
+import github.com.gengyoubo.commands.ReloadEMCCommand;
 import github.com.gengyoubo.events.*;
 import github.com.gengyoubo.fix.CEChangedSounds;
 import github.com.gengyoubo.fix.ChangedEntitiesFix;
 import github.com.gengyoubo.fix.PatreonBenefitsFix;
 import github.com.gengyoubo.projectextended.PERegister;
 import github.com.gengyoubo.projectextended.PTotemOfUndying;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -53,7 +47,7 @@ public class changede {
         MinecraftForge.EVENT_BUS.register(new SWEvents());
         //联动等价交换
         if (PROJECTE) {
-            new ReloadEMCCMD();
+            new ReloadEMCCommand();
             MinecraftForge.EVENT_BUS.register(new addEMCEvents());
             PTotemOfUndying.ITEMS.register(bus);
             if(PE){

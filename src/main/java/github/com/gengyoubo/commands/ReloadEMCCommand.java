@@ -11,9 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 
-public class ReloadEMCCMD {
+public class ReloadEMCCommand {
 
-    public ReloadEMCCMD() {
+    public ReloadEMCCommand() {
         MinecraftForge.EVENT_BUS.addListener(this::register);
     }
     private void register(RegisterCommandsEvent event) {
