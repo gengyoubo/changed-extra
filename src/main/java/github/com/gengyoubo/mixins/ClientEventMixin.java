@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientEvent.class)
+@Mixin(value = ClientEvent.class,remap = false)
 public class ClientEventMixin {
     @Redirect(
         method = "showExtraTransfurInfo",

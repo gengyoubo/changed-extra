@@ -23,18 +23,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(value= LatexSyringe.class, remap=false)
 public class LatexSyringeMixin {
-    /**
-     * @author gengyoubo
-     * @reason Woverite
-     */
-    @Overwrite
-    @NotNull
-    public ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) throws Exception {
+    @Inject(method = {"finishUsingItem"},
+            at = @At("HEAD"),
+            cancellable = true,
+            require = 0
+    )
+    private void changede$finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, CallbackInfoReturnable<ItemStack> cir) {
         Player player = entity instanceof Player ? (Player)entity : null;
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
@@ -79,6 +80,6 @@ public class LatexSyringeMixin {
             stack = new ItemStack(ChangedItems.SYRINGE.get());
         }
 
-        return stack;
+        cir.setReturnValue(stack);
     }
 }

@@ -45,6 +45,8 @@ public class changede {
         MinecraftForge.EVENT_BUS.register(new ScorchingHeatEvents());
         MinecraftForge.EVENT_BUS.register(new XPBoostEvents());
         MinecraftForge.EVENT_BUS.register(new SWEvents());
+        MinecraftForge.EVENT_BUS.register(new GooCoreTooltipEvents());
+        MinecraftForge.EVENT_BUS.register(new SignalCatcherTooltipEvents());
         //联动等价交换
         if (PROJECTE) {
             new ReloadEMCCommand();

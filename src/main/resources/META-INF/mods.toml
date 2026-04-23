@@ -3,13 +3,13 @@ loaderVersion="[47,)"
 license="MIT License"
 [[mods]]
 modId="changede"
-version="0.1.9"
+version="0.1.10"
 displayName="Changed Extra"
 updateJSONURL="https://github.com/gengyoubo/changed-extra/releases"
 displayURL="https://github.com/gengyoubo/changed-extra"
 #logoFile="examplemod.png" #optional
 authors="gengyoubo"
-description='''略'''
+description='''We used Mixin to localize some hard-coded content in Changed and Changed Addon Plus, while also optimizing the localization of certain items.'''
 [[mixins]]
 config="changede.mixins.json"
 [[dependencies.changede]]

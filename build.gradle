@@ -60,6 +60,7 @@ dependencies {
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
     runs {
+        //开发环境
         client {
             workingDirectory project.file('run')
             property 'forge.logging.console.level', 'info'
@@ -68,6 +69,16 @@ minecraft {
                     source sourceSets.main
                 }
             }
+        }
+        //正式环境
+        create("clientProd") {
+            parent null, "client"
+            taskName "runClientProd"
+            workingDirectory project.file('run-prod')
+            property 'forge.logging.console.level', 'info'
+            environment 'MOD_CLASSES', project.file('run-prod/empty').absolutePath
+            // 注意：这里不写 mods { sourceSets.main }
+            // 让它从 run-prod/mods 读取打包后的 jar
         }
         server {
             workingDirectory project.file('run')
@@ -183,4 +194,29 @@ publishing {
 }
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+tasks.register('devJar', Jar) {
+    archiveBaseName.set("changed-extra")
+    archiveVersion.set(mod_version)
+    archiveClassifier.set("dev")
+    from(sourceSets.main.output)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.register('prepareProdRun', Copy) {
+    dependsOn tasks.named('devJar')
+    from(tasks.named('devJar').flatMap { it.archiveFile })
+    into("$projectDir/run-prod/mods")
+    doFirst {
+        mkdir("$projectDir/run-prod/empty")
+        delete fileTree("$projectDir/run-prod/mods") {
+            include "changed-extra-*.jar"
+        }
+    }
+}
+
+tasks.configureEach {
+    if (name.toLowerCase() == 'runclientprod') {
+        dependsOn 'prepareProdRun'
+    }
 }
