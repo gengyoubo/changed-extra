@@ -27,9 +27,13 @@ import java.util.Set;
 @Mod.EventBusSubscriber
 public class latexStartEvents {
     public static final List<TransfurVariant<?>> FORM_VARIANTS = new ArrayList<>();
+    private static final String TAG_VARIANT = "latex_start_variant";
+    private static final String TAG_HUMAN_LOCK = "latex_start_human_lock";
+
     public static boolean isLatexStart(Level level) {
         return !level.getGameRules().getBoolean(CERegister.LATEX_START);
     }
+
     @SubscribeEvent
     public static void onPlayerJoin(EntityJoinLevelEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
@@ -38,17 +42,28 @@ public class latexStartEvents {
 
         var rules = player.level().getGameRules();
         rules.getRule(ChangedGameRules.RULE_KEEP_BRAIN).set(true, player.server);
+        boolean keepForm = rules.getBoolean(ChangedGameRules.RULE_KEEP_FORM);
 
         CompoundTag data = player.getPersistentData();
-        if (!data.contains("latex_start_variant") && ProcessTransfur.isPlayerTransfurred(player)) {
+        if (!data.contains(TAG_VARIANT) && ProcessTransfur.isPlayerTransfurred(player)) {
             ProcessTransfur.getPlayerTransfurVariantSafe(player)
-                    .ifPresent(v -> data.putString("latex_start_variant", v.getFormId().toString()));
+                    .ifPresent(v -> data.putString(TAG_VARIANT, v.getFormId().toString()));
         }
-        if (ProcessTransfur.isPlayerTransfurred(player)) return;
+
+        if (ProcessTransfur.isPlayerTransfurred(player)) {
+            data.remove(TAG_HUMAN_LOCK);
+            return;
+        }
+
+        // keepForm is on + human lock exists => keep human form, skip forced latex restore
+        if (keepForm && data.getBoolean(TAG_HUMAN_LOCK)) {
+            changede.LOGGER.debug("keepForm enabled; skip latex restore for {}", player.getGameProfile().getName());
+            return;
+        }
 
         TransfurVariant<?> variant;
-        if (data.contains("latex_start_variant")) {
-            ResourceLocation id = ResourceLocation.parse(data.getString("latex_start_variant"));
+        if (data.contains(TAG_VARIANT)) {
+            ResourceLocation id = ResourceLocation.parse(data.getString(TAG_VARIANT));
             variant = PatreonBenefitsFix.resolveVariant(id);
             if (variant == null) {
                 changede.LOGGER.warn("Saved latex_start_variant {} is unavailable, selecting fallback.", id);
@@ -60,10 +75,13 @@ public class latexStartEvents {
         if (variant == null) {
             variant = ChangedTransfurVariants.FALLBACK_VARIANT.get();
         }
-        player.getPersistentData().putString("latex_start_variant", variant.getFormId().toString());
+
+        data.putString(TAG_VARIANT, variant.getFormId().toString());
+        data.remove(TAG_HUMAN_LOCK);
         ProcessTransfur.setPlayerTransfurVariant(player, variant, (TransfurContext) null);
-        changede.LOGGER.debug("已分配玩家变体: {}", variant.getFormId());
+        changede.LOGGER.debug("Assigned player variant: {}", variant.getFormId());
     }
+
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (!event.isWasDeath()) return;
@@ -71,9 +89,21 @@ public class latexStartEvents {
         CompoundTag oldData = event.getOriginal().getPersistentData();
         CompoundTag newData = event.getEntity().getPersistentData();
 
-        newData.putString("latex_start_variant",
-                oldData.getString("latex_start_variant"));
+        boolean keepForm = event.getEntity().level().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM);
+        boolean wasHuman = !ProcessTransfur.isPlayerTransfurred(event.getOriginal());
+
+        // keepForm is on and player died as human -> preserve human state after respawn.
+        if (keepForm && wasHuman) {
+            newData.putBoolean(TAG_HUMAN_LOCK, true);
+            return;
+        }
+
+        newData.remove(TAG_HUMAN_LOCK);
+        if (oldData.contains(TAG_VARIANT)) {
+            newData.putString(TAG_VARIANT, oldData.getString(TAG_VARIANT));
+        }
     }
+
     public static void setup(final FMLCommonSetupEvent event) {
         changede.LOGGER.debug("start program!");
         event.enqueueWork(() -> {
@@ -83,26 +113,25 @@ public class latexStartEvents {
                 var id = variant.getFormId();
                 if (id == null) continue;
                 String path = id.getPath();
-                // ✔ 只要 form_
                 if (!path.startsWith("form_")) continue;
-                // ❌ 黑名单过滤
                 if (BLACKLIST.contains(path)) {
-                    changede.LOGGER.debug("黑名单跳过: {}", id);
+                    changede.LOGGER.debug("Blacklist skip: {}", id);
                     continue;
                 }
                 FORM_VARIANTS.add(variant);
-                changede.LOGGER.debug("加入: {}", id);
+                changede.LOGGER.debug("Added variant: {}", id);
             }
-            changede.LOGGER.debug("最终数量: {}", FORM_VARIANTS.size());
+            changede.LOGGER.debug("Final variant count: {}", FORM_VARIANTS.size());
         });
     }
+
     public static TransfurVariant<?> getRandomForm(RandomSource random) {
         if (FORM_VARIANTS.isEmpty()) return null;
         return FORM_VARIANTS.get(random.nextInt(FORM_VARIANTS.size()));
     }
-    //黑名单
+
+    // Blacklist (id path only)
     public static final Set<String> BLACKLIST = Set.of(
             "form_special"
     );
 }
-

@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class EnergyPipeBlockEntity extends BasePipeBlockEntity implements ILatexEnergyHandler {
-
     protected final LatexEnergyStorage energy;
     protected final int maxTransfer;
 
@@ -22,35 +21,39 @@ public abstract class EnergyPipeBlockEntity extends BasePipeBlockEntity implemen
     }
 
     @Override
-    protected void transfer() {
-        pushEnergy();
+    protected boolean canConnectToPipe(BasePipeBlockEntity other, Direction direction) {
+        return other.getTransportType() == TransportType.ENERGY;
     }
 
-    protected void pushEnergy() {
+    @Override
+    protected boolean canConnectToMachine(BlockEntity target, Direction direction) {
+        return target instanceof ILatexEnergyHandler;
+    }
+
+    @Override
+    protected void transfer() {
         if (level == null || level.isClientSide) {
             return;
         }
 
         for (Direction dir : Direction.values()) {
-            BlockEntity neighbor = level.getBlockEntity(worldPosition.relative(dir));
+            if (!canConnect(dir)) {
+                continue;
+            }
 
+            BlockEntity neighbor = level.getBlockEntity(worldPosition.relative(dir));
             if (!(neighbor instanceof ILatexEnergyHandler handler)) {
                 continue;
             }
 
-            if (this.getEnergyStored() <= 0) {
-                return;
-            }
-
-            int extracted = this.extractEnergy(maxTransfer, dir);
+            int extracted = extractEnergy(maxTransfer, dir);
             if (extracted <= 0) {
                 continue;
             }
 
             int received = handler.receiveEnergy(extracted, dir.getOpposite());
-
             if (received < extracted) {
-                this.receiveEnergy(extracted - received, dir);
+                receiveEnergy(extracted - received, dir);
             }
         }
     }

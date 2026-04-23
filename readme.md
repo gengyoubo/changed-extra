@@ -1,8 +1,8 @@
 ## change extra
-Changed Extra（以下称为 CE）分为三大部分，汉化、通用 和 扩展。
-汉化：使用了 Mixin 对 Changed 与 Changed Addon Plus 的部分 硬编码 内容做出 汉化 的同时，对某些物品汉化进行优化；
-通用：对 Changed 与 Changed Addon Plus 进行扩展，也是本模组的核心；
-扩展：敬请期待。
+Changed Extra（以下称为CE）分为三大部分，汉化、通用和扩展。  
+汉化：使用了 Mixin 对 Changed 与 Changed Addon Plus 的部分 硬编码 内容做出 汉化 的同时，对某些物品汉化进行优化；  
+通用：对 Changed 与 Changed Addon Plus 进行扩展，也是本模组的核心；  
+扩展：扩展：在通用的基础上添加科技元素；  
 ## 版本号
 changed-extra-X.X.X-（分支）
 第一个X为大版本更新次数
@@ -12,5 +12,10 @@ changed-extra-X.X.X-（分支）
 主分支版本：一般是添加新的游戏功能，不会注重修复bug
 副分支版本：一般是上一个版本出现严重的bug时会开启，偶尔会更新游戏功能（一般情况不会和主分支发布同样的游戏功能）
 （分支版本省略时，默认为主分支版本）
+## Q&A
+Q：为什么会要分主分支版本和副分支版本？
+A：因为作者在制作模组的时候要突然修复上个版本的问题，而且还是在制作新版内容的时候。而且这个时候无法立即发布修复版本，只能在旧版本去修复问题。当然，会有版本同样但是内容不一样的时候。一般会在正式版的时候合并。
+## 汉化召集处
+如果对本模组的汉化不满意的可以投稿至 gengyoubo@gmail.com 或者在issue评论。
 ## License
 This project is licensed under the MIT License.

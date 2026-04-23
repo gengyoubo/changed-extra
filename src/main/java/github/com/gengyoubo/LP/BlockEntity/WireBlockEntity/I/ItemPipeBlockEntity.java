@@ -4,7 +4,10 @@ import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.BasePipeBlockEntity;
 import github.com.gengyoubo.LP.BlockEntity.WireBlockEntity.TransportType;
 import github.com.gengyoubo.LP.CELPRegister;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public abstract class ItemPipeBlockEntity extends BasePipeBlockEntity {
 
@@ -13,7 +16,17 @@ public abstract class ItemPipeBlockEntity extends BasePipeBlockEntity {
     }
 
     @Override
+    protected boolean canConnectToPipe(BasePipeBlockEntity other, Direction direction) {
+        return other.getTransportType() == TransportType.ITEM;
+    }
+
+    @Override
+    protected boolean canConnectToMachine(BlockEntity target, Direction direction) {
+        return target.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).isPresent();
+    }
+
+    @Override
     protected void transfer() {
-        // 传 ItemStack
+        // TODO: item transfer logic
     }
 }

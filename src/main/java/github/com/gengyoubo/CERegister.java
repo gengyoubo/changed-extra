@@ -53,18 +53,7 @@ public class CERegister {
                     "melee",
                     item -> item instanceof SwordItem || item instanceof AxeItem
             );
-    public static final RegistryObject<CreativeModeTab> EE =
-            CREATIVE_MODE_TABS.register("easter_egg", () ->
-                    CreativeModeTab.builder()
-                            .title(Component.translatable("creativetab.changede2"))
-                            .icon(() -> new ItemStack(resolveProjecteTotem("MATTER_TOTEM_OF_UNDYING_TRUE")))
-                            .displayItems((parameters, output) -> {
-                                output.accept(resolveProjecteTotem("DARK_MATTER_TOTEM_OF_UNDYING"));
-                                output.accept(resolveProjecteTotem("RED_MATTER_TOTEM_OF_UNDYING"));
-                                output.accept(resolveProjecteTotem("MATTER_TOTEM_OF_UNDYING_TRUE"));
-                            })
-                            .build()
-            );
+
     public static final RegistryObject<Enchantment> SALVAGE =
             ENCHANTMENTS.register("salvage", SalvageEnchantment::new);
     public static final RegistryObject<Enchantment> SCORCHINGHEAT =
@@ -109,7 +98,18 @@ public class CERegister {
                             })
                             .build()
             );
-
+    public static final RegistryObject<CreativeModeTab> EE =
+            CREATIVE_MODE_TABS.register("easter_egg", () ->
+                    CreativeModeTab.builder()
+                            .title(Component.translatable("creativetab.changede2"))
+                            .icon(() -> new ItemStack(Items.AIR))
+                            .displayItems((parameters, output) -> {
+                                safeAccept(output, resolveProjecteTotem("DARK_MATTER_TOTEM_OF_UNDYING"));
+                                safeAccept(output, resolveProjecteTotem("RED_MATTER_TOTEM_OF_UNDYING"));
+                                safeAccept(output, resolveProjecteTotem("MATTER_TOTEM_OF_UNDYING_TRUE"));
+                            })
+                            .build()
+            );
     private static boolean hasProjectE() {
         return ModList.get().isLoaded(PROJECT_E_MODID);
     }
@@ -131,6 +131,17 @@ public class CERegister {
         }
 
         return Items.TOTEM_OF_UNDYING;
+    }
+
+    private static Item getSafeProjecteTotem(String fieldName) {
+        Item item = resolveProjecteTotem(fieldName);
+        return item == Items.AIR ? Items.TOTEM_OF_UNDYING : item;
+    }
+
+    private static void safeAccept(CreativeModeTab.Output output, Item item) {
+        if (item != Items.AIR) {
+            output.accept(item);
+        }
     }
 
     public static GameRules.Key<GameRules.BooleanValue> LATEX_START;
