@@ -3,8 +3,3 @@
 /build
 /run
 /.idea
-/out
-/run-prod
-/run-jfr
-/_DelayLoadedModel.javap.txt
-/_DelayLoadedModel_Outline.javap.txt

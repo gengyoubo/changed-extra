@@ -33,6 +33,9 @@ import java.util.regex.Pattern;
 
 public class PatreonBenefitsFix extends PatreonBenefits {
     public static final DeferredRegister<AbstractAbility<?>> REGISTRY= ChangedRegistry.ABILITY.createDeferred("changed");
+    public static final String PENDING_SPECIAL_FORM_ID_TAG = "CE_SpecialFormVariantId";
+    public static final String PENDING_SPECIAL_FORM_DATA_TAG = "CE_SpecialFormVariantData";
+    public static final String PENDING_SPECIAL_FORM_CONFIRM_TICKS_TAG = "CE_SpecialFormConfirmTicks";
     private static final String SPECIAL_FORM_PATH_PREFIX = "special/form_";
     private static final String OFFICIAL_REPO_BASE = "https://raw.githubusercontent.com/LtxProgrammer/patreon-benefits/main/";
     private static final Pattern GITHUB_TREE_URL = Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+)/tree/([^/]+)(?:/(.*))?$");
@@ -178,15 +181,21 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     }
 
     @Nullable
-    public static TransfurVariant<?> getSpecialVariant(ResourceLocation id) {
+    public static UUID getSpecialFormUuid(@Nullable ResourceLocation id) {
         if (!isSpecialFormId(id)) return null;
 
         String uuidPart = id.getPath().substring(SPECIAL_FORM_PATH_PREFIX.length());
         try {
-            return getPlayerSpecialVariant(UUID.fromString(uuidPart));
+            return UUID.fromString(uuidPart);
         } catch (IllegalArgumentException ignored) {
             return null;
         }
+    }
+
+    @Nullable
+    public static TransfurVariant<?> getSpecialVariant(ResourceLocation id) {
+        UUID uuid = getSpecialFormUuid(id);
+        return uuid == null ? null : getPlayerSpecialVariant(uuid);
     }
 
     @Nullable

@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.entity.Entity;
@@ -63,6 +64,12 @@ public abstract class SyncTransfurPacketMixin {
                 if (variant == null && looksLikeActiveTransfur) {
                     variant = PatreonBenefitsFix.getPlayerSpecialVariant(player.getUUID());
                     usedSpecialFallback = variant != null;
+                }
+                if (variant == null) {
+                    variant = PatreonBenefitsFix.resolveVariant(TransfurVariant.SPECIAL_LATEX);
+                }
+                if (variant == null) {
+                    variant = ChangedTransfurVariants.FALLBACK_VARIANT.get();
                 }
                 Changed.LOGGER.debug(
                         "SyncTransfurPacket client entityId={} player={} formId={} progress={} hasData={} temp={} variant={} fallback={}",
