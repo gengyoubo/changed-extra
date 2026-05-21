@@ -1,6 +1,6 @@
 package github.com.gengyoubo.mixins;
 
-import github.com.gengyoubo.fix.SpecialLatex.OldTransfurVariant;
+import github.com.gengyoubo.fix.SpecialLatexFix.OldTransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.minecraft.world.entity.player.Abilities;

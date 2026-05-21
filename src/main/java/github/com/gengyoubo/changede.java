@@ -19,9 +19,9 @@ import github.com.gengyoubo.events.SignalCatcherTooltipEvents;
 import github.com.gengyoubo.events.XPBoostEvents;
 import github.com.gengyoubo.events.addEMCEvents;
 import github.com.gengyoubo.events.latexStartEvents;
-import github.com.gengyoubo.fix.SpecialLatex.CEChangedSounds;
-import github.com.gengyoubo.fix.SpecialLatex.ChangedEntitiesFix;
-import github.com.gengyoubo.fix.SpecialLatex.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatexFix.CEChangedSounds;
+import github.com.gengyoubo.fix.SpecialLatexFix.ChangedEntitiesFix;
+import github.com.gengyoubo.fix.SpecialLatexFix.PatreonBenefitsFix;
 import github.com.gengyoubo.projectextended.PERegister;
 import github.com.gengyoubo.projectextended.PTotemOfUndying;
 import github.com.gengyoubo.projectextended.events.CEShieldEvents;
@@ -125,7 +125,7 @@ public class changede {
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(this::startPatreonSyncAsync);
         // Use raw content endpoint. "tree/main" is a GitHub HTML page and will break JSON parsing.
-        //PatreonBenefitsFix.addRepositoryBase("https://raw.githubusercontent.com/gengyoubo/changed-extra/main/CEbenefits");
+        PatreonBenefitsFix.addRepositoryBase("https://raw.githubusercontent.com/gengyoubo/CEPB/main");
     }
 
     private void startPatreonSyncAsync() {

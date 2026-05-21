@@ -1,4 +1,4 @@
-package github.com.gengyoubo.fix.SpecialLatex;
+package github.com.gengyoubo.fix.SpecialLatexFix;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;

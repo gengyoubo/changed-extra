@@ -1,4 +1,4 @@
-package github.com.gengyoubo.fix.SpecialLatex;
+package github.com.gengyoubo.fix.SpecialLatexFix;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;

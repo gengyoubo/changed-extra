@@ -1,7 +1,7 @@
 package github.com.gengyoubo.events;
 
 import github.com.gengyoubo.changede;
-import github.com.gengyoubo.fix.SpecialLatex.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatexFix.PatreonBenefitsFix;
 import github.com.gengyoubo.init.CEGameRules;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;

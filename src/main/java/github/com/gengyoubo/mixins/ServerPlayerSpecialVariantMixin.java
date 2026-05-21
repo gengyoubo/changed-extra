@@ -1,6 +1,6 @@
 package github.com.gengyoubo.mixins;
 
-import github.com.gengyoubo.fix.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatexFix.PatreonBenefitsFix;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;

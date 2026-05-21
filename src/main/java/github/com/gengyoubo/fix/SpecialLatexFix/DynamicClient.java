@@ -1,4 +1,4 @@
-package github.com.gengyoubo.fix.SpecialLatex;
+package github.com.gengyoubo.fix.SpecialLatexFix;
 
 import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
 import net.ltxprogrammer.changed.init.ChangedTextures;

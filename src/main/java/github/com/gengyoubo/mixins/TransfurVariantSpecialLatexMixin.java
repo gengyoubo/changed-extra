@@ -1,7 +1,7 @@
 package github.com.gengyoubo.mixins;
 
-import github.com.gengyoubo.fix.SpecialLatex.PatreonBenefitsFix;
-import github.com.gengyoubo.fix.SpecialLatex.SpecialLatex;
+import github.com.gengyoubo.fix.SpecialLatexFix.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatexFix.SpecialLatex;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.minecraft.resources.ResourceLocation;

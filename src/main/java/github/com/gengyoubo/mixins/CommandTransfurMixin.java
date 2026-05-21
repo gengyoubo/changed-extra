@@ -2,8 +2,8 @@ package github.com.gengyoubo.mixins;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import github.com.gengyoubo.fix.SpecialLatex.PatreonBenefitsFix;
-import github.com.gengyoubo.fix.SpecialLatex.SpecialLatex;
+import github.com.gengyoubo.fix.SpecialLatexFix.PatreonBenefitsFix;
+import github.com.gengyoubo.fix.SpecialLatexFix.SpecialLatex;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.command.CommandTransfur;
 import net.ltxprogrammer.changed.entity.TransfurCause;
