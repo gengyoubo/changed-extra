@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import github.com.gengyoubo.ability.AcceleratedGlideAbility;
+import github.com.gengyoubo.ability.LaunchGlideAbility;
 import github.com.gengyoubo.changede;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
@@ -52,6 +54,11 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     private static Map<UUID, PatreonBenefits.Tier> CACHED_LEVELS;
     private static int COMPATIBLE_VERSION;
     private static int CURRENT_VERSION;
+
+    public static final RegistryObject<AcceleratedGlideAbility> ACCELERATED_GLIDE =
+            REGISTRY.register("accelerated_glide", AcceleratedGlideAbility::new);
+    public static final RegistryObject<LaunchGlideAbility> LAUNCH_GLIDE =
+            REGISTRY.register("launch_glide", LaunchGlideAbility::new);
 
     private static @Nullable String normalizeRepoBase(@Nullable String repoBase) {
         if (repoBase == null) return null;
