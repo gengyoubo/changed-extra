@@ -39,8 +39,7 @@ public abstract class PatreonBenefitsMixin {
 
     @Unique
     private static void changede$loadLevels(HttpClient client) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder(URI.create(LINKS_DOCUMENT)).GET().build();
-        JsonElement json = JsonParser.parseString(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
+        JsonElement json = JsonParser.parseString(PatreonBenefitsFix.readText(client, URI.create(LINKS_DOCUMENT)));
         JsonArray links = json.getAsJsonObject().get("players").getAsJsonArray();
         links.forEach(element -> {
             JsonObject object = element.getAsJsonObject();
@@ -50,8 +49,7 @@ public abstract class PatreonBenefitsMixin {
 
     @Unique
     private static int changede$loadVersion(HttpClient client) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder(URI.create(VERSION_DOCUMENT)).GET().build();
-        return Integer.parseInt(client.send(request, HttpResponse.BodyHandlers.ofString()).body().replace("\n", ""));
+        return Integer.parseInt(PatreonBenefitsFix.readText(client, URI.create(VERSION_DOCUMENT)).replace("\n", ""));
     }
 
 /**

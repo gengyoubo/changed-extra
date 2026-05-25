@@ -28,6 +28,9 @@
   "client": [
     "AccessorySlotsSafetyMixin",
     "ClientEventMixin",
+    "ElytraLayerMixin",
+    "LatexElytraLayerMixin",
+    "MimicYufengHumanoidModelMixin",
     "SignalCatcherItemMixin"
   ]
 }

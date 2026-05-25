@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import github.com.gengyoubo.ability.AcceleratedGlideAbility;
 import github.com.gengyoubo.ability.LaunchGlideAbility;
 import github.com.gengyoubo.changede;
 import net.ltxprogrammer.changed.Changed;
@@ -27,6 +26,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -40,6 +42,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     public static final String PENDING_SPECIAL_FORM_CONFIRM_TICKS_TAG = "CE_SpecialFormConfirmTicks";
     private static final String SPECIAL_FORM_PATH_PREFIX = "special/form_";
     private static final String OFFICIAL_REPO_BASE = "https://raw.githubusercontent.com/LtxProgrammer/patreon-benefits/main/";
+    private static final Path LOCAL_REPO_ROOT = Path.of("C:\\Users\\gengy\\Desktop\\changed-extra\\src\\main\\resources\\local");
     private static final Pattern GITHUB_TREE_URL = Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+)/tree/([^/]+)(?:/(.*))?$");
     private static final Pattern RAW_GITHUB_TREE_URL = Pattern.compile("^https?://raw\\.githubusercontent\\.com/([^/]+)/([^/]+)/tree/([^/]+)(?:/(.*))?$");
     private static final HttpClient TEXTURE_PROBE_CLIENT = HttpClient.newBuilder().build();
@@ -55,11 +58,8 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     private static int COMPATIBLE_VERSION;
     private static int CURRENT_VERSION;
 
-    public static final RegistryObject<AcceleratedGlideAbility> ACCELERATED_GLIDE =
-            REGISTRY.register("accelerated_glide", AcceleratedGlideAbility::new);
     public static final RegistryObject<LaunchGlideAbility> LAUNCH_GLIDE =
             REGISTRY.register("launch_glide", LaunchGlideAbility::new);
-
     private static @Nullable String normalizeRepoBase(@Nullable String repoBase) {
         if (repoBase == null) return null;
         String trimmed = repoBase.trim();
@@ -99,9 +99,15 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     }
 
     public static String getPrimaryRepositoryBase() {
-        String primary = "https://" + Changed.config.common.githubDomain.get() + "/gengyoubo/CEPB/main/";
-        String normalized = normalizeRepoBase(primary);
-        return normalized != null ? normalized : primary;
+        String local = getLocalRepositoryBase();
+        if (local != null) return local;
+        return OFFICIAL_REPO_BASE;
+    }
+
+    @Nullable
+    private static String getLocalRepositoryBase() {
+        if (!Files.isDirectory(LOCAL_REPO_ROOT)) return null;
+        return LOCAL_REPO_ROOT.toUri().toString();
     }
 
     /**
@@ -152,7 +158,10 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     public static synchronized List<String> getRepositoryBases() {
         LinkedHashSet<String> repos = new LinkedHashSet<>();
         repos.add(OFFICIAL_REPO_BASE);
-        repos.add(getPrimaryRepositoryBase());
+        String local = getLocalRepositoryBase();
+        if (local != null) {
+            repos.add(local);
+        }
         repos.addAll(EXTRA_REPO_BASES);
         return new ArrayList<>(repos);
     }
@@ -163,6 +172,17 @@ public class PatreonBenefitsFix extends PatreonBenefits {
         VERSION_DOCUMENT = REPO_BASE + "version.txt";
         FORMS_DOCUMENT = REPO_BASE + "forms/index.json";
         FORMS_BASE = REPO_BASE + "forms/";
+    }
+
+    public static String readText(HttpClient client, URI uri) throws java.io.IOException, InterruptedException {
+        if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return Files.readString(Path.of(uri), StandardCharsets.UTF_8);
+        }
+
+        return client.send(
+                HttpRequest.newBuilder(uri).GET().build(),
+                HttpResponse.BodyHandlers.ofString()
+        ).body();
     }
 
     @Nullable
@@ -224,9 +244,8 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     }
 
     public static void loadSpecialForms(HttpClient client) throws Exception {
-        if (!Changed.config.common.downloadPatreonContent.get()) return;
-        HttpRequest request = HttpRequest.newBuilder(URI.create(FORMS_DOCUMENT)).GET().build();
-        String indexBody = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        if (!Changed.config.common.downloadPatreonContent.get() && getLocalRepositoryBase() == null) return;
+        String indexBody = readText(client, URI.create(FORMS_DOCUMENT));
         JsonElement json = parseJsonBody(indexBody, FORMS_DOCUMENT);
         JsonArray formLocations = json.getAsJsonObject().get("forms").getAsJsonArray();
 
@@ -290,10 +309,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
             URI uri = resolveFromBase(formsBase, relativePath);
             if (uri == null) continue;
             try {
-                String payload = client.send(
-                        HttpRequest.newBuilder(uri).GET().build(),
-                        HttpResponse.BodyHandlers.ofString()
-                ).body();
+                String payload = readText(client, uri);
                 return parseJsonBody(payload, uri.toString()).getAsJsonObject();
             } catch (Exception ignored) {
                 // Try next repository base
@@ -330,6 +346,12 @@ public class PatreonBenefitsFix extends PatreonBenefits {
 
     private static boolean canLoadAsImage(URI uri) {
         try {
+            if ("file".equalsIgnoreCase(uri.getScheme())) {
+                try (InputStream stream = Files.newInputStream(Path.of(uri))) {
+                    return hasPngSignature(stream);
+                }
+            }
+
             HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
             HttpResponse<InputStream> response = TEXTURE_PROBE_CLIENT.send(request, HttpResponse.BodyHandlers.ofInputStream());
             if (response.statusCode() / 100 != 2) {
@@ -342,21 +364,25 @@ public class PatreonBenefitsFix extends PatreonBenefits {
             }
 
             try (InputStream stream = response.body()) {
-                byte[] signature = stream.readNBytes(8);
-                if (signature.length < 8) return false;
-                // PNG signature: 89 50 4E 47 0D 0A 1A 0A
-                return (signature[0] & 0xFF) == 0x89
-                        && signature[1] == 0x50
-                        && signature[2] == 0x4E
-                        && signature[3] == 0x47
-                        && signature[4] == 0x0D
-                        && signature[5] == 0x0A
-                        && signature[6] == 0x1A
-                        && signature[7] == 0x0A;
+                return hasPngSignature(stream);
             }
         } catch (Exception ignored) {
             return false;
         }
+    }
+
+    private static boolean hasPngSignature(InputStream stream) throws Exception {
+        byte[] signature = stream.readNBytes(8);
+        if (signature.length < 8) return false;
+        // PNG signature: 89 50 4E 47 0D 0A 1A 0A
+        return (signature[0] & 0xFF) == 0x89
+                && signature[1] == 0x50
+                && signature[2] == 0x4E
+                && signature[3] == 0x47
+                && signature[4] == 0x0D
+                && signature[5] == 0x0A
+                && signature[6] == 0x1A
+                && signature[7] == 0x0A;
     }
 
     private static JsonElement parseJsonBody(String body, String source) {
@@ -413,7 +439,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
             OldTransfurVariant<?> variant
     ) {
         public static void loadBenefits() throws Exception {
-            if (!Changed.config.common.downloadPatreonContent.get()) return;
+            if (!Changed.config.common.downloadPatreonContent.get() && getLocalRepositoryBase() == null) return;
             readFields();
 
             HttpClient client = HttpClient.newHttpClient();
@@ -430,8 +456,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
             for (String repo : repos) {
                 applyRepoBase(repo);
                 try {
-                    HttpRequest request = HttpRequest.newBuilder(URI.create(LINKS_DOCUMENT)).GET().build();
-                    String listingBody = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+                    String listingBody = readText(client, URI.create(LINKS_DOCUMENT));
                     JsonElement json = parseJsonBody(listingBody, LINKS_DOCUMENT);
                     JsonArray links = json.getAsJsonObject().get("players").getAsJsonArray();
                     links.forEach(element -> {
@@ -441,8 +466,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
 
                     loadSpecialForms(client);
 
-                    request = HttpRequest.newBuilder(URI.create(VERSION_DOCUMENT)).GET().build();
-                    int version = Integer.parseInt(client.send(request, HttpResponse.BodyHandlers.ofString()).body().replace("\n", ""));
+                    int version = Integer.parseInt(readText(client, URI.create(VERSION_DOCUMENT)).replace("\n", ""));
                     mergedVersion = Math.max(mergedVersion, version);
 
                     successCount++;

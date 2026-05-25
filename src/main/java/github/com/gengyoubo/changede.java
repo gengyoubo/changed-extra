@@ -12,6 +12,7 @@ import github.com.gengyoubo.commands.ItemInfoCommand;
 import github.com.gengyoubo.commands.ReloadEMCCommand;
 import github.com.gengyoubo.events.GooCoreTooltipEvents;
 import github.com.gengyoubo.events.LatexDeathHandlerEvents;
+import github.com.gengyoubo.events.MimicYufengWingsFlightEvents;
 import github.com.gengyoubo.events.SWEvents;
 import github.com.gengyoubo.events.SalvageEvents;
 import github.com.gengyoubo.events.ScorchingHeatEvents;
@@ -43,6 +44,7 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -101,6 +103,7 @@ public class changede {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, BlockEvent.BreakEvent.class, ScorchingHeatEvents::onBreak);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, BlockEvent.BreakEvent.class, XPBoostEvents::onBlockXP);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingHurtEvent.class, SWEvents::onLivingHurt);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, MimicYufengWingsFlightEvents::onPlayerTick);
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, EntityJoinLevelEvent.class, latexStartEvents::onPlayerJoin);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.Clone.class, latexStartEvents::onPlayerClone);

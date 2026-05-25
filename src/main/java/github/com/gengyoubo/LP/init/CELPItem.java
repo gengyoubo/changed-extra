@@ -1,7 +1,9 @@
 package github.com.gengyoubo.LP.init;
 
+import github.com.gengyoubo.LP.item.MimicYufengWingsItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -19,7 +21,7 @@ public class CELPItem {
     static {
         ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
         MIMIC_YUFENG_WINGS = ITEMS.register("mimic_yufeng_wings",
-                () -> new Item(new Item.Properties()));
+                () -> new MimicYufengWingsItem(new Item.Properties().durability(432).rarity(Rarity.RARE)));
         BASIC_WIRE_ITEM = ITEMS.register("basic_wire",
                 () -> new BlockItem(CELPBlock.BASIC_WIRE.get(), new Item.Properties()));
         BASIC_GENERATOR_ITEM = ITEMS.register("basic_generator",

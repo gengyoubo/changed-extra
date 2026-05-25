@@ -1,5 +1,6 @@
 package github.com.gengyoubo.fix.SpecialLatexFix;
 
+import github.com.gengyoubo.LP.client.model.MimicYufengWingsModel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -10,5 +11,10 @@ public class CEChangedEntityRenderers {
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ChangedEntitiesFix.SPECIAL_LATEX.get(), SpecialLatexRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(MimicYufengWingsModel.LAYER_LOCATION, MimicYufengWingsModel::createBodyLayer);
     }
 }
