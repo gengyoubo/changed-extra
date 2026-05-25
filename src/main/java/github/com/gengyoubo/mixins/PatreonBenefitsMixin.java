@@ -67,7 +67,7 @@ public abstract class PatreonBenefitsMixin {
      */
     @Overwrite
     public static void loadBenefits() throws IOException, InterruptedException {
-        if (!Changed.config.common.downloadPatreonContent.get()) {
+        if (!PatreonBenefitsFix.shouldLoadContent()) {
             return;
         }
 

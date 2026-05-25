@@ -62,6 +62,12 @@
     "creativetab.changede2": "CE easter egg",
     "creativetab.changede3": "CE extra",
 
+  "screen.changede.attributes.button": "Stats",
+  "screen.changede.attributes.title": "Character Stats",
+  "screen.changede.attributes.perseverance": "Perseverance: %s / 10",
+  "screen.changede.attributes.keep_form": "Keep Form: %s%%",
+  "screen.changede.attributes.mimic_tf": "Mimic TF: %s%%",
+
   "gamerule.latex_start": "Latex Start",
   "gamerule.latex_start.description": "Whether the player automatically transforms into a random gel beast form upon entering the game (other game rules are altered)\n1. gamerule changed:keepConscious true (always true)\n2. gamerule changed:keepForm false (default is false; if the player is human when they die, they will degenerate into a latex"
 }

@@ -182,6 +182,12 @@
     "mode.projectextended.shield.2": "弹反",
     "mode.projectextended.shield.3": "免疫伤害",
 
+    "screen.changede.attributes.button": "属性",
+    "screen.changede.attributes.title": "人物属性",
+    "screen.changede.attributes.perseverance": "毅力: %s / 10",
+    "screen.changede.attributes.keep_form": "保持形态概率: %s%%",
+    "screen.changede.attributes.mimic_tf": "拟态兽化概率: %s%%",
+
 
     "gamerule.latex_start": "胶兽开局",
     "gamerule.latex_start.description": "玩家进入游戏时是否自动变成随机胶兽形态(其他游戏规则发生变化)\n1. gamerule changed:keepConscious true(一直为开)\n2. gamerule changed:keepForm false(默认为关，如果在玩家死亡时为人类将会退化为胶兽)"

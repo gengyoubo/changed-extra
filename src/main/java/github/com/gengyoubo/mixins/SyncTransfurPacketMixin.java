@@ -65,6 +65,19 @@ public abstract class SyncTransfurPacketMixin {
                     variant = PatreonBenefitsFix.getPlayerSpecialVariant(player.getUUID());
                     usedSpecialFallback = variant != null;
                 }
+                if (variant == null && !looksLikeActiveTransfur) {
+                    Changed.LOGGER.debug(
+                            "SyncTransfurPacket client clearing transfur entityId={} player={} formId={} progress={} hasData={} temp={}",
+                            entityId,
+                            player.getScoreboardName(),
+                            formId,
+                            listing.changede$getProgress(),
+                            hasData,
+                            listing.changede$isTemporaryFromSuit()
+                    );
+                    ProcessTransfur.setPlayerTransfurVariant(player, null, null, 0.0f, false);
+                    return;
+                }
                 if (variant == null) {
                     variant = PatreonBenefitsFix.resolveVariant(TransfurVariant.SPECIAL_LATEX);
                 }

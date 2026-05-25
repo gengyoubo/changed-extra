@@ -4,16 +4,21 @@ import github.com.gengyoubo.LP.client.renderer.MimicYufengWingsItemRenderer;
 import github.com.gengyoubo.LP.init.CELPItem;
 import github.com.gengyoubo.fix.SpecialLatexFix.PatreonBenefitsFix;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
@@ -23,8 +28,9 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.function.Consumer;
 
-public class MimicYufengWingsItem extends ArmorItem implements ExtendedItemProperties {
+public class MimicYufengWingsItem extends MimicItem implements ExtendedItemProperties {
     private static final String GRANTED_FLIGHT_TAG = "changede_mimic_yufeng_wings_granted_flight";
+    private static final ResourceLocation MIMIC_ID = ResourceLocation.fromNamespaceAndPath("changede", "mimic_yufeng_wings");
 
     public MimicYufengWingsItem(Properties properties) {
         super(ArmorMaterials.LEATHER, Type.CHESTPLATE, properties);
@@ -124,6 +130,23 @@ public class MimicYufengWingsItem extends ArmorItem implements ExtendedItemPrope
     @Override
     public SoundEvent getEquipSound() {
         return SoundEvents.ARMOR_EQUIP_ELYTRA;
+    }
+
+    @Override
+    protected ResourceLocation getMimicId() {
+        return MIMIC_ID;
+    }
+
+    @Override
+    protected void transfur(ServerPlayer player, ItemStack stack) {
+        TransfurVariant<?> variant = player.getRandom().nextBoolean()
+                ? ChangedTransfurVariants.DARK_LATEX_YUFENG.get()
+                : ChangedTransfurVariants.DARK_LATEX_DOUBLE_YUFENG.get();
+        if (variant == null) {
+            warnMissingVariant(player, MIMIC_ID);
+            return;
+        }
+        ProcessTransfur.setPlayerTransfurVariant(player, variant, TransfurCause.DEFAULT);
     }
 
     @Override

@@ -113,6 +113,14 @@ public class PatreonBenefitsFix extends PatreonBenefits {
         return LOCAL_REPO_ROOT.toUri().toString();
     }
 
+    public static boolean isUsingLocalRepository() {
+        return getLocalRepositoryBase() != null;
+    }
+
+    public static boolean shouldLoadContent() {
+        return Changed.config.common.downloadPatreonContent.get() || isUsingLocalRepository();
+    }
+
     /**
      * 追加一个新的 Patreon 数据仓库链接（repo 根目录）。
      * <p>
@@ -160,10 +168,23 @@ public class PatreonBenefitsFix extends PatreonBenefits {
      */
     public static synchronized List<String> getRepositoryBases() {
         LinkedHashSet<String> repos = new LinkedHashSet<>();
-        repos.add(OFFICIAL_REPO_BASE);
-        repos.add(getPrimaryRepositoryBase());
+        if (isUsingLocalRepository()) {
+            repos.add(getPrimaryRepositoryBase());
+        } else {
+            repos.add(OFFICIAL_REPO_BASE);
+            repos.add(getPrimaryRepositoryBase());
+        }
         repos.addAll(EXTRA_REPO_BASES);
         return new ArrayList<>(repos);
+    }
+
+    public static void logRepositoryMode() {
+        changede.LOGGER.info(
+                "Patreon special repository mode={}, primary={}, sources={}",
+                isUsingLocalRepository() ? "local-dev" : "remote",
+                getPrimaryRepositoryBase(),
+                getRepositoryBases()
+        );
     }
 
     private static void applyRepoBase(String base) {
@@ -244,10 +265,15 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     }
 
     public static void loadSpecialForms(HttpClient client) throws Exception {
-        if (!Changed.config.common.downloadPatreonContent.get() && getLocalRepositoryBase() == null) return;
+        if (!shouldLoadContent()) return;
         String indexBody = readText(client, URI.create(FORMS_DOCUMENT));
         JsonElement json = parseJsonBody(indexBody, FORMS_DOCUMENT);
-        JsonArray formLocations = json.getAsJsonObject().get("forms").getAsJsonArray();
+        JsonObject index = json.getAsJsonObject();
+        JsonElement formsElement = index.get("forms");
+        if (formsElement == null || !formsElement.isJsonArray()) {
+            throw new IllegalStateException("Special forms index from " + FORMS_DOCUMENT + " must contain a 'forms' array");
+        }
+        JsonArray formLocations = formsElement.getAsJsonArray();
 
         AtomicInteger count = new AtomicInteger(0);
 
@@ -439,7 +465,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
             OldTransfurVariant<?> variant
     ) {
         public static void loadBenefits() throws Exception {
-            if (!Changed.config.common.downloadPatreonContent.get() && getLocalRepositoryBase() == null) return;
+            if (!shouldLoadContent()) return;
             readFields();
 
             HttpClient client = HttpClient.newHttpClient();
