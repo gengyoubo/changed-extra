@@ -102,7 +102,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:projectextended-353775:4860891")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
-    compileOnly fg.deobf("curse.maven:jei-238222:7391695")
+    implementation fg.deobf("curse.maven:jei-238222:7391695")
     //implementation fg.deobf("curse.maven:bakeries-1191781:7657697")
     //正版
     implementation fg.deobf("curse.maven:oauth-513857:4575495")
