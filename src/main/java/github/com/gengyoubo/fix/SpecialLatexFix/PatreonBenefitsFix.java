@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
@@ -42,6 +43,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     public static final String PENDING_SPECIAL_FORM_CONFIRM_TICKS_TAG = "CE_SpecialFormConfirmTicks";
     private static final String SPECIAL_FORM_PATH_PREFIX = "special/form_";
     private static final String OFFICIAL_REPO_BASE = "https://raw.githubusercontent.com/LtxProgrammer/patreon-benefits/main/";
+    private static final String GITHUB_REPO_BASE = "https://raw.githubusercontent.com/gengyoubo/CEPB/main/";
     private static final Path LOCAL_REPO_ROOT = Path.of("C:\\Users\\gengy\\Desktop\\changed-extra\\src\\main\\resources\\local");
     private static final Pattern GITHUB_TREE_URL = Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+)/tree/([^/]+)(?:/(.*))?$");
     private static final Pattern RAW_GITHUB_TREE_URL = Pattern.compile("^https?://raw\\.githubusercontent\\.com/([^/]+)/([^/]+)/tree/([^/]+)(?:/(.*))?$");
@@ -101,11 +103,12 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     public static String getPrimaryRepositoryBase() {
         String local = getLocalRepositoryBase();
         if (local != null) return local;
-        return OFFICIAL_REPO_BASE;
+        return GITHUB_REPO_BASE;
     }
 
     @Nullable
     private static String getLocalRepositoryBase() {
+        if (FMLEnvironment.production) return null;
         if (!Files.isDirectory(LOCAL_REPO_ROOT)) return null;
         return LOCAL_REPO_ROOT.toUri().toString();
     }
@@ -158,10 +161,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     public static synchronized List<String> getRepositoryBases() {
         LinkedHashSet<String> repos = new LinkedHashSet<>();
         repos.add(OFFICIAL_REPO_BASE);
-        String local = getLocalRepositoryBase();
-        if (local != null) {
-            repos.add(local);
-        }
+        repos.add(getPrimaryRepositoryBase());
         repos.addAll(EXTRA_REPO_BASES);
         return new ArrayList<>(repos);
     }
