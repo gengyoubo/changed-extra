@@ -131,7 +131,7 @@ You can safely ignore this message if the game starts up successfully.
 [185月2026 14:04:27.979] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key blacklist_async_jei_plugins was corrected from null to its default, [jepb:jei_plugin]. 
 [185月2026 14:04:28.034] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
 [185月2026 14:04:28.277] [Worker-ResourceReload-8/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.0.06.hex, loading
-[185月2026 14:04:28.368] [Render thread/INFO] [github.com.gengyoubo.changede/]: Latex start variants prepared: usable=147, blacklisted=0
+[185月2026 14:04:28.368] [Render thread/INFO] [github.com.gengyoubo.CE.changede/]: Latex start variants prepared: usable=147, blacklisted=0
 [185月2026 14:04:28.369] [Render thread/INFO] [net.ltxprogrammer.changed.Changed/]: Patreon benefits is disabled on this client. Patrons will not receive benefits visible to this client.
 [185月2026 14:04:28.552] [Worker-ResourceReload-13/WARN] [net.minecraft.client.renderer.texture.SpriteLoader/]: Texture changed_addon:abilities/whiter_wave/wither_wave with size 18x18 limits mip level from 4 to 1
 [185月2026 14:04:28.554] [Worker-ResourceReload-13/WARN] [net.minecraft.client.renderer.texture.SpriteLoader/]: Texture changed_addon:item/ammonia with size 335x669 limits mip level from 1 to 0

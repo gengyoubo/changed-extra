@@ -766,7 +766,7 @@ java.lang.IllegalAccessException: class io.netty.util.internal.PlatformDependent
 [185月2026 14:04:23.413] [Render thread/DEBUG] [net.minecraftforge.common.ForgeI18n/CORE]: Loading I18N data entries: 6434
 [185月2026 14:04:23.445] [Render thread/DEBUG] [net.minecraftforge.fml.ModWorkManager/LOADING]: Using 16 threads for parallel mod-loading
 [185月2026 14:04:23.457] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@6ef60295 - got cpw.mods.cl.ModuleClassLoader@6be25526
-[185月2026 14:04:23.458] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for github.com.gengyoubo.changede
+[185月2026 14:04:23.458] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for github.com.gengyoubo.CE.changede
 [185月2026 14:04:23.462] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@6ef60295 - got cpw.mods.cl.ModuleClassLoader@6be25526
 [185月2026 14:04:23.463] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for com.llamalad7.mixinextras.platform.forge.MixinExtrasMod
 [185月2026 14:04:23.463] [Render thread/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader cpw.mods.modlauncher.TransformingClassLoader@6ef60295 - got cpw.mods.cl.ModuleClassLoader@6be25526
@@ -886,15 +886,15 @@ java.lang.IllegalAccessException: class io.netty.util.internal.PlatformDependent
 [185月2026 14:04:23.979] [modloading-worker-0/DEBUG] [mezz.jei.common.config.file.ConfigSerializer/]: Saving config file: C:\Users\gengy\Desktop\changed-extra\run-prod-fast\config\jei\jei-mod-id-format.ini
 [185月2026 14:04:23.989] [modloading-worker-0/DEBUG] [mezz.jei.common.config.file.ConfigSerializer/]: Saving config file: C:\Users\gengy\Desktop\changed-extra\run-prod-fast\config\jei\jei-colors.ini
 [185月2026 14:04:24.002] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for changede
-[185月2026 14:04:24.002] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.projectextended.events.CETotemClientEvents to MOD
-[185月2026 14:04:24.004] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.LP.world.Screen.CEScreen to MOD
-[185月2026 14:04:24.006] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.fix.SpecialLatexFix.SpecialLatex$Event to FORGE
+[185月2026 14:04:24.002] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.CE.projectextended.events.CETotemClientEvents to MOD
+[185月2026 14:04:24.004] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.CE.LP.world.Screen.CEScreen to MOD
+[185月2026 14:04:24.006] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.CE.SpecialLatexFix.SpecialLatex$Event to FORGE
 [185月2026 14:04:24.009] [modloading-worker-0/DEBUG] [mixin/]: Mixing mods.changed.ProcessTransfurMixin from changed_addon.mixins.json into net.ltxprogrammer.changed.process.ProcessTransfur
 [185月2026 14:04:24.017] [modloading-worker-0/DEBUG] [mezz.jei.common.config.file.ConfigSerializer/]: Saving config file: C:\Users\gengy\Desktop\changed-extra\run-prod-fast\config\jei\jei-client.ini
-[185月2026 14:04:24.029] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.fix.SpecialLatexFix.ChangedEntitiesFix to MOD
+[185月2026 14:04:24.029] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.CE.SpecialLatexFix.ChangedEntitiesFix to MOD
 [185月2026 14:04:24.030] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager...
-[185月2026 14:04:24.032] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.fix.SpecialLatexFix.CEChangedEntityRenderers to MOD
-[185月2026 14:04:24.035] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.events.ModCreativeTabEvents to MOD
+[185月2026 14:04:24.032] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.CE.SpecialLatexFix.CEChangedEntityRenderers to MOD
+[185月2026 14:04:24.035] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing github.com.gengyoubo.CE.events.ModCreativeTabEvents to MOD
 [185月2026 14:04:24.035] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: jei:minecraft...
 [185月2026 14:04:24.035] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: changede:jei_plugin...
 [185月2026 14:04:24.035] [modloading-worker-0/DEBUG] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending ConfigManager: modernfix:capturer...
@@ -1336,7 +1336,7 @@ java.lang.IllegalAccessException: class io.netty.util.internal.PlatformDependent
 [185月2026 14:04:28.320] [Worker-ResourceReload-8/DEBUG] [mixin/]: Mixing perf.compress_unihex_font.UnihexProviderShortContentsMixin from modernfix-modernfix.mixins.json into net.minecraft.client.gui.font.providers.UnihexProvider$ShortContents
 [185月2026 14:04:28.337] [Worker-ResourceReload-8/DEBUG] [mixin/]: Mixing perf.compress_unihex_font.UnihexProviderByteContentsMixin from modernfix-modernfix.mixins.json into net.minecraft.client.gui.font.providers.UnihexProvider$ByteContents
 [185月2026 14:04:28.363] [Render thread/DEBUG] [net.minecraftforge.fml.DeferredWorkQueue/LOADING]: Dispatching synchronous work for work queue COMMON_SETUP: 9 jobs
-[185月2026 14:04:28.368] [Render thread/INFO] [github.com.gengyoubo.changede/]: Latex start variants prepared: usable=147, blacklisted=0
+[185月2026 14:04:28.368] [Render thread/INFO] [github.com.gengyoubo.CE.changede/]: Latex start variants prepared: usable=147, blacklisted=0
 [185月2026 14:04:28.369] [Render thread/INFO] [net.ltxprogrammer.changed.Changed/]: Patreon benefits is disabled on this client. Patrons will not receive benefits visible to this client.
 [185月2026 14:04:28.405] [Render thread/DEBUG] [net.minecraftforge.fml.DeferredWorkQueue/LOADING]: Synchronous work queue completed in 42.15 ms
 [185月2026 14:04:28.411] [Worker-ResourceReload-1/DEBUG] [mixin/]: Mixing client.renderer.HumanoidAnimatorMixin from changed_addon.mixins.json into net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator

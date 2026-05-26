@@ -1,8 +1,8 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "github.com.gengyoubo.projectextended.mixins",
-  "plugin": "github.com.gengyoubo.mixins.ChangedEMixinPlugin",
+  "package": "github.com.gengyoubo.CE.projectextended.mixins",
+  "plugin": "github.com.gengyoubo.CE.mixins.ChangedEMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "changede.refmap.json",
   "mixins": [
