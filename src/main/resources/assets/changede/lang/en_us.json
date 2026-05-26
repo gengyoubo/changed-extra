@@ -79,6 +79,9 @@
   "screen.changede.space_tower.mode.output": "Output",
   "screen.changede.space_tower.mode.none": "None",
   "screen.changede.space_tower.ce_settings": "CE Settings",
+  "screen.changede.space_tower.rpm": "RPM",
+  "screen.changede.space_tower.su": "SU",
+  "screen.changede.space_tower.apply": "Apply",
   "screen.changede.space_tower.ce_cost": "Cost: %s LP/min",
   "screen.changede.space_tower.ce_storage": "CE Stored: %s / %s",
 

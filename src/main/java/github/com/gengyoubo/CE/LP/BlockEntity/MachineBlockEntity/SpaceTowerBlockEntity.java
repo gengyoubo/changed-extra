@@ -209,7 +209,7 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         if (!canGenerateCeOutput()) {
             return 0.0F;
         }
-        return stressUnitsToImpact(ceSu, ceRpm);
+        return stressUnitsToImpact(ceSu, getCurrentKineticSpeedOrConfigured());
     }
 
     @Override
@@ -219,6 +219,14 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         }
         float speed = Math.abs(getSpeed()) > 0.0F ? Math.abs(getSpeed()) : ceRpm;
         return stressUnitsToImpact(ceSu, speed);
+    }
+
+    @Override
+    public void onSpeedChanged(float previousSpeed) {
+        super.onSpeedChanged(previousSpeed);
+        if (level != null && !level.isClientSide && getMode(SpaceTowerEnergyType.CE) == IOType.OUTPUT) {
+            notifyStressCapacityChange(calculateAddedStressCapacity());
+        }
     }
 
     @Override
@@ -290,6 +298,20 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
 
     private static float stressUnitsToImpact(float stressUnits, float speed) {
         return stressUnits / Math.max(1.0F, Math.abs(speed));
+    }
+
+    private float getCurrentKineticSpeedOrConfigured() {
+        float theoreticalSpeed = Math.abs(getTheoreticalSpeed());
+        if (theoreticalSpeed > 0.0F) {
+            return theoreticalSpeed;
+        }
+
+        float generatedSpeed = Math.abs(getGeneratedSpeed());
+        if (generatedSpeed > 0.0F) {
+            return generatedSpeed;
+        }
+
+        return ceRpm;
     }
 
     private int getActualInputStressUnits(int actualRpm) {

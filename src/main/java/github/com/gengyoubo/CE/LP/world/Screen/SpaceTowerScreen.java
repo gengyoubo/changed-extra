@@ -7,7 +7,7 @@ import github.com.gengyoubo.CE.LP.network.packet.SpaceTowerConfigPacket;
 import github.com.gengyoubo.CE.LP.world.Menu.SpaceTowerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,10 +18,11 @@ import java.util.Map;
 
 public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
     private final Map<SpaceTowerEnergyType, Button> modeButtons = new EnumMap<>(SpaceTowerEnergyType.class);
-    private Button rpmMinus;
-    private Button rpmPlus;
-    private Button suMinus;
-    private Button suPlus;
+    private EditBox rpmInput;
+    private EditBox suInput;
+    private Button applyButton;
+    private int lastSyncedRpm = Integer.MIN_VALUE;
+    private int lastSyncedSu = Integer.MIN_VALUE;
 
     public SpaceTowerScreen(SpaceTowerMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
@@ -59,11 +60,11 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
         }
 
         guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_settings"), 118, 43, 0x303030, false);
-        guiGraphics.drawString(font, Component.literal("RPM: " + menu.getCeRpm()), 118, 60, 0x303030, false);
-        guiGraphics.drawString(font, Component.literal("SU: " + menu.getCeSu()), 118, 82, 0x303030, false);
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_cost", menu.getCeCostPerMinute()), 118, 104, 0x303030, false);
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_storage", formatSeconds(menu.getCeStoredSeconds()), "05:00"), 118, 116, 0x303030, false);
-        guiGraphics.drawString(font, Component.literal("J: " + menu.getJouleBuffer()), 118, 128, 0x303030, false);
+        guiGraphics.drawString(font, Component.literal("RPM:"), 118, 60, 0x303030, false);
+        guiGraphics.drawString(font, Component.literal("SU:"), 118, 82, 0x303030, false);
+        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_cost", menu.getCeCostPerMinute()), 118, 123, 0x303030, false);
+        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_storage", formatSeconds(menu.getCeStoredSeconds()), "05:00"), 118, 135, 0x303030, false);
+        guiGraphics.drawString(font, Component.literal("J: " + menu.getJouleBuffer()), 118, 147, 0x303030, false);
     }
 
     @Override
@@ -81,20 +82,35 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
             rowY += 18;
         }
 
-        rpmMinus = addRenderableWidget(Button.builder(Component.literal("-2"), ignored -> CENetwork.sendToServer(SpaceTowerConfigPacket.adjustRpm(menu.getBlockPos(), -2)))
-                .bounds(leftPos + 164, topPos + 56, 28, 16)
-                .build());
-        rpmPlus = addRenderableWidget(Button.builder(Component.literal("+2"), ignored -> CENetwork.sendToServer(SpaceTowerConfigPacket.adjustRpm(menu.getBlockPos(), 2)))
-                .bounds(leftPos + 194, topPos + 56, 28, 16)
-                .build());
-        suMinus = addRenderableWidget(Button.builder(Component.literal("-1"), ignored -> CENetwork.sendToServer(SpaceTowerConfigPacket.adjustSu(menu.getBlockPos(), Screen.hasShiftDown() ? -4 : -1)))
-                .bounds(leftPos + 164, topPos + 78, 28, 16)
-                .build());
-        suPlus = addRenderableWidget(Button.builder(Component.literal("+1"), ignored -> CENetwork.sendToServer(SpaceTowerConfigPacket.adjustSu(menu.getBlockPos(), Screen.hasShiftDown() ? 4 : 1)))
-                .bounds(leftPos + 194, topPos + 78, 28, 16)
+        rpmInput = new EditBox(font, leftPos + 150, topPos + 55, 70, 18, Component.translatable("screen.changede.space_tower.rpm"));
+        rpmInput.setFilter(SpaceTowerScreen::isNumericText);
+        rpmInput.setMaxLength(9);
+        addRenderableWidget(rpmInput);
+
+        suInput = new EditBox(font, leftPos + 150, topPos + 77, 70, 18, Component.translatable("screen.changede.space_tower.su"));
+        suInput.setFilter(SpaceTowerScreen::isNumericText);
+        suInput.setMaxLength(9);
+        addRenderableWidget(suInput);
+
+        applyButton = addRenderableWidget(Button.builder(
+                        Component.translatable("screen.changede.space_tower.apply"),
+                        ignored -> submitCeSettings()
+                )
+                .bounds(leftPos + 164, topPos + 99, 56, 18)
                 .build());
 
         updateButtons();
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
+        if ((rpmInput != null && rpmInput.isFocused()) || (suInput != null && suInput.isFocused())) {
+            if (key == 257 || key == 335) {
+                submitCeSettings();
+                return true;
+            }
+        }
+        return super.keyPressed(key, scanCode, modifiers);
     }
 
     @Override
@@ -109,12 +125,36 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
             entry.getValue().setMessage(Component.translatable("screen.changede.space_tower.mode." + mode.name().toLowerCase()));
         }
 
-        if (suMinus != null) {
-            suMinus.setMessage(Component.literal(Screen.hasShiftDown() ? "-4" : "-1"));
+        if (rpmInput != null && !rpmInput.isFocused() && lastSyncedRpm != menu.getCeRpm()) {
+            lastSyncedRpm = menu.getCeRpm();
+            rpmInput.setValue(Integer.toString(lastSyncedRpm));
         }
-        if (suPlus != null) {
-            suPlus.setMessage(Component.literal(Screen.hasShiftDown() ? "+4" : "+1"));
+        if (suInput != null && !suInput.isFocused() && lastSyncedSu != menu.getCeSu()) {
+            lastSyncedSu = menu.getCeSu();
+            suInput.setValue(Integer.toString(lastSyncedSu));
         }
+    }
+
+    private void submitCeSettings() {
+        int rpm = parseInputValue(rpmInput, menu.getCeRpm());
+        int su = parseInputValue(suInput, menu.getCeSu());
+        CENetwork.sendToServer(SpaceTowerConfigPacket.setRpm(menu.getBlockPos(), rpm));
+        CENetwork.sendToServer(SpaceTowerConfigPacket.setSu(menu.getBlockPos(), su));
+    }
+
+    private static int parseInputValue(EditBox input, int fallback) {
+        if (input == null || input.getValue().isBlank()) {
+            return fallback;
+        }
+        try {
+            return (int)Math.min(Integer.MAX_VALUE, Math.max(0L, Long.parseLong(input.getValue())));
+        } catch (NumberFormatException ignored) {
+            return fallback;
+        }
+    }
+
+    private static boolean isNumericText(String value) {
+        return value.isEmpty() || value.chars().allMatch(Character::isDigit);
     }
 
     private static String formatSeconds(int seconds) {

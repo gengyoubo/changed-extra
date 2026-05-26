@@ -199,6 +199,9 @@
     "screen.changede.space_tower.mode.output": "输出",
     "screen.changede.space_tower.mode.none": "无",
     "screen.changede.space_tower.ce_settings": "CE 设置",
+    "screen.changede.space_tower.rpm": "RPM",
+    "screen.changede.space_tower.su": "SU",
+    "screen.changede.space_tower.apply": "应用",
     "screen.changede.space_tower.ce_cost": "消耗: %s LP/分钟",
     "screen.changede.space_tower.ce_storage": "CE 储存: %s / %s",
 

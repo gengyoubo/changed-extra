@@ -14,6 +14,8 @@ public class SpaceTowerConfigPacket {
     public static final int ACTION_TOGGLE_MODE = 0;
     public static final int ACTION_ADJUST_RPM = 1;
     public static final int ACTION_ADJUST_SU = 2;
+    public static final int ACTION_SET_RPM = 3;
+    public static final int ACTION_SET_SU = 4;
 
     private final BlockPos pos;
     private final int action;
@@ -37,6 +39,14 @@ public class SpaceTowerConfigPacket {
 
     public static SpaceTowerConfigPacket adjustSu(BlockPos pos, int delta) {
         return new SpaceTowerConfigPacket(pos, ACTION_ADJUST_SU, 0, delta);
+    }
+
+    public static SpaceTowerConfigPacket setRpm(BlockPos pos, int rpm) {
+        return new SpaceTowerConfigPacket(pos, ACTION_SET_RPM, 0, rpm);
+    }
+
+    public static SpaceTowerConfigPacket setSu(BlockPos pos, int su) {
+        return new SpaceTowerConfigPacket(pos, ACTION_SET_SU, 0, su);
     }
 
     public static void encode(SpaceTowerConfigPacket packet, FriendlyByteBuf buffer) {
@@ -72,6 +82,8 @@ public class SpaceTowerConfigPacket {
                 case ACTION_TOGGLE_MODE -> tower.toggleMode(SpaceTowerEnergyType.byOrdinal(packet.typeOrdinal));
                 case ACTION_ADJUST_RPM -> tower.adjustCeRpm(packet.delta);
                 case ACTION_ADJUST_SU -> tower.adjustCeSu(packet.delta);
+                case ACTION_SET_RPM -> tower.setCeRpm(packet.delta);
+                case ACTION_SET_SU -> tower.setCeSu(packet.delta);
                 default -> {
                 }
             }
