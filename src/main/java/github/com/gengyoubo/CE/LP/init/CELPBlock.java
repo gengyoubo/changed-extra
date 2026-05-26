@@ -4,6 +4,7 @@ import github.com.gengyoubo.CE.LP.Block.BasicEnergyPipeBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicGeneratorBlock;
 import github.com.gengyoubo.CE.LP.Block.ElectricFurnaceBlock;
 import github.com.gengyoubo.CE.LP.Block.LatexCreativeExtranalbodyCraftTableBlock;
+import github.com.gengyoubo.CE.LP.Block.SpaceTowerBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,6 +18,7 @@ public class CELPBlock {
     public static final RegistryObject<Block> BASIC_GENERATOR;
     public static final RegistryObject<Block> ELECTRIC_FURNACE;
     public static final RegistryObject<Block> LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK;
+    public static final RegistryObject<Block> SPACE_TOWER;
 
     static {
         BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
@@ -30,5 +32,7 @@ public class CELPBlock {
                 () -> new ElectricFurnaceBlock(BlockBehaviour.Properties.of()));
         LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK = BLOCKS.register("latexcreative_extranalbody_craft_table_block",
                 () -> new LatexCreativeExtranalbodyCraftTableBlock(BlockBehaviour.Properties.of()));
+        SPACE_TOWER = BLOCKS.register("space_tower",
+                () -> new SpaceTowerBlock(BlockBehaviour.Properties.of()));
     }
 }

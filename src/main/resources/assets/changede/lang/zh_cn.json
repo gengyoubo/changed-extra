@@ -112,6 +112,7 @@
     "item.changede.latex_gray":"胶灰",
     "item.changede.latex_ingot": "胶锭",
     "item.changede.unbaked_latex_ingot": "未塑性的胶锭",
+    "block.changede.space_tower": "空间塔",
 
     "block.changede.basic_generator": "基础胶液发电机",
     "block.changede.basic_wire": "基础管道",
@@ -187,6 +188,19 @@
     "screen.changede.attributes.perseverance": "毅力: %s / 10",
     "screen.changede.attributes.keep_form": "保持形态概率: %s%%",
     "screen.changede.attributes.mimic_tf": "拟态兽化概率: %s%%",
+    "screen.changede.space_tower.title": "空间塔",
+    "screen.changede.space_tower.energy.lp": "LP",
+    "screen.changede.space_tower.energy.eu": "EU",
+    "screen.changede.space_tower.energy.ae": "AE",
+    "screen.changede.space_tower.energy.rf": "RF",
+    "screen.changede.space_tower.energy.j": "J",
+    "screen.changede.space_tower.energy.ce": "CE",
+    "screen.changede.space_tower.mode.input": "输入",
+    "screen.changede.space_tower.mode.output": "输出",
+    "screen.changede.space_tower.mode.none": "无",
+    "screen.changede.space_tower.ce_settings": "CE 设置",
+    "screen.changede.space_tower.ce_cost": "消耗: %s LP/分钟",
+    "screen.changede.space_tower.ce_storage": "CE 储存: %s / %s",
 
 
     "gamerule.latex_start": "胶兽开局",

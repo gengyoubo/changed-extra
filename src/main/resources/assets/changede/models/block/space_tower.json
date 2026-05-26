@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "changede:block/electric_furnace_sideface",
+    "down": "changede:block/electric_furnace_topface",
+    "up": "changede:block/basic_generator_mainface",
+    "north": "changede:block/basic_generator_mainface",
+    "south": "changede:block/electric_furnace_sideface",
+    "west": "changede:block/electric_furnace_sideface",
+    "east": "changede:block/electric_furnace_sideface"
+  }
+}

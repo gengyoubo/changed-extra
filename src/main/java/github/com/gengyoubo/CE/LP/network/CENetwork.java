@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.LP.network;
 
 import github.com.gengyoubo.CE.LP.network.packet.CycleGeneratorRedstoneModePacket;
+import github.com.gengyoubo.CE.LP.network.packet.SpaceTowerConfigPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -23,6 +24,13 @@ public class CENetwork {
                 CycleGeneratorRedstoneModePacket::encode,
                 CycleGeneratorRedstoneModePacket::decode,
                 CycleGeneratorRedstoneModePacket::handle
+        );
+        INSTANCE.registerMessage(
+                packetId++,
+                SpaceTowerConfigPacket.class,
+                SpaceTowerConfigPacket::encode,
+                SpaceTowerConfigPacket::decode,
+                SpaceTowerConfigPacket::handle
         );
     }
 
