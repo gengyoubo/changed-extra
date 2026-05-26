@@ -122,6 +122,11 @@ public class LatexCreativeExtranalbodyCraftTableBlockEntity extends MachineBlock
         setChanged();
     }
 
+    @Override
+    protected int getEnergyCostForNextTick() {
+        return getDistributedEnergyCost(getEnergyCost(), getMaxProgress(), progress);
+    }
+
     private Optional<LatexCreativeExtranalbodyCraftingRecipe> getCurrentRecipe() {
         if (level == null) {
             return Optional.empty();
@@ -135,9 +140,15 @@ public class LatexCreativeExtranalbodyCraftTableBlockEntity extends MachineBlock
         return level.getRecipeManager()
                 .getAllRecipesFor(CELPRecipes.LATEX_CREATIVE_EXTRANALBODY_CRAFTING_TYPE)
                 .stream()
-                .filter(recipe -> recipe.getId().getPath().startsWith("lectb/"))
                 .filter(recipe -> recipe.matches(inventory, level))
                 .findFirst();
+    }
+
+    private static int getDistributedEnergyCost(int totalEnergyCost, int processTime, int currentProgress) {
+        int safeProcessTime = Math.max(1, processTime);
+        long previousCost = (long) Math.max(0, totalEnergyCost) * Math.max(0, currentProgress) / safeProcessTime;
+        long nextCost = (long) Math.max(0, totalEnergyCost) * (Math.max(0, currentProgress) + 1) / safeProcessTime;
+        return (int) Math.max(0, nextCost - previousCost);
     }
 
     @Override

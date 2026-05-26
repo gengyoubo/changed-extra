@@ -1,7 +1,0 @@
-#Choose whether this instance will download patreon content. If disabled: this instance will not recognize patrons' rank or special form.
-downloadPatreonContent = false
-#Choose your domain. Let's you specify a mirror domain if your ISP blocks github (for whatever reason).
-githubDomain = "raw.githubusercontent.com"
-#Compatibility is weird, you can disable displaying player's patronage to Changed:MC here.
-displayPatronage = true
-

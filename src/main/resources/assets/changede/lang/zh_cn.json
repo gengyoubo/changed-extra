@@ -8,6 +8,11 @@
     "changed_addon.owner.foxyas":"允许使用，由Foxyas制作",
     "changed_addon.words1":"未关联任何变体，请使用§e<Shift+点击>关链接一个变体",
 
+    "changede.ponder.space_tower.header":"空间塔的特性",
+    "changede.ponder.space_tower.text_1": "空间塔是一个可以把模组的能量变成LP能量的装置",
+    "changede.ponder.space_tower.text_2": "在这个教程需要专门说明机械动力的能量转换",
+    "changede.ponder.space_tower.text_3": "首先如果把CE设置为输入时，机械动力的能量会转换为LP能量",
+    "changede.ponder.space_tower.text_4": "如果把CE设置为输出时，LP能量会转换为机械动力的能量",
     "item.changede.mimic_yufeng_wings": "拟态驭风翼",
     "ability.changed.launch_glide":"高级滑翔",
     "block.changede.latexcreative_extranalbody_craft_table_block":"胶生物外置体工艺装配台",

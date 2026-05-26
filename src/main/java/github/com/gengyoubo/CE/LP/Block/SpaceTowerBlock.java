@@ -29,17 +29,18 @@ public class SpaceTowerBlock extends DirectionalKineticBlock implements IBE<Spac
     private static final Component TITLE = Component.translatable("screen.changede.space_tower.title");
 
     public SpaceTowerBlock(Properties properties) {
-        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0F, 12.0F));
+        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0F, 12.0F).noOcclusion());
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Override
     public boolean hasShaftTowards(LevelReader level, BlockPos pos, BlockState state, Direction face) {
-        return face.getAxis() == getRotationAxis(state);
+        return true;
     }
 
     @Override

@@ -15,11 +15,18 @@ public class LatexCreativeExtranalbodyCraftTableScreen extends AbstractContainer
         this.imageHeight = 166;
     }
 
+    private Component getEnergyText() {
+        return Component.literal(this.menu.getEnergyStored() + " / " + this.menu.getMaxEnergyStored() + " LP");
+    }
+
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
+        if (isHovering(8, 74, 160, 4, mouseX, mouseY)) {
+            guiGraphics.renderTooltip(this.font, getEnergyText(), mouseX, mouseY);
+        }
     }
 
     @Override
@@ -63,5 +70,6 @@ public class LatexCreativeExtranalbodyCraftTableScreen extends AbstractContainer
         guiGraphics.drawString(this.font, this.title, 8, 6, 0xE8EDF8, false);
         guiGraphics.drawString(this.font, this.playerInventoryTitle, 8, 72, 0x9FAAC8, false);
         guiGraphics.drawString(this.font, "EXTRANALBODY SYNTH", 58, 27, 0x8AE8CB, false);
+        guiGraphics.drawString(this.font, getEnergyText(), 8, 63, 0x80C7FF, false);
     }
 }

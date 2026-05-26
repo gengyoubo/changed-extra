@@ -21,6 +21,21 @@ public abstract class MachineBlockEntity extends BaseEnergyBlockEntity {
 
     protected abstract void processItem();
 
+    protected int getEnergyCostForNextTick() {
+        return getEnergyCost();
+    }
+
+    protected boolean hasEnoughEnergyForNextTick() {
+        return getEnergyStored() >= getEnergyCostForNextTick();
+    }
+
+    protected void consumeEnergyForNextTick() {
+        int cost = getEnergyCostForNextTick();
+        if (cost > 0) {
+            extractEnergy(cost, null);
+        }
+    }
+
     public int getProgress() {
         return progress;
     }
@@ -33,18 +48,25 @@ public abstract class MachineBlockEntity extends BaseEnergyBlockEntity {
     public void tick() {
         if (level == null || level.isClientSide) return;
 
-        if (canProcess() && getEnergyStored() >= getEnergyCost()) {
-            extractEnergy(getEnergyCost(), null);
+        boolean dirty = false;
+        if (canProcess() && hasEnoughEnergyForNextTick()) {
+            consumeEnergyForNextTick();
             progress++;
+            dirty = true;
 
             if (progress >= getMaxProgress()) {
                 progress = 0;
                 processItem();
             }
 
-            setChanged();
-        } else {
+        } else if (progress != 0) {
             progress = 0;
+            dirty = true;
+        }
+
+        if (dirty) {
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
 }

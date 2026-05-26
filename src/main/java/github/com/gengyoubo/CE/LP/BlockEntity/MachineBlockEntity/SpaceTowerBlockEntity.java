@@ -40,6 +40,7 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
     private int ceRpm = DEFAULT_CE_RPM;
     private int ceSu = DEFAULT_CE_SU;
     private boolean ceOutputPowered;
+    private boolean queuedKineticRefresh;
 
     public SpaceTowerBlockEntity(BlockPos pos, BlockState state) {
         super(CELPBlockEntity.SPACE_TOWER_BLOCK_ENTITY.get(), pos, state);
@@ -225,15 +226,22 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
     public void onSpeedChanged(float previousSpeed) {
         super.onSpeedChanged(previousSpeed);
         if (level != null && !level.isClientSide && getMode(SpaceTowerEnergyType.CE) == IOType.OUTPUT) {
-            notifyStressCapacityChange(calculateAddedStressCapacity());
+            updateStressCapacityIfNetworkPresent();
         }
     }
 
     @Override
     public void tick() {
-        super.tick();
         if (level == null || level.isClientSide) {
+            super.tick();
             return;
+        }
+
+        super.tick();
+
+        if (queuedKineticRefresh) {
+            queuedKineticRefresh = false;
+            forceKineticRefresh();
         }
 
         updateCeOutputPoweredState();
@@ -323,6 +331,9 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         }
 
         KineticNetwork kineticNetwork = getOrCreateNetwork();
+        if (kineticNetwork == null) {
+            return ceSu;
+        }
         float ownStress = Math.max(0.0F, kineticNetwork.getActualStressOf(this));
         float otherStress = Math.max(0.0F, kineticNetwork.calculateStress() - ownStress);
         float availableStress = kineticNetwork.calculateCapacity() - otherStress;
@@ -386,7 +397,7 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
     private void refreshKinetics() {
         if (level != null && !level.isClientSide) {
             updateGeneratedRotation();
-            notifyStressCapacityChange(calculateAddedStressCapacity());
+            updateStressCapacityIfNetworkPresent();
             networkDirty = true;
         }
     }
@@ -400,6 +411,34 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         ceOutputPowered = powered;
         if (powered != wasPowered) {
             refreshKinetics();
+        }
+    }
+
+    private void queueKineticRefresh() {
+        queuedKineticRefresh = true;
+        ceOutputPowered = false;
+    }
+
+    private void forceKineticRefresh() {
+        boolean powered = canGenerateCeOutput();
+        ceOutputPowered = powered;
+        if (powered && !hasSource()) {
+            setSpeed(0.0F);
+        }
+        updateGeneratedRotation();
+        updateStressCapacityIfNetworkPresent();
+        networkDirty = true;
+        sendData();
+    }
+
+    private void updateStressCapacityIfNetworkPresent() {
+        if (level == null || level.isClientSide || !hasNetwork()) {
+            return;
+        }
+
+        KineticNetwork kineticNetwork = getOrCreateNetwork();
+        if (kineticNetwork != null) {
+            kineticNetwork.updateCapacityFor(this, calculateAddedStressCapacity());
         }
     }
 
@@ -443,7 +482,7 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         ceInputAccumulator = tag.getDouble("CeInputAccumulator");
         ceRpm = tag.contains("CeRpm") ? tag.getInt("CeRpm") : DEFAULT_CE_RPM;
         ceSu = tag.contains("CeSu") ? tag.getInt("CeSu") : DEFAULT_CE_SU;
-        ceOutputPowered = tag.getBoolean("CeOutputPowered");
+        ceOutputPowered = false;
 
         if (tag.contains("Modes")) {
             CompoundTag modesTag = tag.getCompound("Modes");
@@ -461,5 +500,8 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         ceRpm = Mth.clamp(roundToStep(ceRpm, 2), MIN_CE_RPM, MAX_CE_RPM);
         ceSu = Mth.clamp(ceSu, MIN_CE_SU, MAX_CE_SU);
         clampCeStorage();
+        if (!clientPacket) {
+            queueKineticRefresh();
+        }
     }
 }
