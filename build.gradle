@@ -25,11 +25,11 @@ jacoco {
 
 def clientCoverageExecFile = layout.buildDirectory.file('jacoco/runClientCoverage.exec').get().asFile
 def startupJfrFile = layout.buildDirectory.file('jfr/startup.jfr').get().asFile
-def coverageDependencyJars = files({
+def coverageDependencyJars = providers.provider {
     configurations.runtimeClasspath.files.findAll { file ->
         file.name.contains('changed-minecraft-mod-661527') || file.name.contains('changed-addon-plus-711303')
     }
-})
+}
 
 tasks.named('test') {
     finalizedBy 'jacocoTestReport'
@@ -49,10 +49,12 @@ tasks.register('jacocoRunClientReport', JacocoReport) {
     description = 'Generates a JaCoCo report from the runClientCoverage Forge client session.'
     executionData.from(clientCoverageExecFile)
     classDirectories.from(sourceSets.main.output)
-    classDirectories.from(coverageDependencyJars.collect { jarFile ->
-        zipTree(jarFile).matching {
-            include 'net/ltxprogrammer/changed/**/*.class'
-            include 'net/foxyas/changedaddon/**/*.class'
+    classDirectories.from(providers.provider {
+        coverageDependencyJars.get().collect { jarFile ->
+            zipTree(jarFile).matching {
+                include 'net/ltxprogrammer/changed/**/*.class'
+                include 'net/foxyas/changedaddon/**/*.class'
+            }
         }
     })
     sourceDirectories.from(sourceSets.main.allSource.srcDirs)
@@ -100,6 +102,9 @@ dependencies {
     //等价交换
     compileOnly fg.deobf("curse.maven:projecte-226410:4901949")
     compileOnly fg.deobf("curse.maven:projectextended-353775:4860891")
+    //机械动力
+    implementation fg.deobf("curse.maven:create-328085:7149905")
+    implementation fg.deobf("net.createmod.ponder:Ponder-Forge-1.20.1:1.0.92")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")
@@ -186,6 +191,7 @@ tasks.named('test') {
 }
 repositories {
     mavenCentral()
+    maven { url "https://maven.createmod.net" }
     flatDir {
         dir 'libs'
     }

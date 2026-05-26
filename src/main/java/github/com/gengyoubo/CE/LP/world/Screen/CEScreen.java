@@ -16,6 +16,7 @@ public class CEScreen {
             MenuScreens.register(CEMenus.BASIC_GENERATOR_BLOCK_ENTITY.get(), BasicGeneratorBlockEntityScreen::new);
             MenuScreens.register(CEMenus.ELECTRIC_FURNACE.get(), ElectricFurnaceScreen::new);
             MenuScreens.register(CEMenus.LATEX_CREATIVE_EXTRANALBODY_CRAFT_TABLE.get(), LatexCreativeExtranalbodyCraftTableScreen::new);
+            MenuScreens.register(CEMenus.SPACE_TOWER.get(), SpaceTowerScreen::new);
         });
     }
 

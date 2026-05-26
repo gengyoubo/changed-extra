@@ -3,6 +3,7 @@ package github.com.gengyoubo.CE.LP.init;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.ElectricFurnaceBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexCreativeExtranalbodyCraftTableBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.BasicEnergyPipeBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -42,5 +43,12 @@ public class CELPBlockEntity {
                     () -> BlockEntityType.Builder.of(
                             LatexCreativeExtranalbodyCraftTableBlockEntity::new,
                             CELPBlock.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK.get()
+                    ).build(null));
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<SpaceTowerBlockEntity>> SPACE_TOWER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("space_tower",
+                    () -> BlockEntityType.Builder.of(
+                            SpaceTowerBlockEntity::new,
+                            CELPBlock.SPACE_TOWER.get()
                     ).build(null));
 }

@@ -12,5 +12,7 @@ public class CEMenus {
     public static final RegistryObject<MenuType<ElectricFurnaceMenu>> ELECTRIC_FURNACE = REGISTRY.register("electric_furnace", () -> IForgeMenuType.create(ElectricFurnaceMenu::new));
     public static final RegistryObject<MenuType<LatexCreativeExtranalbodyCraftTableMenu>> LATEX_CREATIVE_EXTRANALBODY_CRAFT_TABLE =
             REGISTRY.register("latexcreative_extranalbody_craft_table", () -> IForgeMenuType.create(LatexCreativeExtranalbodyCraftTableMenu::new));
+    public static final RegistryObject<MenuType<SpaceTowerMenu>> SPACE_TOWER =
+            REGISTRY.register("space_tower", () -> IForgeMenuType.create(SpaceTowerMenu::new));
 
 }

@@ -57,6 +57,7 @@
     "item.changede.latex_gray":"Latex Gray",
     "item.changede.latex_ingot": "Latex Ingot",
     "item.changede.unbaked_latex_ingot": "Unbaked Latex Ingot",
+    "block.changede.space_tower": "Space Tower",
 
     "creativetab.changede1": "CE basic",
     "creativetab.changede2": "CE easter egg",
@@ -67,6 +68,19 @@
   "screen.changede.attributes.perseverance": "Perseverance: %s / 10",
   "screen.changede.attributes.keep_form": "Keep Form: %s%%",
   "screen.changede.attributes.mimic_tf": "Mimic TF: %s%%",
+  "screen.changede.space_tower.title": "Space Tower",
+  "screen.changede.space_tower.energy.lp": "LP",
+  "screen.changede.space_tower.energy.eu": "EU",
+  "screen.changede.space_tower.energy.ae": "AE",
+  "screen.changede.space_tower.energy.rf": "RF",
+  "screen.changede.space_tower.energy.j": "J",
+  "screen.changede.space_tower.energy.ce": "CE",
+  "screen.changede.space_tower.mode.input": "Input",
+  "screen.changede.space_tower.mode.output": "Output",
+  "screen.changede.space_tower.mode.none": "None",
+  "screen.changede.space_tower.ce_settings": "CE Settings",
+  "screen.changede.space_tower.ce_cost": "Cost: %s LP/min",
+  "screen.changede.space_tower.ce_storage": "CE Stored: %s / %s",
 
   "gamerule.latex_start": "Latex Start",
   "gamerule.latex_start.description": "Whether the player automatically transforms into a random gel beast form upon entering the game (other game rules are altered)\n1. gamerule changed:keepConscious true (always true)\n2. gamerule changed:keepForm false (default is false; if the player is human when they die, they will degenerate into a latex"

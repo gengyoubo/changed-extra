@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down": { "model": "changede:block/space_tower" },
+    "facing=up": { "model": "changede:block/space_tower" },
+    "facing=north": { "model": "changede:block/space_tower" },
+    "facing=south": { "model": "changede:block/space_tower", "y": 180 },
+    "facing=west": { "model": "changede:block/space_tower", "y": 270 },
+    "facing=east": { "model": "changede:block/space_tower", "y": 90 }
+  }
+}
