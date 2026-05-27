@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.LP.world.Menu;
 
-import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerAccess;
 import github.com.gengyoubo.CE.LP.IOType;
 import github.com.gengyoubo.CE.LP.SpaceTowerEnergyType;
 import net.minecraft.core.BlockPos;
@@ -49,7 +49,7 @@ public class SpaceTowerMenu extends AbstractContainerMenu {
             @Override
             public int get(int index) {
                 BlockEntity blockEntity = level.getBlockEntity(pos);
-                if (!(blockEntity instanceof SpaceTowerBlockEntity tower)) {
+                if (!(blockEntity instanceof SpaceTowerAccess tower)) {
                     return 0;
                 }
 

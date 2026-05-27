@@ -1,8 +1,8 @@
 package github.com.gengyoubo.CE.LP.ponder;
 
-import github.com.gengyoubo.CE.LP.Block.BasicEnergyPipeBlock;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
-import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerBlockEntity;
+import github.com.gengyoubo.CE.LP.Block.BasicEnergyPipeBlock;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerAccess;
 import github.com.gengyoubo.CE.LP.IOType;
 import github.com.gengyoubo.CE.LP.SpaceTowerEnergyType;
 import github.com.gengyoubo.CE.LP.init.CELPBlock;
@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -93,10 +94,12 @@ public class CESpaceTowerPonderScenes {
 
         tower = util.grid().at(5, 1, 3);
         createScene.world().setBlock(tower, CELPBlock.SPACE_TOWER.get().defaultBlockState(), false);
-        createScene.world().modifyBlockEntity(tower, SpaceTowerBlockEntity.class, spaceTower -> {
-            spaceTower.setMode(SpaceTowerEnergyType.CE, IOType.OUTPUT);
-            spaceTower.setCeSu(256);
-            spaceTower.setCeRpm(256);
+        createScene.world().modifyBlockEntity(tower, BlockEntity.class, blockEntity -> {
+            if (blockEntity instanceof SpaceTowerAccess spaceTower) {
+                spaceTower.setMode(SpaceTowerEnergyType.CE, IOType.OUTPUT);
+                spaceTower.setCeSu(256);
+                spaceTower.setCeRpm(256);
+            }
         });
         createScene.world().showSection(util.select().position(tower), Direction.DOWN);
         createScene.idle(5);

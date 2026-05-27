@@ -103,8 +103,13 @@ dependencies {
     compileOnly fg.deobf("curse.maven:projecte-226410:4901949")
     compileOnly fg.deobf("curse.maven:projectextended-353775:4860891")
     //机械动力
-    implementation fg.deobf("curse.maven:create-328085:7149905")
-    implementation fg.deobf("net.createmod.ponder:Ponder-Forge-1.20.1:1.0.92")
+    compileOnly fg.deobf("curse.maven:create-328085:7149905")
+    compileOnly fg.deobf("net.createmod.ponder:Ponder-Forge-1.20.1:1.0.92")
+    //通用机械
+    compileOnly fg.deobf("curse.maven:mekanism-268560:6552911")
+    //AE2
+    compileOnly fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
+    compileOnly fg.deobf("curse.maven:guideme-1173950:7127447")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")

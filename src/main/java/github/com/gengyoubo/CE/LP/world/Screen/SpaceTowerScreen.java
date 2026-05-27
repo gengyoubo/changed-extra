@@ -64,7 +64,6 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
         guiGraphics.drawString(font, Component.literal("SU:"), 118, 82, 0x303030, false);
         guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_cost", menu.getCeCostPerMinute()), 118, 123, 0x303030, false);
         guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_storage", formatSeconds(menu.getCeStoredSeconds()), "05:00"), 118, 135, 0x303030, false);
-        guiGraphics.drawString(font, Component.literal("J: " + menu.getJouleBuffer()), 118, 147, 0x303030, false);
     }
 
     @Override

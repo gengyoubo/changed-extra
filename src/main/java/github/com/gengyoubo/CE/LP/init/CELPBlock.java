@@ -4,7 +4,7 @@ import github.com.gengyoubo.CE.LP.Block.BasicEnergyPipeBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicGeneratorBlock;
 import github.com.gengyoubo.CE.LP.Block.ElectricFurnaceBlock;
 import github.com.gengyoubo.CE.LP.Block.LatexCreativeExtranalbodyCraftTableBlock;
-import github.com.gengyoubo.CE.LP.Block.SpaceTowerBlock;
+import github.com.gengyoubo.CE.LP.compat.SpaceTowerCompat;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
@@ -33,6 +33,6 @@ public class CELPBlock {
         LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK = BLOCKS.register("latexcreative_extranalbody_craft_table_block",
                 () -> new LatexCreativeExtranalbodyCraftTableBlock(BlockBehaviour.Properties.of()));
         SPACE_TOWER = BLOCKS.register("space_tower",
-                () -> new SpaceTowerBlock(BlockBehaviour.Properties.of()));
+                () -> SpaceTowerCompat.createBlock(BlockBehaviour.Properties.of()));
     }
 }

@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.LP.network.packet;
 
-import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerAccess;
 import github.com.gengyoubo.CE.LP.SpaceTowerEnergyType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -74,7 +74,7 @@ public class SpaceTowerConfigPacket {
             }
 
             BlockEntity blockEntity = player.level().getBlockEntity(packet.pos);
-            if (!(blockEntity instanceof SpaceTowerBlockEntity tower)) {
+            if (!(blockEntity instanceof SpaceTowerAccess tower)) {
                 return;
             }
 

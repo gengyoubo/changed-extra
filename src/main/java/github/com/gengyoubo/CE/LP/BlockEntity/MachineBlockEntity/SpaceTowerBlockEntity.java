@@ -1,11 +1,10 @@
 package github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity;
 
-import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
-import com.simibubi.create.content.kinetics.KineticNetwork;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
 import github.com.gengyoubo.CE.LP.IOType;
 import github.com.gengyoubo.CE.LP.SpaceTowerEnergyType;
+import github.com.gengyoubo.CE.LP.compat.SpaceTowerForgeEnergyPusher;
+import github.com.gengyoubo.CE.LP.compat.SpaceTowerForgeEnergyStorage;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,13 +12,17 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
-public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implements ILatexEnergyHandler {
+public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHandler, SpaceTowerAccess {
     public static final int LP_CAPACITY = 50_000;
     public static final int DEFAULT_CE_RPM = 8;
     public static final int DEFAULT_CE_SU = 256;
@@ -29,18 +32,15 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
     public static final int MAX_CE_SU = 16_384;
     public static final int BASE_CE_COST_PER_MINUTE = 15;
     public static final int CE_STORAGE_MINUTES = 5;
-    private static final int TICKS_PER_MINUTE = 20 * 60;
 
     private final Map<SpaceTowerEnergyType, IOType> modes = new EnumMap<>(SpaceTowerEnergyType.class);
     private int lpEnergy;
     private double jouleBuffer;
     private double ceStoredLp;
-    private double ceOutputDebt;
-    private double ceInputAccumulator;
     private int ceRpm = DEFAULT_CE_RPM;
     private int ceSu = DEFAULT_CE_SU;
-    private boolean ceOutputPowered;
-    private boolean queuedKineticRefresh;
+    private final SpaceTowerForgeEnergyStorage forgeEnergy = new SpaceTowerForgeEnergyStorage(this);
+    private final LazyOptional<IEnergyStorage> forgeEnergyCapability = LazyOptional.of(() -> forgeEnergy);
 
     public SpaceTowerBlockEntity(BlockPos pos, BlockState state) {
         super(CELPBlockEntity.SPACE_TOWER_BLOCK_ENTITY.get(), pos, state);
@@ -49,8 +49,13 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         }
     }
 
-    @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+    public void tick() {
+        if (level == null || level.isClientSide) {
+            return;
+        }
+
+        pushEnergy();
+        SpaceTowerForgeEnergyPusher.push(level, worldPosition, this);
     }
 
     public IOType getMode(SpaceTowerEnergyType type) {
@@ -63,8 +68,7 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
 
     public void setMode(SpaceTowerEnergyType type, IOType mode) {
         modes.put(type, mode);
-        refreshKinetics();
-        updateCeOutputPoweredState();
+        notifyNeighbors();
         sync();
     }
 
@@ -85,16 +89,16 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
     }
 
     public void setCeRpm(int rpm) {
+        int oldCost = getCeCostPerMinute();
         ceRpm = Mth.clamp(roundToStep(rpm, 2), MIN_CE_RPM, MAX_CE_RPM);
-        clampCeStorage();
-        refreshKinetics();
+        rescaleCeStorage(oldCost);
         sync();
     }
 
     public void setCeSu(int su) {
+        int oldCost = getCeCostPerMinute();
         ceSu = Mth.clamp(su, MIN_CE_SU, MAX_CE_SU);
-        clampCeStorage();
-        refreshKinetics();
+        rescaleCeStorage(oldCost);
         sync();
     }
 
@@ -114,16 +118,15 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         return (int)Math.floor(jouleBuffer);
     }
 
+    @Override
     public int receiveEnergyAsType(SpaceTowerEnergyType type, double amount) {
         if (amount <= 0.0D || getMode(type) != IOType.INPUT) {
             return 0;
         }
 
         if (type == SpaceTowerEnergyType.CE) {
-            boolean wasPowered = canGenerateCeOutput();
             double before = ceStoredLp;
             ceStoredLp = Math.min(getMaxCeStoredLp(), ceStoredLp + amount);
-            updateCeOutputPoweredState(wasPowered);
             sync();
             return (int)Math.floor(ceStoredLp - before);
         }
@@ -138,17 +141,16 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         return received;
     }
 
+    @Override
     public double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount) {
         if (requestedAmount <= 0.0D || getMode(type) != IOType.OUTPUT) {
             return 0.0D;
         }
 
         if (type == SpaceTowerEnergyType.CE) {
-            boolean wasPowered = canGenerateCeOutput();
             double extracted = Math.min(ceStoredLp, requestedAmount);
             ceStoredLp -= extracted;
             if (extracted > 0.0D) {
-                updateCeOutputPoweredState(wasPowered);
                 sync();
             }
             return extracted;
@@ -161,6 +163,25 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
             sync();
         }
         return extractedLp * SpaceTowerEnergyType.LP.joulesPerUnit() / type.joulesPerUnit();
+    }
+
+    @Override
+    public void refundEnergyAsType(SpaceTowerEnergyType type, double amount) {
+        if (amount <= 0.0D) {
+            return;
+        }
+
+        if (type == SpaceTowerEnergyType.CE) {
+            ceStoredLp = Math.min(getMaxCeStoredLp(), ceStoredLp + amount);
+            sync();
+            return;
+        }
+
+        double joules = amount * type.joulesPerUnit();
+        int lp = (int)Math.floor(joules / SpaceTowerEnergyType.LP.joulesPerUnit());
+        if (receiveLpIgnoringMode(lp) > 0) {
+            sync();
+        }
     }
 
     @Override
@@ -198,149 +219,17 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
     }
 
     @Override
-    public float getGeneratedSpeed() {
-        if (!canGenerateCeOutput()) {
-            return 0.0F;
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) {
+            return forgeEnergyCapability.cast();
         }
-        return ceRpm;
+        return super.getCapability(cap, side);
     }
 
     @Override
-    public float calculateAddedStressCapacity() {
-        if (!canGenerateCeOutput()) {
-            return 0.0F;
-        }
-        return stressUnitsToImpact(ceSu, getCurrentKineticSpeedOrConfigured());
-    }
-
-    @Override
-    public float calculateStressApplied() {
-        if (getMode(SpaceTowerEnergyType.CE) != IOType.INPUT) {
-            return 0.0F;
-        }
-        float speed = Math.abs(getSpeed()) > 0.0F ? Math.abs(getSpeed()) : ceRpm;
-        return stressUnitsToImpact(ceSu, speed);
-    }
-
-    @Override
-    public void onSpeedChanged(float previousSpeed) {
-        super.onSpeedChanged(previousSpeed);
-        if (level != null && !level.isClientSide && getMode(SpaceTowerEnergyType.CE) == IOType.OUTPUT) {
-            updateStressCapacityIfNetworkPresent();
-        }
-    }
-
-    @Override
-    public void tick() {
-        if (level == null || level.isClientSide) {
-            super.tick();
-            return;
-        }
-
-        super.tick();
-
-        if (queuedKineticRefresh) {
-            queuedKineticRefresh = false;
-            forceKineticRefresh();
-        }
-
-        updateCeOutputPoweredState();
-
-        if (getMode(SpaceTowerEnergyType.CE) == IOType.OUTPUT && Math.abs(getSpeed()) > 0.0F) {
-            consumeForCeOutput();
-        } else if (getMode(SpaceTowerEnergyType.CE) == IOType.INPUT && Math.abs(getSpeed()) > 0.0F && !isOverStressed()) {
-            storeIncomingCe();
-        }
-
-        pushEnergy();
-    }
-
-    private boolean canPayCeOutput() {
-        return ceStoredLp > 0.0D || lpEnergy > 0;
-    }
-
-    private boolean canGenerateCeOutput() {
-        return getMode(SpaceTowerEnergyType.CE) == IOType.OUTPUT && canPayCeOutput();
-    }
-
-    private void consumeForCeOutput() {
-        boolean wasPowered = canGenerateCeOutput();
-        double costPerTick = getCeCostPerMinute() / (double)TICKS_PER_MINUTE;
-        double paidByCeStorage = Math.min(ceStoredLp, costPerTick);
-        ceStoredLp -= paidByCeStorage;
-        ceOutputDebt += costPerTick - paidByCeStorage;
-
-        if (ceOutputDebt >= 1.0D) {
-            int lpNeeded = (int)Math.floor(ceOutputDebt);
-            int extracted = extractLpIgnoringMode(lpNeeded);
-            ceOutputDebt -= extracted;
-            if (extracted < lpNeeded) {
-                ceOutputDebt = 0.0D;
-                updateCeOutputPoweredState();
-            }
-        }
-
-        updateCeOutputPoweredState(wasPowered);
-        setChanged();
-    }
-
-    private void storeIncomingCe() {
-        int actualRpm = Math.max(MIN_CE_RPM, Math.round(Math.abs(getSpeed())));
-        int actualStressUnits = getActualInputStressUnits(actualRpm);
-        double lpPerTick = getCeCostPerMinute(actualRpm, actualStressUnits) / (double)TICKS_PER_MINUTE;
-        ceInputAccumulator += lpPerTick;
-        if (ceInputAccumulator >= 1.0D) {
-            int wholeLp = (int)Math.floor(ceInputAccumulator);
-            int acceptedLp = receiveLpIgnoringMode(wholeLp);
-            ceInputAccumulator -= acceptedLp;
-
-            if (acceptedLp < wholeLp) {
-                double overflowLp = wholeLp - acceptedLp;
-                double acceptedCe = Math.min(getMaxCeStoredLp() - ceStoredLp, overflowLp);
-                ceStoredLp += acceptedCe;
-                ceInputAccumulator -= acceptedCe;
-            }
-            sync();
-        }
-    }
-
-    private static float stressUnitsToImpact(float stressUnits, float speed) {
-        return stressUnits / Math.max(1.0F, Math.abs(speed));
-    }
-
-    private float getCurrentKineticSpeedOrConfigured() {
-        float theoreticalSpeed = Math.abs(getTheoreticalSpeed());
-        if (theoreticalSpeed > 0.0F) {
-            return theoreticalSpeed;
-        }
-
-        float generatedSpeed = Math.abs(getGeneratedSpeed());
-        if (generatedSpeed > 0.0F) {
-            return generatedSpeed;
-        }
-
-        return ceRpm;
-    }
-
-    private int getActualInputStressUnits(int actualRpm) {
-        if (Math.abs(getSpeed()) <= 0.0F) {
-            return 0;
-        }
-        if (!hasNetwork()) {
-            return ceSu;
-        }
-
-        KineticNetwork kineticNetwork = getOrCreateNetwork();
-        if (kineticNetwork == null) {
-            return ceSu;
-        }
-        float ownStress = Math.max(0.0F, kineticNetwork.getActualStressOf(this));
-        float otherStress = Math.max(0.0F, kineticNetwork.calculateStress() - ownStress);
-        float availableStress = kineticNetwork.calculateCapacity() - otherStress;
-        if (!Float.isFinite(availableStress) || availableStress <= 0.0F) {
-            return ceSu;
-        }
-        return Math.max(ceSu, Math.round(availableStress));
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        forgeEnergyCapability.invalidate();
     }
 
     private static int getCeCostPerMinute(int rpm, int stressUnits) {
@@ -368,24 +257,20 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         }
     }
 
-    private int receiveLpIgnoringMode(int amount) {
-        boolean wasPowered = canGenerateCeOutput();
+    protected int receiveLpIgnoringMode(int amount) {
         int accepted = Math.min(LP_CAPACITY - lpEnergy, Math.max(0, amount));
         lpEnergy += accepted;
         if (accepted > 0) {
             setChanged();
-            updateCeOutputPoweredState(wasPowered);
         }
         return accepted;
     }
 
-    private int extractLpIgnoringMode(int amount) {
-        boolean wasPowered = canGenerateCeOutput();
+    protected int extractLpIgnoringMode(int amount) {
         int extracted = Math.min(lpEnergy, Math.max(0, amount));
         lpEnergy -= extracted;
         if (extracted > 0) {
             setChanged();
-            updateCeOutputPoweredState(wasPowered);
         }
         return extracted;
     }
@@ -394,52 +279,12 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         ceStoredLp = Math.min(ceStoredLp, getMaxCeStoredLp());
     }
 
-    private void refreshKinetics() {
-        if (level != null && !level.isClientSide) {
-            updateGeneratedRotation();
-            updateStressCapacityIfNetworkPresent();
-            networkDirty = true;
+    private void rescaleCeStorage(int oldCostPerMinute) {
+        int newCostPerMinute = getCeCostPerMinute();
+        if (oldCostPerMinute > 0 && newCostPerMinute > 0) {
+            ceStoredLp = ceStoredLp * newCostPerMinute / oldCostPerMinute;
         }
-    }
-
-    private void updateCeOutputPoweredState() {
-        updateCeOutputPoweredState(ceOutputPowered);
-    }
-
-    private void updateCeOutputPoweredState(boolean wasPowered) {
-        boolean powered = canGenerateCeOutput();
-        ceOutputPowered = powered;
-        if (powered != wasPowered) {
-            refreshKinetics();
-        }
-    }
-
-    private void queueKineticRefresh() {
-        queuedKineticRefresh = true;
-        ceOutputPowered = false;
-    }
-
-    private void forceKineticRefresh() {
-        boolean powered = canGenerateCeOutput();
-        ceOutputPowered = powered;
-        if (powered && !hasSource()) {
-            setSpeed(0.0F);
-        }
-        updateGeneratedRotation();
-        updateStressCapacityIfNetworkPresent();
-        networkDirty = true;
-        sendData();
-    }
-
-    private void updateStressCapacityIfNetworkPresent() {
-        if (level == null || level.isClientSide || !hasNetwork()) {
-            return;
-        }
-
-        KineticNetwork kineticNetwork = getOrCreateNetwork();
-        if (kineticNetwork != null) {
-            kineticNetwork.updateCapacityFor(this, calculateAddedStressCapacity());
-        }
+        clampCeStorage();
     }
 
     private void sync() {
@@ -449,21 +294,24 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         }
     }
 
+    private void notifyNeighbors() {
+        if (level != null && !level.isClientSide) {
+            level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
+        }
+    }
+
     private static int roundToStep(int value, int step) {
         return Math.round(value / (float)step) * step;
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        super.write(tag, clientPacket);
+    protected void saveAdditional(@NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putInt("LpEnergy", lpEnergy);
         tag.putDouble("JouleBuffer", jouleBuffer);
         tag.putDouble("CeStoredLp", ceStoredLp);
-        tag.putDouble("CeOutputDebt", ceOutputDebt);
-        tag.putDouble("CeInputAccumulator", ceInputAccumulator);
         tag.putInt("CeRpm", ceRpm);
         tag.putInt("CeSu", ceSu);
-        tag.putBoolean("CeOutputPowered", ceOutputPowered);
 
         CompoundTag modesTag = new CompoundTag();
         for (SpaceTowerEnergyType type : SpaceTowerEnergyType.values()) {
@@ -473,16 +321,13 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
         lpEnergy = Mth.clamp(tag.getInt("LpEnergy"), 0, LP_CAPACITY);
         jouleBuffer = tag.getDouble("JouleBuffer");
         ceStoredLp = tag.getDouble("CeStoredLp");
-        ceOutputDebt = tag.getDouble("CeOutputDebt");
-        ceInputAccumulator = tag.getDouble("CeInputAccumulator");
         ceRpm = tag.contains("CeRpm") ? tag.getInt("CeRpm") : DEFAULT_CE_RPM;
         ceSu = tag.contains("CeSu") ? tag.getInt("CeSu") : DEFAULT_CE_SU;
-        ceOutputPowered = false;
 
         if (tag.contains("Modes")) {
             CompoundTag modesTag = tag.getCompound("Modes");
@@ -500,8 +345,5 @@ public class SpaceTowerBlockEntity extends GeneratingKineticBlockEntity implemen
         ceRpm = Mth.clamp(roundToStep(ceRpm, 2), MIN_CE_RPM, MAX_CE_RPM);
         ceSu = Mth.clamp(ceSu, MIN_CE_SU, MAX_CE_SU);
         clampCeStorage();
-        if (!clientPacket) {
-            queueKineticRefresh();
-        }
     }
 }
