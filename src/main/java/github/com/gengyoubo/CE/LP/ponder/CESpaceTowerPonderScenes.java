@@ -1,5 +1,6 @@
 package github.com.gengyoubo.CE.LP.ponder;
 
+import github.com.gengyoubo.CE.LP.Block.BasicEnergyPipeBlock;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerBlockEntity;
 import github.com.gengyoubo.CE.LP.IOType;
@@ -55,7 +56,7 @@ public class CESpaceTowerPonderScenes {
         createScene.idle(10);
 
         BlockPos wire = util.grid().at(0, 1, 3);
-        createScene.world().setBlock(wire, CELPBlock.BASIC_WIRE.get().defaultBlockState(), false);
+        createScene.world().setBlock(wire, createWireState(Direction.WEST, Direction.EAST), false);
         createScene.world().showSection(util.select().position(wire), Direction.DOWN);
         createScene.idle(5);
 
@@ -101,7 +102,7 @@ public class CESpaceTowerPonderScenes {
         createScene.idle(5);
 
         wire = util.grid().at(6, 1, 3);
-        createScene.world().setBlock(wire, CELPBlock.BASIC_WIRE.get().defaultBlockState(), false);
+        createScene.world().setBlock(wire, createWireState(Direction.WEST, Direction.EAST), false);
         createScene.world().showSection(util.select().position(wire), Direction.DOWN);
         createScene.idle(5);
 
@@ -145,5 +146,20 @@ public class CESpaceTowerPonderScenes {
 
     private static BlockState createMotorState(Direction facing) {
         return getCreateBlock("creative_motor").defaultBlockState().setValue(BlockStateProperties.FACING, facing);
+    }
+
+    private static BlockState createWireState(Direction... connections) {
+        BlockState state = CELPBlock.BASIC_WIRE.get().defaultBlockState();
+        for (Direction connection : connections) {
+            state = switch (connection) {
+                case NORTH -> state.setValue(BasicEnergyPipeBlock.NORTH, true);
+                case SOUTH -> state.setValue(BasicEnergyPipeBlock.SOUTH, true);
+                case EAST -> state.setValue(BasicEnergyPipeBlock.EAST, true);
+                case WEST -> state.setValue(BasicEnergyPipeBlock.WEST, true);
+                case UP -> state.setValue(BasicEnergyPipeBlock.UP, true);
+                case DOWN -> state.setValue(BasicEnergyPipeBlock.DOWN, true);
+            };
+        }
+        return state;
     }
 }
