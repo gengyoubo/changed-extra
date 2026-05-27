@@ -110,6 +110,11 @@ dependencies {
     //AE2
     compileOnly fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
     compileOnly fg.deobf("curse.maven:guideme-1173950:7127447")
+    //热力系列
+    runtimeOnly fg.deobf("curse.maven:cofh-core-69162:5374122")
+    runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:5443583")
+    runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:5372749")
+    implementation fg.deobf("curse.maven:thermal-dynamics-227443:5372747")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")

@@ -14,26 +14,28 @@ public class SpaceTowerForgeEnergyStorage implements IEnergyStorage {
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        if (maxReceive <= 0 || !canReceive()) {
+        SpaceTowerEnergyType type = getReceiveType();
+        if (maxReceive <= 0 || type == null) {
             return 0;
         }
 
         int accepted = Math.min(maxReceive, getFreeForgeEnergy());
         if (!simulate && accepted > 0) {
-            tower.receiveEnergyAsType(SpaceTowerEnergyType.J, accepted);
+            tower.receiveEnergyAsType(type, accepted);
         }
         return accepted;
     }
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-        if (maxExtract <= 0 || !canExtract()) {
+        SpaceTowerEnergyType type = getExtractType();
+        if (maxExtract <= 0 || type == null) {
             return 0;
         }
 
         int extracted = Math.min(maxExtract, getEnergyStored());
         if (!simulate && extracted > 0) {
-            return (int)Math.floor(tower.extractEnergyAsType(SpaceTowerEnergyType.J, extracted));
+            return (int)Math.floor(tower.extractEnergyAsType(type, extracted));
         }
         return extracted;
     }
@@ -50,15 +52,43 @@ public class SpaceTowerForgeEnergyStorage implements IEnergyStorage {
 
     @Override
     public boolean canExtract() {
-        return tower.getMode(SpaceTowerEnergyType.J) == IOType.OUTPUT && getEnergyStored() > 0;
+        return getExtractType() != null && getEnergyStored() > 0;
     }
 
     @Override
     public boolean canReceive() {
-        return tower.getMode(SpaceTowerEnergyType.J) == IOType.INPUT && getFreeForgeEnergy() > 0;
+        return getReceiveType() != null && getFreeForgeEnergy() > 0;
     }
 
     private int getFreeForgeEnergy() {
         return Math.max(0, getMaxEnergyStored() - getEnergyStored());
+    }
+
+    public static SpaceTowerEnergyType getReceiveType(SpaceTowerAccess tower) {
+        if (tower.getMode(SpaceTowerEnergyType.RF) == IOType.INPUT) {
+            return SpaceTowerEnergyType.RF;
+        }
+        if (tower.getMode(SpaceTowerEnergyType.J) == IOType.INPUT) {
+            return SpaceTowerEnergyType.J;
+        }
+        return null;
+    }
+
+    public static SpaceTowerEnergyType getExtractType(SpaceTowerAccess tower) {
+        if (tower.getMode(SpaceTowerEnergyType.RF) == IOType.OUTPUT) {
+            return SpaceTowerEnergyType.RF;
+        }
+        if (tower.getMode(SpaceTowerEnergyType.J) == IOType.OUTPUT) {
+            return SpaceTowerEnergyType.J;
+        }
+        return null;
+    }
+
+    private SpaceTowerEnergyType getReceiveType() {
+        return getReceiveType(tower);
+    }
+
+    private SpaceTowerEnergyType getExtractType() {
+        return getExtractType(tower);
     }
 }

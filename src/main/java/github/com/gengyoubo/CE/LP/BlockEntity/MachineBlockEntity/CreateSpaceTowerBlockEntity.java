@@ -306,6 +306,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
         }
 
         pushEnergy();
+        SpaceTowerForgeEnergyPusher.pull(level, worldPosition, this);
         SpaceTowerForgeEnergyPusher.push(level, worldPosition, this);
     }
 

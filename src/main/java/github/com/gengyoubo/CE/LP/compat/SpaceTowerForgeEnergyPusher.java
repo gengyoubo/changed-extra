@@ -17,7 +17,8 @@ public final class SpaceTowerForgeEnergyPusher {
     }
 
     public static void push(Level level, BlockPos pos, SpaceTowerAccess tower) {
-        if (level == null || level.isClientSide || tower.getMode(SpaceTowerEnergyType.J) != IOType.OUTPUT) {
+        SpaceTowerEnergyType type = SpaceTowerForgeEnergyStorage.getExtractType(tower);
+        if (level == null || level.isClientSide || type == null) {
             return;
         }
 
@@ -27,11 +28,27 @@ public final class SpaceTowerForgeEnergyPusher {
                 continue;
             }
 
-            neighbor.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()).ifPresent(storage -> pushTo(tower, storage));
+            neighbor.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()).ifPresent(storage -> pushTo(tower, storage, type));
         }
     }
 
-    private static void pushTo(SpaceTowerAccess tower, IEnergyStorage storage) {
+    public static void pull(Level level, BlockPos pos, SpaceTowerAccess tower) {
+        SpaceTowerEnergyType type = SpaceTowerForgeEnergyStorage.getReceiveType(tower);
+        if (level == null || level.isClientSide || type == null) {
+            return;
+        }
+
+        for (Direction direction : Direction.values()) {
+            BlockEntity neighbor = level.getBlockEntity(pos.relative(direction));
+            if (neighbor == null) {
+                continue;
+            }
+
+            neighbor.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()).ifPresent(storage -> pullFrom(tower, storage, type));
+        }
+    }
+
+    private static void pushTo(SpaceTowerAccess tower, IEnergyStorage storage, SpaceTowerEnergyType type) {
         if (!storage.canReceive()) {
             return;
         }
@@ -41,14 +58,32 @@ public final class SpaceTowerForgeEnergyPusher {
             return;
         }
 
-        double extracted = tower.extractEnergyAsType(SpaceTowerEnergyType.J, accepted);
+        double extracted = tower.extractEnergyAsType(type, accepted);
         if (extracted <= 0.0D) {
             return;
         }
 
         int sent = storage.receiveEnergy((int)Math.floor(extracted), false);
         if (sent < extracted) {
-            tower.refundEnergyAsType(SpaceTowerEnergyType.J, extracted - sent);
+            tower.refundEnergyAsType(type, extracted - sent);
         }
+    }
+
+    private static void pullFrom(SpaceTowerAccess tower, IEnergyStorage storage, SpaceTowerEnergyType type) {
+        if (!storage.canExtract() || tower.getEnergyStored() >= tower.getMaxEnergyStored()) {
+            return;
+        }
+
+        int extractable = storage.extractEnergy(TRANSFER_PER_TICK, true);
+        if (extractable <= 0) {
+            return;
+        }
+
+        int extracted = storage.extractEnergy(extractable, false);
+        if (extracted <= 0) {
+            return;
+        }
+
+        tower.receiveEnergyAsType(type, extracted);
     }
 }

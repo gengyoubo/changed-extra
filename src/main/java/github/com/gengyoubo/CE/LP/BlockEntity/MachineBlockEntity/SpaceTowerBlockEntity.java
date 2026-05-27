@@ -55,6 +55,7 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
         }
 
         pushEnergy();
+        SpaceTowerForgeEnergyPusher.pull(level, worldPosition, this);
         SpaceTowerForgeEnergyPusher.push(level, worldPosition, this);
     }
 
