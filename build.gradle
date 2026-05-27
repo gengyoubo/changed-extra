@@ -114,7 +114,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:cofh-core-69162:5374122")
     runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:5443583")
     runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:5372749")
-    implementation fg.deobf("curse.maven:thermal-dynamics-227443:5372747")
+    compileOnly fg.deobf("curse.maven:thermal-dynamics-227443:5372747")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")
@@ -253,6 +253,7 @@ tasks.named('processResources', ProcessResources).configure {
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:deprecation"
 }
+def mixinRefmapDir = "${buildDir}/tmp/compileJava"
 jar {
     manifest {
         attributes([
@@ -278,7 +279,9 @@ jar {
     // 包含 refmap 文件（确保它在正确的位置）
     from("${buildDir}/classes/java/main") {
         include '**/*.refmap.json'
-        into 'META-INF'
+    }
+    from(mixinRefmapDir) {
+        include '**/*.refmap.json'
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     finalizedBy 'reobfJar'
@@ -312,7 +315,9 @@ tasks.register('devJar', Jar) {
     from(sourceSets.main.output)
     from("${buildDir}/classes/java/main") {
         include '**/*.refmap.json'
-        into 'META-INF'
+    }
+    from(mixinRefmapDir) {
+        include '**/*.refmap.json'
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
