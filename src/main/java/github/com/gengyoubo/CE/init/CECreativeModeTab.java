@@ -31,6 +31,16 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.LATEX_GRAY.get());
                                             output.accept(CEItem.LATEX_INGOT.get());
                                             output.accept(CEItem.UNBAKED_LATEX_INGOT.get());
+                                            output.accept(CEItem.DARK_LATEX_LOG.get());
+                                            output.accept(CEItem.DARK_LATEX_PLANKS.get());
+                                            output.accept(CEItem.DARK_LATEX_LEAVES.get());
+                                            output.accept(CEItem.DARK_LATEX_STONE.get());
+                                            output.accept(CEItem.DARK_LATEX_COBBLESTONE.get());
+                                            output.accept(CEItem.WHITE_LATEX_LOG.get());
+                                            output.accept(CEItem.WHITE_LATEX_PLANKS.get());
+                                            output.accept(CEItem.WHITE_LATEX_LEAVES.get());
+                                            output.accept(CEItem.WHITE_LATEX_STONE.get());
+                                            output.accept(CEItem.WHITE_LATEX_COBBLESTONE.get());
                                         })
                                         .build()
                         );

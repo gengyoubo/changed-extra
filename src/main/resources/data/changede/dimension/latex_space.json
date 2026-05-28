@@ -1,0 +1,19 @@
+{
+  "type": "changede:latex_space",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "minecraft:overworld",
+    "biome_source": {
+      "type": "minecraft:checkerboard",
+      "scale": 3,
+      "biomes": [
+        "changede:dark_latex_plains",
+        "changede:dark_latex_forest",
+        "changede:dark_latex_sea",
+        "changede:white_latex_plains",
+        "changede:white_latex_forest",
+        "changede:white_latex_sea"
+      ]
+    }
+  }
+}

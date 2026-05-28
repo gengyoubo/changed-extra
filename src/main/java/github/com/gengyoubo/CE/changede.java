@@ -11,6 +11,7 @@ import github.com.gengyoubo.CE.commands.CheckSpecialFormCommand;
 import github.com.gengyoubo.CE.commands.ItemInfoCommand;
 import github.com.gengyoubo.CE.commands.ReloadEMCCommand;
 import github.com.gengyoubo.CE.events.GooCoreTooltipEvents;
+import github.com.gengyoubo.CE.events.LatexSpaceTerrainEvents;
 import github.com.gengyoubo.CE.events.LatexDeathHandlerEvents;
 import github.com.gengyoubo.CE.events.MimicYufengWingsFlightEvents;
 import github.com.gengyoubo.CE.events.SWEvents;
@@ -26,11 +27,16 @@ import github.com.gengyoubo.CE.fix.SpecialLatexFix.PatreonBenefitsFix;
 import github.com.gengyoubo.CE.projectextended.PERegister;
 import github.com.gengyoubo.CE.projectextended.PTotemOfUndying;
 import github.com.gengyoubo.CE.projectextended.events.CEShieldEvents;
+import github.com.gengyoubo.CE.init.CEBlock;
 import github.com.gengyoubo.CE.init.CECreativeModeTab;
 import github.com.gengyoubo.CE.init.CEEnchantment;
 import github.com.gengyoubo.CE.init.CEGameRules;
 import github.com.gengyoubo.CE.init.CEItem;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -44,6 +50,7 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -52,8 +59,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mod("changede")
@@ -69,6 +78,7 @@ public class changede {
         bus.addListener(EventPriority.NORMAL, false, FMLCommonSetupEvent.class, this::commonSetup);
         CEEnchantment.ENCHANTMENTS.register(bus);
         CECreativeModeTab.CREATIVE_MODE_TABS.register(bus);
+        CEBlock.BLOCKS.register(bus);
         CEItem.ITEMS.register(bus);
         CELPItem.ITEMS.register(bus);
         CELPBlock.WIRE_BLOCKS.register(bus);
@@ -104,6 +114,7 @@ public class changede {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, BlockEvent.BreakEvent.class, XPBoostEvents::onBlockXP);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingHurtEvent.class, SWEvents::onLivingHurt);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, MimicYufengWingsFlightEvents::onPlayerTick);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, ChunkEvent.Load.class, LatexSpaceTerrainEvents::onChunkLoad);
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, EntityJoinLevelEvent.class, latexStartEvents::onPlayerJoin);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.Clone.class, latexStartEvents::onPlayerClone);
@@ -146,5 +157,23 @@ public class changede {
         }, "changede-patreon-sync");
         worker.setDaemon(true);
         worker.start();
+    }
+    public static Optional<Block> getBlock(String path) {
+        try {
+            ResourceLocation id = ResourceLocation.parse(path);
+
+            Block block = ForgeRegistries.BLOCKS.getValue(id);
+
+            if (block == null || block == Blocks.AIR) {
+                LOGGER.warn("Block {} not found or is air", path);
+                return Optional.of(Blocks.AIR);
+            }
+
+            return Optional.of(block);
+
+        } catch (Exception e) {
+            LOGGER.warn("Invalid block id: {}", path);
+            return Optional.of(Blocks.AIR);
+        }
     }
 }

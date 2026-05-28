@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.init;
 
 import github.com.gengyoubo.CE.items.*;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -25,6 +26,26 @@ public class CEItem {
             ITEMS.register("latex_ingot", LatexIngot::new);
     public static final RegistryObject<Item> UNBAKED_LATEX_INGOT =
             ITEMS.register("unbaked_latex_ingot", UnbakedLatexIngot::new);
+    public static final RegistryObject<Item> DARK_LATEX_LOG =
+            ITEMS.register("dark_latex_log", () -> new BlockItem(CEBlock.DARK_LATEX_LOG.get(), new Item.Properties()));
+    public static final RegistryObject<Item> DARK_LATEX_PLANKS =
+            ITEMS.register("dark_latex_planks", () -> new BlockItem(CEBlock.DARK_LATEX_PLANKS.get(), new Item.Properties()));
+    public static final RegistryObject<Item> DARK_LATEX_LEAVES =
+            ITEMS.register("dark_latex_leaves", () -> new BlockItem(CEBlock.DARK_LATEX_LEAVES.get(), new Item.Properties()));
+    public static final RegistryObject<Item> DARK_LATEX_STONE =
+            ITEMS.register("dark_latex_stone", () -> new BlockItem(CEBlock.DARK_LATEX_STONE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> DARK_LATEX_COBBLESTONE =
+            ITEMS.register("dark_latex_cobblestone", () -> new BlockItem(CEBlock.DARK_LATEX_COBBLESTONE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WHITE_LATEX_LOG =
+            ITEMS.register("white_latex_log", () -> new BlockItem(CEBlock.WHITE_LATEX_LOG.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WHITE_LATEX_PLANKS =
+            ITEMS.register("white_latex_planks", () -> new BlockItem(CEBlock.WHITE_LATEX_PLANKS.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WHITE_LATEX_LEAVES =
+            ITEMS.register("white_latex_leaves", () -> new BlockItem(CEBlock.WHITE_LATEX_LEAVES.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WHITE_LATEX_STONE =
+            ITEMS.register("white_latex_stone", () -> new BlockItem(CEBlock.WHITE_LATEX_STONE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WHITE_LATEX_COBBLESTONE =
+            ITEMS.register("white_latex_cobblestone", () -> new BlockItem(CEBlock.WHITE_LATEX_COBBLESTONE.get(), new Item.Properties()));
 
     private static boolean hasProjectE() {
         return ModList.get().isLoaded(PROJECT_E_MODID);

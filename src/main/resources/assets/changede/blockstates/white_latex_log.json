@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=x": { "model": "changede:block/white_latex_log", "x": 90, "y": 90 },
+    "axis=y": { "model": "changede:block/white_latex_log" },
+    "axis=z": { "model": "changede:block/white_latex_log", "x": 90 }
+  }
+}

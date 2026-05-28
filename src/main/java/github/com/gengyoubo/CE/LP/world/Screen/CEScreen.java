@@ -3,6 +3,7 @@ package github.com.gengyoubo.CE.LP.world.Screen;
 
 import github.com.gengyoubo.CE.LP.init.CELPBlock;
 import github.com.gengyoubo.CE.LP.world.Menu.CEMenus;
+import github.com.gengyoubo.CE.init.CEBlock;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -23,6 +24,8 @@ public class CEScreen {
             MenuScreens.register(CEMenus.LATEX_CREATIVE_EXTRANALBODY_CRAFT_TABLE.get(), LatexCreativeExtranalbodyCraftTableScreen::new);
             MenuScreens.register(CEMenus.SPACE_TOWER.get(), SpaceTowerScreen::new);
             ItemBlockRenderTypes.setRenderLayer(CELPBlock.SPACE_TOWER.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CEBlock.DARK_LATEX_LEAVES.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CEBlock.WHITE_LATEX_LEAVES.get(), RenderType.cutout());
             registerPonderPluginIfAvailable();
         });
     }
