@@ -1,24 +1,31 @@
 {
-  "version": 0,
+  "version": 3,
   "forms": [
     {
       "location": "8922cbbc-0c40-4262-b0b8-a153ec94ecdc",
-      "particles": [],
+      "particles": ["white", "white", "white", "white", "white"],
       "shadowsize": 0.5,
       "width": 0.7,
       "height": 1.95,
-      "animation": {
-        "hastail": false,
-        "haswings": false,
-        "haswingsV2": false,
-        "swimtail": false
-      },
-      "primaryColor": "white",
+      "primaryColor": "gray",
       "secondaryColor": "white",
+      "animation": {
+        "hasTail": false,
+        "swimTail": false,
+        "hasWings": false,
+        "hasWingsV2": false
+      },
       "version": 1,
       "variant": {
-        "groundSpeed": 1.0,
-        "swimSpeed": 1.0
+        "groundSpeed": 0.875,
+        "swimSpeed": 2,
+        "canGlide": true,
+        "flySpeed": 1.0,
+        "breatheMode": "ANY",
+        "abilities": [
+          "changed:launch_glide",
+          "changed:accelerated_glide"
+        ]
       }
     }
   ]

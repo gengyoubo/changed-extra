@@ -41,6 +41,7 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.WHITE_LATEX_LEAVES.get());
                                             output.accept(CEItem.WHITE_LATEX_STONE.get());
                                             output.accept(CEItem.WHITE_LATEX_COBBLESTONE.get());
+                                            output.accept(CEItem.LATEX_PAINTING_PORTAL.get());
                                         })
                                         .build()
                         );

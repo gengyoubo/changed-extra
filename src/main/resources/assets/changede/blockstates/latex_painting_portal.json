@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "changede:block/latex_painting_portal" },
+    "facing=south": { "model": "changede:block/latex_painting_portal", "y": 180 },
+    "facing=west": { "model": "changede:block/latex_painting_portal", "y": 270 },
+    "facing=east": { "model": "changede:block/latex_painting_portal", "y": 90 }
+  }
+}

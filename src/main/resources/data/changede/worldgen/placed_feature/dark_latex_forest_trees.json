@@ -17,6 +17,31 @@
       "heightmap": "OCEAN_FLOOR"
     },
     {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "offset": [
+          0,
+          -1,
+          0
+        ],
+        "blocks": [
+          "minecraft:grass_block",
+          "minecraft:dirt",
+          "minecraft:coarse_dirt",
+          "minecraft:rooted_dirt",
+          "minecraft:podzol",
+          "minecraft:mycelium",
+          "minecraft:mud",
+          "minecraft:clay",
+          "minecraft:sand",
+          "minecraft:red_sand",
+          "minecraft:gravel",
+          "changed:dark_latex_block"
+        ]
+      }
+    },
+    {
       "type": "minecraft:biome"
     }
   ]

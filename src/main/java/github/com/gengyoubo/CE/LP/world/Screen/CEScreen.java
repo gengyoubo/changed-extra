@@ -3,11 +3,18 @@ package github.com.gengyoubo.CE.LP.world.Screen;
 
 import github.com.gengyoubo.CE.LP.init.CELPBlock;
 import github.com.gengyoubo.CE.LP.world.Menu.CEMenus;
+import github.com.gengyoubo.CE.client.renderer.LatexPaintingPortalEntityRenderer;
+import github.com.gengyoubo.CE.client.renderer.LatexPaintingPortalRenderer;
+import github.com.gengyoubo.CE.client.renderer.LatexPortalRenderManager;
 import github.com.gengyoubo.CE.init.CEBlock;
+import github.com.gengyoubo.CE.init.CEBlockEntity;
+import github.com.gengyoubo.CE.init.CEEntity;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.ModList;
@@ -15,6 +22,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class CEScreen {
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(CEBlockEntity.LATEX_PAINTING_PORTAL.get(), LatexPaintingPortalRenderer::new);
+        event.registerEntityRenderer(CEEntity.LATEX_PAINTING_PORTAL.get(), LatexPaintingPortalEntityRenderer::new);
+    }
+
     @SubscribeEvent
     @SuppressWarnings("removal")
     public static void clientLoad(FMLClientSetupEvent event) {
@@ -26,6 +39,7 @@ public class CEScreen {
             ItemBlockRenderTypes.setRenderLayer(CELPBlock.SPACE_TOWER.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(CEBlock.DARK_LATEX_LEAVES.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(CEBlock.WHITE_LATEX_LEAVES.get(), RenderType.cutout());
+            MinecraftForge.EVENT_BUS.addListener(LatexPortalRenderManager::onRenderLevelStage);
             registerPonderPluginIfAvailable();
         });
     }

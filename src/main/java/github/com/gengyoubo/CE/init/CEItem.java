@@ -46,6 +46,8 @@ public class CEItem {
             ITEMS.register("white_latex_stone", () -> new BlockItem(CEBlock.WHITE_LATEX_STONE.get(), new Item.Properties()));
     public static final RegistryObject<Item> WHITE_LATEX_COBBLESTONE =
             ITEMS.register("white_latex_cobblestone", () -> new BlockItem(CEBlock.WHITE_LATEX_COBBLESTONE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> LATEX_PAINTING_PORTAL =
+            ITEMS.register("latex_painting_portal", () -> new LatexPaintingPortalItem(new Item.Properties()));
 
     private static boolean hasProjectE() {
         return ModList.get().isLoaded(PROJECT_E_MODID);

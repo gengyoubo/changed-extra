@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "changede:dark_latex_log"
+    }
+  ],
+  "result": {
+    "item": "changede:dark_latex_planks",
+    "count": 4
+  }
+}

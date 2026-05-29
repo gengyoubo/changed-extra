@@ -7,31 +7,31 @@
   "spawners": [
     {
       "type": "changed:dark_latex_wolf_male",
-      "weight": 12,
-      "minCount": 1,
-      "maxCount": 3
+      "weight": 40,
+      "minCount": 2,
+      "maxCount": 5
     },
     {
       "type": "changed:dark_latex_wolf_female",
-      "weight": 12,
-      "minCount": 1,
-      "maxCount": 3
+      "weight": 40,
+      "minCount": 2,
+      "maxCount": 5
     },
     {
       "type": "changed:dark_latex_wolf_pup",
-      "weight": 6,
+      "weight": 24,
+      "minCount": 2,
+      "maxCount": 4
+    },
+    {
+      "type": "changed:dark_latex_yufeng",
+      "weight": 12,
       "minCount": 1,
       "maxCount": 2
     },
     {
-      "type": "changed:dark_latex_yufeng",
-      "weight": 3,
-      "minCount": 1,
-      "maxCount": 1
-    },
-    {
       "type": "changed:dark_latex_double_yufeng",
-      "weight": 1,
+      "weight": 6,
       "minCount": 1,
       "maxCount": 1
     }

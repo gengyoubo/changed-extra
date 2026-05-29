@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "changede:block/dark_latex_stone"
+    "all": "changede:block/dark_latex_cobblestone"
   }
 }

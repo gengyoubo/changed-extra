@@ -10,6 +10,7 @@
     "ChangedConfigCommonMixin",
     "ChangedEntitiesMixin",
     "CommandTransfurMixin",
+    "DarkLatexWolfPupSupportMixin",
     "GooCoreBlockMixin",
     "LatexCoveredBlocksRendererMixin",
     "LatexSyringeMixin",
@@ -19,7 +20,8 @@
     "SyncTransfurPacketMixin",
     "TransfurVariantInstanceFlySpeedMixin",
     "TransfurVariantsInfoMixin",
-    "TransfurVariantSpecialLatexMixin"
+    "TransfurVariantSpecialLatexMixin",
+    "WhiteLatexBlockLatexSpaceMixin"
   ],
   "injectors": {
     "defaultRequire": 1
