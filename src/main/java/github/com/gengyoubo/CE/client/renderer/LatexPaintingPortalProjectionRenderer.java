@@ -22,7 +22,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 public class LatexPaintingPortalProjectionRenderer {
-    private static final int GRID_SIZE = 97;
+    private static final int GRID_SIZE = 129;
     private static final float INNER_MIN = -0.45F;
     private static final float INNER_MAX = 0.45F;
     private static final float CELL_SIZE = (INNER_MAX - INNER_MIN) / GRID_SIZE;

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class LatexPaintingPortalPreviewPacket {
-    private static final int MAX_BLOCKS = 32768;
+    private static final int MAX_BLOCKS = 60000;
 
     private final ResourceLocation sourceDimension;
     private final BlockPos portalPos;
@@ -37,9 +37,9 @@ public class LatexPaintingPortalPreviewPacket {
         buffer.writeVarInt(packet.skyColor);
         buffer.writeVarInt(packet.entries.size());
         for (Entry entry : packet.entries) {
-            buffer.writeByte(entry.dx());
-            buffer.writeByte(entry.dy());
-            buffer.writeByte(entry.dz());
+            buffer.writeShort(entry.dx());
+            buffer.writeShort(entry.dy());
+            buffer.writeShort(entry.dz());
             buffer.writeVarInt(entry.stateId());
         }
     }
@@ -52,7 +52,7 @@ public class LatexPaintingPortalPreviewPacket {
         int storedSize = Math.min(encodedSize, MAX_BLOCKS);
         List<Entry> entries = new ArrayList<>(storedSize);
         for (int i = 0; i < encodedSize; i++) {
-            Entry entry = new Entry(buffer.readByte(), buffer.readByte(), buffer.readByte(), buffer.readVarInt());
+            Entry entry = new Entry(buffer.readShort(), buffer.readShort(), buffer.readShort(), buffer.readVarInt());
             if (i < MAX_BLOCKS) {
                 entries.add(entry);
             }
@@ -77,6 +77,6 @@ public class LatexPaintingPortalPreviewPacket {
         }
     }
 
-    public record Entry(byte dx, byte dy, byte dz, int stateId) {
+    public record Entry(int dx, int dy, int dz, int stateId) {
     }
 }

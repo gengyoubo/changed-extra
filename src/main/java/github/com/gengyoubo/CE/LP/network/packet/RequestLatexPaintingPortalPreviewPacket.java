@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class RequestLatexPaintingPortalPreviewPacket {
-    private static final int RADIUS = 48;
-    private static final int VERTICAL_ABOVE = 40;
-    private static final int VERTICAL_BELOW = 24;
-    private static final int MAX_BLOCKS = 32760;
+    private static final int RADIUS = 72;
+    private static final int VERTICAL_ABOVE = 56;
+    private static final int VERTICAL_BELOW = 32;
+    private static final int MAX_BLOCKS = 50000;
     private static final double PORTAL_HALF_WIDTH = 1.5D;
     private static final double PORTAL_HALF_HEIGHT = 1.5D;
     private static final double HORIZONTAL_VIEW_SPREAD = 0.95D;
@@ -195,7 +195,17 @@ public class RequestLatexPaintingPortalPreviewPacket {
                     return entries;
                 }
 
-                addVisibleColumnBlocks(entries, level, center, dx, dz, facing);
+                addVisibleColumnBlocks(entries, level, center, dx, dz, facing, true);
+            }
+        }
+
+        for (int dx = -RADIUS; dx <= RADIUS; dx++) {
+            for (int dz = -RADIUS; dz <= RADIUS; dz++) {
+                if (entries.size() >= MAX_BLOCKS) {
+                    return entries;
+                }
+
+                addVisibleColumnBlocks(entries, level, center, dx, dz, facing, false);
             }
         }
 
@@ -206,7 +216,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
     }
 
     private static void addVisibleColumnBlocks(List<LatexPaintingPortalPreviewPacket.Entry> entries, ServerLevel level, BlockPos center, int dx, int dz,
-                                               @Nullable Direction facing) {
+                                               @Nullable Direction facing, boolean exposedPass) {
         int encodedX = dx;
         int encodedZ = dz;
         if (facing != null) {
@@ -235,7 +245,8 @@ public class RequestLatexPaintingPortalPreviewPacket {
             if (state.isAir() || state.getRenderShape() != RenderShape.MODEL) {
                 continue;
             }
-            if (!isExposed(level, sample)) {
+            boolean exposed = isExposed(level, sample);
+            if (exposedPass != exposed) {
                 continue;
             }
 
@@ -245,9 +256,9 @@ public class RequestLatexPaintingPortalPreviewPacket {
             }
 
             entries.add(new LatexPaintingPortalPreviewPacket.Entry(
-                    (byte) encodedX,
-                    (byte) encodedY,
-                    (byte) encodedZ,
+                    encodedX,
+                    encodedY,
+                    encodedZ,
                     Block.getId(state)
             ));
         }
@@ -280,7 +291,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
         for (int x = -2; x <= 2; x++) {
             for (int z = -2; z <= 2; z++) {
                 BlockState state = ((x + z) & 1) == 0 ? dark : white;
-                entries.add(new LatexPaintingPortalPreviewPacket.Entry((byte) x, (byte) 0, (byte) z, Block.getId(state)));
+                entries.add(new LatexPaintingPortalPreviewPacket.Entry(x, 0, z, Block.getId(state)));
             }
         }
     }
