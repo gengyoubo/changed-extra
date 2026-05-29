@@ -30,8 +30,8 @@ import java.util.List;
 public class LatexPaintingPortalEntity extends Entity {
     public static final double PORTAL_WIDTH = 3.0D;
     public static final double PORTAL_HEIGHT = 3.0D;
-    private static final double WALL_OFFSET = 0.72D;
-    private static final double PORTAL_THICKNESS = 0.35D;
+    private static final double WALL_OFFSET = 0.51D;
+    private static final double PORTAL_THICKNESS = 0.10D;
 
     private static final EntityDataAccessor<Integer> FACING =
             SynchedEntityData.defineId(LatexPaintingPortalEntity.class, EntityDataSerializers.INT);
@@ -41,6 +41,8 @@ public class LatexPaintingPortalEntity extends Entity {
             SynchedEntityData.defineId(LatexPaintingPortalEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Integer> TARGET_FACING =
             SynchedEntityData.defineId(LatexPaintingPortalEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> RENDER_REVERSED =
+            SynchedEntityData.defineId(LatexPaintingPortalEntity.class, EntityDataSerializers.BOOLEAN);
 
     public LatexPaintingPortalEntity(EntityType<? extends LatexPaintingPortalEntity> type, Level level) {
         super(type, level);
@@ -63,6 +65,7 @@ public class LatexPaintingPortalEntity extends Entity {
         entityData.define(TARGET_DIMENSION, LatexPaintingPortalBlock.LATEX_SPACE.location().toString());
         entityData.define(TARGET_POS, BlockPos.ZERO);
         entityData.define(TARGET_FACING, Direction.SOUTH.get2DDataValue());
+        entityData.define(RENDER_REVERSED, false);
     }
 
     public Direction getFacing() {
@@ -98,6 +101,14 @@ public class LatexPaintingPortalEntity extends Entity {
         entityData.set(TARGET_DIMENSION, dimension.location().toString());
         entityData.set(TARGET_POS, pos.immutable());
         entityData.set(TARGET_FACING, (facing.getAxis().isHorizontal() ? facing : Direction.SOUTH).get2DDataValue());
+    }
+
+    public boolean isRenderReversed() {
+        return entityData.get(RENDER_REVERSED);
+    }
+
+    public void setRenderReversed(boolean renderReversed) {
+        entityData.set(RENDER_REVERSED, renderReversed);
     }
 
     @Override
@@ -202,6 +213,7 @@ public class LatexPaintingPortalEntity extends Entity {
         if (tag.contains("TargetFacing")) {
             entityData.set(TARGET_FACING, Direction.from2DDataValue(tag.getInt("TargetFacing")).get2DDataValue());
         }
+        setRenderReversed(tag.getBoolean("RenderReversed"));
     }
 
     @Override
@@ -213,6 +225,7 @@ public class LatexPaintingPortalEntity extends Entity {
         tag.putInt("TargetY", target.getY());
         tag.putInt("TargetZ", target.getZ());
         tag.putInt("TargetFacing", getTargetFacing().get2DDataValue());
+        tag.putBoolean("RenderReversed", isRenderReversed());
     }
 
     @Override

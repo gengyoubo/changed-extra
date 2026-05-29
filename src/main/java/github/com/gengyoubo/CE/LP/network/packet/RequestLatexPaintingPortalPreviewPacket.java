@@ -25,14 +25,14 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class RequestLatexPaintingPortalPreviewPacket {
-    private static final int RADIUS = 32;
-    private static final int VERTICAL_ABOVE = 24;
-    private static final int VERTICAL_BELOW = 16;
+    private static final int RADIUS = 48;
+    private static final int VERTICAL_ABOVE = 40;
+    private static final int VERTICAL_BELOW = 24;
     private static final int MAX_BLOCKS = 32760;
     private static final double PORTAL_HALF_WIDTH = 1.5D;
     private static final double PORTAL_HALF_HEIGHT = 1.5D;
-    private static final double HORIZONTAL_VIEW_SPREAD = 0.42D;
-    private static final double VERTICAL_VIEW_SPREAD = 0.32D;
+    private static final double HORIZONTAL_VIEW_SPREAD = 0.95D;
+    private static final double VERTICAL_VIEW_SPREAD = 0.68D;
 
     private final BlockPos portalPos;
     private final int portalEntityId;
@@ -183,7 +183,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
                 return;
             }
 
-            Direction right = facing.getClockWise();
+            Direction right = facing.getCounterClockWise();
             encodedX = dx * right.getStepX() + dz * right.getStepZ();
             encodedZ = forward;
         }
@@ -231,7 +231,10 @@ public class RequestLatexPaintingPortalPreviewPacket {
         for (net.minecraft.core.Direction direction : net.minecraft.core.Direction.values()) {
             BlockPos neighborPos = pos.relative(direction);
             BlockState neighbor = level.getBlockState(neighborPos);
-            if (neighbor.isAir() || neighbor.getRenderShape() == RenderShape.INVISIBLE || !neighbor.getFluidState().isEmpty()) {
+            if (neighbor.isAir()
+                    || neighbor.getRenderShape() == RenderShape.INVISIBLE
+                    || !neighbor.getFluidState().isEmpty()
+                    || !neighbor.isCollisionShapeFullBlock(level, neighborPos)) {
                 return true;
             }
         }

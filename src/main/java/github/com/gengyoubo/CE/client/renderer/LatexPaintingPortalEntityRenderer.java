@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaintingPortalEntity> {
@@ -33,6 +34,13 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
         if (LatexPaintingPortalFramebufferRenderer.isRenderingPortalFrame()) {
             return;
         }
+        if (!isViewingFront(entity)) {
+            poseStack.pushPose();
+            poseStack.scale((float) LatexPaintingPortalEntity.PORTAL_WIDTH, (float) LatexPaintingPortalEntity.PORTAL_HEIGHT, 1.0F);
+            LatexPaintingPortalProjectionRenderer.renderBackCentered(poseStack, entity.getFacing());
+            poseStack.popPose();
+            return;
+        }
 
         Level level = entity.level();
         ResourceLocation dimension = level.dimension().location();
@@ -47,15 +55,21 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
         poseStack.pushPose();
         poseStack.scale((float) LatexPaintingPortalEntity.PORTAL_WIDTH, (float) LatexPaintingPortalEntity.PORTAL_HEIGHT, 1.0F);
         if (snapshot != null && !snapshot.blocks().isEmpty()) {
-            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot);
+            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, entity.isRenderReversed());
         } else if (LatexPortalRenderManager.getTarget(entity) == null) {
-            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot);
+            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, entity.isRenderReversed());
         } else {
-            LatexPaintingPortalFramebufferRenderer.renderCentered(poseStack, entity.getFacing(), entity, partialTick, snapshot);
+            LatexPaintingPortalFramebufferRenderer.renderCentered(poseStack, entity.getFacing(), entity, partialTick, snapshot, entity.isRenderReversed());
         }
         poseStack.popPose();
 
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+    }
+
+    private static boolean isViewingFront(LatexPaintingPortalEntity entity) {
+        Vec3 camera = net.minecraft.client.Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        Vec3 toCamera = camera.subtract(entity.position());
+        return toCamera.x * entity.getFacing().getStepX() + toCamera.z * entity.getFacing().getStepZ() > 0.0D;
     }
 
     @Override
@@ -88,13 +102,14 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
         }
 
         changede.LOGGER.warn(
-                "Latex painting portal render coords: dimension={}, portalPos={}, facing={}, targetDimension={}, targetPos={}, targetFacing={}, localX={}..{}, localY={}..{}, localZ={}..{}, blocks={}",
+                "Latex painting portal render coords: dimension={}, portalPos={}, facing={}, targetDimension={}, targetPos={}, targetFacing={}, reversed={}, localX={}..{}, localY={}..{}, localZ={}..{}, blocks={}",
                 level.dimension().location(),
                 entity.blockPosition(),
                 entity.getFacing(),
                 entity.getTargetDimension().location(),
                 entity.getTargetPos(),
                 entity.getTargetFacing(),
+                entity.isRenderReversed(),
                 minX,
                 maxX,
                 minY,

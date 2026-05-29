@@ -27,8 +27,8 @@ public class LatexPaintingPortalProjectionRenderer {
     private static final float CELL_SIZE = (INNER_MAX - INNER_MIN) / GRID_SIZE;
     private static final double PORTAL_HALF_WIDTH = 1.5D;
     private static final double PORTAL_HALF_HEIGHT = 1.5D;
-    private static final double HORIZONTAL_VIEW_SPREAD = 0.42D;
-    private static final double VERTICAL_VIEW_SPREAD = 0.32D;
+    private static final double HORIZONTAL_VIEW_SPREAD = 0.95D;
+    private static final double VERTICAL_VIEW_SPREAD = 0.68D;
     private static long lastDebugLogTick;
 
     private LatexPaintingPortalProjectionRenderer() {
@@ -36,9 +36,17 @@ public class LatexPaintingPortalProjectionRenderer {
 
     public static void renderCentered(PoseStack poseStack, MultiBufferSource bufferSource, Direction facing,
                                       LatexPaintingPortalPreviewCache.Snapshot snapshot) {
+        renderCentered(poseStack, bufferSource, facing, snapshot, false);
+    }
+
+    public static void renderCentered(PoseStack poseStack, MultiBufferSource bufferSource, Direction facing,
+                                      LatexPaintingPortalPreviewCache.Snapshot snapshot, boolean reversed) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(rotationFor(facing)));
-        poseStack.translate(0.0D, 0.0D, -0.08D);
+        poseStack.translate(0.0D, 0.0D, -0.015D);
+        if (reversed) {
+            poseStack.scale(-1.0F, 1.0F, 1.0F);
+        }
         logSnapshotSize(snapshot);
 
         Matrix4f matrix = poseStack.last().pose();
@@ -47,20 +55,23 @@ public class LatexPaintingPortalProjectionRenderer {
         RenderSystem.disableCull();
         RenderSystem.enableDepthTest();
         RenderSystem.depthFunc(GL11.GL_LEQUAL);
-        RenderSystem.depthMask(false);
+        RenderSystem.depthMask(true);
 
         Tesselator tessellator = RenderSystem.renderThreadTesselator();
         BufferBuilder bufferBuilder = tessellator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        drawQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.000F, 6, 8, 10, 255);
+        int background = skyColorFor(snapshot, 0, 0);
+        drawQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.000F, red(background), green(background), blue(background), 255);
 
         Cell[] projected = flatten(snapshot);
         for (int z = 0; z < GRID_SIZE; z++) {
             for (int x = 0; x < GRID_SIZE; x++) {
                 Cell cell = projected[z * GRID_SIZE + x];
                 int color = cell == null ? skyColorFor(snapshot, x, z) : colorFor(cell.state(), x, z);
-                color = shadeByDepth(color, cell == null ? 0 : cell.depth());
+                if (cell != null) {
+                    color = shadeByDepth(color, cell.depth());
+                }
                 float x1 = INNER_MIN + x * CELL_SIZE;
                 float x2 = x1 + CELL_SIZE;
                 float y2 = INNER_MAX - z * CELL_SIZE;
@@ -70,6 +81,37 @@ public class LatexPaintingPortalProjectionRenderer {
         }
 
         drawFrame(matrix, bufferBuilder);
+        BufferUploader.drawWithShader(bufferBuilder.end());
+
+        RenderSystem.enableCull();
+        RenderSystem.depthMask(true);
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+        RenderSystem.enableDepthTest();
+        RenderSystem.disableBlend();
+        poseStack.popPose();
+    }
+
+    public static void renderBackCentered(PoseStack poseStack, Direction facing) {
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotationFor(facing)));
+        poseStack.translate(0.0D, 0.0D, 0.015D);
+
+        Matrix4f matrix = poseStack.last().pose();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.enableBlend();
+        RenderSystem.disableCull();
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+        RenderSystem.depthMask(true);
+
+        Tesselator tessellator = RenderSystem.renderThreadTesselator();
+        BufferBuilder bufferBuilder = tessellator.getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
+        drawQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.000F, 92, 60, 34, 255);
+        drawQuad(matrix, bufferBuilder, -0.43F, -0.43F, 0.43F, 0.43F, 0.001F, 124, 83, 47, 255);
+        drawFrame(matrix, bufferBuilder);
+
         BufferUploader.drawWithShader(bufferBuilder.end());
 
         RenderSystem.enableCull();
@@ -164,7 +206,7 @@ public class LatexPaintingPortalProjectionRenderer {
     private static int projectedBlockRadius(int depth) {
         double horizontalLimit = PORTAL_HALF_WIDTH + Math.max(1, depth) * HORIZONTAL_VIEW_SPREAD;
         int diameter = (int)Math.ceil((GRID_SIZE - 1) / (horizontalLimit * 2.0D));
-        return Math.max(1, Math.min(4, diameter / 2));
+        return Math.max(2, Math.min(8, diameter / 2));
     }
 
     private static int colorFor(BlockState state, int x, int z) {

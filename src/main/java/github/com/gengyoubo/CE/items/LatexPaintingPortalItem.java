@@ -12,9 +12,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class LatexPaintingPortalItem extends Item {
+    private static final double LINK_SEARCH_RADIUS = 16.0D;
+
     public LatexPaintingPortalItem(Properties properties) {
         super(properties);
     }
@@ -26,25 +32,31 @@ public class LatexPaintingPortalItem extends Item {
             return InteractionResult.FAIL;
         }
 
+        Direction viewFacing = context.getHorizontalDirection();
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         LatexPaintingPortalEntity portal = new LatexPaintingPortalEntity(CEEntity.LATEX_PAINTING_PORTAL.get(), level, pos, face);
+        portal.setRenderReversed(false);
 
         if (level instanceof ServerLevel sourceLevel) {
             ServerLevel destination = LatexPaintingPortalBlock.getDestinationLevel(sourceLevel);
             if (destination != null) {
                 BlockPos destinationPos = LatexPaintingPortalBlock.findSafeTarget(destination, pos);
                 Direction destinationFacing = face.getOpposite();
-                LatexPaintingPortalEntity linkedPortal = new LatexPaintingPortalEntity(
-                        CEEntity.LATEX_PAINTING_PORTAL.get(),
-                        destination,
-                        destinationPos,
-                        destinationFacing
-                );
+                LatexPaintingPortalEntity linkedPortal = findNearestPortal(destination, destinationPos);
+                if (linkedPortal == null) {
+                    linkedPortal = new LatexPaintingPortalEntity(
+                            CEEntity.LATEX_PAINTING_PORTAL.get(),
+                            destination,
+                            destinationPos,
+                            destinationFacing
+                    );
+                    destination.addFreshEntity(linkedPortal);
+                }
 
-                portal.setTarget(destination.dimension(), linkedPortal.blockPosition(), destinationFacing);
-                linkedPortal.setTarget(sourceLevel.dimension(), portal.blockPosition(), face);
-                destination.addFreshEntity(linkedPortal);
+                linkedPortal.setRenderReversed(true);
+                portal.setTarget(destination.dimension(), linkedPortal.blockPosition(), viewFacing);
+                linkedPortal.setTarget(sourceLevel.dimension(), portal.blockPosition(), viewFacing);
             }
             level.addFreshEntity(portal);
             consumeItem(context);
@@ -59,5 +71,30 @@ public class LatexPaintingPortalItem extends Item {
         if (player == null || !player.getAbilities().instabuild) {
             stack.shrink(1);
         }
+    }
+
+    private static LatexPaintingPortalEntity findNearestPortal(ServerLevel level, BlockPos center) {
+        AABB area = new AABB(
+                center.getX() + 0.5D - LINK_SEARCH_RADIUS,
+                level.getMinBuildHeight(),
+                center.getZ() + 0.5D - LINK_SEARCH_RADIUS,
+                center.getX() + 0.5D + LINK_SEARCH_RADIUS,
+                level.getMaxBuildHeight(),
+                center.getZ() + 0.5D + LINK_SEARCH_RADIUS
+        );
+        List<LatexPaintingPortalEntity> portals = level.getEntitiesOfClass(
+                LatexPaintingPortalEntity.class,
+                area,
+                portal -> !portal.isRemoved() && horizontalDistanceSqr(portal, center) <= LINK_SEARCH_RADIUS * LINK_SEARCH_RADIUS
+        );
+        return portals.stream()
+                .min(Comparator.comparingDouble(portal -> horizontalDistanceSqr(portal, center)))
+                .orElse(null);
+    }
+
+    private static double horizontalDistanceSqr(LatexPaintingPortalEntity portal, BlockPos center) {
+        double dx = portal.getX() - (center.getX() + 0.5D);
+        double dz = portal.getZ() - (center.getZ() + 0.5D);
+        return dx * dx + dz * dz;
     }
 }

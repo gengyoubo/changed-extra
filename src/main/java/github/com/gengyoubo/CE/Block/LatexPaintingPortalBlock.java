@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.Block;
 
 import github.com.gengyoubo.CE.BlockEntity.LatexPaintingPortalBlockEntity;
+import github.com.gengyoubo.CE.entity.LatexPaintingPortalEntity;
 import github.com.gengyoubo.CE.init.CEBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,6 +29,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class LatexPaintingPortalBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final ResourceKey<Level> LATEX_SPACE = ResourceKey.create(
@@ -37,7 +41,10 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
 
     private static final String COOLDOWN_TAG = "changede_latex_painting_portal_cooldown";
     private static final int PORTAL_COOLDOWN_TICKS = 60;
+    private static final double RETURN_PORTAL_SEARCH_RADIUS = 16.0D;
     private static final int SAFE_TARGET_SEARCH_RADIUS = 8;
+    private static final int SURFACE_SEARCH_UP = 3;
+    private static final int SURFACE_SEARCH_DOWN = 2;
     private static final VoxelShape NORTH_SOUTH_SHAPE = box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
     private static final VoxelShape EAST_WEST_SHAPE = box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D);
 
@@ -140,14 +147,24 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
             return false;
         }
 
-        BlockPos target = findExitNearPortal(destination, targetPortalPos, targetFacing);
+        BlockPos exitPortalPos = targetPortalPos;
+        Direction exitFacing = targetFacing;
+        if (destination.dimension().equals(Level.OVERWORLD)) {
+            LatexPaintingPortalEntity nearestPortal = findNearestPortal(destination, targetPortalPos);
+            if (nearestPortal != null) {
+                exitPortalPos = nearestPortal.blockPosition();
+                exitFacing = nearestPortal.getTargetFacing();
+            }
+        }
+
+        BlockPos target = findExitNearPortal(destination, exitPortalPos, exitFacing);
         player.getPersistentData().putLong(COOLDOWN_TAG, destination.getGameTime() + PORTAL_COOLDOWN_TICKS);
         player.teleportTo(
                 destination,
                 target.getX() + 0.5D,
                 target.getY(),
                 target.getZ() + 0.5D,
-                targetFacing.toYRot(),
+                exitFacing.toYRot(),
                 player.getXRot()
         );
         return true;
@@ -184,6 +201,38 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
         return base;
     }
 
+    private static @Nullable LatexPaintingPortalEntity findNearestPortal(ServerLevel level, BlockPos center) {
+        List<LatexPaintingPortalEntity> portals = level.getEntitiesOfClass(
+                LatexPaintingPortalEntity.class,
+                horizontalSearchArea(level, center, RETURN_PORTAL_SEARCH_RADIUS),
+                portal -> !portal.isRemoved() && isWithinHorizontalRadius(portal, center, RETURN_PORTAL_SEARCH_RADIUS)
+        );
+        return portals.stream()
+                .min(Comparator.comparingDouble(portal -> horizontalDistanceSqr(portal, center)))
+                .orElse(null);
+    }
+
+    private static net.minecraft.world.phys.AABB horizontalSearchArea(ServerLevel level, BlockPos center, double radius) {
+        return new net.minecraft.world.phys.AABB(
+                center.getX() + 0.5D - radius,
+                level.getMinBuildHeight(),
+                center.getZ() + 0.5D - radius,
+                center.getX() + 0.5D + radius,
+                level.getMaxBuildHeight(),
+                center.getZ() + 0.5D + radius
+        );
+    }
+
+    private static boolean isWithinHorizontalRadius(LatexPaintingPortalEntity portal, BlockPos center, double radius) {
+        return horizontalDistanceSqr(portal, center) <= radius * radius;
+    }
+
+    private static double horizontalDistanceSqr(LatexPaintingPortalEntity portal, BlockPos center) {
+        double dx = portal.getX() - (center.getX() + 0.5D);
+        double dz = portal.getZ() - (center.getZ() + 0.5D);
+        return dx * dx + dz * dz;
+    }
+
     private static BlockPos findTarget(ServerLevel destination, BlockPos origin, boolean makeFallbackSafe) {
         destination.getChunk(origin);
         for (int radius = 0; radius <= SAFE_TARGET_SEARCH_RADIUS; radius++) {
@@ -197,7 +246,7 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
                     int z = origin.getZ() + dz;
                     destination.getChunk(x >> 4, z >> 4);
                     int surfaceY = destination.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
-                    for (int dy = 3; dy >= -8; dy--) {
+                    for (int dy = SURFACE_SEARCH_UP; dy >= -SURFACE_SEARCH_DOWN; dy--) {
                         int y = Math.max(destination.getMinBuildHeight() + 1, Math.min(surfaceY + dy, destination.getMaxBuildHeight() - 2));
                         BlockPos candidate = new BlockPos(x, y, z);
                         if (isSafeTarget(destination, candidate)) {

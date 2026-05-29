@@ -48,18 +48,30 @@ public class LatexPaintingPortalFramebufferRenderer {
 
     public static void renderCentered(PoseStack poseStack, Direction facing, LatexPaintingPortalEntity entity, float partialTick,
                                       LatexPaintingPortalPreviewCache.Snapshot snapshot) {
+        renderCentered(poseStack, facing, entity, partialTick, snapshot, false);
+    }
+
+    public static void renderCentered(PoseStack poseStack, Direction facing, LatexPaintingPortalEntity entity, float partialTick,
+                                      LatexPaintingPortalPreviewCache.Snapshot snapshot, boolean reversed) {
         RenderTarget captured = LatexPortalRenderManager.getTarget(entity);
         if (captured == null) {
             return;
         }
 
-        renderCentered(poseStack, facing, captured);
+        renderCentered(poseStack, facing, captured, reversed);
     }
 
     public static void renderCentered(PoseStack poseStack, Direction facing, RenderTarget captured) {
+        renderCentered(poseStack, facing, captured, false);
+    }
+
+    public static void renderCentered(PoseStack poseStack, Direction facing, RenderTarget captured, boolean reversed) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(LatexPaintingPortalProjectionRenderer.rotationFor(facing)));
-        poseStack.translate(0.0D, 0.0D, -0.08D);
+        poseStack.translate(0.0D, 0.0D, -0.015D);
+        if (reversed) {
+            poseStack.scale(-1.0F, 1.0F, 1.0F);
+        }
 
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, captured.getColorTextureId());
@@ -67,7 +79,7 @@ public class LatexPaintingPortalFramebufferRenderer {
         RenderSystem.disableCull();
         RenderSystem.enableDepthTest();
         RenderSystem.depthFunc(GL11.GL_LEQUAL);
-        RenderSystem.depthMask(false);
+        RenderSystem.depthMask(true);
 
         Matrix4f matrix = poseStack.last().pose();
         Tesselator tessellator = RenderSystem.renderThreadTesselator();
