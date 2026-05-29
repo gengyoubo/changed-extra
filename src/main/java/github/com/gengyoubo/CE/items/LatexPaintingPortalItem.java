@@ -32,7 +32,7 @@ public class LatexPaintingPortalItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        Direction viewFacing = context.getHorizontalDirection();
+        Direction viewFacing = context.getHorizontalDirection().getOpposite();
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         LatexPaintingPortalEntity portal = new LatexPaintingPortalEntity(CEEntity.LATEX_PAINTING_PORTAL.get(), level, pos, face);
@@ -42,7 +42,7 @@ public class LatexPaintingPortalItem extends Item {
             ServerLevel destination = LatexPaintingPortalBlock.getDestinationLevel(sourceLevel);
             if (destination != null) {
                 BlockPos destinationPos = LatexPaintingPortalBlock.findSafeTarget(destination, pos);
-                Direction destinationFacing = face.getOpposite();
+                Direction destinationFacing = viewFacing;
                 LatexPaintingPortalEntity linkedPortal = findNearestPortal(destination, destinationPos);
                 if (linkedPortal == null) {
                     linkedPortal = new LatexPaintingPortalEntity(
@@ -52,6 +52,8 @@ public class LatexPaintingPortalItem extends Item {
                             destinationFacing
                     );
                     destination.addFreshEntity(linkedPortal);
+                } else if (destination.dimension().equals(LatexPaintingPortalBlock.LATEX_SPACE)) {
+                    linkedPortal.setFacing(destinationFacing);
                 }
 
                 linkedPortal.setRenderReversed(true);

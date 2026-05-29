@@ -10,6 +10,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import github.com.gengyoubo.CE.client.LatexPaintingPortalPreviewCache;
 import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.entity.LatexPaintingPortalEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -43,6 +44,7 @@ public class LatexPaintingPortalProjectionRenderer {
                                       LatexPaintingPortalPreviewCache.Snapshot snapshot, boolean reversed) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(rotationFor(facing)));
+        poseStack.scale((float) LatexPaintingPortalEntity.PORTAL_WIDTH, (float) LatexPaintingPortalEntity.PORTAL_HEIGHT, 1.0F);
         poseStack.translate(0.0D, 0.0D, -0.015D);
         if (reversed) {
             poseStack.scale(-1.0F, 1.0F, 1.0F);
@@ -94,6 +96,7 @@ public class LatexPaintingPortalProjectionRenderer {
     public static void renderBackCentered(PoseStack poseStack, Direction facing) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(rotationFor(facing)));
+        poseStack.scale((float) LatexPaintingPortalEntity.PORTAL_WIDTH, (float) LatexPaintingPortalEntity.PORTAL_HEIGHT, 1.0F);
         poseStack.translate(0.0D, 0.0D, 0.015D);
 
         Matrix4f matrix = poseStack.last().pose();

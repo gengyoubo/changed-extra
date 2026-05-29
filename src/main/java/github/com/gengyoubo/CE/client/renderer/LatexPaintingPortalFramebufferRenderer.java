@@ -68,6 +68,7 @@ public class LatexPaintingPortalFramebufferRenderer {
     public static void renderCentered(PoseStack poseStack, Direction facing, RenderTarget captured, boolean reversed) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(LatexPaintingPortalProjectionRenderer.rotationFor(facing)));
+        poseStack.scale((float) LatexPaintingPortalEntity.PORTAL_WIDTH, (float) LatexPaintingPortalEntity.PORTAL_HEIGHT, 1.0F);
         poseStack.translate(0.0D, 0.0D, -0.015D);
         if (reversed) {
             poseStack.scale(-1.0F, 1.0F, 1.0F);

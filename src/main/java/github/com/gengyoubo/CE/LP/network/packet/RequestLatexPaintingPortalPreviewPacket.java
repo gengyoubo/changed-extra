@@ -21,6 +21,7 @@ import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -90,15 +91,18 @@ public class RequestLatexPaintingPortalPreviewPacket {
                 return;
             }
 
-            BlockPos center = target == null ? LatexPaintingPortalBlock.findPreviewTarget(previewLevel, packet.portalPos) : target.pos();
-            List<LatexPaintingPortalPreviewPacket.Entry> entries = collectPreviewBlocks(previewLevel, center, target == null ? null : target.facing());
+            BlockPos center = target == null
+                    ? LatexPaintingPortalBlock.findPreviewTarget(previewLevel, packet.portalPos)
+                    : LatexPaintingPortalBlock.findPortalPreviewCenter(previewLevel, target.pos(), target.sideFacing());
+            List<LatexPaintingPortalPreviewPacket.Entry> entries = collectPreviewBlocks(previewLevel, center, target == null ? null : target.viewFacing());
             changede.LOGGER.warn(
-                    "Sending latex painting portal preview to {} from {} at {}, targetPos={}, targetFacing={}, center={}, blocks={}",
+                    "Sending latex painting portal preview to {} from {} at {}, targetPos={}, targetFacing={}, targetSide={}, center={}, blocks={}",
                     player.getGameProfile().getName(),
                     previewLevel.dimension().location(),
                     packet.portalPos,
                     target == null ? "auto" : target.pos(),
-                    target == null ? "auto" : target.facing(),
+                    target == null ? "auto" : target.viewFacing(),
+                    target == null ? "auto" : target.sideFacing(),
                     center,
                     entries.size()
             );
@@ -146,7 +150,35 @@ public class RequestLatexPaintingPortalPreviewPacket {
             return null;
         }
 
-        return new PortalTarget(targetLevel, portal.getTargetPos(), portal.getTargetFacing());
+        LatexPaintingPortalEntity targetPortal = findNearestPortal(targetLevel, portal.getTargetPos());
+        BlockPos targetPos = targetPortal == null ? portal.getTargetPos() : targetPortal.blockPosition();
+        Direction sideFacing = targetPortal == null ? portal.getTargetFacing() : targetPortal.getFacing();
+        return new PortalTarget(targetLevel, targetPos, portal.getTargetFacing(), sideFacing);
+    }
+
+    private static @Nullable LatexPaintingPortalEntity findNearestPortal(ServerLevel level, BlockPos center) {
+        AABB area = new AABB(
+                center.getX() + 0.5D - 16.0D,
+                level.getMinBuildHeight(),
+                center.getZ() + 0.5D - 16.0D,
+                center.getX() + 0.5D + 16.0D,
+                level.getMaxBuildHeight(),
+                center.getZ() + 0.5D + 16.0D
+        );
+        List<LatexPaintingPortalEntity> portals = level.getEntitiesOfClass(
+                LatexPaintingPortalEntity.class,
+                area,
+                portal -> !portal.isRemoved() && horizontalDistanceSqr(portal, center) <= 16.0D * 16.0D
+        );
+        return portals.stream()
+                .min(Comparator.comparingDouble(portal -> horizontalDistanceSqr(portal, center)))
+                .orElse(null);
+    }
+
+    private static double horizontalDistanceSqr(LatexPaintingPortalEntity portal, BlockPos center) {
+        double dx = portal.getX() - (center.getX() + 0.5D);
+        double dz = portal.getZ() - (center.getZ() + 0.5D);
+        return dx * dx + dz * dz;
     }
 
     private static List<LatexPaintingPortalPreviewPacket.Entry> collectPreviewBlocks(ServerLevel level, BlockPos center, @Nullable Direction facing) {
@@ -183,7 +215,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
                 return;
             }
 
-            Direction right = facing.getCounterClockWise();
+            Direction right = facing.getClockWise();
             encodedX = dx * right.getStepX() + dz * right.getStepZ();
             encodedZ = forward;
         }
@@ -275,6 +307,6 @@ public class RequestLatexPaintingPortalPreviewPacket {
         return (block == null ? fallback : block).defaultBlockState();
     }
 
-    private record PortalTarget(ServerLevel level, BlockPos pos, Direction facing) {
+    private record PortalTarget(ServerLevel level, BlockPos pos, Direction viewFacing, Direction sideFacing) {
     }
 }

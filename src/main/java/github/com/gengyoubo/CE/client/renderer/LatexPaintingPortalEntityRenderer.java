@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import github.com.gengyoubo.CE.Block.LatexPaintingPortalBlock;
 import github.com.gengyoubo.CE.LP.network.CENetwork;
 import github.com.gengyoubo.CE.LP.network.packet.RequestLatexPaintingPortalPreviewPacket;
 import github.com.gengyoubo.CE.client.LatexPaintingPortalPreviewCache;
@@ -36,7 +37,6 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
         }
         if (!isViewingFront(entity)) {
             poseStack.pushPose();
-            poseStack.scale((float) LatexPaintingPortalEntity.PORTAL_WIDTH, (float) LatexPaintingPortalEntity.PORTAL_HEIGHT, 1.0F);
             LatexPaintingPortalProjectionRenderer.renderBackCentered(poseStack, entity.getFacing());
             poseStack.popPose();
             return;
@@ -51,15 +51,15 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
         LatexPaintingPortalPreviewCache.Snapshot snapshot =
                 LatexPaintingPortalPreviewCache.get(dimension, entity.blockPosition());
         logPortalRenderCoordinates(entity, snapshot);
+        boolean reversed = shouldReversePortalView(entity);
 
         poseStack.pushPose();
-        poseStack.scale((float) LatexPaintingPortalEntity.PORTAL_WIDTH, (float) LatexPaintingPortalEntity.PORTAL_HEIGHT, 1.0F);
         if (snapshot != null && !snapshot.blocks().isEmpty()) {
-            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, entity.isRenderReversed());
+            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, reversed);
         } else if (LatexPortalRenderManager.getTarget(entity) == null) {
-            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, entity.isRenderReversed());
+            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, reversed);
         } else {
-            LatexPaintingPortalFramebufferRenderer.renderCentered(poseStack, entity.getFacing(), entity, partialTick, snapshot, entity.isRenderReversed());
+            LatexPaintingPortalFramebufferRenderer.renderCentered(poseStack, entity.getFacing(), entity, partialTick, snapshot, reversed);
         }
         poseStack.popPose();
 
@@ -70,6 +70,14 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
         Vec3 camera = net.minecraft.client.Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         Vec3 toCamera = camera.subtract(entity.position());
         return toCamera.x * entity.getFacing().getStepX() + toCamera.z * entity.getFacing().getStepZ() > 0.0D;
+    }
+
+    private static boolean shouldReversePortalView(LatexPaintingPortalEntity entity) {
+        boolean reversed = entity.isRenderReversed();
+        if (entity.level().dimension().equals(LatexPaintingPortalBlock.LATEX_SPACE)) {
+            return !reversed;
+        }
+        return reversed;
     }
 
     @Override
@@ -102,7 +110,7 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
         }
 
         changede.LOGGER.warn(
-                "Latex painting portal render coords: dimension={}, portalPos={}, facing={}, targetDimension={}, targetPos={}, targetFacing={}, reversed={}, localX={}..{}, localY={}..{}, localZ={}..{}, blocks={}",
+                "Latex painting portal render coords: dimension={}, portalPos={}, facing={}, targetDimension={}, targetPos={}, targetFacing={}, reversed={}, effectiveReversed={}, localX={}..{}, localY={}..{}, localZ={}..{}, blocks={}",
                 level.dimension().location(),
                 entity.blockPosition(),
                 entity.getFacing(),
@@ -110,6 +118,7 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
                 entity.getTargetPos(),
                 entity.getTargetFacing(),
                 entity.isRenderReversed(),
+                shouldReversePortalView(entity),
                 minX,
                 maxX,
                 minY,

@@ -148,23 +148,21 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
         }
 
         BlockPos exitPortalPos = targetPortalPos;
-        Direction exitFacing = targetFacing;
-        if (destination.dimension().equals(Level.OVERWORLD)) {
-            LatexPaintingPortalEntity nearestPortal = findNearestPortal(destination, targetPortalPos);
-            if (nearestPortal != null) {
-                exitPortalPos = nearestPortal.blockPosition();
-                exitFacing = nearestPortal.getTargetFacing();
-            }
+        Direction exitSideFacing = targetFacing;
+        LatexPaintingPortalEntity nearestPortal = findNearestPortal(destination, targetPortalPos);
+        if (nearestPortal != null) {
+            exitPortalPos = nearestPortal.blockPosition();
+            exitSideFacing = nearestPortal.getFacing();
         }
 
-        BlockPos target = findExitNearPortal(destination, exitPortalPos, exitFacing);
+        BlockPos target = findExitNearPortal(destination, exitPortalPos, exitSideFacing);
         player.getPersistentData().putLong(COOLDOWN_TAG, destination.getGameTime() + PORTAL_COOLDOWN_TICKS);
         player.teleportTo(
                 destination,
                 target.getX() + 0.5D,
                 target.getY(),
                 target.getZ() + 0.5D,
-                exitFacing.toYRot(),
+                normalizeYaw(player.getYRot() + 180.0F),
                 player.getXRot()
         );
         return true;
@@ -178,7 +176,15 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
         return findTarget(destination, origin, false);
     }
 
+    public static BlockPos findPortalPreviewCenter(ServerLevel destination, BlockPos portalPos, Direction facing) {
+        return findExitNearPortal(destination, portalPos, facing, false);
+    }
+
     private static BlockPos findExitNearPortal(ServerLevel destination, BlockPos portalPos, Direction facing) {
+        return findExitNearPortal(destination, portalPos, facing, true);
+    }
+
+    private static BlockPos findExitNearPortal(ServerLevel destination, BlockPos portalPos, Direction facing, boolean makeFallbackSafe) {
         Direction horizontal = facing.getAxis().isHorizontal() ? facing : Direction.NORTH;
         BlockPos base = portalPos.relative(horizontal, 2);
         for (int forward = 2; forward <= 4; forward++) {
@@ -195,10 +201,20 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
             }
         }
 
-        if (!isSafeTarget(destination, base)) {
+        if (makeFallbackSafe && !isSafeTarget(destination, base)) {
             makeEmergencyLandingSpot(destination, base);
         }
         return base;
+    }
+
+    private static float normalizeYaw(float yaw) {
+        while (yaw <= -180.0F) {
+            yaw += 360.0F;
+        }
+        while (yaw > 180.0F) {
+            yaw -= 360.0F;
+        }
+        return yaw;
     }
 
     private static @Nullable LatexPaintingPortalEntity findNearestPortal(ServerLevel level, BlockPos center) {

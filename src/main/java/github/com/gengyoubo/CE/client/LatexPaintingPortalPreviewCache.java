@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LatexPaintingPortalPreviewCache {
-    private static final long REQUEST_INTERVAL_TICKS = 80L;
+    private static final long REQUEST_INTERVAL_TICKS = 40L;
     private static final Map<Key, Snapshot> SNAPSHOTS = new HashMap<>();
     private static final Map<Key, Long> LAST_REQUESTS = new HashMap<>();
 
@@ -21,11 +21,6 @@ public class LatexPaintingPortalPreviewCache {
         Key key = new Key(dimension, pos);
         Long lastRequest = LAST_REQUESTS.get(key);
         if (lastRequest != null && gameTime - lastRequest < REQUEST_INTERVAL_TICKS) {
-            return false;
-        }
-
-        Snapshot snapshot = SNAPSHOTS.get(key);
-        if (snapshot != null && !snapshot.blocks().isEmpty()) {
             return false;
         }
 
