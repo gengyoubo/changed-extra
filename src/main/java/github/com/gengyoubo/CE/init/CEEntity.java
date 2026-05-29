@@ -14,7 +14,7 @@ public class CEEntity {
     public static final RegistryObject<EntityType<LatexPaintingPortalEntity>> LATEX_PAINTING_PORTAL =
             ENTITY_TYPES.register("latex_painting_portal", () ->
                     EntityType.Builder.<LatexPaintingPortalEntity>of(LatexPaintingPortalEntity::new, MobCategory.MISC)
-                            .sized(3.0F, 3.0F)
+                            .sized((float) LatexPaintingPortalEntity.PORTAL_WIDTH, (float) LatexPaintingPortalEntity.PORTAL_HEIGHT)
                             .clientTrackingRange(10)
                             .updateInterval(10)
                             .build("latex_painting_portal"));

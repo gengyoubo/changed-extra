@@ -6,6 +6,7 @@ import github.com.gengyoubo.CE.LP.network.CENetwork;
 import github.com.gengyoubo.CE.changede;
 import github.com.gengyoubo.CE.entity.LatexPaintingPortalEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -17,16 +18,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class RequestLatexPaintingPortalPreviewPacket {
-    private static final int RADIUS = 20;
-    private static final int VERTICAL_ABOVE = 18;
-    private static final int VERTICAL_BELOW = 10;
-    private static final int MAX_BLOCKS = 22000;
+    private static final int RADIUS = 32;
+    private static final int VERTICAL_ABOVE = 24;
+    private static final int VERTICAL_BELOW = 16;
+    private static final int MAX_BLOCKS = 32760;
+    private static final double PORTAL_HALF_WIDTH = 1.5D;
+    private static final double PORTAL_HALF_HEIGHT = 1.5D;
+    private static final double HORIZONTAL_VIEW_SPREAD = 0.42D;
+    private static final double VERTICAL_VIEW_SPREAD = 0.32D;
 
     private final BlockPos portalPos;
     private final int portalEntityId;
@@ -85,18 +91,20 @@ public class RequestLatexPaintingPortalPreviewPacket {
             }
 
             BlockPos center = target == null ? LatexPaintingPortalBlock.findPreviewTarget(previewLevel, packet.portalPos) : target.pos();
-            List<LatexPaintingPortalPreviewPacket.Entry> entries = collectPreviewBlocks(previewLevel, center);
+            List<LatexPaintingPortalPreviewPacket.Entry> entries = collectPreviewBlocks(previewLevel, center, target == null ? null : target.facing());
             changede.LOGGER.warn(
-                    "Sending latex painting portal preview to {} from {} at {}, center={}, blocks={}",
+                    "Sending latex painting portal preview to {} from {} at {}, targetPos={}, targetFacing={}, center={}, blocks={}",
                     player.getGameProfile().getName(),
                     previewLevel.dimension().location(),
                     packet.portalPos,
+                    target == null ? "auto" : target.pos(),
+                    target == null ? "auto" : target.facing(),
                     center,
                     entries.size()
             );
             CENetwork.INSTANCE.send(
                     PacketDistributor.PLAYER.with(() -> player),
-                    new LatexPaintingPortalPreviewPacket(sourceLevel.dimension().location(), packet.portalPos, entries)
+                    new LatexPaintingPortalPreviewPacket(sourceLevel.dimension().location(), packet.portalPos, skyColorFor(previewLevel, center), entries)
             );
         });
         context.setPacketHandled(true);
@@ -138,10 +146,10 @@ public class RequestLatexPaintingPortalPreviewPacket {
             return null;
         }
 
-        return new PortalTarget(targetLevel, portal.getTargetPos());
+        return new PortalTarget(targetLevel, portal.getTargetPos(), portal.getTargetFacing());
     }
 
-    private static List<LatexPaintingPortalPreviewPacket.Entry> collectPreviewBlocks(ServerLevel level, BlockPos center) {
+    private static List<LatexPaintingPortalPreviewPacket.Entry> collectPreviewBlocks(ServerLevel level, BlockPos center, @Nullable Direction facing) {
         for (int chunkX = (center.getX() - RADIUS) >> 4; chunkX <= (center.getX() + RADIUS) >> 4; chunkX++) {
             for (int chunkZ = (center.getZ() - RADIUS) >> 4; chunkZ <= (center.getZ() + RADIUS) >> 4; chunkZ++) {
                 level.getChunk(chunkX, chunkZ);
@@ -155,7 +163,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
                     return entries;
                 }
 
-                addVisibleColumnBlocks(entries, level, center, dx, dz);
+                addVisibleColumnBlocks(entries, level, center, dx, dz, facing);
             }
         }
 
@@ -165,7 +173,21 @@ public class RequestLatexPaintingPortalPreviewPacket {
         return entries;
     }
 
-    private static void addVisibleColumnBlocks(List<LatexPaintingPortalPreviewPacket.Entry> entries, ServerLevel level, BlockPos center, int dx, int dz) {
+    private static void addVisibleColumnBlocks(List<LatexPaintingPortalPreviewPacket.Entry> entries, ServerLevel level, BlockPos center, int dx, int dz,
+                                               @Nullable Direction facing) {
+        int encodedX = dx;
+        int encodedZ = dz;
+        if (facing != null) {
+            int forward = dx * facing.getStepX() + dz * facing.getStepZ();
+            if (forward < 1) {
+                return;
+            }
+
+            Direction right = facing.getClockWise();
+            encodedX = dx * right.getStepX() + dz * right.getStepZ();
+            encodedZ = forward;
+        }
+
         int x = center.getX() + dx;
         int z = center.getZ() + dz;
         int minY = Math.max(level.getMinBuildHeight(), center.getY() - VERTICAL_BELOW);
@@ -185,13 +207,24 @@ public class RequestLatexPaintingPortalPreviewPacket {
                 continue;
             }
 
+            int encodedY = sample.getY() - center.getY();
+            if (facing != null && !isInsidePortalView(encodedX, encodedY, encodedZ)) {
+                continue;
+            }
+
             entries.add(new LatexPaintingPortalPreviewPacket.Entry(
-                    (byte) dx,
-                    (byte) (sample.getY() - center.getY()),
-                    (byte) dz,
+                    (byte) encodedX,
+                    (byte) encodedY,
+                    (byte) encodedZ,
                     Block.getId(state)
             ));
         }
+    }
+
+    private static boolean isInsidePortalView(int localX, int localY, int depth) {
+        double horizontalLimit = PORTAL_HALF_WIDTH + depth * HORIZONTAL_VIEW_SPREAD;
+        double verticalLimit = PORTAL_HALF_HEIGHT + depth * VERTICAL_VIEW_SPREAD;
+        return Math.abs(localX) <= horizontalLimit && Math.abs(localY) <= verticalLimit;
     }
 
     private static boolean isExposed(ServerLevel level, BlockPos pos) {
@@ -217,11 +250,28 @@ public class RequestLatexPaintingPortalPreviewPacket {
         }
     }
 
+    private static int skyColorFor(ServerLevel level, BlockPos center) {
+        ResourceLocation biome = level.registryAccess()
+                .registryOrThrow(net.minecraft.core.registries.Registries.BIOME)
+                .getKey(level.getBiome(center).value());
+        if (biome != null) {
+            String id = biome.toString();
+            if (id.contains("dark_latex")) {
+                return 0x303030;
+            }
+            if (id.contains("white_latex")) {
+                return 0xF8F8F8;
+            }
+        }
+
+        return 0x9DB7D9;
+    }
+
     private static BlockState safeBlockState(String path, Block fallback) {
         Block block = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getValue(ResourceLocation.fromNamespaceAndPath("changed", path));
         return (block == null ? fallback : block).defaultBlockState();
     }
 
-    private record PortalTarget(ServerLevel level, BlockPos pos) {
+    private record PortalTarget(ServerLevel level, BlockPos pos, Direction facing) {
     }
 }

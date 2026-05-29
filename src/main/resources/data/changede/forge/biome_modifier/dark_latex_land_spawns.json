@@ -25,13 +25,55 @@
     },
     {
       "type": "changed:dark_latex_yufeng",
-      "weight": 12,
+      "weight": 14,
       "minCount": 1,
       "maxCount": 2
     },
     {
       "type": "changed:dark_latex_double_yufeng",
       "weight": 6,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "type": "changed:dark_dragon",
+      "weight": 4,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "type": "changed:phage_latex_wolf_male",
+      "weight": 16,
+      "minCount": 1,
+      "maxCount": 3
+    },
+    {
+      "type": "changed:latex_benign_wolf",
+      "weight": 12,
+      "minCount": 1,
+      "maxCount": 3
+    },
+    {
+      "type": "changed_addon:puro_kind_male",
+      "weight": 12,
+      "minCount": 1,
+      "maxCount": 2
+    },
+    {
+      "type": "changed_addon:puro_kind_female",
+      "weight": 12,
+      "minCount": 1,
+      "maxCount": 2
+    },
+    {
+      "type": "changed_addon:wolfy",
+      "weight": 10,
+      "minCount": 1,
+      "maxCount": 2
+    },
+    {
+      "type": "changed_addon:dark_latex_yufeng_queen",
+      "weight": 4,
       "minCount": 1,
       "maxCount": 1
     }

@@ -1,0 +1,20 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "changede:white_latex_sea"
+  ],
+  "spawners": [
+    {
+      "type": "changed:latex_squid_dog_male",
+      "weight": 36,
+      "minCount": 5,
+      "maxCount": 10
+    },
+    {
+      "type": "changed:latex_squid_dog_female",
+      "weight": 36,
+      "minCount": 5,
+      "maxCount": 10
+    }
+  ]
+}

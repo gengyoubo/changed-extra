@@ -34,7 +34,7 @@ public class LatexPaintingPortalPreviewCache {
         return true;
     }
 
-    public static void update(ResourceLocation dimension, BlockPos pos, List<LatexPaintingPortalPreviewPacket.Entry> entries) {
+    public static void update(ResourceLocation dimension, BlockPos pos, int skyColor, List<LatexPaintingPortalPreviewPacket.Entry> entries) {
         List<PreviewBlock> blocks = new ArrayList<>(entries.size());
         for (LatexPaintingPortalPreviewPacket.Entry entry : entries) {
             BlockState state = Block.stateById(entry.stateId());
@@ -43,7 +43,7 @@ public class LatexPaintingPortalPreviewCache {
             }
         }
 
-        SNAPSHOTS.put(new Key(dimension, pos), new Snapshot(blocks));
+        SNAPSHOTS.put(new Key(dimension, pos), new Snapshot(blocks, skyColor));
         changede.LOGGER.warn("Updated latex painting portal preview for {} at {}, blocks={}", dimension, pos, blocks.size());
     }
 
@@ -51,7 +51,7 @@ public class LatexPaintingPortalPreviewCache {
         return SNAPSHOTS.get(new Key(dimension, pos));
     }
 
-    public record Snapshot(List<PreviewBlock> blocks) {
+    public record Snapshot(List<PreviewBlock> blocks, int skyColor) {
     }
 
     public record PreviewBlock(int dx, int dy, int dz, BlockState state) {

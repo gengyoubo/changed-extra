@@ -49,7 +49,7 @@ public class LatexPaintingPortalRenderer implements BlockEntityRenderer<LatexPai
 
     @Override
     public boolean shouldRenderOffScreen(@NotNull LatexPaintingPortalBlockEntity blockEntity) {
-        return true;
+        return false;
     }
 
     @Override

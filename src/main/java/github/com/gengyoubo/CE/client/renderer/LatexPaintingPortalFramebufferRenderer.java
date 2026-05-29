@@ -24,6 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import java.lang.reflect.Method;
@@ -58,13 +59,14 @@ public class LatexPaintingPortalFramebufferRenderer {
     public static void renderCentered(PoseStack poseStack, Direction facing, RenderTarget captured) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(LatexPaintingPortalProjectionRenderer.rotationFor(facing)));
-        poseStack.translate(0.0D, 0.0D, -0.055D);
+        poseStack.translate(0.0D, 0.0D, -0.08D);
 
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, captured.getColorTextureId());
         RenderSystem.enableBlend();
         RenderSystem.disableCull();
-        RenderSystem.disableDepthTest();
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
         RenderSystem.depthMask(false);
 
         Matrix4f matrix = poseStack.last().pose();
@@ -73,14 +75,15 @@ public class LatexPaintingPortalFramebufferRenderer {
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
         drawTexturedQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.0F, 255, 255, 255, 255);
-        drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, -0.01F, 23, 18, 20, 255);
-        drawTexturedQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, -0.01F, 23, 18, 20, 255);
-        drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, -0.01F, 23, 18, 20, 255);
-        drawTexturedQuad(matrix, bufferBuilder, 0.48F, -0.48F, 0.54F, 0.48F, -0.01F, 23, 18, 20, 255);
+        drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, 0.0F, 23, 18, 20, 255);
+        drawTexturedQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, 0.0F, 23, 18, 20, 255);
+        drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, 0.0F, 23, 18, 20, 255);
+        drawTexturedQuad(matrix, bufferBuilder, 0.48F, -0.48F, 0.54F, 0.48F, 0.0F, 23, 18, 20, 255);
 
         BufferUploader.drawWithShader(bufferBuilder.end());
 
         RenderSystem.depthMask(true);
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
         RenderSystem.enableDepthTest();
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
@@ -330,7 +333,7 @@ public class LatexPaintingPortalFramebufferRenderer {
 
         Vec3 viewerOffset = cameraEntity.getEyePosition(partialTick).subtract(portal.position());
         Vec3 targetCenter = Vec3.atBottomCenterOf(portal.getTargetPos())
-                .add(0.0D, LatexPaintingPortalEntity.PORTAL_SIZE / 2.0D, 0.0D);
+                .add(0.0D, LatexPaintingPortalEntity.PORTAL_HEIGHT / 2.0D, 0.0D);
         Vec3 cameraPos = targetCenter.add(viewerOffset);
 
         PORTAL_CAMERA.setAnglesInternal(facing.toYRot(), 0.0F);

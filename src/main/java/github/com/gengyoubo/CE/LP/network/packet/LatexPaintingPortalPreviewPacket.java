@@ -17,17 +17,24 @@ public class LatexPaintingPortalPreviewPacket {
 
     private final ResourceLocation sourceDimension;
     private final BlockPos portalPos;
+    private final int skyColor;
     private final List<Entry> entries;
 
     public LatexPaintingPortalPreviewPacket(ResourceLocation sourceDimension, BlockPos portalPos, List<Entry> entries) {
+        this(sourceDimension, portalPos, 0xD4DCE5, entries);
+    }
+
+    public LatexPaintingPortalPreviewPacket(ResourceLocation sourceDimension, BlockPos portalPos, int skyColor, List<Entry> entries) {
         this.sourceDimension = sourceDimension;
         this.portalPos = portalPos;
+        this.skyColor = skyColor;
         this.entries = List.copyOf(entries);
     }
 
     public static void encode(LatexPaintingPortalPreviewPacket packet, FriendlyByteBuf buffer) {
         buffer.writeResourceLocation(packet.sourceDimension);
         buffer.writeBlockPos(packet.portalPos);
+        buffer.writeVarInt(packet.skyColor);
         buffer.writeVarInt(packet.entries.size());
         for (Entry entry : packet.entries) {
             buffer.writeByte(entry.dx());
@@ -40,6 +47,7 @@ public class LatexPaintingPortalPreviewPacket {
     public static LatexPaintingPortalPreviewPacket decode(FriendlyByteBuf buffer) {
         ResourceLocation sourceDimension = buffer.readResourceLocation();
         BlockPos portalPos = buffer.readBlockPos();
+        int skyColor = buffer.readVarInt();
         int encodedSize = buffer.readVarInt();
         int storedSize = Math.min(encodedSize, MAX_BLOCKS);
         List<Entry> entries = new ArrayList<>(storedSize);
@@ -49,7 +57,7 @@ public class LatexPaintingPortalPreviewPacket {
                 entries.add(entry);
             }
         }
-        return new LatexPaintingPortalPreviewPacket(sourceDimension, portalPos, entries);
+        return new LatexPaintingPortalPreviewPacket(sourceDimension, portalPos, skyColor, entries);
     }
 
     public static void handle(LatexPaintingPortalPreviewPacket packet, Supplier<NetworkEvent.Context> supplier) {
@@ -62,8 +70,8 @@ public class LatexPaintingPortalPreviewPacket {
         try {
             changede.LOGGER.warn("Received latex painting portal preview for {} at {}, blocks={}", packet.sourceDimension, packet.portalPos, packet.entries.size());
             Class<?> cache = Class.forName("github.com.gengyoubo.CE.client.LatexPaintingPortalPreviewCache");
-            cache.getMethod("update", ResourceLocation.class, BlockPos.class, List.class)
-                    .invoke(null, packet.sourceDimension, packet.portalPos, packet.entries);
+            cache.getMethod("update", ResourceLocation.class, BlockPos.class, int.class, List.class)
+                    .invoke(null, packet.sourceDimension, packet.portalPos, packet.skyColor, packet.entries);
         } catch (ReflectiveOperationException exception) {
             throw new IllegalStateException("Failed to update latex painting portal preview cache", exception);
         }

@@ -18,34 +18,160 @@
       "maxCount": 5
     },
     {
+      "type": "changed:white_wolf_male",
+      "weight": 36,
+      "minCount": 2,
+      "maxCount": 5
+    },
+    {
+      "type": "changed:white_wolf_female",
+      "weight": 36,
+      "minCount": 2,
+      "maxCount": 5
+    },
+    {
       "type": "changed:pure_white_latex_wolf",
-      "weight": 24,
+      "weight": 28,
       "minCount": 2,
       "maxCount": 4
     },
     {
       "type": "changed:pure_white_latex_wolf_pup",
-      "weight": 18,
+      "weight": 22,
+      "minCount": 2,
+      "maxCount": 4
+    },
+    {
+      "type": "changed:milk_pudding",
+      "weight": 24,
       "minCount": 2,
       "maxCount": 4
     },
     {
       "type": "changed:white_latex_knight",
-      "weight": 12,
+      "weight": 16,
       "minCount": 1,
-      "maxCount": 2
+      "maxCount": 5
+    },
+    {
+      "type": "changed:white_latex_knight_fusion",
+      "weight": 10,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed:headless_knight",
+      "weight": 8,
+      "minCount": 1,
+      "maxCount": 5
     },
     {
       "type": "changed:white_latex_centaur",
-      "weight": 8,
+      "weight": 10,
       "minCount": 1,
-      "maxCount": 1
+      "maxCount": 5
     },
     {
-      "type": "changed:milk_pudding",
-      "weight": 20,
-      "minCount": 2,
-      "maxCount": 4
+      "type": "changed:latex_white_tiger",
+      "weight": 14,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed:gas_tiger",
+      "weight": 8,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed:latex_yuin",
+      "weight": 10,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed:latex_pink_yuin_dragon",
+      "weight": 6,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed:latex_snake",
+      "weight": 12,
+      "minCount": 1,
+      "maxCount": 3
+    },
+    {
+      "type": "changed_addon:latex_white_snow_leopard_male",
+      "weight": 14,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:latex_white_snow_leopard_female",
+      "weight": 14,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:latex_snow_fox_male",
+      "weight": 18,
+      "minCount": 1,
+      "maxCount": 3
+    },
+    {
+      "type": "changed_addon:latex_snow_fox_female",
+      "weight": 18,
+      "minCount": 1,
+      "maxCount": 3
+    },
+    {
+      "type": "changed_addon:latex_dazed",
+      "weight": 12,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:buff_latex_dazed",
+      "weight": 8,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:mirror_white_tiger",
+      "weight": 10,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:exp_1_male",
+      "weight": 8,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:exp_1_female",
+      "weight": 8,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:bagel",
+      "weight": 6,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:latex_kitsune_male",
+      "weight": 8,
+      "minCount": 1,
+      "maxCount": 5
+    },
+    {
+      "type": "changed_addon:protogen",
+      "weight": 6,
+      "minCount": 1,
+      "maxCount": 5
     }
   ]
 }

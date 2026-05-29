@@ -28,7 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class LatexPaintingPortalEntity extends Entity {
-    public static final double PORTAL_SIZE = 3.0D;
+    public static final double PORTAL_WIDTH = 3.0D;
+    public static final double PORTAL_HEIGHT = 3.0D;
     private static final double WALL_OFFSET = 0.72D;
     private static final double PORTAL_THICKNESS = 0.35D;
 
@@ -51,7 +52,7 @@ public class LatexPaintingPortalEntity extends Entity {
         setFacing(facing);
         setPos(
                 pos.getX() + 0.5D + facing.getStepX() * WALL_OFFSET,
-                pos.getY() + PORTAL_SIZE / 2.0D,
+                pos.getY() + PORTAL_HEIGHT / 2.0D,
                 pos.getZ() + 0.5D + facing.getStepZ() * WALL_OFFSET
         );
     }
@@ -117,25 +118,26 @@ public class LatexPaintingPortalEntity extends Entity {
 
     public AABB getPortalArea() {
         Direction facing = getFacing();
-        double half = PORTAL_SIZE / 2.0D;
+        double halfWidth = PORTAL_WIDTH / 2.0D;
+        double halfHeight = PORTAL_HEIGHT / 2.0D;
         double halfThickness = PORTAL_THICKNESS / 2.0D;
         if (facing.getAxis() == Direction.Axis.X) {
             return new AABB(
                     getX() - halfThickness,
-                    getY() - half,
-                    getZ() - half,
+                    getY() - halfHeight,
+                    getZ() - halfWidth,
                     getX() + halfThickness,
-                    getY() + half,
-                    getZ() + half
+                    getY() + halfHeight,
+                    getZ() + halfWidth
             );
         }
 
         return new AABB(
-                getX() - half,
-                getY() - half,
+                getX() - halfWidth,
+                getY() - halfHeight,
                 getZ() - halfThickness,
-                getX() + half,
-                getY() + half,
+                getX() + halfWidth,
+                getY() + halfHeight,
                 getZ() + halfThickness
         );
     }

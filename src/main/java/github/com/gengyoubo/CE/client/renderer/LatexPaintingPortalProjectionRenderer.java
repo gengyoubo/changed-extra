@@ -9,6 +9,8 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import github.com.gengyoubo.CE.client.LatexPaintingPortalPreviewCache;
+import github.com.gengyoubo.CE.changede;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.Direction;
@@ -16,12 +18,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 
 public class LatexPaintingPortalProjectionRenderer {
-    private static final int GRID_SIZE = 65;
+    private static final int GRID_SIZE = 97;
     private static final float INNER_MIN = -0.45F;
     private static final float INNER_MAX = 0.45F;
     private static final float CELL_SIZE = (INNER_MAX - INNER_MIN) / GRID_SIZE;
+    private static final double PORTAL_HALF_WIDTH = 1.5D;
+    private static final double PORTAL_HALF_HEIGHT = 1.5D;
+    private static final double HORIZONTAL_VIEW_SPREAD = 0.42D;
+    private static final double VERTICAL_VIEW_SPREAD = 0.32D;
+    private static long lastDebugLogTick;
 
     private LatexPaintingPortalProjectionRenderer() {
     }
@@ -30,13 +38,15 @@ public class LatexPaintingPortalProjectionRenderer {
                                       LatexPaintingPortalPreviewCache.Snapshot snapshot) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(rotationFor(facing)));
-        poseStack.translate(0.0D, 0.0D, -0.031D);
+        poseStack.translate(0.0D, 0.0D, -0.08D);
+        logSnapshotSize(snapshot);
 
         Matrix4f matrix = poseStack.last().pose();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.enableBlend();
         RenderSystem.disableCull();
-        RenderSystem.disableDepthTest();
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
         RenderSystem.depthMask(false);
 
         Tesselator tessellator = RenderSystem.renderThreadTesselator();
@@ -49,13 +59,13 @@ public class LatexPaintingPortalProjectionRenderer {
         for (int z = 0; z < GRID_SIZE; z++) {
             for (int x = 0; x < GRID_SIZE; x++) {
                 Cell cell = projected[z * GRID_SIZE + x];
-                int color = colorFor(cell == null ? null : cell.state(), x, z);
-                color = shade(color, cell == null ? 0 : cell.dy());
+                int color = cell == null ? skyColorFor(snapshot, x, z) : colorFor(cell.state(), x, z);
+                color = shadeByDepth(color, cell == null ? 0 : cell.depth());
                 float x1 = INNER_MIN + x * CELL_SIZE;
                 float x2 = x1 + CELL_SIZE;
                 float y2 = INNER_MAX - z * CELL_SIZE;
                 float y1 = y2 - CELL_SIZE;
-                drawQuad(matrix, bufferBuilder, x1, y1, x2, y2, -0.012F, red(color), green(color), blue(color), 255);
+                drawQuad(matrix, bufferBuilder, x1, y1, x2, y2, 0.000F, red(color), green(color), blue(color), 255);
             }
         }
 
@@ -64,16 +74,42 @@ public class LatexPaintingPortalProjectionRenderer {
 
         RenderSystem.enableCull();
         RenderSystem.depthMask(true);
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
         poseStack.popPose();
     }
 
+    private static int skyColorFor(LatexPaintingPortalPreviewCache.Snapshot snapshot, int x, int z) {
+        int base = snapshot == null ? 0xD4DCE5 : snapshot.skyColor();
+        int cloud = ((x * 31 + z * 17) & 31) == 0 ? 18 : 0;
+        return pack(
+                clamp(red(base) + cloud),
+                clamp(green(base) + cloud),
+                clamp(blue(base) + cloud)
+        );
+    }
+
+    private static void logSnapshotSize(LatexPaintingPortalPreviewCache.Snapshot snapshot) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level == null) {
+            return;
+        }
+
+        long gameTime = minecraft.level.getGameTime();
+        if (gameTime - lastDebugLogTick < 100L) {
+            return;
+        }
+
+        lastDebugLogTick = gameTime;
+        changede.LOGGER.warn("Rendering latex painting portal projection, blocks={}", snapshot == null ? -1 : snapshot.blocks().size());
+    }
+
     private static Cell[] flatten(LatexPaintingPortalPreviewCache.Snapshot snapshot) {
         Cell[] states = new Cell[GRID_SIZE * GRID_SIZE];
-        int[] heights = new int[GRID_SIZE * GRID_SIZE];
-        for (int i = 0; i < heights.length; i++) {
-            heights[i] = Integer.MIN_VALUE;
+        int[] depths = new int[GRID_SIZE * GRID_SIZE];
+        for (int i = 0; i < depths.length; i++) {
+            depths[i] = Integer.MAX_VALUE;
         }
 
         if (snapshot == null || snapshot.blocks().isEmpty()) {
@@ -81,19 +117,54 @@ public class LatexPaintingPortalProjectionRenderer {
         }
 
         for (LatexPaintingPortalPreviewCache.PreviewBlock block : snapshot.blocks()) {
-            int x = block.dx() + GRID_SIZE / 2;
-            int z = block.dz() + GRID_SIZE / 2;
-            if (x < 0 || x >= GRID_SIZE || z < 0 || z >= GRID_SIZE) {
+            int x;
+            int y;
+            if (block.dz() > 0) {
+                double horizontalLimit = PORTAL_HALF_WIDTH + block.dz() * HORIZONTAL_VIEW_SPREAD;
+                double verticalLimit = PORTAL_HALF_HEIGHT + block.dz() * VERTICAL_VIEW_SPREAD;
+                double projectedX = block.dx() / horizontalLimit;
+                double projectedY = block.dy() / verticalLimit;
+                if (Math.abs(projectedX) > 1.0D || Math.abs(projectedY) > 1.0D) {
+                    continue;
+                }
+
+                x = (int)Math.round((projectedX + 1.0D) * 0.5D * (GRID_SIZE - 1));
+                y = (int)Math.round((1.0D - projectedY) * 0.5D * (GRID_SIZE - 1));
+            } else {
+                x = block.dx() + GRID_SIZE / 2;
+                y = GRID_SIZE / 2 - block.dy();
+            }
+
+            splatBlock(states, depths, block, x, y);
+        }
+        return states;
+    }
+
+    private static void splatBlock(Cell[] states, int[] depths, LatexPaintingPortalPreviewCache.PreviewBlock block, int centerX, int centerY) {
+        int radius = projectedBlockRadius(block.dz());
+        for (int y = centerY - radius; y <= centerY + radius; y++) {
+            if (y < 0 || y >= GRID_SIZE) {
                 continue;
             }
 
-            int index = z * GRID_SIZE + x;
-            if (block.dy() >= heights[index]) {
-                heights[index] = block.dy();
-                states[index] = new Cell(block.state(), block.dy());
+            for (int x = centerX - radius; x <= centerX + radius; x++) {
+                if (x < 0 || x >= GRID_SIZE) {
+                    continue;
+                }
+
+                int index = y * GRID_SIZE + x;
+                if (block.dz() < depths[index]) {
+                    depths[index] = block.dz();
+                    states[index] = new Cell(block.state(), block.dz());
+                }
             }
         }
-        return states;
+    }
+
+    private static int projectedBlockRadius(int depth) {
+        double horizontalLimit = PORTAL_HALF_WIDTH + Math.max(1, depth) * HORIZONTAL_VIEW_SPREAD;
+        int diameter = (int)Math.ceil((GRID_SIZE - 1) / (horizontalLimit * 2.0D));
+        return Math.max(1, Math.min(4, diameter / 2));
     }
 
     private static int colorFor(BlockState state, int x, int z) {
@@ -154,6 +225,15 @@ public class LatexPaintingPortalProjectionRenderer {
         );
     }
 
+    private static int shadeByDepth(int color, int depth) {
+        int light = Math.max(-36, Math.min(24, 24 - depth * 2));
+        return pack(
+                clamp(red(color) + light),
+                clamp(green(color) + light),
+                clamp(blue(color) + light)
+        );
+    }
+
     private static int pack(int r, int g, int b) {
         return r << 16 | g << 8 | b;
     }
@@ -177,10 +257,10 @@ public class LatexPaintingPortalProjectionRenderer {
     }
 
     private static void drawFrame(Matrix4f matrix, BufferBuilder bufferBuilder) {
-        drawQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, -0.024F, 23, 18, 20, 255);
-        drawQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, -0.024F, 23, 18, 20, 255);
-        drawQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, -0.024F, 23, 18, 20, 255);
-        drawQuad(matrix, bufferBuilder, 0.48F, -0.48F, 0.54F, 0.48F, -0.024F, 23, 18, 20, 255);
+        drawQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, 0.000F, 23, 18, 20, 255);
+        drawQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, 0.000F, 23, 18, 20, 255);
+        drawQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, 0.000F, 23, 18, 20, 255);
+        drawQuad(matrix, bufferBuilder, 0.48F, -0.48F, 0.54F, 0.48F, 0.000F, 23, 18, 20, 255);
     }
 
     private static int red(int color) {
@@ -204,6 +284,6 @@ public class LatexPaintingPortalProjectionRenderer {
         };
     }
 
-    private record Cell(BlockState state, int dy) {
+    private record Cell(BlockState state, int depth) {
     }
 }

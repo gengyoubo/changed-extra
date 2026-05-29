@@ -11,6 +11,7 @@ import github.com.gengyoubo.CE.commands.CheckSpecialFormCommand;
 import github.com.gengyoubo.CE.commands.ItemInfoCommand;
 import github.com.gengyoubo.CE.commands.ReloadEMCCommand;
 import github.com.gengyoubo.CE.events.GooCoreTooltipEvents;
+import github.com.gengyoubo.CE.events.DarkLatexYufengQueenEvents;
 import github.com.gengyoubo.CE.events.LatexSpaceTerrainEvents;
 import github.com.gengyoubo.CE.events.LatexSpaceSpawnEvents;
 import github.com.gengyoubo.CE.events.LatexDeathHandlerEvents;
@@ -47,6 +48,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -122,6 +124,9 @@ public class changede {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, MimicYufengWingsFlightEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, ChunkEvent.Load.class, LatexSpaceTerrainEvents::onChunkLoad);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, false, MobSpawnEvent.SpawnPlacementCheck.class, LatexSpaceSpawnEvents::onSpawnPlacementCheck);
+        if (CHANGED_ADDON) {
+            MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingEvent.LivingTickEvent.class, DarkLatexYufengQueenEvents::onLivingTick);
+        }
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, EntityJoinLevelEvent.class, latexStartEvents::onPlayerJoin);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.Clone.class, latexStartEvents::onPlayerClone);
