@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = DarkLatexWolfPup.class, remap = false)
 public class DarkLatexWolfPupSupportMixin {
-    @Inject(method = "doHurtTarget", at = @At("HEAD"), cancellable = true)
+    @Inject(method = {"doHurtTarget", "m_7327_"}, at = @At("HEAD"), cancellable = true)
     private void changede$directAttackWhenUnsupported(Entity target, CallbackInfoReturnable<Boolean> cir) {
         DarkLatexWolfPup pup = (DarkLatexWolfPup)(Object)this;
         if (!DarkLatexWolfPupSupportEvents.hasNonPupDarkLatexSupport(pup)) {

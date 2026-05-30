@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = WhiteLatexBlock.class, remap = false)
 public class WhiteLatexBlockLatexSpaceMixin {
-    @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
+    @Inject(method = {"getCollisionShape", "m_5939_"}, at = @At("HEAD"), cancellable = true)
     private void changede$keepWhiteLatexSolidInLatexSpace(BlockState state, BlockGetter level, BlockPos pos,
                                                           CollisionContext context,
                                                           CallbackInfoReturnable<VoxelShape> cir) {
