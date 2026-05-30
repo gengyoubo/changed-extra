@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:iron_nugget"
+    },
+    "Y": {
+      "item": "changede:peach"
+    }
+  },
+  "result": {
+    "item": "changed:canned_peaches"
+  }
+}

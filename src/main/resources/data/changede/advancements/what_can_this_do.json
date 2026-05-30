@@ -1,0 +1,52 @@
+{
+  "display": {
+    "background": "minecraft:textures/block/stone.png",
+    "icon": {
+      "item": "changede:inactive_dark_latex"
+    },
+    "title": {
+      "text": "\u8fd9\u80fd\u505a\u4ec0\u4e48"
+    },
+    "description": {
+      "text": "\u83b7\u5f97\u5904\u7406\u8fc7\u7684\u9ed1\u80f6\u6216\u767d\u80f6\u3002"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "inactive_dark_latex": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changede:inactive_dark_latex"
+            ]
+          }
+        ]
+      }
+    },
+    "inactive_white_latex": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changede:inactive_white_latex"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "inactive_dark_latex"
+    ],
+    [
+      "inactive_white_latex"
+    ]
+  ]
+}

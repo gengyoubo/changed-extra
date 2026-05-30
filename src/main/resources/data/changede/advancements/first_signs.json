@@ -1,0 +1,23 @@
+{
+  "parent": "changede:burned_to_gray",
+  "display": {
+    "icon": {
+      "item": "changede:unbaked_latex_ingot"
+    },
+    "title": {
+      "text": "\u521d\u89c1\u7aef\u502a"
+    },
+    "description": {
+      "text": "\u83b7\u5f97\u672a\u70d8\u70e4\u7684\u80f6\u952d\u3002"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "unbaked_latex_ingot": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

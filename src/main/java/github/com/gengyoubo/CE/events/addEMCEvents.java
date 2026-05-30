@@ -26,7 +26,7 @@ public class addEMCEvents {
             {"changed:floor_sign_wet", 64},
             {"changed:floor_sign_exit", 64},
             {"changed:floor_sign_electrical", 64},
-            {"changed:generator", 64},
+            {"changed:generator.json", 64},
             {"changed:latex_crystal", 64},
             {"changed:latex_pup_crystal", 64},
             {"changed:beifeng_crystal", 64},
@@ -68,9 +68,9 @@ public class addEMCEvents {
             {"changed_addon:syringe_with_litix_cammonia",488},
             {"changed_addon:laethin",1346},
             {"changed_addon:laethin_syringe",1504},
-            {"changed_addon:luminar_crystal_shard_hearted",160}
+            {"changed_addon:luminar_crystal_shard_hearted",160},
             // changed extra
-
+            {"changede:peach",128}
     };
 
     public static void registerCustomEMC(InterModEnqueueEvent event) {

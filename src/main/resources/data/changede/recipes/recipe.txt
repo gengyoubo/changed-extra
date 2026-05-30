@@ -1,0 +1,14 @@
+X:铁粒
+Y:桃子(CE写)
+changed:canned_peaches
+XXX
+XYX
+XXX
+普罗玩偶(changed addon)
+X:黑色染料
+Y:白色染料
+A:黑色羊毛
+B:白色羊毛
+XYX
+ABA
+XAX

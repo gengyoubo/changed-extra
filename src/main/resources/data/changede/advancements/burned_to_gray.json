@@ -1,0 +1,23 @@
+{
+  "parent": "changede:what_can_this_do",
+  "display": {
+    "icon": {
+      "item": "changede:latex_gray"
+    },
+    "title": {
+      "text": "\u70e7\u6210\u7070\u4e86?"
+    },
+    "description": {
+      "text": "\u83b7\u5f97\u80f6\u7070\u3002"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "latex_gray": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

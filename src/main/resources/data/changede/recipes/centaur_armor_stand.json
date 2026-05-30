@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "ZXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:stick"
+    },
+    "Z": {
+      "item": "minecraft:armor_stand"
+    }
+  },
+  "result": {
+    "item": "changed:centaur_armor_stand"
+  }
+}

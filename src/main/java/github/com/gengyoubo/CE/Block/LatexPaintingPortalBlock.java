@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.Block;
 
 import github.com.gengyoubo.CE.BlockEntity.LatexPaintingPortalBlockEntity;
 import github.com.gengyoubo.CE.entity.LatexPaintingPortalEntity;
+import github.com.gengyoubo.CE.events.AdvancementChainEvents;
 import github.com.gengyoubo.CE.init.CEBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,6 +41,10 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
     );
 
     private static final String COOLDOWN_TAG = "changede_latex_painting_portal_cooldown";
+    private static final ResourceLocation ENTER_LATEX_SPACE_ADVANCEMENT =
+            ResourceLocation.fromNamespaceAndPath("changede", "enter_latex_space_through_painting");
+    private static final ResourceLocation WONDERFUL_ART_ADVANCEMENT =
+            ResourceLocation.fromNamespaceAndPath("changede", "wonderful_art");
     private static final int PORTAL_COOLDOWN_TICKS = 60;
     private static final double RETURN_PORTAL_SEARCH_RADIUS = 16.0D;
     private static final int SAFE_TARGET_SEARCH_RADIUS = 8;
@@ -134,6 +139,7 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
         BlockPos target = findSafeTarget(destination, origin);
         player.getPersistentData().putLong(COOLDOWN_TAG, destination.getGameTime() + PORTAL_COOLDOWN_TICKS);
         player.teleportTo(destination, target.getX() + 0.5D, target.getY(), target.getZ() + 0.5D, player.getYRot(), player.getXRot());
+        awardLatexSpacePortalAdvancement(player, destination);
         return true;
     }
 
@@ -167,7 +173,20 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
                 normalizeYaw(player.getYRot() + 180.0F),
                 player.getXRot()
         );
+        awardLatexSpacePortalAdvancement(player, destination);
         return true;
+    }
+
+    private static void awardLatexSpacePortalAdvancement(ServerPlayer player, ServerLevel destination) {
+        if (!destination.dimension().equals(LATEX_SPACE)) {
+            return;
+        }
+
+        if (!AdvancementChainEvents.isAdvancementDone(player, WONDERFUL_ART_ADVANCEMENT)) {
+            return;
+        }
+
+        AdvancementChainEvents.awardAdvancement(player, ENTER_LATEX_SPACE_ADVANCEMENT);
     }
 
     public static BlockPos findSafeTarget(ServerLevel destination, BlockPos origin) {

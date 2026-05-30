@@ -1,0 +1,23 @@
+{
+  "parent": "changede:hot_latex_ingot",
+  "display": {
+    "icon": {
+      "item": "changede:space_tower"
+    },
+    "title": {
+      "text": "\u8111\u888b\u7a7a\u7a7a?"
+    },
+    "description": {
+      "text": "\u83b7\u5f97\u7a7a\u95f4\u5854\u3002"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "space_tower": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

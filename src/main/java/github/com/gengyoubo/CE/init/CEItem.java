@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.init;
 
 import github.com.gengyoubo.CE.items.*;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -48,6 +49,11 @@ public class CEItem {
             ITEMS.register("white_latex_cobblestone", () -> new BlockItem(CEBlock.WHITE_LATEX_COBBLESTONE.get(), new Item.Properties()));
     public static final RegistryObject<Item> LATEX_PAINTING_PORTAL =
             ITEMS.register("latex_painting_portal", () -> new LatexPaintingPortalItem(new Item.Properties()));
+    public static final RegistryObject<Item> PEACH =
+            ITEMS.register("peach", () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                    .nutrition(4)
+                    .saturationMod(0.3F)
+                    .build())));
     public static final RegistryObject<Item> ENCHANTED_GOLDEN_ORANGE =
             ITEMS.register("enchanted_golden_orange", EnchantedGoldenOrange::new);
 

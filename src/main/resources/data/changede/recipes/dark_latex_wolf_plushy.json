@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "changed_addon"
+    }
+  ],
+  "pattern": [
+    "XYX",
+    "ABA",
+    "XAX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:black_dye"
+    },
+    "Y": {
+      "item": "minecraft:white_dye"
+    },
+    "A": {
+      "item": "minecraft:black_wool"
+    },
+    "B": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "result": {
+    "item": "changed_addon:dark_latex_wolf_plushy"
+  }
+}

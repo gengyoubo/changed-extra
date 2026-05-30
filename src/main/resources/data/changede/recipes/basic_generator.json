@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "ZXZ",
-    "XYX",
-    "ZXZ"
+    "XXZ",
+    "XYZ",
+    "XZZ"
   ],
   "key": {
     "X": {
-      "item": "changede:latex_ingot"
+      "item": "changed:white_latex_goo"
     },
     "Y": {
-      "item": "minecraft:furnace"
+      "item": "changed:generator"
     },
     "Z": {
-      "item": "minecraft:iron_ingot"
+      "item": "changed:dark_latex_goo"
     }
   },
   "result": {

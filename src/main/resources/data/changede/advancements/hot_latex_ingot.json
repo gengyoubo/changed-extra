@@ -1,0 +1,23 @@
+{
+  "parent": "changede:first_signs",
+  "display": {
+    "icon": {
+      "item": "changede:latex_ingot"
+    },
+    "title": {
+      "text": "\u70ed\u817e\u817e\u7684......\u80f6\u952d?"
+    },
+    "description": {
+      "text": "\u83b7\u5f97\u80f6\u952d\u3002"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "latex_ingot": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

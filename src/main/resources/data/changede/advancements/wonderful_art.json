@@ -1,0 +1,23 @@
+{
+  "parent": "changede:empty_head",
+  "display": {
+    "icon": {
+      "item": "changede:latex_painting_portal"
+    },
+    "title": {
+      "text": "\u7f8e\u5999\u7684\u827a\u672f"
+    },
+    "description": {
+      "text": "\u83b7\u5f97\u7a7a\u95f4\u753b\u4f20\u9001\u95e8\u3002"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "latex_painting_portal": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

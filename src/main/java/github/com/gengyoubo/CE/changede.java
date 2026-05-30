@@ -10,6 +10,7 @@ import github.com.gengyoubo.CE.LP.world.Menu.CEMenus;
 import github.com.gengyoubo.CE.commands.CheckSpecialFormCommand;
 import github.com.gengyoubo.CE.commands.ItemInfoCommand;
 import github.com.gengyoubo.CE.commands.ReloadEMCCommand;
+import github.com.gengyoubo.CE.events.AdvancementChainEvents;
 import github.com.gengyoubo.CE.events.GooCoreTooltipEvents;
 import github.com.gengyoubo.CE.events.DarkLatexYufengQueenEvents;
 import github.com.gengyoubo.CE.events.LatexSpaceTerrainEvents;
@@ -126,6 +127,7 @@ public class changede {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, BlockEvent.BreakEvent.class, XPBoostEvents::onBlockXP);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingHurtEvent.class, SWEvents::onLivingHurt);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, MimicYufengWingsFlightEvents::onPlayerTick);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, AdvancementChainEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, ChunkEvent.Load.class, LatexSpaceTerrainEvents::onChunkLoad);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, false, MobSpawnEvent.SpawnPlacementCheck.class, LatexSpaceSpawnEvents::onSpawnPlacementCheck);
         if (CHANGED_ADDON) {

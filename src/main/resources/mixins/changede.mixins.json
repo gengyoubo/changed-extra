@@ -8,6 +8,7 @@
   "mixins": [
     "ChangedBlocksMixin",
     "ChangedConfigCommonMixin",
+    "ChangedCannedFoodItemMixin",
     "ChangedEntitiesMixin",
     "CommandTransfurMixin",
     "DarkLatexFriendlyFireMixin",
