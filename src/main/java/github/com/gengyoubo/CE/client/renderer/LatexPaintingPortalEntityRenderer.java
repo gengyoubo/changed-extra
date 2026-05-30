@@ -81,6 +81,7 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public @NotNull ResourceLocation getTextureLocation(@NotNull LatexPaintingPortalEntity entity) {
         return TextureAtlas.LOCATION_BLOCKS;
     }

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "changed_addon:luminar_crystal_block"
+    }
+  ],
+  "result": {
+    "item": "changed_addon:luminar_crystal_shard",
+    "count": 9
+  }
+}

@@ -62,7 +62,7 @@ public class DarkLatexYufengQueenEvents {
         trySummonSupport(queen, level);
         data.putInt(SUMMON_COOLDOWN_TAG, SUMMON_INTERVAL_TICKS);
     }
-
+    @SuppressWarnings("deprecation")
     private static void trySummonSupport(DarkLatexYufengQueenEntity queen, ServerLevel level) {
         if (countQueenSummonsNearby(queen) >= MAX_SUMMONED_NEARBY) {
             return;
