@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "changede:space_tower"
+    }
+  },
+  "result": {
+    "item": "changede:latex_painting_portal",
+    "count": 1
+  }
+}
