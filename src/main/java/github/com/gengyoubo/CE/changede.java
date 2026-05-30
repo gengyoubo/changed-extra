@@ -38,6 +38,7 @@ import github.com.gengyoubo.CE.init.CEGameRules;
 import github.com.gengyoubo.CE.init.CEItem;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,7 +52,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -63,6 +63,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -99,6 +100,9 @@ public class changede {
         CENetwork.register();
         CEGameRules.register();
         bus.addListener(EventPriority.NORMAL, false, FMLCommonSetupEvent.class, latexStartEvents::setup);
+        if (PROJECTE) {
+            bus.addListener(EventPriority.NORMAL, false, InterModEnqueueEvent.class, addEMCEvents::registerCustomEMC);
+        }
 
         registerForgeEventListeners();
 
@@ -143,9 +147,6 @@ public class changede {
             MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, ItemTooltipEvent.class, SignalCatcherTooltipEvents::onItemTooltip);
         }
 
-        if (PROJECTE) {
-            MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, EntityItemPickupEvent.class, addEMCEvents::onItemPickup);
-        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -186,6 +187,23 @@ public class changede {
         } catch (Exception e) {
             LOGGER.warn("Invalid block id: {}", path);
             return Optional.of(Blocks.AIR);
+        }
+    }
+    public static Optional<Item> getItem(String path) {
+        try {
+            ResourceLocation id = ResourceLocation.parse(path);
+
+            Item item = ForgeRegistries.ITEMS.getValue(id);
+
+            if (item == null) {
+                LOGGER.warn("Item {} not found", path);
+                return Optional.empty();
+            }
+
+            return Optional.of(item);
+        } catch (Exception e) {
+            LOGGER.warn("Invalid item id: {}", path);
+            return Optional.empty();
         }
     }
 }
