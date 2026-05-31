@@ -2,9 +2,11 @@ package github.com.gengyoubo.CE.LP.init;
 
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.ElectricFurnaceBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.InfuserPowerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexCreativeExtranalbodyCraftTableBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.BasicEnergyPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerCompat;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -51,5 +53,12 @@ public class CELPBlockEntity {
                     () -> BlockEntityType.Builder.of(
                             SpaceTowerCompat::createBlockEntity,
                             CELPBlock.SPACE_TOWER.get()
+                    ).build(null));
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<InfuserPowerBlockEntity>> INFUSER_POWER =
+            BLOCK_ENTITIES.register("infuser_power",
+                    () -> BlockEntityType.Builder.of(
+                            InfuserPowerBlockEntity::new,
+                            ChangedBlocks.INFUSER.get()
                     ).build(null));
 }

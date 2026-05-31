@@ -3,7 +3,9 @@ package github.com.gengyoubo.CE.LP.network;
 import github.com.gengyoubo.CE.LP.network.packet.CycleGeneratorRedstoneModePacket;
 import github.com.gengyoubo.CE.LP.network.packet.LatexPaintingPortalPreviewPacket;
 import github.com.gengyoubo.CE.LP.network.packet.RequestLatexPaintingPortalPreviewPacket;
+import github.com.gengyoubo.CE.LP.network.packet.RequestWorkbenchEnergyPacket;
 import github.com.gengyoubo.CE.LP.network.packet.SpaceTowerConfigPacket;
+import github.com.gengyoubo.CE.LP.network.packet.WorkbenchEnergyPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -47,6 +49,20 @@ public class CENetwork {
                 LatexPaintingPortalPreviewPacket::encode,
                 LatexPaintingPortalPreviewPacket::decode,
                 LatexPaintingPortalPreviewPacket::handle
+        );
+        INSTANCE.registerMessage(
+                packetId++,
+                RequestWorkbenchEnergyPacket.class,
+                RequestWorkbenchEnergyPacket::encode,
+                RequestWorkbenchEnergyPacket::decode,
+                RequestWorkbenchEnergyPacket::handle
+        );
+        INSTANCE.registerMessage(
+                packetId++,
+                WorkbenchEnergyPacket.class,
+                WorkbenchEnergyPacket::encode,
+                WorkbenchEnergyPacket::decode,
+                WorkbenchEnergyPacket::handle
         );
     }
 

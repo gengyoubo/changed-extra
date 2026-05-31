@@ -17,4 +17,5 @@ public class CEBlockEntity {
                             LatexPaintingPortalBlockEntity::new,
                             CEBlock.LATEX_PAINTING_PORTAL.get()
                     ).build(null));
+
 }

@@ -73,6 +73,7 @@ mixin {
     add sourceSets.main, "changede.refmap.json"
     config "mixins/changede.mixins.json"      // 第一个配置文件
     config "mixins/changede-proext.mixins.json"  // 第二个配置文件
+    config "mixins/changede-lp.mixins.json"
     env {
         remapRefMap = true
     }
@@ -264,7 +265,7 @@ jar {
                 "Implementation-Version": project.version,
                 "Implementation-Vendor": mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "mixins/changede.mixins.json,mixins/changede-proext.mixins.json"
+                "MixinConfigs": "mixins/changede.mixins.json,mixins/changede-proext.mixins.json,mixins/changede-lp.mixins.json"
         ])}
     // 显式包含 resources 目录下的所有文件
     from(sourceSets.main.resources) {

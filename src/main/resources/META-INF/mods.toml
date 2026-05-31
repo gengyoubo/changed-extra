@@ -10,7 +10,11 @@ logoFile="META-INF/modlogo.png"
 authors="${mod_authors}"
 description='''${mod_description}'''
 [[mixins]]
-config="changede.mixins.json"
+config="mixins/changede.mixins.json"
+[[mixins]]
+config="mixins/changede-proext.mixins.json"
+[[mixins]]
+config="mixins/changede-lp.mixins.json"
 [[dependencies.changede]]
     modId="minecraft"
     mandatory=true

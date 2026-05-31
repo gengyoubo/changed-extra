@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import github.com.gengyoubo.CE.LP.init.CELPBlock;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
 import github.com.gengyoubo.CE.LP.init.CELPItem;
+import github.com.gengyoubo.CE.LP.client.WorkbenchEnergyOverlayEvents;
 import github.com.gengyoubo.CE.LP.network.CENetwork;
 import github.com.gengyoubo.CE.LP.recipe.CELPRecipes;
 import github.com.gengyoubo.CE.LP.world.Menu.CEMenus;
@@ -147,6 +148,10 @@ public class changede {
         if (CHANGED_ADDON && FMLEnvironment.dist == Dist.CLIENT) {
             MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, ItemTooltipEvent.class, GooCoreTooltipEvents::onItemTooltip);
             MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, ItemTooltipEvent.class, SignalCatcherTooltipEvents::onItemTooltip);
+        }
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, net.minecraftforge.client.event.ScreenEvent.Render.Post.class, WorkbenchEnergyOverlayEvents::onRenderScreenPost);
         }
 
     }

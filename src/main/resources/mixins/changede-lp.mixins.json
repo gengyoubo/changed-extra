@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "github.com.gengyoubo.CE.LP.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "changede.refmap.json",
+  "mixins": [
+    "InfuserEnergyBlockMixin",
+    "InfuserMenuEnergyMixin",
+    "InfuserOpenScreenMixin",
+    "InfuserResultSlotEnergyMixin",
+    "PurifierEnergyMixin",
+    "PurifierMenuPositionMixin",
+    "PurifierMenuServerPositionMixin",
+    "PurifierOpenScreenMixin",
+    "UnifuserEnergyMixin",
+    "CatalyzerEnergyMixin"
+  ],
+  "client": [
+    "InfuserScreenEnergyMixin",
+    "PurifierScreenEnergyMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "conformVisibility": true
+  }
+}
