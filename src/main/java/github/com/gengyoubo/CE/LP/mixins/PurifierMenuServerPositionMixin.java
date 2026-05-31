@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = PurifierBlockEntity.class, remap = false)
 public abstract class PurifierMenuServerPositionMixin {
-    @Inject(method = "createMenu", at = @At("RETURN"))
+    @Inject(method = {"createMenu", "m_6555_"}, at = @At("RETURN"))
     private void changede$setMenuBlockPos(int id, Inventory inventory, CallbackInfoReturnable<AbstractContainerMenu> cir) {
         if (cir.getReturnValue() instanceof PurifierMenu menu) {
             PurifierBlockEntity blockEntity = (PurifierBlockEntity) (Object) this;

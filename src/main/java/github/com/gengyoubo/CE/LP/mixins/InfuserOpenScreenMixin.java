@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = Infuser.class, remap = false)
 public abstract class InfuserOpenScreenMixin {
-    @Inject(method = "use", at = @At("HEAD"), cancellable = true)
+    @Inject(method = {"use", "m_6227_"}, at = @At("HEAD"), cancellable = true)
     private void changede$openWithBlockPos(BlockState state, Level level, BlockPos pos, Player player,
                                            InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
         if (level.isClientSide) {

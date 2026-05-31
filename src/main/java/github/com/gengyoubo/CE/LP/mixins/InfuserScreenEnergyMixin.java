@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = InfuserScreen.class, remap = false)
 public abstract class InfuserScreenEnergyMixin {
-    @Inject(method = "render", at = @At("TAIL"))
+    @Inject(method = {"render", "m_88315_"}, at = @At("TAIL"))
     private void changede$renderEnergy(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
         WorkbenchEnergyOverlayEvents.renderEnergyOverlay((AbstractContainerScreen<?>) (Object) this, graphics);
     }

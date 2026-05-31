@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = "net.ltxprogrammer.changed.world.inventory.InfuserMenu$1", remap = false)
 public abstract class InfuserResultSlotEnergyMixin {
-    @Inject(method = {"onTake", "m_6654_"}, at = @At("HEAD"))
+    @Inject(method = {"onTake", "m_142406_"}, at = @At("HEAD"))
     private void changede$consumeEnergyOnCraft(Player player, ItemStack stack, CallbackInfo ci) {
         if (!stack.isEmpty()) {
             InfuserMenu menu = changede$getMenu();
