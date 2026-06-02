@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:mod_loaded","modid":"bakeries"}],"ingredients":[{"item":"changede:black_latex_coffee_powder"},{"item":"changede:white_latex_milk"},{"item":"changede:white_latex_milk"},{"item":"changed:white_latex_goo"}],"result":{"item":"changede:hot_latex_half_latte_half"}}

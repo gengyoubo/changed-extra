@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","conditions":[{"type":"forge:mod_loaded","modid":"bakeries"}],"pattern":["XY","YY"],"key":{"X":{"item":"changed:dark_latex_goo"},"Y":{"item":"bakeries:ground_coffee"}},"result":{"item":"changede:black_latex_coffee_powder","count":4}}

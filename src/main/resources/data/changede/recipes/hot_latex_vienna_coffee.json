@@ -1,0 +1,23 @@
+{
+  "type": "bakeries:coffee",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "bakeries"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "changede:hot_latex_vienna_coffee_half"
+    },
+    {
+      "type": "forge:partial_nbt",
+      "item": "minecraft:potion",
+      "nbt": "{Potion:\"minecraft:water\"}"
+    }
+  ],
+  "output": {
+    "item": "changede:hot_latex_vienna_coffee",
+    "count": 1
+  }
+}
