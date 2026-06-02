@@ -45,7 +45,6 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.PEACH.get());
                                             output.accept(CEItem.ENCHANTED_GOLDEN_ORANGE.get());
                                             output.accept(CEItem.CHAIN_INGOT.get());
-                                            CEItem.LATEX_DRINKS.forEach(item -> output.accept(item.get()));
                                         })
                                         .build()
                         );

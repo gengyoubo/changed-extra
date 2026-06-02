@@ -74,49 +74,49 @@ public class CEItem {
     public static final RegistryObject<Item> BLACK_LATEX_COFFEE_POWDER = simpleItem("black_latex_coffee_powder");
     public static final RegistryObject<Item> WHITE_LATEX_MILK = simpleItem("white_latex_milk");
     public static final RegistryObject<Item> HOT_LATEX_COFFEE_E_HALF = simpleItem("hot_latex_coffee_e_half");
-    public static final RegistryObject<Item> HOT_LATEX_COFFEE_E = simpleItem("hot_latex_coffee_e");
+    public static final RegistryObject<Item> HOT_LATEX_COFFEE_E = latexDrinkItem("hot_latex_coffee_e", false);
     public static final RegistryObject<Item> HOT_LATEX_MACCHIATO_HALF = simpleItem("hot_latex_macchiato_half");
-    public static final RegistryObject<Item> HOT_LATEX_MACCHIATO = simpleItem("hot_latex_macchiato");
+    public static final RegistryObject<Item> HOT_LATEX_MACCHIATO = latexDrinkItem("hot_latex_macchiato", false);
     public static final RegistryObject<Item> HOT_LATEX_COFFEE_A_HALF = simpleItem("hot_latex_coffee_a_half");
-    public static final RegistryObject<Item> HOT_LATEX_COFFEE_A = simpleItem("hot_latex_coffee_a");
+    public static final RegistryObject<Item> HOT_LATEX_COFFEE_A = latexDrinkItem("hot_latex_coffee_a", false);
     public static final RegistryObject<Item> HOT_LATEX_WHITE_COFFEE_HALF = simpleItem("hot_latex_white_coffee_half");
-    public static final RegistryObject<Item> HOT_LATEX_WHITE_COFFEE = simpleItem("hot_latex_white_coffee");
+    public static final RegistryObject<Item> HOT_LATEX_WHITE_COFFEE = latexDrinkItem("hot_latex_white_coffee", false);
     public static final RegistryObject<Item> HOT_LATEX_LATTE_HALF = simpleItem("hot_latex_latte_half");
-    public static final RegistryObject<Item> HOT_LATEX_LATTE = simpleItem("hot_latex_latte");
+    public static final RegistryObject<Item> HOT_LATEX_LATTE = latexDrinkItem("hot_latex_latte", false);
     public static final RegistryObject<Item> HOT_LATEX_CON_PANNA_HALF = simpleItem("hot_latex_con_panna_half");
-    public static final RegistryObject<Item> HOT_LATEX_CON_PANNA = simpleItem("hot_latex_con_panna");
+    public static final RegistryObject<Item> HOT_LATEX_CON_PANNA = latexDrinkItem("hot_latex_con_panna", false);
     public static final RegistryObject<Item> HOT_LATEX_HALF_LATTE_HALF = simpleItem("hot_latex_half_latte_half");
-    public static final RegistryObject<Item> HOT_LATEX_HALF_LATTE = simpleItem("hot_latex_half_latte");
+    public static final RegistryObject<Item> HOT_LATEX_HALF_LATTE = latexDrinkItem("hot_latex_half_latte", false);
     public static final RegistryObject<Item> HOT_LATEX_CAPPUCCINO_HALF = simpleItem("hot_latex_cappuccino_half");
-    public static final RegistryObject<Item> HOT_LATEX_CAPPUCCINO = simpleItem("hot_latex_cappuccino");
+    public static final RegistryObject<Item> HOT_LATEX_CAPPUCCINO = latexDrinkItem("hot_latex_cappuccino", false);
     public static final RegistryObject<Item> HOT_LATEX_MOCHA_HALF = simpleItem("hot_latex_mocha_half");
-    public static final RegistryObject<Item> HOT_LATEX_MOCHA = simpleItem("hot_latex_mocha");
+    public static final RegistryObject<Item> HOT_LATEX_MOCHA = latexDrinkItem("hot_latex_mocha", false);
     public static final RegistryObject<Item> HOT_LATEX_SUGAR_MACCHIATO_HALF = simpleItem("hot_latex_sugar_macchiato_half");
-    public static final RegistryObject<Item> HOT_LATEX_SUGAR_MACCHIATO = simpleItem("hot_latex_sugar_macchiato");
+    public static final RegistryObject<Item> HOT_LATEX_SUGAR_MACCHIATO = latexDrinkItem("hot_latex_sugar_macchiato", false);
     public static final RegistryObject<Item> HOT_LATEX_VIENNA_COFFEE_HALF = simpleItem("hot_latex_vienna_coffee_half");
-    public static final RegistryObject<Item> HOT_LATEX_VIENNA_COFFEE = simpleItem("hot_latex_vienna_coffee");
+    public static final RegistryObject<Item> HOT_LATEX_VIENNA_COFFEE = latexDrinkItem("hot_latex_vienna_coffee", false);
     public static final RegistryObject<Item> ICE_LATEX_COFFEE_E_HALF = simpleItem("ice_latex_coffee_e_half");
-    public static final RegistryObject<Item> ICE_LATEX_COFFEE_E = simpleItem("ice_latex_coffee_e");
+    public static final RegistryObject<Item> ICE_LATEX_COFFEE_E = latexDrinkItem("ice_latex_coffee_e", true);
     public static final RegistryObject<Item> ICE_LATEX_MACCHIATO_HALF = simpleItem("ice_latex_macchiato_half");
-    public static final RegistryObject<Item> ICE_LATEX_MACCHIATO = simpleItem("ice_latex_macchiato");
+    public static final RegistryObject<Item> ICE_LATEX_MACCHIATO = latexDrinkItem("ice_latex_macchiato", true);
     public static final RegistryObject<Item> ICE_LATEX_COFFEE_A_HALF = simpleItem("ice_latex_coffee_a_half");
-    public static final RegistryObject<Item> ICE_LATEX_COFFEE_A = simpleItem("ice_latex_coffee_a");
+    public static final RegistryObject<Item> ICE_LATEX_COFFEE_A = latexDrinkItem("ice_latex_coffee_a", true);
     public static final RegistryObject<Item> ICE_LATEX_WHITE_COFFEE_HALF = simpleItem("ice_latex_white_coffee_half");
-    public static final RegistryObject<Item> ICE_LATEX_WHITE_COFFEE = simpleItem("ice_latex_white_coffee");
+    public static final RegistryObject<Item> ICE_LATEX_WHITE_COFFEE = latexDrinkItem("ice_latex_white_coffee", true);
     public static final RegistryObject<Item> ICE_LATEX_LATTE_HALF = simpleItem("ice_latex_latte_half");
-    public static final RegistryObject<Item> ICE_LATEX_LATTE = simpleItem("ice_latex_latte");
+    public static final RegistryObject<Item> ICE_LATEX_LATTE = latexDrinkItem("ice_latex_latte", true);
     public static final RegistryObject<Item> ICE_LATEX_CON_PANNA_HALF = simpleItem("ice_latex_con_panna_half");
-    public static final RegistryObject<Item> ICE_LATEX_CON_PANNA = simpleItem("ice_latex_con_panna");
+    public static final RegistryObject<Item> ICE_LATEX_CON_PANNA = latexDrinkItem("ice_latex_con_panna", true);
     public static final RegistryObject<Item> ICE_LATEX_HALF_LATTE_HALF = simpleItem("ice_latex_half_latte_half");
-    public static final RegistryObject<Item> ICE_LATEX_HALF_LATTE = simpleItem("ice_latex_half_latte");
+    public static final RegistryObject<Item> ICE_LATEX_HALF_LATTE = latexDrinkItem("ice_latex_half_latte", true);
     public static final RegistryObject<Item> ICE_LATEX_CAPPUCCINO_HALF = simpleItem("ice_latex_cappuccino_half");
-    public static final RegistryObject<Item> ICE_LATEX_CAPPUCCINO = simpleItem("ice_latex_cappuccino");
+    public static final RegistryObject<Item> ICE_LATEX_CAPPUCCINO = latexDrinkItem("ice_latex_cappuccino", true);
     public static final RegistryObject<Item> ICE_LATEX_MOCHA_HALF = simpleItem("ice_latex_mocha_half");
-    public static final RegistryObject<Item> ICE_LATEX_MOCHA = simpleItem("ice_latex_mocha");
+    public static final RegistryObject<Item> ICE_LATEX_MOCHA = latexDrinkItem("ice_latex_mocha", true);
     public static final RegistryObject<Item> ICE_LATEX_SUGAR_MACCHIATO_HALF = simpleItem("ice_latex_sugar_macchiato_half");
-    public static final RegistryObject<Item> ICE_LATEX_SUGAR_MACCHIATO = simpleItem("ice_latex_sugar_macchiato");
+    public static final RegistryObject<Item> ICE_LATEX_SUGAR_MACCHIATO = latexDrinkItem("ice_latex_sugar_macchiato", true);
     public static final RegistryObject<Item> ICE_LATEX_VIENNA_COFFEE_HALF = simpleItem("ice_latex_vienna_coffee_half");
-    public static final RegistryObject<Item> ICE_LATEX_VIENNA_COFFEE = simpleItem("ice_latex_vienna_coffee");
+    public static final RegistryObject<Item> ICE_LATEX_VIENNA_COFFEE = latexDrinkItem("ice_latex_vienna_coffee", true);
     public static final List<RegistryObject<Item>> LATEX_DRINKS = List.of(
             BLACK_LATEX_COFFEE_POWDER, WHITE_LATEX_MILK,
             HOT_LATEX_COFFEE_E_HALF, HOT_LATEX_COFFEE_E,
@@ -145,6 +145,10 @@ public class CEItem {
 
     private static RegistryObject<Item> simpleItem(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
+    }
+
+    private static RegistryObject<Item> latexDrinkItem(String name, boolean iced) {
+        return ITEMS.register(name, () -> new LatexDrinkItem(iced));
     }
 
     private static boolean hasProjectE() {
