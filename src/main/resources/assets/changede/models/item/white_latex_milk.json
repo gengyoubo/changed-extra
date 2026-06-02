@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "bakeries:item/bottle_milk"
+    "layer0": "changede:item/bottle_milk"
   }
 }
