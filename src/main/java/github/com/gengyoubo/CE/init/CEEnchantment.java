@@ -32,4 +32,6 @@ public class CEEnchantment {
             ENCHANTMENTS.register("prettyweek", PrettyWeekEnchantment::new);
     public static final RegistryObject<Enchantment> PREETTYSTRONG =
             ENCHANTMENTS.register("prettystrong", PrettyStrongEnchantment::new);
+    public static final RegistryObject<Enchantment> LATEX_WALK =
+            ENCHANTMENTS.register("latex_walk", LatexWalkEnchantment::new);
 }

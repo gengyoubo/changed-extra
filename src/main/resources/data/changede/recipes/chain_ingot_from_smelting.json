@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "minecraft:chain"
+  },
+  "result": "changede:chain_ingot",
+  "experience": 0.1,
+  "cookingtime": 200
+}

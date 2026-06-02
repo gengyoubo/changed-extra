@@ -44,6 +44,7 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.LATEX_PAINTING_PORTAL.get());
                                             output.accept(CEItem.PEACH.get());
                                             output.accept(CEItem.ENCHANTED_GOLDEN_ORANGE.get());
+                                            output.accept(CEItem.CHAIN_INGOT.get());
                                         })
                                         .build()
                         );
@@ -64,11 +65,16 @@ public class CECreativeModeTab {
                 EE = CREATIVE_MODE_TABS.register("easter_egg", () ->
                                 CreativeModeTab.builder()
                                         .title(Component.translatable("creativetab.changede2"))
-                                        .icon(() -> new ItemStack(Items.AIR))
+                                        .icon(() -> new ItemStack(CEItem.PLATE.get()))
                                         .displayItems((parameters, output) -> {
                                             safeAccept(output, resolveProjecteTotem("DARK_MATTER_TOTEM_OF_UNDYING"));
                                             safeAccept(output, resolveProjecteTotem("RED_MATTER_TOTEM_OF_UNDYING"));
                                             safeAccept(output, resolveProjecteTotem("MATTER_TOTEM_OF_UNDYING_TRUE"));
+                                            output.accept(CEItem.PLATE.get());
+                                            output.accept(CEItem.PLATE_HELMET.get());
+                                            output.accept(CEItem.PLATE_CHESTPLATE.get());
+                                            output.accept(CEItem.PLATE_LEGGINGS.get());
+                                            output.accept(CEItem.PLATE_BOOTS.get());
                                         })
                                         .build()
                         );

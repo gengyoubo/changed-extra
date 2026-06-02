@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.init;
 
 import github.com.gengyoubo.CE.items.*;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -56,6 +57,18 @@ public class CEItem {
                     .build())));
     public static final RegistryObject<Item> ENCHANTED_GOLDEN_ORANGE =
             ITEMS.register("enchanted_golden_orange", EnchantedGoldenOrange::new);
+    public static final RegistryObject<Item> CHAIN_INGOT =
+            ITEMS.register("chain_ingot", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> PLATE =
+            ITEMS.register("plate", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> PLATE_HELMET =
+            ITEMS.register("plate_helmet", () -> new ArmorItem(CEArmorMaterials.PLATE, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<Item> PLATE_CHESTPLATE =
+            ITEMS.register("plate_chestplate", () -> new ArmorItem(CEArmorMaterials.PLATE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<Item> PLATE_LEGGINGS =
+            ITEMS.register("plate_leggings", () -> new ArmorItem(CEArmorMaterials.PLATE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final RegistryObject<Item> PLATE_BOOTS =
+            ITEMS.register("plate_boots", () -> new ArmorItem(CEArmorMaterials.PLATE, ArmorItem.Type.BOOTS, new Item.Properties()));
 
     private static boolean hasProjectE() {
         return ModList.get().isLoaded(PROJECT_E_MODID);

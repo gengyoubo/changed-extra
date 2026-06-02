@@ -104,6 +104,7 @@
     "enchantment.changede.soweak":"这么弱？",
     "enchantment.changede.prettyweek":"有点弱",
     "enchantment.changede.prettystrong":"有点强",
+    "enchantment.changede.latex_walk":"胶行",
 
 
     "advancements.changede.title1":"这么强?",
@@ -118,6 +119,12 @@
     "item.changede.latex_gray":"胶灰",
     "item.changede.latex_ingot": "胶锭",
     "item.changede.unbaked_latex_ingot": "未塑性的胶锭",
+    "item.changede.chain_ingot": "锁链锭",
+    "item.changede.plate": "板",
+    "item.changede.plate_helmet": "板甲头盔",
+    "item.changede.plate_chestplate": "板甲胸甲",
+    "item.changede.plate_leggings": "板甲护腿",
+    "item.changede.plate_boots": "板甲靴子",
     "block.changede.space_tower": "空间塔",
     "block.changede.dark_latex_log": "黑胶原木",
     "block.changede.dark_latex_planks": "黑胶木板",

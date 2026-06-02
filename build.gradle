@@ -119,7 +119,7 @@ dependencies {
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")
-    //implementation fg.deobf("curse.maven:bakeries-1191781:7657697")
+    implementation fg.deobf("curse.maven:bakeries-1191781:8041836")
     //正版
     implementation fg.deobf("curse.maven:oauth-513857:4575495")
     //compileOnly()

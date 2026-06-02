@@ -17,6 +17,7 @@ import github.com.gengyoubo.CE.events.DarkLatexYufengQueenEvents;
 import github.com.gengyoubo.CE.events.LatexSpaceTerrainEvents;
 import github.com.gengyoubo.CE.events.LatexSpaceSpawnEvents;
 import github.com.gengyoubo.CE.events.LatexDeathHandlerEvents;
+import github.com.gengyoubo.CE.events.LatexWalkEvents;
 import github.com.gengyoubo.CE.events.MimicYufengWingsFlightEvents;
 import github.com.gengyoubo.CE.events.SWEvents;
 import github.com.gengyoubo.CE.events.SalvageEvents;
@@ -128,6 +129,7 @@ public class changede {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, BlockEvent.BreakEvent.class, XPBoostEvents::onBlockXP);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingHurtEvent.class, SWEvents::onLivingHurt);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, MimicYufengWingsFlightEvents::onPlayerTick);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, LatexWalkEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, AdvancementChainEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, ChunkEvent.Load.class, LatexSpaceTerrainEvents::onChunkLoad);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, false, MobSpawnEvent.SpawnPlacementCheck.class, LatexSpaceSpawnEvents::onSpawnPlacementCheck);
