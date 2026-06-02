@@ -1,1 +1,6 @@
-{"parent":"minecraft:item/generated","textures":{"layer0":"changede:item/texture"}}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "changede:item/hot_latex_mocha"
+  }
+}
