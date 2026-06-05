@@ -26,8 +26,8 @@ public class BasicGeneratorBlockEntityScreen extends AbstractContainerScreen<Bas
     private static final ResourceLocation texture = ResourceLocation.parse("changede:textures/screens/basic_generator_block_entity.png");
     private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("changede:textures/screens/778828.png");
     private static final ResourceLocation TEXTURE_2 = ResourceLocation.parse("changede:textures/screens/778863.png");
-    private static final ResourceLocation DLG=ResourceLocation.parse("changede:testures/screens/dark_latex_goo.png");
-    private static final ResourceLocation WLG=ResourceLocation.parse("changede:testures/screens/white.png");
+    private static final ResourceLocation DLG=ResourceLocation.parse("changed:textures/item/dark_latex_goo.png");
+    private static final ResourceLocation WLG=ResourceLocation.parse("changed:textures/item/white_latex_goo.png");
 
 
     public BasicGeneratorBlockEntityScreen(BasicGeneratorBlockEntityMenu container, Inventory inventory, Component text) {

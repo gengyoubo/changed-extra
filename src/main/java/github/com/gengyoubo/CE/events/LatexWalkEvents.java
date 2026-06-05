@@ -48,7 +48,7 @@ public final class LatexWalkEvents {
             removeSpeedModifier(player);
         }
     }
-
+@SuppressWarnings("deprecation")
     private static boolean hasLatexWalk(Player player) {
         return EnchantmentHelper.getItemEnchantmentLevel(
                 CEEnchantment.LATEX_WALK.get(),
