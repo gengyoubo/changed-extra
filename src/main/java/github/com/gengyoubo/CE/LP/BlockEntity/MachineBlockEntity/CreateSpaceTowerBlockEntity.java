@@ -44,9 +44,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
 
     public CreateSpaceTowerBlockEntity(BlockPos pos, BlockState state) {
         super(CELPBlockEntity.SPACE_TOWER_BLOCK_ENTITY.get(), pos, state);
-        for (SpaceTowerEnergyType type : SpaceTowerEnergyType.values()) {
-            modes.put(type, type == SpaceTowerEnergyType.LP ? IOType.OUTPUT : IOType.INPUT);
-        }
+        SpaceTowerCommon.initializeDefaultModes(modes);
     }
 
     @Override
@@ -95,7 +93,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     @Override
     public void setCeRpm(int rpm) {
         int oldCost = getCeCostPerMinute();
-        ceRpm = Mth.clamp(roundToStep(rpm), SpaceTowerBlockEntity.MIN_CE_RPM, SpaceTowerBlockEntity.MAX_CE_RPM);
+        ceRpm = Mth.clamp(SpaceTowerCommon.roundToStep(rpm), SpaceTowerBlockEntity.MIN_CE_RPM, SpaceTowerBlockEntity.MAX_CE_RPM);
         rescaleCeStorage(oldCost);
         refreshKinetics();
         sync();
@@ -112,7 +110,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
 
     @Override
     public int getCeCostPerMinute() {
-        return getCeCostPerMinute(ceRpm, ceSu);
+        return SpaceTowerCommon.getCeCostPerMinute(ceRpm, ceSu);
     }
 
     @Override
@@ -145,13 +143,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
             return;
         }
 
-        jouleBuffer += amount * type.joulesPerUnit();
-        int lp = (int)Math.floor(jouleBuffer / SpaceTowerEnergyType.LP.joulesPerUnit());
-        int received = receiveLpIgnoringMode(lp);
-        jouleBuffer -= received * SpaceTowerEnergyType.LP.joulesPerUnit();
-        if (received > 0) {
-            sync();
-        }
+        jouleBuffer = SpaceTowerCommon.receiveAsLpBuffer(jouleBuffer, type, amount, this::receiveLpIgnoringMode, this::sync);
     }
 
     @Override
@@ -171,13 +163,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
             return extracted;
         }
 
-        double requestedJoules = requestedAmount * type.joulesPerUnit();
-        int requestedLp = (int)Math.ceil(requestedJoules / SpaceTowerEnergyType.LP.joulesPerUnit());
-        int extractedLp = extractLpIgnoringMode(requestedLp);
-        if (extractedLp > 0) {
-            sync();
-        }
-        return extractedLp * SpaceTowerEnergyType.LP.joulesPerUnit() / type.joulesPerUnit();
+        return SpaceTowerCommon.extractFromLp(type, requestedAmount, this::extractLpIgnoringMode, this::sync);
     }
 
     @Override
@@ -341,7 +327,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     private void storeIncomingCe() {
         int actualRpm = Math.max(SpaceTowerBlockEntity.MIN_CE_RPM, Math.round(Math.abs(getSpeed())));
         int actualStressUnits = getActualInputStressUnits(actualRpm);
-        double lpPerTick = getCeCostPerMinute(actualRpm, actualStressUnits) / (double)TICKS_PER_MINUTE;
+        double lpPerTick = SpaceTowerCommon.getCeCostPerMinute(actualRpm, actualStressUnits) / (double)TICKS_PER_MINUTE;
         ceInputAccumulator += lpPerTick;
         if (ceInputAccumulator >= 1.0D) {
             int wholeLp = (int)Math.floor(ceInputAccumulator);
@@ -397,29 +383,8 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
         return Math.max(ceSu, Math.round(availableStress));
     }
 
-    private static int getCeCostPerMinute(int rpm, int stressUnits) {
-        int rpmExtra = Math.max(0, (roundToStep(rpm) - SpaceTowerBlockEntity.DEFAULT_CE_RPM) / 2);
-        int suExtra = Math.max(0, (stressUnits - SpaceTowerBlockEntity.DEFAULT_CE_SU + 3) / 4);
-        return SpaceTowerBlockEntity.BASE_CE_COST_PER_MINUTE + rpmExtra + suExtra;
-    }
-
     private void pushEnergy() {
-        if (level == null || level.isClientSide || getMode(SpaceTowerEnergyType.LP) != IOType.OUTPUT) {
-            return;
-        }
-
-        for (Direction dir : Direction.values()) {
-            BlockEntity neighbor = level.getBlockEntity(worldPosition.relative(dir));
-
-            if (neighbor instanceof ILatexEnergyHandler handler) {
-                int extracted = this.extractEnergy(100, dir);
-                int received = handler.receiveEnergy(extracted, dir.getOpposite());
-
-                if (received < extracted) {
-                    this.receiveLpIgnoringMode(extracted - received);
-                }
-            }
-        }
+        SpaceTowerCommon.pushLpOutput(level, worldPosition, this, this::getMode, this::receiveLpIgnoringMode);
     }
 
     protected int receiveLpIgnoringMode(int amount) {
@@ -505,20 +470,11 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     }
 
     private void sync() {
-        setChanged();
-        if (level != null) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
+        SpaceTowerCommon.sync(this);
     }
 
     private void notifyNeighbors() {
-        if (level != null && !level.isClientSide) {
-            level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
-        }
-    }
-
-    private static int roundToStep(int value) {
-        return Math.round(value / (float) 2) * 2;
+        SpaceTowerCommon.notifyNeighbors(this);
     }
 
     @Override
@@ -533,11 +489,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
         tag.putInt("CeSu", ceSu);
         tag.putBoolean("CeOutputPowered", ceOutputPowered);
 
-        CompoundTag modesTag = new CompoundTag();
-        for (SpaceTowerEnergyType type : SpaceTowerEnergyType.values()) {
-            modesTag.putString(type.name(), getMode(type).name());
-        }
-        tag.put("Modes", modesTag);
+        SpaceTowerCommon.saveModes(tag, this::getMode);
     }
 
     @Override
@@ -552,20 +504,9 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
         ceSu = tag.contains("CeSu") ? tag.getInt("CeSu") : SpaceTowerBlockEntity.DEFAULT_CE_SU;
         ceOutputPowered = false;
 
-        if (tag.contains("Modes")) {
-            CompoundTag modesTag = tag.getCompound("Modes");
-            for (SpaceTowerEnergyType type : SpaceTowerEnergyType.values()) {
-                if (modesTag.contains(type.name())) {
-                    try {
-                        modes.put(type, IOType.valueOf(modesTag.getString(type.name())));
-                    } catch (IllegalArgumentException ignored) {
-                        modes.put(type, type == SpaceTowerEnergyType.LP ? IOType.OUTPUT : IOType.INPUT);
-                    }
-                }
-            }
-        }
+        SpaceTowerCommon.loadModes(tag, modes);
 
-        ceRpm = Mth.clamp(roundToStep(ceRpm), SpaceTowerBlockEntity.MIN_CE_RPM, SpaceTowerBlockEntity.MAX_CE_RPM);
+        ceRpm = Mth.clamp(SpaceTowerCommon.roundToStep(ceRpm), SpaceTowerBlockEntity.MIN_CE_RPM, SpaceTowerBlockEntity.MAX_CE_RPM);
         ceSu = Mth.clamp(ceSu, SpaceTowerBlockEntity.MIN_CE_SU, SpaceTowerBlockEntity.MAX_CE_SU);
         clampCeStorage();
         if (!clientPacket) {

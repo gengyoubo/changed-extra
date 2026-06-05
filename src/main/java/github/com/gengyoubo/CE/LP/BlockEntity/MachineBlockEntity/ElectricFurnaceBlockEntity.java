@@ -69,14 +69,7 @@ public class ElectricFurnaceBlockEntity extends MachineBlockEntity {
     protected boolean canProcess() {
         if (level == null) return false;
 
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
-
-        Optional<SmeltingRecipe> recipe = level.getRecipeManager()
-                .getRecipeFor(RecipeType.SMELTING, inventory, level);
-
+        Optional<SmeltingRecipe> recipe = findSmeltingRecipe();
         if (recipe.isEmpty()) {
             return false;
         }
@@ -99,14 +92,7 @@ public class ElectricFurnaceBlockEntity extends MachineBlockEntity {
     protected void processItem() {
         if (level == null) return;
 
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
-
-        Optional<SmeltingRecipe> recipe = level.getRecipeManager()
-                .getRecipeFor(RecipeType.SMELTING, inventory, level);
-
+        Optional<SmeltingRecipe> recipe = findSmeltingRecipe();
         if (recipe.isEmpty()) {
             return;
         }
@@ -123,6 +109,21 @@ public class ElectricFurnaceBlockEntity extends MachineBlockEntity {
         }
 
         setChanged();
+    }
+
+    private Optional<SmeltingRecipe> findSmeltingRecipe() {
+        if (level == null) {
+            return Optional.empty();
+        }
+        return level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, createRecipeInventory(), level);
+    }
+
+    private SimpleContainer createRecipeInventory() {
+        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            inventory.setItem(i, itemHandler.getStackInSlot(i));
+        }
+        return inventory;
     }
 
     @Override

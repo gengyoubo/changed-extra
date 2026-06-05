@@ -1,7 +1,5 @@
 package github.com.gengyoubo.CE.LP.world.Menu;
 
-import github.com.gengyoubo.CE.LP.BlockEntity.BaseEnergyBlockEntity;
-import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.MachineBlockEntity;
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,11 +39,11 @@ public class LatexCreativeExtranalbodyCraftTableMenu extends AbstractContainerMe
     private IItemHandler internal = new ItemStackHandler(10);
 
     public LatexCreativeExtranalbodyCraftTableMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, extraData.readBlockPos(), new SimpleContainerData(4));
+        this(id, inv, extraData.readBlockPos(), new SimpleContainerData(MachineMenuData.COUNT));
     }
 
     public LatexCreativeExtranalbodyCraftTableMenu(int id, Inventory inv, BlockPos pos) {
-        this(id, inv, pos, createData(inv.player.level(), pos));
+        this(id, inv, pos, MachineMenuData.create(inv.player.level(), pos));
     }
 
     public LatexCreativeExtranalbodyCraftTableMenu(int id, Inventory inv, BlockPos pos, ContainerData data) {
@@ -64,33 +62,8 @@ public class LatexCreativeExtranalbodyCraftTableMenu extends AbstractContainerMe
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        checkContainerDataCount(this.data, 4);
+        checkContainerDataCount(this.data, MachineMenuData.COUNT);
         addDataSlots(this.data);
-    }
-
-    private static ContainerData createData(Level level, BlockPos pos) {
-        return new ContainerData() {
-            @Override
-            public int get(int index) {
-                BlockEntity blockEntity = level.getBlockEntity(pos);
-                return switch (index) {
-                    case 0 -> blockEntity instanceof BaseEnergyBlockEntity energy ? energy.getEnergyStored() : 0;
-                    case 1 -> blockEntity instanceof BaseEnergyBlockEntity energy ? energy.getMaxEnergyStored() : 0;
-                    case 2 -> blockEntity instanceof MachineBlockEntity machine ? machine.getProgress() : 0;
-                    case 3 -> blockEntity instanceof MachineBlockEntity machine ? machine.getMaxProgressValue() : 0;
-                    default -> 0;
-                };
-            }
-
-            @Override
-            public void set(int index, int value) {
-            }
-
-            @Override
-            public int getCount() {
-                return 4;
-            }
-        };
     }
 
     private static FriendlyByteBuf writePos(BlockPos pos) {

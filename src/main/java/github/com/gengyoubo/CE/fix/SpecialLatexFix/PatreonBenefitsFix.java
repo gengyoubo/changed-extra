@@ -73,19 +73,11 @@ public class PatreonBenefitsFix extends PatreonBenefits {
         // -> raw.githubusercontent.com/<owner>/<repo>/<branch>/<path>
         Matcher ghTree = GITHUB_TREE_URL.matcher(trimmed);
         if (ghTree.matches()) {
-            String owner = ghTree.group(1);
-            String repo = ghTree.group(2);
-            String branch = ghTree.group(3);
-            String path = ghTree.group(4);
-            trimmed = "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + "/" + (path == null ? "" : path);
+            trimmed = toRawGithubUrl(ghTree);
         } else {
             Matcher rawTree = RAW_GITHUB_TREE_URL.matcher(trimmed);
             if (rawTree.matches()) {
-                String owner = rawTree.group(1);
-                String repo = rawTree.group(2);
-                String branch = rawTree.group(3);
-                String path = rawTree.group(4);
-                trimmed = "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + "/" + (path == null ? "" : path);
+                trimmed = toRawGithubUrl(rawTree);
             }
         }
 
@@ -98,6 +90,14 @@ public class PatreonBenefitsFix extends PatreonBenefits {
         } catch (Exception ignored) {
             return null;
         }
+    }
+
+    private static String toRawGithubUrl(Matcher matcher) {
+        String owner = matcher.group(1);
+        String repo = matcher.group(2);
+        String branch = matcher.group(3);
+        String path = matcher.group(4);
+        return "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + "/" + (path == null ? "" : path);
     }
 
     public static String getPrimaryRepositoryBase() {
