@@ -21,6 +21,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Arrays;
+
 public class LatexPaintingPortalProjectionRenderer {
     private static final int GRID_SIZE = 129;
     private static final float INNER_MIN = -0.45F;
@@ -64,7 +66,7 @@ public class LatexPaintingPortalProjectionRenderer {
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         int background = skyColorFor(snapshot, 0, 0);
-        drawQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.000F, red(background), green(background), blue(background), 255);
+        drawQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.000F, red(background), green(background), blue(background));
 
         Cell[] projected = flatten(snapshot);
         for (int z = 0; z < GRID_SIZE; z++) {
@@ -78,7 +80,7 @@ public class LatexPaintingPortalProjectionRenderer {
                 float x2 = x1 + CELL_SIZE;
                 float y2 = INNER_MAX - z * CELL_SIZE;
                 float y1 = y2 - CELL_SIZE;
-                drawQuad(matrix, bufferBuilder, x1, y1, x2, y2, 0.000F, red(color), green(color), blue(color), 255);
+                drawQuad(matrix, bufferBuilder, x1, y1, x2, y2, 0.000F, red(color), green(color), blue(color));
             }
         }
 
@@ -111,8 +113,8 @@ public class LatexPaintingPortalProjectionRenderer {
         BufferBuilder bufferBuilder = tessellator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        drawQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.000F, 92, 60, 34, 255);
-        drawQuad(matrix, bufferBuilder, -0.43F, -0.43F, 0.43F, 0.43F, 0.001F, 124, 83, 47, 255);
+        drawQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.000F, 92, 60, 34);
+        drawQuad(matrix, bufferBuilder, -0.43F, -0.43F, 0.43F, 0.43F, 0.001F, 124, 83, 47);
         drawFrame(matrix, bufferBuilder);
 
         BufferUploader.drawWithShader(bufferBuilder.end());
@@ -153,9 +155,7 @@ public class LatexPaintingPortalProjectionRenderer {
     private static Cell[] flatten(LatexPaintingPortalPreviewCache.Snapshot snapshot) {
         Cell[] states = new Cell[GRID_SIZE * GRID_SIZE];
         int[] depths = new int[GRID_SIZE * GRID_SIZE];
-        for (int i = 0; i < depths.length; i++) {
-            depths[i] = Integer.MAX_VALUE;
-        }
+        Arrays.fill(depths, Integer.MAX_VALUE);
 
         if (snapshot == null || snapshot.blocks().isEmpty()) {
             return states;
@@ -288,9 +288,9 @@ public class LatexPaintingPortalProjectionRenderer {
     }
 
     private static void drawQuad(Matrix4f matrix, BufferBuilder bufferBuilder, float x1, float y1, float x2, float y2,
-                                 float z, int r, int g, int b, int a) {
-        drawColorQuad(matrix, bufferBuilder, x1, y1, x2, y2, z, r, g, b, a);
-        drawColorQuad(matrix, bufferBuilder, x2, y1, x1, y2, z, r, g, b, a);
+                                 float z, int r, int g, int b) {
+        drawColorQuad(matrix, bufferBuilder, x1, y1, x2, y2, z, r, g, b, 255);
+        drawColorQuad(matrix, bufferBuilder, x2, y1, x1, y2, z, r, g, b, 255);
     }
 
     private static void drawColorQuad(Matrix4f matrix, BufferBuilder bufferBuilder, float x1, float y1, float x2, float y2,
@@ -302,10 +302,10 @@ public class LatexPaintingPortalProjectionRenderer {
     }
 
     private static void drawFrame(Matrix4f matrix, BufferBuilder bufferBuilder) {
-        drawQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, 0.000F, 23, 18, 20, 255);
-        drawQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, 0.000F, 23, 18, 20, 255);
-        drawQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, 0.000F, 23, 18, 20, 255);
-        drawQuad(matrix, bufferBuilder, 0.48F, -0.48F, 0.54F, 0.48F, 0.000F, 23, 18, 20, 255);
+        drawQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, 0.000F, 23, 18, 20);
+        drawQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, 0.000F, 23, 18, 20);
+        drawQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, 0.000F, 23, 18, 20);
+        drawQuad(matrix, bufferBuilder, 0.48F, -0.48F, 0.54F, 0.48F, 0.000F, 23, 18, 20);
     }
 
     private static int red(int color) {

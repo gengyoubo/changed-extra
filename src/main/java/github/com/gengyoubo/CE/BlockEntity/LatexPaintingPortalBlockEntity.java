@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class LatexPaintingPortalBlockEntity extends BlockEntity {
     private static final int CLIENT_REQUEST_INTERVAL_TICKS = 80;
@@ -48,14 +49,14 @@ public class LatexPaintingPortalBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putString("PreviewDimension", previewDimension.location().toString());
         tag.putLong("PreviewOrigin", previewOrigin.asLong());
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         if (tag.contains("PreviewDimension")) {
             previewDimension = ResourceKey.create(

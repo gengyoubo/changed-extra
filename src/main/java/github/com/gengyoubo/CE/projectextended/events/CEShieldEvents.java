@@ -1,5 +1,6 @@
 package github.com.gengyoubo.CE.projectextended.events;
 
+import github.com.gengyoubo.CE.events.AdvancementChainEvents;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.resources.ResourceLocation;
@@ -64,14 +65,6 @@ public class CEShieldEvents {
     }
 
     private static void awardAdvancement(ServerPlayer player, ResourceLocation advancementId) {
-        Advancement advancement = player.server.getAdvancements().getAdvancement(advancementId);
-        if (advancement == null) {
-            return;
-        }
-
-        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
-        for (String criterion : progress.getRemainingCriteria()) {
-            player.getAdvancements().award(advancement, criterion);
-        }
+        AdvancementChainEvents.awardAdvancement(player, advancementId);
     }
 }

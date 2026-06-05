@@ -33,7 +33,7 @@ public enum EnumMatterTypeExtend implements StringRepresentable, Tier {
         this.harvestLevel = 4;
         this.neededTag = PETags.Blocks.NEEDS_DARK_MATTER_TOOL;
         this.mapColor = MapColor.COLOR_BLACK;
-        TierSortingRegistry.registerTier(this, PECore.rl("true_matter"), List.of(Tiers.NETHERITE), null == null ? Collections.emptyList() : List.of((ResourceLocation) null));
+        TierSortingRegistry.registerTier(this, PECore.rl("true_matter"), List.of(Tiers.NETHERITE), Collections.emptyList());
     }
     public @NotNull String getSerializedName() {
         return this.name;
@@ -59,7 +59,6 @@ public enum EnumMatterTypeExtend implements StringRepresentable, Tier {
         return this.attackDamage;
     }
 
-    @SuppressWarnings("deprecation")
     public int getLevel() {
         return this.harvestLevel;
     }

@@ -9,6 +9,7 @@ import github.com.gengyoubo.CE.client.renderer.LatexPortalRenderManager;
 import github.com.gengyoubo.CE.init.CEBlock;
 import github.com.gengyoubo.CE.init.CEBlockEntity;
 import github.com.gengyoubo.CE.init.CEEntity;
+import github.com.gengyoubo.CE.changede;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -19,6 +20,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import java.lang.reflect.Method;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class CEScreen {
@@ -55,10 +58,24 @@ public class CEScreen {
             Object plugin = Class.forName("github.com.gengyoubo.CE.LP.ponder.CEPonderPlugin")
                     .getDeclaredConstructor()
                     .newInstance();
-            ponderIndexClass.getMethod("addPlugin", ponderPluginClass).invoke(null, plugin);
-        } catch (ReflectiveOperationException exception) {
-            throw new IllegalStateException("Failed to register changede ponder plugin", exception);
+            Method addPlugin = findPonderAddPluginMethod(ponderIndexClass, ponderPluginClass);
+            addPlugin.invoke(null, plugin);
+        } catch (ReflectiveOperationException | LinkageError exception) {
+            changede.LOGGER.warn("Failed to register changede ponder plugin", exception);
         }
+    }
+
+    private static Method findPonderAddPluginMethod(Class<?> ponderIndexClass, Class<?> ponderPluginClass)
+            throws NoSuchMethodException {
+        for (Method method : ponderIndexClass.getMethods()) {
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            if (method.getName().equals("addPlugin")
+                    && parameterTypes.length == 1
+                    && parameterTypes[0].isAssignableFrom(ponderPluginClass)) {
+                return method;
+            }
+        }
+        throw new NoSuchMethodException("PonderIndex.addPlugin(PonderPlugin)");
     }
 
 }

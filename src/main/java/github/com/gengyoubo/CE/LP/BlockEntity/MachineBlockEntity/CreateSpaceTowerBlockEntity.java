@@ -95,7 +95,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     @Override
     public void setCeRpm(int rpm) {
         int oldCost = getCeCostPerMinute();
-        ceRpm = Mth.clamp(roundToStep(rpm, 2), SpaceTowerBlockEntity.MIN_CE_RPM, SpaceTowerBlockEntity.MAX_CE_RPM);
+        ceRpm = Mth.clamp(roundToStep(rpm), SpaceTowerBlockEntity.MIN_CE_RPM, SpaceTowerBlockEntity.MAX_CE_RPM);
         rescaleCeStorage(oldCost);
         refreshKinetics();
         sync();
@@ -131,9 +131,9 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     }
 
     @Override
-    public int receiveEnergyAsType(SpaceTowerEnergyType type, double amount) {
+    public void receiveEnergyAsType(SpaceTowerEnergyType type, double amount) {
         if (amount <= 0.0D || getMode(type) != IOType.INPUT) {
-            return 0;
+            return;
         }
 
         if (type == SpaceTowerEnergyType.CE) {
@@ -142,7 +142,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
             ceStoredLp = Math.min(getMaxCeStoredLp(), ceStoredLp + amount);
             updateCeOutputPoweredState(wasPowered);
             sync();
-            return (int)Math.floor(ceStoredLp - before);
+            return;
         }
 
         jouleBuffer += amount * type.joulesPerUnit();
@@ -152,7 +152,6 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
         if (received > 0) {
             sync();
         }
-        return received;
     }
 
     @Override
@@ -399,7 +398,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     }
 
     private static int getCeCostPerMinute(int rpm, int stressUnits) {
-        int rpmExtra = Math.max(0, (roundToStep(rpm, 2) - SpaceTowerBlockEntity.DEFAULT_CE_RPM) / 2);
+        int rpmExtra = Math.max(0, (roundToStep(rpm) - SpaceTowerBlockEntity.DEFAULT_CE_RPM) / 2);
         int suExtra = Math.max(0, (stressUnits - SpaceTowerBlockEntity.DEFAULT_CE_SU + 3) / 4);
         return SpaceTowerBlockEntity.BASE_CE_COST_PER_MINUTE + rpmExtra + suExtra;
     }
@@ -518,8 +517,8 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
         }
     }
 
-    private static int roundToStep(int value, int step) {
-        return Math.round(value / (float)step) * step;
+    private static int roundToStep(int value) {
+        return Math.round(value / (float) 2) * 2;
     }
 
     @Override
@@ -566,7 +565,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
             }
         }
 
-        ceRpm = Mth.clamp(roundToStep(ceRpm, 2), SpaceTowerBlockEntity.MIN_CE_RPM, SpaceTowerBlockEntity.MAX_CE_RPM);
+        ceRpm = Mth.clamp(roundToStep(ceRpm), SpaceTowerBlockEntity.MIN_CE_RPM, SpaceTowerBlockEntity.MAX_CE_RPM);
         ceSu = Mth.clamp(ceSu, SpaceTowerBlockEntity.MIN_CE_SU, SpaceTowerBlockEntity.MAX_CE_SU);
         clampCeStorage();
         if (!clientPacket) {

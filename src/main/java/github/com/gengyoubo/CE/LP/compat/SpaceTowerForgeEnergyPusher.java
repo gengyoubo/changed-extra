@@ -1,6 +1,5 @@
 package github.com.gengyoubo.CE.LP.compat;
 
-import github.com.gengyoubo.CE.LP.IOType;
 import github.com.gengyoubo.CE.LP.SpaceTowerEnergyType;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.SpaceTowerAccess;
 import net.minecraft.core.BlockPos;

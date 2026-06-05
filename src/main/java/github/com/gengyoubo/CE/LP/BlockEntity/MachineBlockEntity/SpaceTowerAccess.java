@@ -10,7 +10,7 @@ public interface SpaceTowerAccess {
 
     void setMode(SpaceTowerEnergyType type, IOType mode);
 
-    int receiveEnergyAsType(SpaceTowerEnergyType type, double amount);
+    void receiveEnergyAsType(SpaceTowerEnergyType type, double amount);
 
     double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount);
 

@@ -5,12 +5,12 @@ import github.com.gengyoubo.CE.LP.energy.WorkbenchEnergyHolder;
 import github.com.gengyoubo.CE.LP.energy.WorkbenchEnergyRules;
 import github.com.gengyoubo.CE.LP.energy.WorkbenchEnergySync;
 import github.com.gengyoubo.CE.LP.energy.WorkbenchEnergyStorage;
+import github.com.gengyoubo.CE.LP.energy.WorkbenchRecipeProgress;
 import net.foxyas.changedaddon.block.entity.UnifuserBlockEntity;
 import net.foxyas.changedaddon.recipe.UnifuserRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -105,19 +105,17 @@ public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILat
 
     @Unique
     private static boolean changede$willProgress(Level level, BlockEntity blockEntity, UnifuserBlockEntity unifuser) {
-        if (!(level instanceof ServerLevel serverLevel) || unifuser.tickCount < 5 || !unifuser.startRecipe) {
+        WorkbenchRecipeProgress.Context context = WorkbenchRecipeProgress.context(
+                level,
+                blockEntity,
+                unifuser.tickCount,
+                unifuser.startRecipe
+        );
+        if (context == null) {
             return false;
         }
 
-        IItemHandlerModifiable handler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .resolve()
-                .filter(IItemHandlerModifiable.class::isInstance)
-                .map(IItemHandlerModifiable.class::cast)
-                .orElse(null);
-        if (handler == null) {
-            return false;
-        }
-
+        IItemHandlerModifiable handler = context.handler();
         ItemStack inputA = handler.getStackInSlot(0);
         ItemStack inputB = handler.getStackInSlot(1);
         ItemStack inputC = handler.getStackInSlot(2);
@@ -125,30 +123,16 @@ public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILat
             return false;
         }
 
-        UnifuserRecipe recipe = UnifuserBlockEntity.findRecipe(serverLevel, inputA, inputB, inputC);
-        return recipe != null && changede$canAcceptResult(handler.getStackInSlot(3), recipe.getResultItem(level.registryAccess()));
-    }
-
-    @Unique
-    private static boolean changede$canAcceptResult(ItemStack output, ItemStack result) {
-        if (result.isEmpty()) {
-            return false;
-        }
-        if (output.isEmpty()) {
-            return true;
-        }
-        return ItemStack.isSameItemSameTags(output, result)
-                && output.getCount() + result.getCount() <= Math.min(output.getMaxStackSize(), result.getMaxStackSize());
+        UnifuserRecipe recipe = UnifuserBlockEntity.findRecipe(context.level(), inputA, inputB, inputC);
+        return recipe != null && WorkbenchRecipeProgress.canAcceptResult(
+                handler.getStackInSlot(3),
+                recipe.getResultItem(level.registryAccess())
+        );
     }
 
     @Unique
     private void changede$markEnergyChanged() {
         BlockEntity blockEntity = (BlockEntity) (Object) this;
-        blockEntity.setChanged();
-        if (blockEntity.getLevel() != null && !blockEntity.getLevel().isClientSide) {
-            BlockState state = blockEntity.getBlockState();
-            blockEntity.getLevel().sendBlockUpdated(blockEntity.getBlockPos(), state, state, 3);
-            WorkbenchEnergySync.sync(blockEntity, changede$ensureEnergy());
-        }
+        WorkbenchEnergySync.markChangedAndSync(blockEntity, changede$ensureEnergy());
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.PacketDistributor;
 
 public final class WorkbenchEnergySync {
@@ -34,5 +35,16 @@ public final class WorkbenchEnergySync {
                 CENetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
             }
         }
+    }
+
+    public static void markChangedAndSync(BlockEntity blockEntity, WorkbenchEnergyStorage energy) {
+        blockEntity.setChanged();
+        if (blockEntity.getLevel() == null || blockEntity.getLevel().isClientSide) {
+            return;
+        }
+
+        BlockState state = blockEntity.getBlockState();
+        blockEntity.getLevel().sendBlockUpdated(blockEntity.getBlockPos(), state, state, 3);
+        sync(blockEntity, energy);
     }
 }

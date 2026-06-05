@@ -57,7 +57,7 @@ public class CESpaceTowerPonderScenes {
         createScene.idle(10);
 
         BlockPos wire = util.grid().at(0, 1, 3);
-        createScene.world().setBlock(wire, createWireState(Direction.WEST, Direction.EAST), false);
+        createScene.world().setBlock(wire, createWireState(), false);
         createScene.world().showSection(util.select().position(wire), Direction.DOWN);
         createScene.idle(5);
 
@@ -67,13 +67,13 @@ public class CESpaceTowerPonderScenes {
 
         for (int i = 2; i < 5; i++) {
             BlockPos shaft = util.grid().at(i, 1, 3);
-            createScene.world().setBlock(shaft, createShaftState(Direction.Axis.X), false);
+            createScene.world().setBlock(shaft, createShaftState(), false);
             createScene.world().showSection(util.select().position(shaft), Direction.DOWN);
             createScene.idle(5);
         }
 
         BlockPos motor = util.grid().at(5, 1, 3);
-        createScene.world().setBlock(motor, createMotorState(Direction.WEST), false);
+        createScene.world().setBlock(motor, createMotorState(), false);
         createScene.world().showSection(util.select().position(motor), Direction.DOWN);
         createScene.world().setKineticSpeed(util.select().fromTo(
                 util.grid().at(2, 1, 3),
@@ -105,13 +105,13 @@ public class CESpaceTowerPonderScenes {
         createScene.idle(5);
 
         wire = util.grid().at(6, 1, 3);
-        createScene.world().setBlock(wire, createWireState(Direction.WEST, Direction.EAST), false);
+        createScene.world().setBlock(wire, createWireState(), false);
         createScene.world().showSection(util.select().position(wire), Direction.DOWN);
         createScene.idle(5);
 
         for (int i = 4; i >= 3; i--) {
             BlockPos shaft = util.grid().at(i, 1, 3);
-            createScene.world().setBlock(shaft, createShaftState(Direction.Axis.X), false);
+            createScene.world().setBlock(shaft, createShaftState(), false);
             createScene.world().showSection(util.select().position(shaft), Direction.DOWN);
             createScene.idle(5);
         }
@@ -143,17 +143,17 @@ public class CESpaceTowerPonderScenes {
         return block == null ? air.getBlock() : block;
     }
 
-    private static BlockState createShaftState(Direction.Axis axis) {
-        return getCreateBlock("shaft").defaultBlockState().setValue(BlockStateProperties.AXIS, axis);
+    private static BlockState createShaftState() {
+        return getCreateBlock("shaft").defaultBlockState().setValue(BlockStateProperties.AXIS, Direction.Axis.X);
     }
 
-    private static BlockState createMotorState(Direction facing) {
-        return getCreateBlock("creative_motor").defaultBlockState().setValue(BlockStateProperties.FACING, facing);
+    private static BlockState createMotorState() {
+        return getCreateBlock("creative_motor").defaultBlockState().setValue(BlockStateProperties.FACING, Direction.WEST);
     }
 
-    private static BlockState createWireState(Direction... connections) {
+    private static BlockState createWireState() {
         BlockState state = CELPBlock.BASIC_WIRE.get().defaultBlockState();
-        for (Direction connection : connections) {
+        for (Direction connection : new Direction[]{Direction.WEST, Direction.EAST}) {
             state = switch (connection) {
                 case NORTH -> state.setValue(BasicEnergyPipeBlock.NORTH, true);
                 case SOUTH -> state.setValue(BasicEnergyPipeBlock.SOUTH, true);

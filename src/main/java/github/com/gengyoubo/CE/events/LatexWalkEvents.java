@@ -82,7 +82,7 @@ public final class LatexWalkEvents {
     private static void stabilizeOnLatexLiquidSurface(Player player, BlockPos latexSurfacePos) {
         double surfaceY = latexSurfacePos.getY() + 1.0D;
         Vec3 movement = player.getDeltaMovement();
-        double verticalMovement = movement.y < 0.0D ? 0.0D : movement.y;
+        double verticalMovement = Math.max(movement.y, 0.0D);
 
         player.setDeltaMovement(movement.x, verticalMovement, movement.z);
         if (player.getY() > surfaceY - LATEX_LIQUID_SURFACE_SNAP_LIMIT && player.getY() < surfaceY) {

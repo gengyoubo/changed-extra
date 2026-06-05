@@ -33,10 +33,10 @@ public abstract class LivingEntityTotemMixin {
     public abstract void setHealth(float health);
 
     @Shadow
-    public abstract boolean removeAllEffects();
+    public abstract void removeAllEffects();
 
     @Shadow
-    public abstract boolean addEffect(MobEffectInstance effect);
+    public abstract void addEffect(MobEffectInstance effect);
 
     @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
     private void changede$useMatterTotem(DamageSource source, CallbackInfoReturnable<Boolean> cir) {

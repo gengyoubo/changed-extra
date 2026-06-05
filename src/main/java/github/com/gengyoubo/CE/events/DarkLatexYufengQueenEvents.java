@@ -81,7 +81,7 @@ public class DarkLatexYufengQueenEvents {
         summoned.getPersistentData().putBoolean(QUEEN_SUMMONED_TAG, true);
 
         DifficultyInstance difficulty = level.getCurrentDifficultyAt(spawnPos);
-        summoned.finalizeSpawn(level, difficulty, MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, null);
+        summoned.finalizeSpawn(level, difficulty, MobSpawnType.MOB_SUMMONED, null, null);
         summoned.setTarget(queen.getTarget());
 
         level.addFreshEntity(summoned);

@@ -87,11 +87,11 @@ public class LatexPaintingPortalFramebufferRenderer {
         BufferBuilder bufferBuilder = tessellator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-        drawTexturedQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.0F, 255, 255, 255, 255);
-        drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, 0.0F, 23, 18, 20, 255);
-        drawTexturedQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, 0.0F, 23, 18, 20, 255);
-        drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, 0.0F, 23, 18, 20, 255);
-        drawTexturedQuad(matrix, bufferBuilder, 0.48F, -0.48F, 0.54F, 0.48F, 0.0F, 23, 18, 20, 255);
+        drawTexturedQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 255, 255, 255);
+        drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, 23, 18, 20);
+        drawTexturedQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, 23, 18, 20);
+        drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, 23, 18, 20);
+        drawTexturedQuad(matrix, bufferBuilder, 0.48F, -0.48F, 0.54F, 0.48F, 23, 18, 20);
 
         BufferUploader.drawWithShader(bufferBuilder.end());
 
@@ -177,17 +177,17 @@ public class LatexPaintingPortalFramebufferRenderer {
         BufferBuilder bufferBuilder = RenderSystem.renderThreadTesselator().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        drawColorQuad(matrix, bufferBuilder, -1.0F, -1.0F, 1.0F, 1.0F, 0.0F, 32, 48, 72, 255);
+        drawColorQuad(matrix, bufferBuilder, -1.0F, -1.0F, 1.0F, 1.0F, 0.0F, 32, 48, 72);
         if (snapshot == null || snapshot.blocks().isEmpty()) {
-            drawColorQuad(matrix, bufferBuilder, -0.72F, -0.72F, 0.72F, 0.72F, -0.02F, 180, 40, 40, 255);
+            drawColorQuad(matrix, bufferBuilder, -0.72F, -0.72F, 0.72F, 0.72F, -0.02F, 180, 40, 40);
         } else {
             drawRemoteBlocks(bufferBuilder, targetFacing, snapshot);
         }
 
-        drawColorQuad(matrix, bufferBuilder, -1.0F, -1.0F, 1.0F, -0.92F, -0.04F, 22, 18, 20, 255);
-        drawColorQuad(matrix, bufferBuilder, -1.0F, 0.92F, 1.0F, 1.0F, -0.04F, 22, 18, 20, 255);
-        drawColorQuad(matrix, bufferBuilder, -1.0F, -0.92F, -0.92F, 0.92F, -0.04F, 22, 18, 20, 255);
-        drawColorQuad(matrix, bufferBuilder, 0.92F, -0.92F, 1.0F, 0.92F, -0.04F, 22, 18, 20, 255);
+        drawColorQuad(matrix, bufferBuilder, -1.0F, -1.0F, 1.0F, -0.92F, -0.04F, 22, 18, 20);
+        drawColorQuad(matrix, bufferBuilder, -1.0F, 0.92F, 1.0F, 1.0F, -0.04F, 22, 18, 20);
+        drawColorQuad(matrix, bufferBuilder, -1.0F, -0.92F, -0.92F, 0.92F, -0.04F, 22, 18, 20);
+        drawColorQuad(matrix, bufferBuilder, 0.92F, -0.92F, 1.0F, 0.92F, -0.04F, 22, 18, 20);
 
         BufferUploader.drawWithShader(bufferBuilder.end());
         RenderSystem.depthMask(true);
@@ -255,15 +255,15 @@ public class LatexPaintingPortalFramebufferRenderer {
     private static void drawProjectedQuad(Matrix4f matrix, BufferBuilder bufferBuilder, Vector3f a, Vector3f b, Vector3f c, Vector3f d,
                                           int color, int lightOffset) {
         int shaded = pack(clamp(red(color) + lightOffset), clamp(green(color) + lightOffset), clamp(blue(color) + lightOffset));
-        drawProjectedQuadRaw(matrix, bufferBuilder, a, b, c, d, red(shaded), green(shaded), blue(shaded), 255);
+        drawProjectedQuadRaw(matrix, bufferBuilder, a, b, c, d, red(shaded), green(shaded), blue(shaded));
     }
 
     private static void drawProjectedQuadRaw(Matrix4f matrix, BufferBuilder bufferBuilder, Vector3f a, Vector3f b, Vector3f c, Vector3f d,
-                                             int r, int g, int bColor, int alpha) {
-        bufferBuilder.vertex(matrix, a.x(), a.y(), a.z()).color(r, g, bColor, alpha).endVertex();
-        bufferBuilder.vertex(matrix, b.x(), b.y(), b.z()).color(r, g, bColor, alpha).endVertex();
-        bufferBuilder.vertex(matrix, c.x(), c.y(), c.z()).color(r, g, bColor, alpha).endVertex();
-        bufferBuilder.vertex(matrix, d.x(), d.y(), d.z()).color(r, g, bColor, alpha).endVertex();
+                                             int r, int g, int bColor) {
+        bufferBuilder.vertex(matrix, a.x(), a.y(), a.z()).color(r, g, bColor, 255).endVertex();
+        bufferBuilder.vertex(matrix, b.x(), b.y(), b.z()).color(r, g, bColor, 255).endVertex();
+        bufferBuilder.vertex(matrix, c.x(), c.y(), c.z()).color(r, g, bColor, 255).endVertex();
+        bufferBuilder.vertex(matrix, d.x(), d.y(), d.z()).color(r, g, bColor, 255).endVertex();
     }
 
     private static int colorFor(BlockState state) {
@@ -366,19 +366,19 @@ public class LatexPaintingPortalFramebufferRenderer {
     }
 
     private static void drawTexturedQuad(Matrix4f matrix, BufferBuilder bufferBuilder, float x1, float y1, float x2, float y2,
-                                         float z, int r, int g, int b, int a) {
-        bufferBuilder.vertex(matrix, x1, y1, z).uv(0.0F, 1.0F).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix, x2, y1, z).uv(1.0F, 1.0F).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix, x2, y2, z).uv(1.0F, 0.0F).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix, x1, y2, z).uv(0.0F, 0.0F).color(r, g, b, a).endVertex();
+                                         int r, int g, int b) {
+        bufferBuilder.vertex(matrix, x1, y1, (float) 0.0).uv(0.0F, 1.0F).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x2, y1, (float) 0.0).uv(1.0F, 1.0F).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x2, y2, (float) 0.0).uv(1.0F, 0.0F).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x1, y2, (float) 0.0).uv(0.0F, 0.0F).color(r, g, b, 255).endVertex();
     }
 
     private static void drawColorQuad(Matrix4f matrix, BufferBuilder bufferBuilder, float x1, float y1, float x2, float y2,
-                                      float z, int r, int g, int b, int a) {
-        bufferBuilder.vertex(matrix, x1, y1, z).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix, x2, y1, z).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix, x2, y2, z).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix, x1, y2, z).color(r, g, b, a).endVertex();
+                                      float z, int r, int g, int b) {
+        bufferBuilder.vertex(matrix, x1, y1, z).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x2, y1, z).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x2, y2, z).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x1, y2, z).color(r, g, b, 255).endVertex();
     }
 
 }

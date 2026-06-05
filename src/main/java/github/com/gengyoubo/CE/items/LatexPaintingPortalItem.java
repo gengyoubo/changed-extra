@@ -42,18 +42,17 @@ public class LatexPaintingPortalItem extends Item {
             ServerLevel destination = LatexPaintingPortalBlock.getDestinationLevel(sourceLevel);
             if (destination != null) {
                 BlockPos destinationPos = LatexPaintingPortalBlock.findSafeTarget(destination, pos);
-                Direction destinationFacing = viewFacing;
                 LatexPaintingPortalEntity linkedPortal = findNearestPortal(destination, destinationPos);
                 if (linkedPortal == null) {
                     linkedPortal = new LatexPaintingPortalEntity(
                             CEEntity.LATEX_PAINTING_PORTAL.get(),
                             destination,
                             destinationPos,
-                            destinationFacing
+                            viewFacing
                     );
                     destination.addFreshEntity(linkedPortal);
                 } else if (destination.dimension().equals(LatexPaintingPortalBlock.LATEX_SPACE)) {
-                    linkedPortal.setFacing(destinationFacing);
+                    linkedPortal.setFacing(viewFacing);
                 }
 
                 linkedPortal.setRenderReversed(true);

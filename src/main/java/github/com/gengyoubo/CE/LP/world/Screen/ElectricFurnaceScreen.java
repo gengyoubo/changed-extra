@@ -21,10 +21,10 @@ public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurna
         this.imageHeight = 166;
     }
 
-    private int getEnergyScaled(int pixels) {
+    private int getEnergyScaled() {
         int energy = this.menu.getEnergyStored();
         int maxEnergy = this.menu.getMaxEnergyStored();
-        return maxEnergy > 0 && energy > 0 ? energy * pixels / maxEnergy : 0;
+        return maxEnergy > 0 && energy > 0 ? energy * 160 / maxEnergy : 0;
     }
 
     private Component getEnergyText() {
@@ -78,12 +78,12 @@ public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurna
             );
         }
 
-        int energyWidth = getEnergyScaled(160);
+        int energyWidth = getEnergyScaled();
         if (energyWidth > 0) {
             guiGraphics.fill(
                     this.leftPos + 8,
                     this.topPos + 74,
-                    this.leftPos + 8 + Math.max(1, energyWidth),
+                    this.leftPos + 8 + energyWidth,
                     this.topPos + 78,
                     0xFF56A8FF
             );

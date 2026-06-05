@@ -5,6 +5,7 @@ import github.com.gengyoubo.CE.LP.energy.WorkbenchEnergyHolder;
 import github.com.gengyoubo.CE.LP.energy.WorkbenchEnergyRules;
 import github.com.gengyoubo.CE.LP.energy.WorkbenchEnergySync;
 import github.com.gengyoubo.CE.LP.energy.WorkbenchEnergyStorage;
+import github.com.gengyoubo.CE.LP.energy.WorkbenchRecipeProgress;
 import net.foxyas.changedaddon.block.entity.CatalyzerBlockEntity;
 import net.foxyas.changedaddon.recipe.CatalyzerRecipe;
 import net.minecraft.core.BlockPos;
@@ -106,38 +107,27 @@ public abstract class CatalyzerEnergyMixin implements WorkbenchEnergyHolder, ILa
 
     @Unique
     private static boolean changede$willProgress(Level level, BlockEntity blockEntity, CatalyzerBlockEntity catalyzer) {
-        if (!(level instanceof ServerLevel serverLevel) || catalyzer.tickCount < 5 || !catalyzer.startRecipe) {
+        WorkbenchRecipeProgress.Context context = WorkbenchRecipeProgress.context(
+                level,
+                blockEntity,
+                catalyzer.tickCount,
+                catalyzer.startRecipe
+        );
+        if (context == null) {
             return false;
         }
 
-        IItemHandlerModifiable handler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .resolve()
-                .filter(IItemHandlerModifiable.class::isInstance)
-                .map(IItemHandlerModifiable.class::cast)
-                .orElse(null);
-        if (handler == null) {
-            return false;
-        }
-
+        IItemHandlerModifiable handler = context.handler();
         ItemStack input = handler.getStackInSlot(0).copy();
         if (input.isEmpty()) {
             return false;
         }
 
-        CatalyzerRecipe recipe = changede$findRecipe(serverLevel, input);
-        return recipe != null && changede$canAcceptResult(handler.getStackInSlot(1), recipe.getResultItem(level.registryAccess()));
-    }
-
-    @Unique
-    private static boolean changede$canAcceptResult(ItemStack output, ItemStack result) {
-        if (result.isEmpty()) {
-            return false;
-        }
-        if (output.isEmpty()) {
-            return true;
-        }
-        return ItemStack.isSameItemSameTags(output, result)
-                && output.getCount() + result.getCount() <= Math.min(output.getMaxStackSize(), result.getMaxStackSize());
+        CatalyzerRecipe recipe = changede$findRecipe(context.level(), input);
+        return recipe != null && WorkbenchRecipeProgress.canAcceptResult(
+                handler.getStackInSlot(1),
+                recipe.getResultItem(level.registryAccess())
+        );
     }
 
     @Invoker("findRecipe")
@@ -148,11 +138,6 @@ public abstract class CatalyzerEnergyMixin implements WorkbenchEnergyHolder, ILa
     @Unique
     private void changede$markEnergyChanged() {
         BlockEntity blockEntity = (BlockEntity) (Object) this;
-        blockEntity.setChanged();
-        if (blockEntity.getLevel() != null && !blockEntity.getLevel().isClientSide) {
-            BlockState state = blockEntity.getBlockState();
-            blockEntity.getLevel().sendBlockUpdated(blockEntity.getBlockPos(), state, state, 3);
-            WorkbenchEnergySync.sync(blockEntity, changede$ensureEnergy());
-        }
+        WorkbenchEnergySync.markChangedAndSync(blockEntity, changede$ensureEnergy());
     }
 }

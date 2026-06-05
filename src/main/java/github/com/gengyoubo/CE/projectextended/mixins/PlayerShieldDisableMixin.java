@@ -1,5 +1,6 @@
 package github.com.gengyoubo.CE.projectextended.mixins;
 
+import github.com.gengyoubo.CE.events.AdvancementChainEvents;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import github.com.gengyoubo.CE.projectextended.items.CEShield;
@@ -34,14 +35,6 @@ public class PlayerShieldDisableMixin {
     }
     @Unique
     private void changed_extra$awardAdvancement(ServerPlayer player, ResourceLocation advancementId) {
-        Advancement advancement = player.server.getAdvancements().getAdvancement(advancementId);
-        if (advancement == null) {
-            return;
-        }
-
-        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
-        for (String criterion : progress.getRemainingCriteria()) {
-            player.getAdvancements().award(advancement, criterion);
-        }
+        AdvancementChainEvents.awardAdvancement(player, advancementId);
     }
 }

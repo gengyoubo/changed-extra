@@ -91,7 +91,7 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
 
     public void setCeRpm(int rpm) {
         int oldCost = getCeCostPerMinute();
-        ceRpm = Mth.clamp(roundToStep(rpm, 2), MIN_CE_RPM, MAX_CE_RPM);
+        ceRpm = Mth.clamp(roundToStep(rpm), MIN_CE_RPM, MAX_CE_RPM);
         rescaleCeStorage(oldCost);
         sync();
     }
@@ -120,16 +120,16 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
     }
 
     @Override
-    public int receiveEnergyAsType(SpaceTowerEnergyType type, double amount) {
+    public void receiveEnergyAsType(SpaceTowerEnergyType type, double amount) {
         if (amount <= 0.0D || getMode(type) != IOType.INPUT) {
-            return 0;
+            return;
         }
 
         if (type == SpaceTowerEnergyType.CE) {
             double before = ceStoredLp;
             ceStoredLp = Math.min(getMaxCeStoredLp(), ceStoredLp + amount);
             sync();
-            return (int)Math.floor(ceStoredLp - before);
+            return;
         }
 
         jouleBuffer += amount * type.joulesPerUnit();
@@ -139,7 +139,6 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
         if (received > 0) {
             sync();
         }
-        return received;
     }
 
     @Override
@@ -234,7 +233,7 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
     }
 
     private static int getCeCostPerMinute(int rpm, int stressUnits) {
-        int rpmExtra = Math.max(0, (roundToStep(rpm, 2) - DEFAULT_CE_RPM) / 2);
+        int rpmExtra = Math.max(0, (roundToStep(rpm) - DEFAULT_CE_RPM) / 2);
         int suExtra = Math.max(0, (stressUnits - DEFAULT_CE_SU + 3) / 4);
         return BASE_CE_COST_PER_MINUTE + rpmExtra + suExtra;
     }
@@ -301,8 +300,8 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
         }
     }
 
-    private static int roundToStep(int value, int step) {
-        return Math.round(value / (float)step) * step;
+    private static int roundToStep(int value) {
+        return Math.round(value / (float) 2) * 2;
     }
 
     @Override
@@ -343,7 +342,7 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
             }
         }
 
-        ceRpm = Mth.clamp(roundToStep(ceRpm, 2), MIN_CE_RPM, MAX_CE_RPM);
+        ceRpm = Mth.clamp(roundToStep(ceRpm), MIN_CE_RPM, MAX_CE_RPM);
         ceSu = Mth.clamp(ceSu, MIN_CE_SU, MAX_CE_SU);
         clampCeStorage();
     }

@@ -20,7 +20,6 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
     private final Map<SpaceTowerEnergyType, Button> modeButtons = new EnumMap<>(SpaceTowerEnergyType.class);
     private EditBox rpmInput;
     private EditBox suInput;
-    private Button applyButton;
     private int lastSyncedRpm = Integer.MIN_VALUE;
     private int lastSyncedSu = Integer.MIN_VALUE;
 
@@ -91,7 +90,7 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
         suInput.setMaxLength(9);
         addRenderableWidget(suInput);
 
-        applyButton = addRenderableWidget(Button.builder(
+        Button applyButton = addRenderableWidget(Button.builder(
                         Component.translatable("screen.changede.space_tower.apply"),
                         ignored -> submitCeSettings()
                 )

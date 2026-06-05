@@ -19,6 +19,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -68,7 +69,7 @@ public abstract class PurifierEnergyMixin extends BaseContainerBlockEntity imple
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
         if (cap == ForgeCapabilities.ENERGY) {
             changede$ensureEnergy();
             return changede$energyCapability.cast();
@@ -124,11 +125,6 @@ public abstract class PurifierEnergyMixin extends BaseContainerBlockEntity imple
 
     @Unique
     private void changede$markEnergyChanged() {
-        setChanged();
-        if (level != null && !level.isClientSide) {
-            BlockState state = getBlockState();
-            level.sendBlockUpdated(worldPosition, state, state, 3);
-            WorkbenchEnergySync.sync(this, changede$ensureEnergy());
-        }
+        WorkbenchEnergySync.markChangedAndSync(this, changede$ensureEnergy());
     }
 }

@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -56,7 +55,7 @@ public class SpaceTowerMenu extends AbstractContainerMenu {
                 if (index >= 8) {
                     int typeIndex = index - 8;
                     SpaceTowerEnergyType[] types = SpaceTowerEnergyType.values();
-                    if (typeIndex >= 0 && typeIndex < types.length) {
+                    if (typeIndex < types.length) {
                         return tower.getMode(types[typeIndex]).ordinal();
                     }
                     return 0;

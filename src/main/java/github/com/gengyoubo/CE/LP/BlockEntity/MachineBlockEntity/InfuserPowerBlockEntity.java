@@ -16,6 +16,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class InfuserPowerBlockEntity extends BlockEntity implements WorkbenchEnergyHolder, ILatexEnergyHandler {
     private final ItemStackHandler items = new ItemStackHandler(2) {
@@ -33,21 +34,21 @@ public class InfuserPowerBlockEntity extends BlockEntity implements WorkbenchEne
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         items.deserializeNBT(tag.getCompound("Items"));
         energy.setEnergyStored(tag.getInt(WorkbenchEnergyRules.NBT_KEY));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Items", items.serializeNBT());
         tag.putInt(WorkbenchEnergyRules.NBT_KEY, energy.getEnergyStored());
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return itemCapability.cast();
         }
@@ -94,11 +95,6 @@ public class InfuserPowerBlockEntity extends BlockEntity implements WorkbenchEne
     }
 
     private void markEnergyChanged() {
-        setChanged();
-        if (level != null && !level.isClientSide) {
-            BlockState state = getBlockState();
-            level.sendBlockUpdated(worldPosition, state, state, 3);
-            WorkbenchEnergySync.sync(this, energy);
-        }
+        WorkbenchEnergySync.markChangedAndSync(this, energy);
     }
 }

@@ -125,34 +125,33 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
         return sourceLevel.getServer().getLevel(LATEX_SPACE);
     }
 
-    public static boolean teleportPlayer(ServerPlayer player, ServerLevel sourceLevel, BlockPos origin) {
+    public static void teleportPlayer(ServerPlayer player, ServerLevel sourceLevel, BlockPos origin) {
         long now = sourceLevel.getGameTime();
         if (player.getPersistentData().getLong(COOLDOWN_TAG) > now) {
-            return false;
+            return;
         }
 
         ServerLevel destination = getDestinationLevel(sourceLevel);
         if (destination == null) {
-            return false;
+            return;
         }
 
         BlockPos target = findSafeTarget(destination, origin);
         player.getPersistentData().putLong(COOLDOWN_TAG, destination.getGameTime() + PORTAL_COOLDOWN_TICKS);
         player.teleportTo(destination, target.getX() + 0.5D, target.getY(), target.getZ() + 0.5D, player.getYRot(), player.getXRot());
         awardLatexSpacePortalAdvancement(player, destination);
-        return true;
     }
 
-    public static boolean teleportPlayerToPortal(ServerPlayer player, ServerLevel sourceLevel, ResourceKey<Level> targetDimension,
-                                                 BlockPos targetPortalPos, Direction targetFacing) {
+    public static void teleportPlayerToPortal(ServerPlayer player, ServerLevel sourceLevel, ResourceKey<Level> targetDimension,
+                                              BlockPos targetPortalPos, Direction targetFacing) {
         long now = sourceLevel.getGameTime();
         if (player.getPersistentData().getLong(COOLDOWN_TAG) > now) {
-            return false;
+            return;
         }
 
         ServerLevel destination = sourceLevel.getServer().getLevel(targetDimension);
         if (destination == null) {
-            return false;
+            return;
         }
 
         BlockPos exitPortalPos = targetPortalPos;
@@ -174,7 +173,6 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
                 player.getXRot()
         );
         awardLatexSpacePortalAdvancement(player, destination);
-        return true;
     }
 
     private static void awardLatexSpacePortalAdvancement(ServerPlayer player, ServerLevel destination) {
@@ -241,27 +239,27 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
     private static @Nullable LatexPaintingPortalEntity findNearestPortal(ServerLevel level, BlockPos center) {
         List<LatexPaintingPortalEntity> portals = level.getEntitiesOfClass(
                 LatexPaintingPortalEntity.class,
-                horizontalSearchArea(level, center, RETURN_PORTAL_SEARCH_RADIUS),
-                portal -> !portal.isRemoved() && isWithinHorizontalRadius(portal, center, RETURN_PORTAL_SEARCH_RADIUS)
+                horizontalSearchArea(level, center),
+                portal -> !portal.isRemoved() && isWithinHorizontalRadius(portal, center)
         );
         return portals.stream()
                 .min(Comparator.comparingDouble(portal -> horizontalDistanceSqr(portal, center)))
                 .orElse(null);
     }
 
-    private static net.minecraft.world.phys.AABB horizontalSearchArea(ServerLevel level, BlockPos center, double radius) {
+    private static net.minecraft.world.phys.AABB horizontalSearchArea(ServerLevel level, BlockPos center) {
         return new net.minecraft.world.phys.AABB(
-                center.getX() + 0.5D - radius,
+                center.getX() + 0.5D - LatexPaintingPortalBlock.RETURN_PORTAL_SEARCH_RADIUS,
                 level.getMinBuildHeight(),
-                center.getZ() + 0.5D - radius,
-                center.getX() + 0.5D + radius,
+                center.getZ() + 0.5D - LatexPaintingPortalBlock.RETURN_PORTAL_SEARCH_RADIUS,
+                center.getX() + 0.5D + LatexPaintingPortalBlock.RETURN_PORTAL_SEARCH_RADIUS,
                 level.getMaxBuildHeight(),
-                center.getZ() + 0.5D + radius
+                center.getZ() + 0.5D + LatexPaintingPortalBlock.RETURN_PORTAL_SEARCH_RADIUS
         );
     }
 
-    private static boolean isWithinHorizontalRadius(LatexPaintingPortalEntity portal, BlockPos center, double radius) {
-        return horizontalDistanceSqr(portal, center) <= radius * radius;
+    private static boolean isWithinHorizontalRadius(LatexPaintingPortalEntity portal, BlockPos center) {
+        return horizontalDistanceSqr(portal, center) <= LatexPaintingPortalBlock.RETURN_PORTAL_SEARCH_RADIUS * LatexPaintingPortalBlock.RETURN_PORTAL_SEARCH_RADIUS;
     }
 
     private static double horizontalDistanceSqr(LatexPaintingPortalEntity portal, BlockPos center) {

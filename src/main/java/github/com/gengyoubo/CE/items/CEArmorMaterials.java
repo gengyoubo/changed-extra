@@ -7,18 +7,13 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 public enum CEArmorMaterials implements ArmorMaterial, StringRepresentable {
     PLATE(
-            "iron",
-            11,
             new int[]{1, 4, 5, 1},
-            8,
-            SoundEvents.ARMOR_EQUIP_IRON,
-            0.0F,
-            0.0F,
             () -> Ingredient.of(CEItem.PLATE.get())
     );
 
@@ -32,22 +27,16 @@ public enum CEArmorMaterials implements ArmorMaterial, StringRepresentable {
     private final Supplier<Ingredient> repairIngredient;
 
     CEArmorMaterials(
-            String name,
-            int durabilityMultiplier,
             int[] slotProtections,
-            int enchantmentValue,
-            SoundEvent equipSound,
-            float toughness,
-            float knockbackResistance,
             Supplier<Ingredient> repairIngredient
     ) {
-        this.name = name;
-        this.durabilityMultiplier = durabilityMultiplier;
+        this.name = "iron";
+        this.durabilityMultiplier = 11;
         this.slotProtections = slotProtections;
-        this.enchantmentValue = enchantmentValue;
-        this.equipSound = equipSound;
-        this.toughness = toughness;
-        this.knockbackResistance = knockbackResistance;
+        this.enchantmentValue = 8;
+        this.equipSound = SoundEvents.ARMOR_EQUIP_IRON;
+        this.toughness = (float) 0.0;
+        this.knockbackResistance = (float) 0.0;
         this.repairIngredient = repairIngredient;
     }
 
@@ -78,17 +67,17 @@ public enum CEArmorMaterials implements ArmorMaterial, StringRepresentable {
     }
 
     @Override
-    public SoundEvent getEquipSound() {
+    public @NotNull SoundEvent getEquipSound() {
         return equipSound;
     }
 
     @Override
-    public Ingredient getRepairIngredient() {
+    public @NotNull Ingredient getRepairIngredient() {
         return repairIngredient.get();
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
@@ -103,7 +92,7 @@ public enum CEArmorMaterials implements ArmorMaterial, StringRepresentable {
     }
 
     @Override
-    public String getSerializedName() {
+    public @NotNull String getSerializedName() {
         return name;
     }
 }
