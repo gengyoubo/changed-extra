@@ -15,12 +15,15 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LatexSpaceTerrainEvents {
+    private static final ThreadLocal<Boolean> REPLACING_LATEX_SPACE_FLUID = ThreadLocal.withInitial(() -> false);
+
     private static final ResourceKey<Level> LATEX_SPACE = ResourceKey.create(
             Registries.DIMENSION,
             ResourceLocation.fromNamespaceAndPath("changede", "latex_space")
@@ -86,10 +89,21 @@ public class LatexSpaceTerrainEvents {
         }
     }
 
+    public static void onLevelUnload(LevelEvent.Unload event) {
+        if (event.getLevel() instanceof ServerLevel level && level.dimension().equals(LATEX_SPACE)) {
+            PROCESSED_CHUNKS.clear();
+        }
+    }
+
+    public static boolean shouldSkipLatexSpaceFluidOnPlace() {
+        return Boolean.TRUE.equals(REPLACING_LATEX_SPACE_FLUID.get());
+    }
+
     private static void replaceLatexSpaceTerrain(ServerLevel level, ChunkAccess chunk) {
         ChunkPos chunkPos = chunk.getPos();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int minY = chunk.getMinBuildHeight();
+        boolean changed = false;
 
         for (int localX = 0; localX < 16; localX++) {
             for (int localZ = 0; localZ < 16; localZ++) {
@@ -106,14 +120,33 @@ public class LatexSpaceTerrainEvents {
                     pos.set(x, y, z);
                     BlockState current = chunk.getBlockState(pos);
                     BlockState replacement = palette.replacementFor(current);
-                    if (replacement != null) {
+                    if (replacement == null || current.equals(replacement)) {
+                        continue;
+                    }
+
+                    if (current.is(Blocks.WATER)) {
+                        setLatexSpaceFluidBlock(chunk, pos, replacement);
+                    } else {
                         chunk.setBlockState(pos, replacement, false);
                     }
+                    changed = true;
                 }
             }
         }
 
-        chunk.setUnsaved(true);
+        if (changed) {
+            chunk.setUnsaved(true);
+        }
+    }
+
+    private static void setLatexSpaceFluidBlock(ChunkAccess chunk, BlockPos pos, BlockState fluid) {
+        boolean wasReplacing = shouldSkipLatexSpaceFluidOnPlace();
+        REPLACING_LATEX_SPACE_FLUID.set(true);
+        try {
+            chunk.setBlockState(pos, fluid, false);
+        } finally {
+            REPLACING_LATEX_SPACE_FLUID.set(wasReplacing);
+        }
     }
 
     private static LatexPalette paletteFor(ServerLevel level, BlockPos pos) {

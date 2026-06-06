@@ -18,6 +18,7 @@
     "GooCoreBlockMixin",
     "LatexCoveredBlocksRendererMixin",
     "LatexSyringeMixin",
+    "LiquidBlockLatexSpaceTerrainMixin",
     "PatreonBenefitsMixin",
     "ServerPlayerSpecialVariantMixin",
     "SyncTransfurPacketListingAccessor",
@@ -41,6 +42,7 @@
     "ElytraLayerMixin",
     "LatexElytraLayerMixin",
     "MimicYufengHumanoidModelMixin",
-    "SignalCatcherItemMixin"
+    "SignalCatcherItemMixin",
+    "WorldOpenFlowsNoExperimentalWarningMixin"
   ]
 }

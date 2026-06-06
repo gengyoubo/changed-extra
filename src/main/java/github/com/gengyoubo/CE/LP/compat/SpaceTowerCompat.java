@@ -34,7 +34,10 @@ public final class SpaceTowerCompat {
             return CreateSpaceTowerCompat.createBlockEntity(pos, state);
         }
         if (isAe2Loaded()) {
-            return Ae2SpaceTowerCompat.createBlockEntity(pos, state);
+            BlockEntity ae2BlockEntity = OptionalSpaceTowerBlockEntities.createAe2(pos, state);
+            if (ae2BlockEntity != null) {
+                return ae2BlockEntity;
+            }
         }
         return new SpaceTowerBlockEntity(pos, state);
     }

@@ -131,6 +131,7 @@ public class changede {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, LatexWalkEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, AdvancementChainEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, ChunkEvent.Load.class, LatexSpaceTerrainEvents::onChunkLoad);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, net.minecraftforge.event.level.LevelEvent.Unload.class, LatexSpaceTerrainEvents::onLevelUnload);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, false, MobSpawnEvent.SpawnPlacementCheck.class, LatexSpaceSpawnEvents::onSpawnPlacementCheck);
         if (CHANGED_ADDON) {
             MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingEvent.LivingTickEvent.class, DarkLatexYufengQueenEvents::onLivingTick);

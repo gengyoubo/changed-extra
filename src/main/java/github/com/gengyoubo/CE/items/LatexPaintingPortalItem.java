@@ -41,9 +41,10 @@ public class LatexPaintingPortalItem extends Item {
         if (level instanceof ServerLevel sourceLevel) {
             ServerLevel destination = LatexPaintingPortalBlock.getDestinationLevel(sourceLevel);
             if (destination != null) {
-                BlockPos destinationPos = LatexPaintingPortalBlock.findSafeTarget(destination, pos);
+                BlockPos destinationPos = LatexPaintingPortalBlock.findLoadedTargetForPortalPlacement(destination, pos);
                 LatexPaintingPortalEntity linkedPortal = findNearestPortal(destination, destinationPos);
                 if (linkedPortal == null) {
+                    destination.getChunk(destinationPos);
                     linkedPortal = new LatexPaintingPortalEntity(
                             CEEntity.LATEX_PAINTING_PORTAL.get(),
                             destination,
@@ -51,13 +52,17 @@ public class LatexPaintingPortalItem extends Item {
                             viewFacing
                     );
                     destination.addFreshEntity(linkedPortal);
-                } else if (destination.dimension().equals(LatexPaintingPortalBlock.LATEX_SPACE)) {
+                } else if (linkedPortal != null && destination.dimension().equals(LatexPaintingPortalBlock.LATEX_SPACE)) {
                     linkedPortal.setFacing(viewFacing);
                 }
 
-                linkedPortal.setRenderReversed(true);
-                portal.setTarget(destination.dimension(), linkedPortal.blockPosition(), viewFacing);
-                linkedPortal.setTarget(sourceLevel.dimension(), portal.blockPosition(), viewFacing);
+                if (linkedPortal != null) {
+                    linkedPortal.setRenderReversed(true);
+                    portal.setTarget(destination.dimension(), linkedPortal.blockPosition(), viewFacing);
+                    linkedPortal.setTarget(sourceLevel.dimension(), portal.blockPosition(), viewFacing);
+                } else {
+                    portal.setTarget(destination.dimension(), destinationPos, viewFacing);
+                }
             }
             level.addFreshEntity(portal);
             consumeItem(context);

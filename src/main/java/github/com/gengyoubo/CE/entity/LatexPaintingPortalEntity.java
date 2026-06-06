@@ -123,7 +123,7 @@ public class LatexPaintingPortalEntity extends Entity {
         AABB portalArea = getPortalArea();
         List<ServerPlayer> players = sourceLevel.getEntitiesOfClass(ServerPlayer.class, portalArea);
         for (ServerPlayer player : players) {
-            LatexPaintingPortalBlock.teleportPlayerToPortal(player, sourceLevel, getTargetDimension(), getTargetPos(), getTargetFacing());
+            LatexPaintingPortalBlock.teleportPlayerToPortal(player, sourceLevel, this);
         }
     }
 

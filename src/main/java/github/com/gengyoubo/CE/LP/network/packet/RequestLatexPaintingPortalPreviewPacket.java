@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class RequestLatexPaintingPortalPreviewPacket {
-    private static final int RADIUS = 72;
-    private static final int VERTICAL_ABOVE = 56;
-    private static final int VERTICAL_BELOW = 32;
-    private static final int MAX_BLOCKS = 50000;
+    private static final int RADIUS = 56;
+    private static final int VERTICAL_ABOVE = 40;
+    private static final int VERTICAL_BELOW = 24;
+    private static final int MAX_BLOCKS = 20000;
     private static final double PORTAL_HALF_WIDTH = 1.5D;
     private static final double PORTAL_HALF_HEIGHT = 1.5D;
     private static final double HORIZONTAL_VIEW_SPREAD = 0.95D;
@@ -94,6 +94,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
             BlockPos center = target == null
                     ? LatexPaintingPortalBlock.findPreviewTarget(previewLevel, packet.portalPos)
                     : LatexPaintingPortalBlock.findPortalPreviewCenter(previewLevel, target.pos(), target.sideFacing());
+            previewLevel.getChunk(center);
             List<LatexPaintingPortalPreviewPacket.Entry> entries = collectPreviewBlocks(previewLevel, center, target == null ? null : target.viewFacing());
             changede.LOGGER.warn(
                     "Sending latex painting portal preview to {} from {} at {}, targetPos={}, targetFacing={}, targetSide={}, center={}, blocks={}",
@@ -182,12 +183,6 @@ public class RequestLatexPaintingPortalPreviewPacket {
     }
 
     private static List<LatexPaintingPortalPreviewPacket.Entry> collectPreviewBlocks(ServerLevel level, BlockPos center, @Nullable Direction facing) {
-        for (int chunkX = (center.getX() - RADIUS) >> 4; chunkX <= (center.getX() + RADIUS) >> 4; chunkX++) {
-            for (int chunkZ = (center.getZ() - RADIUS) >> 4; chunkZ <= (center.getZ() + RADIUS) >> 4; chunkZ++) {
-                level.getChunk(chunkX, chunkZ);
-            }
-        }
-
         List<LatexPaintingPortalPreviewPacket.Entry> entries = new ArrayList<>();
         for (int dx = -RADIUS; dx <= RADIUS; dx++) {
             for (int dz = -RADIUS; dz <= RADIUS; dz++) {
@@ -228,10 +223,15 @@ public class RequestLatexPaintingPortalPreviewPacket {
             Direction right = facing.getClockWise();
             encodedX = dx * right.getStepX() + dz * right.getStepZ();
             encodedZ = forward;
+            if (Math.abs(encodedX) > PORTAL_HALF_WIDTH + encodedZ * HORIZONTAL_VIEW_SPREAD) {
+                return;
+            }
         }
 
         int x = center.getX() + dx;
         int z = center.getZ() + dz;
+        level.getChunk(x >> 4, z >> 4);
+
         int minY = Math.max(level.getMinBuildHeight(), center.getY() - VERTICAL_BELOW);
         int maxY = Math.min(level.getMaxBuildHeight() - 1, center.getY() + VERTICAL_ABOVE);
 

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LatexPaintingPortalPreviewCache {
-    private static final long REQUEST_INTERVAL_TICKS = 40L;
+    private static final long REQUEST_INTERVAL_TICKS = 200L;
     private static final Map<Key, Snapshot> SNAPSHOTS = new HashMap<>();
     private static final Map<Key, Long> LAST_REQUESTS = new HashMap<>();
 

@@ -144,6 +144,22 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
 
     public static void teleportPlayerToPortal(ServerPlayer player, ServerLevel sourceLevel, ResourceKey<Level> targetDimension,
                                               BlockPos targetPortalPos, Direction targetFacing) {
+        teleportPlayerToPortal(player, sourceLevel, targetDimension, targetPortalPos, targetFacing, null);
+    }
+
+    public static void teleportPlayerToPortal(ServerPlayer player, ServerLevel sourceLevel, LatexPaintingPortalEntity sourcePortal) {
+        teleportPlayerToPortal(
+                player,
+                sourceLevel,
+                sourcePortal.getTargetDimension(),
+                sourcePortal.getTargetPos(),
+                sourcePortal.getTargetFacing(),
+                sourcePortal
+        );
+    }
+
+    private static void teleportPlayerToPortal(ServerPlayer player, ServerLevel sourceLevel, ResourceKey<Level> targetDimension,
+                                               BlockPos targetPortalPos, Direction targetFacing, @Nullable LatexPaintingPortalEntity sourcePortal) {
         long now = sourceLevel.getGameTime();
         if (player.getPersistentData().getLong(COOLDOWN_TAG) > now) {
             return;
@@ -153,6 +169,8 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
         if (destination == null) {
             return;
         }
+
+        destination.getChunk(targetPortalPos);
 
         BlockPos exitPortalPos = targetPortalPos;
         Direction exitSideFacing = targetFacing;
@@ -189,6 +207,11 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
 
     public static BlockPos findSafeTarget(ServerLevel destination, BlockPos origin) {
         return findTarget(destination, origin, true);
+    }
+
+    public static BlockPos findLoadedTargetForPortalPlacement(ServerLevel destination, BlockPos origin) {
+        destination.getChunk(origin);
+        return findTarget(destination, origin, false);
     }
 
     public static BlockPos findPreviewTarget(ServerLevel destination, BlockPos origin) {
@@ -270,6 +293,7 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
 
     private static BlockPos findTarget(ServerLevel destination, BlockPos origin, boolean makeFallbackSafe) {
         destination.getChunk(origin);
+
         for (int radius = 0; radius <= SAFE_TARGET_SEARCH_RADIUS; radius++) {
             for (int dx = -radius; dx <= radius; dx++) {
                 for (int dz = -radius; dz <= radius; dz++) {
@@ -280,6 +304,7 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
                     int x = origin.getX() + dx;
                     int z = origin.getZ() + dz;
                     destination.getChunk(x >> 4, z >> 4);
+
                     int surfaceY = destination.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
                     for (int dy = SURFACE_SEARCH_UP; dy >= -SURFACE_SEARCH_DOWN; dy--) {
                         int y = Math.max(destination.getMinBuildHeight() + 1, Math.min(surfaceY + dy, destination.getMaxBuildHeight() - 2));
