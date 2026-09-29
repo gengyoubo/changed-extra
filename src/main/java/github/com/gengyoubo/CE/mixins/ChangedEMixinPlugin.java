@@ -45,6 +45,12 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if ("github.com.gengyoubo.CE.mixins.BondedLatexWorkSlotMixin".equals(mixinClassName)) {
+            return FMLEnvironment.dist == Dist.CLIENT
+                    && isModLoaded("changed_synergy")
+                    && isModLoaded("touhou_little_maid");
+        }
+
         // Replaced by event-based tooltip handlers, no longer needs bytecode transform.
         if ("github.com.gengyoubo.CE.mixins.GooCoreBlockMixin".equals(mixinClassName)) {
             return false;

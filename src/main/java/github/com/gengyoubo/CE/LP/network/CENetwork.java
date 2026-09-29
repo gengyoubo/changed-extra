@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.LP.network;
 
 import github.com.gengyoubo.CE.LP.network.packet.CycleGeneratorRedstoneModePacket;
 import github.com.gengyoubo.CE.LP.network.packet.LatexPaintingPortalPreviewPacket;
+import github.com.gengyoubo.CE.LP.network.packet.MaidWorkSwitchPacket;
 import github.com.gengyoubo.CE.LP.network.packet.RequestLatexPaintingPortalPreviewPacket;
 import github.com.gengyoubo.CE.LP.network.packet.RequestWorkbenchEnergyPacket;
 import github.com.gengyoubo.CE.LP.network.packet.SpaceTowerConfigPacket;
@@ -63,6 +64,13 @@ public class CENetwork {
                 WorkbenchEnergyPacket::encode,
                 WorkbenchEnergyPacket::decode,
                 WorkbenchEnergyPacket::handle
+        );
+        INSTANCE.registerMessage(
+                packetId++,
+                MaidWorkSwitchPacket.class,
+                MaidWorkSwitchPacket::encode,
+                MaidWorkSwitchPacket::decode,
+                MaidWorkSwitchPacket::handle
         );
     }
 

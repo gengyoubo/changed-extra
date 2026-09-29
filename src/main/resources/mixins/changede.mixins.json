@@ -38,6 +38,7 @@
   ],
   "client": [
     "AccessorySlotsSafetyMixin",
+    "BondedLatexWorkSlotMixin",
     "ClientEventMixin",
     "ElytraLayerMixin",
     "LatexElytraLayerMixin",

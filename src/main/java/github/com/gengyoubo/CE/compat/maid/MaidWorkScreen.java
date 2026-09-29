@@ -1,6 +1,8 @@
 package github.com.gengyoubo.CE.compat.maid;
 
 import com.github.tartaricacid.touhoulittlemaid.api.task.IMaidTask;
+import github.com.gengyoubo.CE.LP.network.CENetwork;
+import github.com.gengyoubo.CE.LP.network.packet.MaidWorkSwitchPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -63,6 +65,11 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
                 .bounds(leftPos + 12, topPos + 180, imageWidth - 24, 18).build();
         taskButtons.add(stop);
         addRenderableWidget(stop);
+        Button back = Button.builder(Component.translatable("screen.changede.maid_work.back"), ignored ->
+                        CENetwork.sendToServer(new MaidWorkSwitchPacket(menu.creatureId(), false)))
+                .bounds(leftPos + 12, topPos + 8, 48, 18).build();
+        taskButtons.add(back);
+        addRenderableWidget(back);
     }
 
     @Override

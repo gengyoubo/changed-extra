@@ -16,26 +16,30 @@ import java.util.List;
 public final class MaidWorkMenu extends AbstractContainerMenu {
     private final Inventory inventory;
     private final int creatureId;
+    private final boolean fromWheel;
 
     public MaidWorkMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
-        this(id, inventory, extraData.readInt());
+        this(id, inventory, extraData.readInt(), extraData.readBoolean());
     }
 
-    MaidWorkMenu(int id, Inventory inventory, int creatureId) {
+    MaidWorkMenu(int id, Inventory inventory, int creatureId, boolean fromWheel) {
         super(LatexMaidCompat.WORK_MENU.get(), id);
         this.inventory = inventory;
         this.creatureId = creatureId;
+        this.fromWheel = fromWheel;
     }
 
     public List<IMaidTask> tasks() { return LatexMaidCompat.tasks(); }
     public int creatureId() { return creatureId; }
+    public boolean fromWheel() { return fromWheel; }
 
     @Override
     public boolean stillValid(@NotNull Player player) {
         ChangedEntity creature = getCreature(player);
-        if (creature == null || !creature.isAlive() || player.distanceToSqr(creature) > 64 * 64) return false;
+        if (creature == null || !creature.isAlive() || player.distanceToSqr(creature) > 64.0D) return false;
         return player.level().isClientSide() || player instanceof ServerPlayer serverPlayer
-                && github.com.gengyoubo.CE.compat.synergy.ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, serverPlayer);
+                && github.com.gengyoubo.CE.compat.synergy.ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, serverPlayer)
+                && net.parkabird.changedsynergy.ai.LatexSocialMemory.isPetOwner(creature, serverPlayer);
     }
 
     private ChangedEntity getCreature(Player player) {
@@ -47,17 +51,16 @@ public final class MaidWorkMenu extends AbstractContainerMenu {
         List<IMaidTask> available = tasks();
         if (buttonId < 0 || buttonId > available.size() || !(player instanceof ServerPlayer serverPlayer)) return false;
         ChangedEntity creature = getCreature(player);
-        if (creature == null || !creature.isAlive() || player.distanceToSqr(creature) > 64 * 64
-                || !github.com.gengyoubo.CE.compat.synergy.ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, serverPlayer)) return false;
+        if (creature == null || !creature.isAlive() || player.distanceToSqr(creature) > 64.0D
+                || !github.com.gengyoubo.CE.compat.synergy.ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, serverPlayer)
+                || !net.parkabird.changedsynergy.ai.LatexSocialMemory.isPetOwner(creature, serverPlayer)) return false;
 
         if (buttonId == available.size()) {
             creature.getPersistentData().remove(LatexMaidCompat.taskTag());
-            serverPlayer.closeContainer();
             return true;
         }
         ResourceLocation taskId = available.get(buttonId).getUid();
         creature.getPersistentData().putString(LatexMaidCompat.taskTag(), taskId.toString());
-        serverPlayer.closeContainer();
         return true;
     }
 

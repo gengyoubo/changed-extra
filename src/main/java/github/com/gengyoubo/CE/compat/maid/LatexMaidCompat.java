@@ -4,7 +4,6 @@ import github.com.gengyoubo.CE.compat.synergy.ChangedSynergyFeedApi;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.MenuProvider;
@@ -12,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -26,6 +24,11 @@ import net.minecraft.resources.ResourceLocation;
 import com.github.tartaricacid.touhoulittlemaid.api.task.IMaidTask;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.entity.task.TaskManager;
+import net.parkabird.changedsynergy.world.inventory.BondedCreatureInventoryMenu;
+import net.parkabird.changedsynergy.world.inventory.BondedInventoryService;
+import net.parkabird.changedsynergy.world.inventory.BondedLatexMenu;
+import net.parkabird.changedsynergy.event.LatexSocialEvents;
+import net.parkabird.changedsynergy.ai.LatexSocialMemory;
 
 import java.util.Map;
 import java.util.UUID;
@@ -43,37 +46,53 @@ public final class LatexMaidCompat {
     public static void initialize(IEventBus modBus) {
         MENUS.register(modBus);
         modBus.addListener(LatexMaidCompat::clientSetup);
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, false, PlayerInteractEvent.EntityInteract.class, LatexMaidCompat::onInteract);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingEvent.LivingTickEvent.class, LatexMaidCompat::onLivingTick);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> net.minecraft.client.gui.screens.MenuScreens.register(WORK_MENU.get(), MaidWorkScreen::new));
+        event.enqueueWork(() -> {
+            net.minecraft.client.gui.screens.MenuScreens.register(WORK_MENU.get(), MaidWorkScreen::new);
+            MaidWorkTabClient.install();
+        });
     }
 
-    private static void onInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getHand() != net.minecraft.world.InteractionHand.MAIN_HAND
-                || !(event.getEntity() instanceof ServerPlayer player)
-                || !(event.getTarget() instanceof ChangedEntity creature)) return;
-
-        // Let gifts and ordinary item interactions keep their existing behavior.
-        if (!event.getItemStack().isEmpty()) return;
-        if (!ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, player)) {
-            player.displayClientMessage(Component.translatable("message.changede.maid_work.max_familiarity"), true);
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.SUCCESS);
-            return;
-        }
-
+    private static void openWorkScreen(ServerPlayer player, ChangedEntity creature, boolean fromWheel) {
         MenuProvider provider = new MenuProvider() {
             @Override public Component getDisplayName() { return Component.translatable("screen.changede.maid_work.title"); }
             @Override public AbstractContainerMenu createMenu(int id, net.minecraft.world.entity.player.Inventory inventory, Player opener) {
-                return new MaidWorkMenu(id, inventory, creature.getId());
+                return new MaidWorkMenu(id, inventory, creature.getId(), fromWheel);
             }
         };
-        NetworkHooks.openScreen(player, provider, buffer -> buffer.writeInt(creature.getId()));
-        event.setCanceled(true);
-        event.setCancellationResult(InteractionResult.SUCCESS);
+        NetworkHooks.openScreen(player, provider, buffer -> {
+            buffer.writeInt(creature.getId());
+            buffer.writeBoolean(fromWheel);
+        });
+    }
+
+    /** Called only by the server after a tab switch packet. */
+    public static void switchMenu(ServerPlayer player, int creatureId, boolean openWork) {
+        if (!(player.level().getEntity(creatureId) instanceof ChangedEntity creature)
+                || !creature.isAlive() || player.distanceToSqr(creature) > 64.0D) return;
+
+        if (openWork) {
+            boolean fromWheel = player.containerMenu instanceof BondedLatexMenu wheel && wheel.getPet() == creature;
+            boolean fromInventory = player.containerMenu instanceof BondedCreatureInventoryMenu inventory
+                    && inventory.getPet() == creature;
+            if (!fromWheel && !fromInventory) return;
+            if (!ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, player)) {
+                player.displayClientMessage(Component.translatable("message.changede.maid_work.max_familiarity"), true);
+                return;
+            }
+            if (!LatexSocialMemory.isPetOwner(creature, player)) {
+                player.displayClientMessage(Component.translatable("message.changede.maid_work.requires_owner"), true);
+                return;
+            }
+            openWorkScreen(player, creature, fromWheel);
+        } else {
+            if (!(player.containerMenu instanceof MaidWorkMenu workMenu) || workMenu.creatureId() != creatureId) return;
+            if (workMenu.fromWheel()) LatexSocialEvents.openBondedPetMenu(player, creature);
+            else BondedInventoryService.open(player, creature);
+        }
     }
 
     private static void onLivingTick(LivingEvent.LivingTickEvent event) {
@@ -88,6 +107,7 @@ public final class LatexMaidCompat {
         ServerPlayer owner = level.players().stream()
                 .filter(player -> player.distanceToSqr(creature) <= 64 * 64)
                 .filter(player -> ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, player))
+                .filter(player -> LatexSocialMemory.isPetOwner(creature, player))
                 .min(java.util.Comparator.comparingDouble(creature::distanceToSqr)).orElse(null);
         if (owner == null) return;
 
