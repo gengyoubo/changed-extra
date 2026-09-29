@@ -126,6 +126,7 @@ dependencies {
     implementation fg.deobf("curse.maven:changed-addon-plus-711303:8515645")
     implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:8217446")
     implementation fg.deobf("curse.maven:changed-synergy-1670037:9005974")//可选依赖
+    implementation fg.deobf("curse.maven:touhou-little-maid-355044:8061847")//changed-synergy的额外可选依赖
     //模组外扩展
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     //优化

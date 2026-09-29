@@ -65,6 +65,22 @@ public final class ChangedSynergyFeedApi {
         }
     }
 
+    /** True only when Synergy reports its maximum per-player familiarity score. */
+    public static boolean hasMaximumFamiliarity(ChangedEntity creature, ServerPlayer player) {
+        if (!ModList.get().isLoaded(SYNERGY_MOD_ID) || creature == null || player == null
+                || player.level().isClientSide()) {
+            return false;
+        }
+        Object familiarity = invokeSynergy(
+                PERSONALITY,
+                "familiarity",
+                new Class<?>[]{ChangedEntity.class, ServerPlayer.class},
+                creature,
+                player
+        );
+        return familiarity instanceof Number score && score.intValue() >= 60;
+    }
+
     /** Adds 100 familiarity, establishes the relationship, and consumes one enchanted orange. */
     public static OfferResult offerEnchantedGoldenOrange(ChangedEntity creature, ServerPlayer player) {
         if (!ModList.get().isLoaded(SYNERGY_MOD_ID)) {

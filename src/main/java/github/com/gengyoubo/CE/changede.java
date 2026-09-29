@@ -99,6 +99,14 @@ public class changede {
         ChangedEntitiesFix.REGISTRY.register(bus);
         CEChangedSounds.REGISTRY.register(bus);
         CEMenus.REGISTRY.register(bus);
+        if (CHANGED_SYNERGY && ModList.get().isLoaded("touhou_little_maid")) {
+            try {
+                Class<?> maidCompat = Class.forName("github.com.gengyoubo.CE.compat.maid.LatexMaidCompat");
+                maidCompat.getMethod("initialize", IEventBus.class).invoke(null, bus);
+            } catch (ReflectiveOperationException | LinkageError exception) {
+                LOGGER.error("Failed to initialize Touhou Little Maid work compatibility", exception);
+            }
+        }
         CELPRecipes.RECIPE_SERIALIZERS.register(bus);
         PatreonBenefitsFix.REGISTRY.register(bus);
         CENetwork.register();
