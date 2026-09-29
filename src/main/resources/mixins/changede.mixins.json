@@ -18,6 +18,7 @@
     "GooCoreBlockMixin",
     "LatexCoveredBlocksRendererMixin",
     "LatexSyringeMixin",
+    "LatexSpaceFluidPickerMixin",
     "PatreonBenefitsMixin",
     "ServerPlayerSpecialVariantMixin",
     "SyncTransfurPacketListingAccessor",

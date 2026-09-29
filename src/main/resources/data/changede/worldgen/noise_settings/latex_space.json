@@ -6,7 +6,7 @@
     "size_vertical": 2
   },
   "default_block": { "Name": "changede:white_latex_stone" },
-  "default_fluid": { "Name": "changed:dark_latex_fluid" },
+  "default_fluid": { "Name": "changed:white_latex_fluid" },
   "noise_router": {
     "barrier": 0.0,
     "fluid_level_floodedness": 0.0,
@@ -42,6 +42,15 @@
             { "type": "minecraft:condition", "if_true": { "type": "minecraft:biome", "biome_is": ["changede:dark_latex_plains", "changede:dark_latex_forest", "changede:dark_latex_sea"] }, "then_run": { "type": "minecraft:block", "result_state": { "Name": "changed:dark_latex_block" } } },
             { "type": "minecraft:block", "result_state": { "Name": "changed:white_latex_block" } }
           ]
+        }
+      },
+      {
+        "type": "minecraft:condition",
+        "if_true": { "type": "minecraft:biome", "biome_is": ["changede:luminara_forest"] },
+        "then_run": {
+          "type": "minecraft:condition",
+          "if_true": { "type": "minecraft:stone_depth", "offset": 10, "add_surface_depth": false, "secondary_depth_range": 0, "surface_type": "floor" },
+          "then_run": { "type": "minecraft:block", "result_state": { "Name": "minecraft:dirt" } }
         }
       },
       {

@@ -29,13 +29,13 @@ config="mixins/changede-lp.mixins.json"
 [[dependencies.changede]]
     modId="changed"
     mandatory=true
-    versionRange="[0.15.0,)"
+    versionRange="[0.15.7,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.changede]]
     modId="changed_addon"
     mandatory=true
-    versionRange="[2.8.0,)"
+    versionRange="[2.9.2,)"
     ordering="BEFORE"
     side="BOTH"
 [[dependencies.changede]]
