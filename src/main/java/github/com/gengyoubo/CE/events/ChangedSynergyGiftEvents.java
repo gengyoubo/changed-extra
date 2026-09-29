@@ -27,13 +27,15 @@ public final class ChangedSynergyGiftEvents {
             return;
         }
 
-        ChangedSynergyFeedApi.RelationshipTier tier = ChangedSynergyFeedApi.relationshipTier(creature, player);
         ChangedSynergyFeedApi.OfferResult result = ChangedSynergyFeedApi.OfferResult.NOT_APPLICABLE;
-        if (enchantedOrange && tier == ChangedSynergyFeedApi.RelationshipTier.STRANGER) {
+        if (enchantedOrange) {
             result = ChangedSynergyFeedApi.offerEnchantedGoldenOrange(creature, player);
-        } else if (latexDrink && (tier == ChangedSynergyFeedApi.RelationshipTier.FAMILIAR
-                || tier == ChangedSynergyFeedApi.RelationshipTier.CLOSE)) {
-            result = ChangedSynergyFeedApi.offerHeldRelationshipGift(creature, player);
+        } else if (latexDrink) {
+            ChangedSynergyFeedApi.RelationshipTier tier = ChangedSynergyFeedApi.relationshipTier(creature, player);
+            if (tier == ChangedSynergyFeedApi.RelationshipTier.FAMILIAR
+                    || tier == ChangedSynergyFeedApi.RelationshipTier.CLOSE) {
+                result = ChangedSynergyFeedApi.offerHeldRelationshipGift(creature, player);
+            }
         }
 
         if (result != ChangedSynergyFeedApi.OfferResult.API_UNAVAILABLE

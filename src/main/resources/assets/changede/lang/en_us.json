@@ -165,8 +165,8 @@
   "screen.changede.space_tower.ce_storage": "CE Stored: %s / %s",
 
   "jei.changede.latex_food.orange": "Most Synergy creatures with relationship support accept oranges or golden oranges; feline creatures refuse them.",
-  "jei.changede.latex_food.enchanted_orange": "Can be offered to strangers (STRANGER); feline creatures refuse it. Matches Synergy's first-contact relationship stage.",
-  "jei.changede.latex_food.latex_drink": "Once the relationship is Familiar (FAMILIAR) or Close (CLOSE), this latex drink can be given as a gift.",
+  "jei.changede.latex_food.enchanted_orange": "Give it to a latex creature with relationship support to add 100 familiarity and force a bond; feline creatures accept it too. Synergy caps familiarity at 60, so gains stop at that cap.",
+  "jei.changede.latex_food.latex_drink": "Once the relationship is Familiar (FAMILIAR) or Close (CLOSE), this latex drink can be given as a gift, following Synergy's Food Bribe achievement stage.",
   "jei.changede.latex_food.accepted_by": "Suitable for: %s",
   "jei.changede.latex_food.diet.aquatic": "Aquatic latex creatures",
   "jei.changede.latex_food.diet.shark": "Shark latex creatures",

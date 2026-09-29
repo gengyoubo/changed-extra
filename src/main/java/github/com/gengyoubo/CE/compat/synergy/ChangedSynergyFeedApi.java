@@ -19,6 +19,8 @@ public final class ChangedSynergyFeedApi {
     private static final String SYNERGY_MOD_ID = "changed_synergy";
     private static final String FAVOR_SERVICE = "net.parkabird.changedsynergy.ai.RelationshipFavorService";
     private static final String PERSONALITY = "net.parkabird.changedsynergy.ai.CreaturePersonality";
+    private static final String SOCIAL_PROFILE = "net.parkabird.changedsynergy.ai.CreatureSocialProfile";
+    private static final Object API_FAILURE = new Object();
     private static final AtomicBoolean API_FAILURE_LOGGED = new AtomicBoolean();
 
     private ChangedSynergyFeedApi() {
@@ -63,10 +65,7 @@ public final class ChangedSynergyFeedApi {
         }
     }
 
-    /**
-     * Offers this mod's enchanted orange as Synergy's golden orange, while preserving
-     * the original stack and consuming one of it only when Synergy accepts the gift.
-     */
+    /** Adds 100 familiarity, establishes the relationship, and consumes one enchanted orange. */
     public static OfferResult offerEnchantedGoldenOrange(ChangedEntity creature, ServerPlayer player) {
         if (!ModList.get().isLoaded(SYNERGY_MOD_ID)) {
             return OfferResult.API_UNAVAILABLE;
@@ -75,35 +74,82 @@ public final class ChangedSynergyFeedApi {
             return OfferResult.INVALID_CONTEXT;
         }
 
-        Item aliasItem = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("changed_addon", "golden_orange"));
-        if (aliasItem == null || aliasItem == net.minecraft.world.item.Items.AIR) {
-            aliasItem = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("changed_additions", "golden_orange"));
-        }
-        if (aliasItem == null || aliasItem == net.minecraft.world.item.Items.AIR) {
-            return OfferResult.API_UNAVAILABLE;
-        }
-
-        ItemStack original = player.getMainHandItem().copy();
-        int originalCount = original.getCount();
-        if (original.isEmpty()) {
+        ItemStack held = player.getMainHandItem();
+        if (held.isEmpty()) {
             return OfferResult.NO_ITEM;
         }
 
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(aliasItem, originalCount));
-        try {
-            return invokeOffer("offerHeldFood", creature, player);
-        } finally {
-            ItemStack aliasAfterOffer = player.getMainHandItem();
-            int remaining = aliasAfterOffer.is(aliasItem) ? aliasAfterOffer.getCount() : 0;
-            int consumed = Math.max(0, originalCount - remaining);
-            if (consumed == 0) {
-                player.setItemInHand(InteractionHand.MAIN_HAND, original);
-            } else if (consumed >= original.getCount()) {
-                player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-            } else {
-                original.shrink(consumed);
-                player.setItemInHand(InteractionHand.MAIN_HAND, original);
-            }
+        Object relationshipAllowed = invokeSynergy(
+                SOCIAL_PROFILE,
+                "allowsPersonalRelationship",
+                new Class<?>[]{ChangedEntity.class},
+                creature
+        );
+        if (relationshipAllowed == API_FAILURE) {
+            return OfferResult.API_UNAVAILABLE;
+        }
+        if (!Boolean.TRUE.equals(relationshipAllowed)) {
+            return OfferResult.NOT_APPLICABLE;
+        }
+
+        Object familiarity = invokeSynergy(
+                PERSONALITY,
+                "adjustFamiliarity",
+                new Class<?>[]{ChangedEntity.class, ServerPlayer.class, int.class},
+                creature,
+                player,
+                100
+        );
+        if (familiarity == API_FAILURE) {
+            return OfferResult.API_UNAVAILABLE;
+        }
+        if (!(familiarity instanceof Number score) || score.intValue() <= 0) {
+            return OfferResult.NOT_APPLICABLE;
+        }
+
+        Object newlyEstablished = invokeSynergy(
+                PERSONALITY,
+                "establishRelationship",
+                new Class<?>[]{ChangedEntity.class, ServerPlayer.class},
+                creature,
+                player
+        );
+        Object established = invokeSynergy(
+                PERSONALITY,
+                "hasEstablishedRelationship",
+                new Class<?>[]{ChangedEntity.class, ServerPlayer.class},
+                creature,
+                player
+        );
+        if (newlyEstablished == API_FAILURE || established == API_FAILURE) {
+            return OfferResult.API_UNAVAILABLE;
+        }
+        if (!Boolean.TRUE.equals(established)) {
+            return OfferResult.NOT_APPLICABLE;
+        }
+
+        applyEnchantedGoldenOrangeBenefits(creature);
+        if (held.getCount() <= 1) {
+            player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        } else {
+            held.shrink(1);
+        }
+        return Boolean.TRUE.equals(newlyEstablished) ? OfferResult.ESTABLISHED : OfferResult.EXISTING;
+    }
+
+    private static void applyEnchantedGoldenOrangeBenefits(ChangedEntity creature) {
+        Item goldenOrange = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("changed_addon", "golden_orange"));
+        if (goldenOrange == null || goldenOrange == net.minecraft.world.item.Items.AIR) {
+            goldenOrange = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("changed_additions", "golden_orange"));
+        }
+        if (goldenOrange != null && goldenOrange != net.minecraft.world.item.Items.AIR) {
+            invokeSynergy(
+                    FAVOR_SERVICE,
+                    "applyGoldenOrangeBenefits",
+                    new Class<?>[]{ChangedEntity.class, ItemStack.class},
+                    creature,
+                    new ItemStack(goldenOrange)
+            );
         }
     }
 
@@ -147,6 +193,23 @@ public final class ChangedSynergyFeedApi {
                  | InvocationTargetException | LinkageError exception) {
             logApiFailure(methodName, exception);
             return OfferResult.API_UNAVAILABLE;
+        }
+    }
+
+    private static Object invokeSynergy(String className, String methodName, Class<?>[] parameterTypes, Object... arguments) {
+        if (!ModList.get().isLoaded(SYNERGY_MOD_ID)) {
+            return API_FAILURE;
+        }
+
+        try {
+            ClassLoader loader = ChangedSynergyFeedApi.class.getClassLoader();
+            Class<?> apiClass = Class.forName(className, true, loader);
+            Method method = apiClass.getMethod(methodName, parameterTypes);
+            return method.invoke(null, arguments);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                 | InvocationTargetException | LinkageError exception) {
+            logApiFailure(methodName, exception);
+            return API_FAILURE;
         }
     }
 
