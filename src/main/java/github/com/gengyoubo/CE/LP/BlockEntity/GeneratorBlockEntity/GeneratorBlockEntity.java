@@ -63,7 +63,11 @@ public abstract class GeneratorBlockEntity extends BaseEnergyBlockEntity {
             case OFF_WITH_REDSTONE -> !hasSignal;
         };
     }
-    protected abstract int generate();
+    protected abstract int generate(ItemStack fuel);
+
+    public boolean isFuel(ItemStack stack) {
+        return !stack.isEmpty() && generate(stack) > 0;
+    }
 
     public ItemStackHandler getItemHandler() {
         return itemHandler;
@@ -103,8 +107,13 @@ public abstract class GeneratorBlockEntity extends BaseEnergyBlockEntity {
             return;
         }
 
+        int generated = generate(fuelStack);
+        if (generated <= 0) {
+            return;
+        }
+
         itemHandler.extractItem(0, 1, false);
-        receiveEnergy(generate(), null);
+        receiveEnergy(generated, null);
         setChanged();
         if (level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);

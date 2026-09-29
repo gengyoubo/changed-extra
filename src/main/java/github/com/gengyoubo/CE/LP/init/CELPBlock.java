@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.LP.init;
 
 import github.com.gengyoubo.CE.LP.Block.BasicEnergyPipeBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicGeneratorBlock;
+import github.com.gengyoubo.CE.LP.Block.BasicCrystalGeneratorBlock;
 import github.com.gengyoubo.CE.LP.Block.ElectricFurnaceBlock;
 import github.com.gengyoubo.CE.LP.Block.LatexCreativeExtranalbodyCraftTableBlock;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerCompat;
@@ -16,6 +17,7 @@ public class CELPBlock {
     public static final DeferredRegister<Block> WIRE_BLOCKS;
     public static final RegistryObject<Block> BASIC_WIRE;
     public static final RegistryObject<Block> BASIC_GENERATOR;
+    public static final RegistryObject<Block> BASIC_CRYSTAL_GENERATOR;
     public static final RegistryObject<Block> ELECTRIC_FURNACE;
     public static final RegistryObject<Block> LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK;
     public static final RegistryObject<Block> SPACE_TOWER;
@@ -28,6 +30,8 @@ public class CELPBlock {
                 () -> new BasicEnergyPipeBlock(BlockBehaviour.Properties.of()));
         BASIC_GENERATOR = BLOCKS.register("basic_generator",
                 () -> new BasicGeneratorBlock(BlockBehaviour.Properties.of()));
+        BASIC_CRYSTAL_GENERATOR = BLOCKS.register("basic_crystal_generator",
+                () -> new BasicCrystalGeneratorBlock(BlockBehaviour.Properties.of()));
         ELECTRIC_FURNACE = BLOCKS.register("electric_furnace",
                 () -> new ElectricFurnaceBlock(BlockBehaviour.Properties.of()));
         LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK = BLOCKS.register("latexcreative_extranalbody_craft_table_block",

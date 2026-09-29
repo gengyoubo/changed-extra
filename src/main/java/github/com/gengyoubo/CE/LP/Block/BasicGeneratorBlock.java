@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BasicGeneratorBlock extends BaseEntityBlock implements EntityBlock {
-    private static final Component TITLE = Component.literal("Basic Generator");
+    private static final Component TITLE = Component.translatable("block.changede.basic_generator");
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public BasicGeneratorBlock(Properties properties) {

@@ -1,23 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXZ",
-    "XYZ",
-    "XZZ"
+    "XXX",
+    "XYX",
+    "XXX"
   ],
   "key": {
     "X": {
-      "item": "changed:white_latex_goo"
+      "tag": "changede:crystals/small"
     },
     "Y": {
       "item": "changed:generator"
-    },
-    "Z": {
-      "item": "changed:dark_latex_goo"
     }
   },
   "result": {
-    "item": "changede:basic_generator",
+    "item": "changede:basic_crystal_generator",
     "count": 1
   }
 }

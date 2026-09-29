@@ -129,6 +129,8 @@ dependencies {
     implementation fg.deobf("curse.maven:touhou-little-maid-355044:8061847")//changed-synergy的额外可选依赖
     //模组外扩展
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    //玉
+    implementation fg.deobf("curse.maven:jade-324717:8479276")//可选依赖
     //优化
     runtimeOnly  fg.deobf("curse.maven:modernfix-790626:7515215")
     runtimeOnly  fg.deobf("curse.maven:embeddium-908741:5681725")

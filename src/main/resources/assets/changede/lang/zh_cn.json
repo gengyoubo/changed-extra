@@ -195,6 +195,7 @@
     "item.changede.latex_painting_portal": "空间门",
 
     "block.changede.basic_generator": "基础胶液发电机",
+    "block.changede.basic_crystal_generator": "基础水晶发电机",
     "block.changede.basic_wire": "基础管道",
     "block.changede.electric_furnace": "电炉",
 
@@ -313,5 +314,6 @@
     "message.changede.maid_work.max_familiarity": "需要与这只胶兽达到最高熟悉度才能安排工作",
     "message.changede.maid_work.bound_other": "这只胶兽的工作已绑定其他玩家",
     "screen.changede.maid_work.stop": "停止工作",
-    "screen.changede.maid_work.main_hand": "主手"
+    "screen.changede.maid_work.main_hand": "主手",
+    "config.jade.plugin_changede.lp_energy": "LP 能量显示"
 }

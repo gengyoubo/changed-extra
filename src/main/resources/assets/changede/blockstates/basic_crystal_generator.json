@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "changede:block/basic_generator" },
+    "facing=south": { "model": "changede:block/basic_generator", "y": 180 },
+    "facing=west": { "model": "changede:block/basic_generator", "y": 270 },
+    "facing=east": { "model": "changede:block/basic_generator", "y": 90 }
+  }
+}

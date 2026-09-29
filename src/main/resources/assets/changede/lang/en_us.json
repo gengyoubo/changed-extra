@@ -191,5 +191,8 @@
     "message.changede.maid_work.max_familiarity": "Reach maximum familiarity with this creature to assign work",
     "message.changede.maid_work.bound_other": "This creature's work is bound to another player",
     "screen.changede.maid_work.stop": "Stop work",
-    "screen.changede.maid_work.main_hand": "Main hand"
+    "screen.changede.maid_work.main_hand": "Main hand",
+    "config.jade.plugin_changede.lp_energy": "LP energy",
+    "block.changede.basic_generator": "Basic Latex Generator",
+    "block.changede.basic_crystal_generator": "Basic Crystal Generator"
 }

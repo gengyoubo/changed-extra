@@ -4,7 +4,6 @@ import github.com.gengyoubo.CE.LP.BlockEntity.BaseEnergyBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.GeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.RedstoneMode;
 import io.netty.buffer.Unpooled;
-import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -102,8 +101,8 @@ public class BasicGeneratorBlockEntityMenu extends AbstractContainerMenu impleme
         this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 70, 39) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
-                return stack.getItem() == ChangedItems.WHITE_LATEX_GOO.get()
-                        || stack.getItem() == ChangedItems.DARK_LATEX_GOO.get();
+                BlockEntity blockEntity = world.getBlockEntity(pos);
+                return blockEntity instanceof GeneratorBlockEntity generator && generator.isFuel(stack);
             }
         }));
     }
