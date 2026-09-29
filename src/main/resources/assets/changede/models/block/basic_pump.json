@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "particle": "minecraft:block/copper_block",
-    "down": "minecraft:block/copper_block",
-    "up": "minecraft:block/copper_block",
-    "north": "minecraft:block/copper_block",
-    "south": "minecraft:block/copper_block",
-    "west": "minecraft:block/copper_block",
-    "east": "minecraft:block/copper_block"
+    "particle": "changede:block/basic_pump",
+    "down": "changede:block/basic_pump",
+    "up": "changede:block/basic_pump",
+    "north": "changede:block/basic_pump",
+    "south": "changede:block/basic_pump",
+    "west": "changede:block/basic_pump",
+    "east": "changede:block/basic_pump"
   }
 }

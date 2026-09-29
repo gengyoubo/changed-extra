@@ -4,6 +4,7 @@ import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.I.ItemPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.F.FluidPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicPumpBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicLatexFluidGeneratorBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +26,8 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
     private static final String FLUID_AMOUNT_KEY = "PipeFluidAmount";
     private static final String PUMP_FLUID_NAME_KEY = "PumpFluidName";
     private static final String PUMP_FLUID_AMOUNT_KEY = "PumpFluidAmount";
+    private static final String GENERATOR_FLUID_NAME_KEY = "GeneratorFluidName";
+    private static final String GENERATOR_FLUID_AMOUNT_KEY = "GeneratorFluidAmount";
 
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
@@ -54,6 +57,13 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
                 data.putInt(PUMP_FLUID_AMOUNT_KEY, contents.getAmount());
             }
         }
+        if (blockEntity instanceof BasicLatexFluidGeneratorBlockEntity generator) {
+            var contents = generator.getStoredFluid();
+            if (!contents.isEmpty()) {
+                data.putString(GENERATOR_FLUID_NAME_KEY, contents.getDisplayName().getString());
+                data.putInt(GENERATOR_FLUID_AMOUNT_KEY, contents.getAmount());
+            }
+        }
     }
 
     @Override
@@ -70,6 +80,9 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
         }
         if (data.contains(PUMP_FLUID_NAME_KEY) && data.contains(PUMP_FLUID_AMOUNT_KEY)) {
             tooltip.add(Component.translatable("tooltip.changede.pump_fluid", data.getString(PUMP_FLUID_NAME_KEY), data.getInt(PUMP_FLUID_AMOUNT_KEY)));
+        }
+        if (data.contains(GENERATOR_FLUID_NAME_KEY) && data.contains(GENERATOR_FLUID_AMOUNT_KEY)) {
+            tooltip.add(Component.translatable("tooltip.changede.generator_fluid", data.getString(GENERATOR_FLUID_NAME_KEY), data.getInt(GENERATOR_FLUID_AMOUNT_KEY)));
         }
     }
 

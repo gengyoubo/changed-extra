@@ -17,6 +17,7 @@ public class CELPItem {
     public static final RegistryObject<Item> BASIC_ITEM_PIPE_ITEM;
     public static final RegistryObject<Item> BASIC_FLUID_PIPE_ITEM;
     public static final RegistryObject<Item> BASIC_PUMP_ITEM;
+    public static final RegistryObject<Item> BASIC_LATEX_FLUID_GENERATOR_ITEM;
     public static final RegistryObject<Item> BASIC_GENERATOR_ITEM;
     public static final RegistryObject<Item> BASIC_CRYSTAL_GENERATOR_ITEM;
     public static final RegistryObject<Item> ELECTRIC_FURNACE_ITEM;
@@ -35,6 +36,8 @@ public class CELPItem {
                 () -> new BlockItem(CELPBlock.BASIC_FLUID_PIPE.get(), new Item.Properties()));
         BASIC_PUMP_ITEM = ITEMS.register("basic_pump",
                 () -> new BlockItem(CELPBlock.BASIC_PUMP.get(), new Item.Properties()));
+        BASIC_LATEX_FLUID_GENERATOR_ITEM = ITEMS.register("basic_latex_fluid_generator",
+                () -> new BlockItem(CELPBlock.BASIC_LATEX_FLUID_GENERATOR.get(), new Item.Properties()));
         BASIC_GENERATOR_ITEM = ITEMS.register("basic_generator",
                 () -> new BlockItem(CELPBlock.BASIC_GENERATOR.get(), new Item.Properties()));
         BASIC_CRYSTAL_GENERATOR_ITEM = ITEMS.register("basic_crystal_generator",

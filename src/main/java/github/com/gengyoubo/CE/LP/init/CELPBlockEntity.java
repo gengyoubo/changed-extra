@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.LP.init;
 
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicCrystalGeneratorBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicLatexFluidGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.ElectricFurnaceBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicPumpBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.InfuserPowerBlockEntity;
@@ -51,6 +52,10 @@ public class CELPBlockEntity {
                             LatexCreativeExtranalbodyCraftTableBlockEntity::new,
                             CELPBlock.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK.get()
                     ).build(null));
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<BasicLatexFluidGeneratorBlockEntity>> BASIC_LATEX_FLUID_GENERATOR_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("basic_latex_fluid_generator",
+                    () -> BlockEntityType.Builder.of(BasicLatexFluidGeneratorBlockEntity::new, CELPBlock.BASIC_LATEX_FLUID_GENERATOR.get()).build(null));
     @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<BasicItemPipeBlockEntity>> BASIC_ITEM_PIPE_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("basic_item_pipe",
