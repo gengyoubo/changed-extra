@@ -12,6 +12,7 @@
     "ChangedCannedFoodItemMixin",
     "ChangedEntitiesMixin",
     "CommandTransfurMixin",
+    "CreatureMorphWorkStateMixin",
     "DarkLatexFriendlyFireMixin",
     "DarkLatexWolfPupSupportMixin",
     "DarkLatexYufengQueenBehaviorMixin",

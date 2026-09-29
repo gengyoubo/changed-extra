@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.compat.maid;
 
 import github.com.gengyoubo.CE.compat.synergy.ChangedSynergyFeedApi;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -22,14 +24,18 @@ import net.minecraftforge.registries.RegistryObject;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.resources.ResourceLocation;
 import com.github.tartaricacid.touhoulittlemaid.api.task.IMaidTask;
+import com.github.tartaricacid.touhoulittlemaid.entity.ai.brain.MaidSchedule;
+import com.github.tartaricacid.touhoulittlemaid.entity.backpack.MiddleBackpack;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.entity.task.TaskManager;
 import net.parkabird.changedsynergy.world.inventory.BondedCreatureInventoryMenu;
+import net.parkabird.changedsynergy.world.inventory.BondedCreatureInventory;
 import net.parkabird.changedsynergy.world.inventory.BondedInventoryService;
 import net.parkabird.changedsynergy.world.inventory.BondedLatexMenu;
 import net.parkabird.changedsynergy.event.LatexSocialEvents;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,6 +46,22 @@ public final class LatexMaidCompat {
     private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changede");
     static final RegistryObject<MenuType<MaidWorkMenu>> WORK_MENU = MENUS.register("latex_maid_work", () -> IForgeMenuType.create(MaidWorkMenu::new));
     private static final Map<UUID, SyntheticMaid> WORKERS = new ConcurrentHashMap<>();
+    private static final Set<UUID> FAILED_WORKERS = ConcurrentHashMap.newKeySet();
+
+    /** SC replaces the entity when a creature changes species; its continuity copy omits CE's tags. */
+    public static void transferWorkState(ChangedEntity previous, ChangedEntity replacement) {
+        if (previous == replacement || replacement.level().isClientSide()) return;
+        var source = previous.getPersistentData();
+        var destination = replacement.getPersistentData();
+        if (source.contains(TASK_TAG, net.minecraft.nbt.Tag.TAG_STRING)) {
+            destination.putString(TASK_TAG, source.getString(TASK_TAG));
+        }
+        if (source.hasUUID(WORK_OWNER_TAG)) {
+            destination.putUUID(WORK_OWNER_TAG, source.getUUID(WORK_OWNER_TAG));
+        }
+        WORKERS.remove(previous.getUUID());
+        FAILED_WORKERS.remove(previous.getUUID());
+    }
 
     private LatexMaidCompat() {}
 
@@ -47,6 +69,18 @@ public final class LatexMaidCompat {
         MENUS.register(modBus);
         modBus.addListener(LatexMaidCompat::clientSetup);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingEvent.LivingTickEvent.class, LatexMaidCompat::onLivingTick);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false,
+                TransfurEvents.ChangedEntityFusionWithMobEvent.class,
+                event -> transferAfterFusion(event.getSourceEntity(), event.getFusionEntity().getEntity()));
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false,
+                TransfurEvents.ChangedEntityFusionWithChangedEntityEvent.class,
+                event -> transferAfterFusion(event.getSourceEntity(), event.getFusionEntity().getEntity()));
+    }
+
+    private static void transferAfterFusion(LivingEntity source, LivingEntity result) {
+        if (source instanceof ChangedEntity previous && result instanceof ChangedEntity replacement) {
+            transferWorkState(previous, replacement);
+        }
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -104,26 +138,33 @@ public final class LatexMaidCompat {
     private static void onLivingTick(LivingEvent.LivingTickEvent event) {
         if (!(event.getEntity() instanceof ChangedEntity creature) || creature.level().isClientSide()
                 || !(creature.level() instanceof ServerLevel level)) return;
+        if (!creature.isAlive() || creature.isRemoved()) {
+            WORKERS.remove(creature.getUUID());
+            FAILED_WORKERS.remove(creature.getUUID());
+            return;
+        }
         String taskId = creature.getPersistentData().getString(TASK_TAG);
         if (taskId.isEmpty()) {
             WORKERS.remove(creature.getUUID());
+            FAILED_WORKERS.remove(creature.getUUID());
             return;
         }
 
         if (!creature.getPersistentData().hasUUID(WORK_OWNER_TAG)) {
             WORKERS.remove(creature.getUUID());
+            FAILED_WORKERS.remove(creature.getUUID());
             return;
         }
         UUID ownerId = creature.getPersistentData().getUUID(WORK_OWNER_TAG);
         ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerId);
-        if (owner == null || owner.level() != level || owner.distanceToSqr(creature) > 64 * 64
-                || !ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, owner)) return;
+        if (owner == null) return;
 
         ResourceLocation id = ResourceLocation.tryParse(taskId);
         IMaidTask task = id == null ? null : TaskManager.getTaskMap().get(id);
         if (task == null) {
             creature.getPersistentData().remove(TASK_TAG);
             WORKERS.remove(creature.getUUID());
+            FAILED_WORKERS.remove(creature.getUUID());
             return;
         }
 
@@ -133,6 +174,9 @@ public final class LatexMaidCompat {
                     current = new SyntheticMaid(level, creature, owner);
                     current.setTask(task);
                 } catch (RuntimeException | LinkageError exception) {
+                    if (FAILED_WORKERS.add(creature.getUUID())) {
+                        github.com.gengyoubo.CE.changede.LOGGER.warn("Could not start latex maid task {} for {}", taskId, creature.getType(), exception);
+                    }
                     return null;
                 }
             }
@@ -141,21 +185,27 @@ public final class LatexMaidCompat {
         });
         if (maid == null) return;
 
-        // Keep the maid-shaped worker colocated with its Changed body; movement issued by
-        // maid task behaviors is mirrored back to the real creature below.
-        maid.syncFrom(creature);
-        VecPosition before = VecPosition.of(maid);
+        // The maid's full entity tick runs its Brain, navigation, movement control,
+        // and task actions. Ticking only Brain and navigation leaves it stationary.
         try {
-            maid.getBrain().tick(level, maid);
-            maid.getNavigation().tick();
+            BondedCreatureInventory inventory = new BondedCreatureInventory(creature);
+            maid.syncFrom(creature, inventory);
+            VecPosition before = VecPosition.of(maid);
+            try {
+                maid.tick();
+            } finally {
+                maid.syncInventoryTo(creature, inventory);
+            }
+            VecPosition after = VecPosition.of(maid);
+            if (before.distanceSquared(after) > 1.0E-5) {
+                creature.moveTo(after.x, after.y, after.z, maid.getYRot(), maid.getXRot());
+            }
+            FAILED_WORKERS.remove(creature.getUUID());
         } catch (RuntimeException | LinkageError exception) {
             WORKERS.remove(creature.getUUID());
-            github.com.gengyoubo.CE.changede.LOGGER.warn("Latex maid task {} failed for {}", taskId, creature.getType(), exception);
-            return;
-        }
-        VecPosition after = VecPosition.of(maid);
-        if (before.distanceSquared(after) > 1.0E-5) {
-            creature.teleportTo(after.x, after.y, after.z);
+            if (FAILED_WORKERS.add(creature.getUUID())) {
+                github.com.gengyoubo.CE.changede.LOGGER.warn("Latex maid task {} failed for {}", taskId, creature.getType(), exception);
+            }
         }
     }
 
@@ -177,25 +227,62 @@ public final class LatexMaidCompat {
     }
 
     private static final class SyntheticMaid extends EntityMaid {
-        private ChangedEntity body;
         private ServerPlayer workOwner;
 
         SyntheticMaid(ServerLevel level, ChangedEntity body, ServerPlayer owner) {
             super(level);
-            this.body = body;
             this.workOwner = owner;
             syncFrom(body);
+            setTame(true);
+            setOwnerUUID(owner.getUUID());
             setFavorability(384);
+            setSchedule(MaidSchedule.ALL);
+            setMaidBackpackType(new MiddleBackpack());
             setPickup(false);
             setHomeModeEnable(false);
         }
 
         void setWorkOwner(ServerPlayer owner) { workOwner = owner; }
         void syncFrom(ChangedEntity source) {
-            body = source;
             setPos(source.getX(), source.getY(), source.getZ());
             setYRot(source.getYRot());
             setXRot(source.getXRot());
+        }
+        void syncFrom(ChangedEntity source, BondedCreatureInventory inventory) {
+            syncFrom(source);
+            for (int slot = 0; slot < 24; slot++) {
+                ItemStack stack = inventory.getItem(slot);
+                if (!ItemStack.matches(getMaidInv().getStackInSlot(slot), stack)) {
+                    getMaidInv().setStackInSlot(slot, stack.copy());
+                }
+            }
+            if (!ItemStack.matches(getMainHandItem(), source.getMainHandItem())) {
+                setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, source.getMainHandItem().copy());
+            }
+            if (!ItemStack.matches(getOffhandItem(), source.getOffhandItem())) {
+                setItemSlot(net.minecraft.world.entity.EquipmentSlot.OFFHAND, source.getOffhandItem().copy());
+            }
+        }
+        void syncInventoryTo(ChangedEntity target, BondedCreatureInventory inventory) {
+            for (int slot = 0; slot < 24; slot++) {
+                ItemStack stack = getMaidInv().getStackInSlot(slot);
+                if (!ItemStack.matches(inventory.getItem(slot), stack)) {
+                    inventory.setItem(slot, stack.copy());
+                }
+            }
+            for (int slot = 24; slot < getMaidInv().getSlots(); slot++) {
+                ItemStack stack = getMaidInv().getStackInSlot(slot);
+                if (stack.isEmpty()) continue;
+                ItemStack remainder = inventory.insert(stack.copy());
+                getMaidInv().setStackInSlot(slot, ItemStack.EMPTY);
+                if (!remainder.isEmpty()) target.spawnAtLocation(remainder);
+            }
+            if (!ItemStack.matches(target.getMainHandItem(), getMainHandItem())) {
+                target.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, getMainHandItem().copy());
+            }
+            if (!ItemStack.matches(target.getOffhandItem(), getOffhandItem())) {
+                target.setItemSlot(net.minecraft.world.entity.EquipmentSlot.OFFHAND, getOffhandItem().copy());
+            }
         }
         @Override public LivingEntity getOwner() { return workOwner; }
     }

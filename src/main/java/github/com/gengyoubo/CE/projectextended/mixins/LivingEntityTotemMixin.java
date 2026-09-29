@@ -32,11 +32,11 @@ public abstract class LivingEntityTotemMixin {
     @Shadow
     public abstract void setHealth(float health);
 
-    @Shadow
-    public abstract void removeAllEffects();
+    @Unique
+    public abstract void changed_extra$removeAllEffects();
 
-    @Shadow
-    public abstract void addEffect(MobEffectInstance effect);
+    @Unique
+    public abstract void changed_extra$addEffect(MobEffectInstance effect);
 
     @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
     private void changede$useMatterTotem(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
@@ -67,10 +67,10 @@ public abstract class LivingEntityTotemMixin {
             }
 
             this.setHealth(1.0F);
-            this.removeAllEffects();
-            this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
-            this.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
-            this.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
+            this.changed_extra$removeAllEffects();
+            this.changed_extra$addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
+            this.changed_extra$addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
+            this.changed_extra$addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
             this.changede$spawnActivationParticles(livingEntity, totem);
             livingEntity.level().broadcastEntityEvent(livingEntity, (byte) 35);
             cir.setReturnValue(true);

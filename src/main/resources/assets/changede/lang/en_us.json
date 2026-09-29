@@ -182,12 +182,14 @@
     "screen.changede.maid_work.tab": "Work",
     "screen.changede.maid_work.unlock": "Reach maximum familiarity to assign work",
     "screen.changede.maid_work.back": "Back to creature menu",
-    "screen.changede.maid_work.current": "Current work",
     "screen.changede.maid_work.idle": "Idle",
-    "screen.changede.maid_work.select_hint": "Choose work on the left",
-    "screen.changede.maid_work.player_inventory": "Player inventory",
+    "screen.changede.maid_work.health": "Health",
+    "screen.changede.maid_work.armor": "Armor",
+    "screen.changede.maid_work.familiarity": "Maximum familiarity",
+    "screen.changede.maid_work.work_status": "Work assignment (1 means assigned)",
     "screen.changede.maid_work.no_tasks": "No maid tasks are available",
     "message.changede.maid_work.max_familiarity": "Reach maximum familiarity with this creature to assign work",
     "message.changede.maid_work.bound_other": "This creature's work is bound to another player",
-    "screen.changede.maid_work.stop": "Stop work"
+    "screen.changede.maid_work.stop": "Stop work",
+    "screen.changede.maid_work.main_hand": "Main hand"
 }

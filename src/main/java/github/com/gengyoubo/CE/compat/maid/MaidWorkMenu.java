@@ -9,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +52,7 @@ public final class MaidWorkMenu extends AbstractContainerMenu {
         for (int column = 0; column < 9; column++) {
             addSlot(new Slot(inventory, column, 94 + 88 + column * 18, 232));
         }
+        addSlot(new Slot(new MainHandContainer(inventory.player, creatureId), 0, 94 + 31, 225));
     }
 
     public List<IMaidTask> tasks() { return LatexMaidCompat.tasks(); }
@@ -98,11 +101,59 @@ public final class MaidWorkMenu extends AbstractContainerMenu {
         if (!slot.hasItem()) return ItemStack.EMPTY;
         ItemStack stack = slot.getItem();
         ItemStack original = stack.copy();
-        if (!moveItemStackTo(stack, index < 27 ? 27 : 0, index < 27 ? 36 : 27, false)) {
+        int start = index == 36 ? 0 : index < 27 ? 27 : 0;
+        int end = index == 36 ? 36 : index < 27 ? 36 : 27;
+        if (!moveItemStackTo(stack, start, end, false)) {
             return ItemStack.EMPTY;
         }
         if (stack.isEmpty()) slot.setByPlayer(ItemStack.EMPTY);
         else slot.setChanged();
         return original;
+    }
+
+    private static final class MainHandContainer extends SimpleContainer {
+        private final Player player;
+        private final int creatureId;
+
+        MainHandContainer(Player player, int creatureId) {
+            super(1);
+            this.player = player;
+            this.creatureId = creatureId;
+        }
+
+        private ChangedEntity creature() {
+            return player.level().getEntity(creatureId) instanceof ChangedEntity changed ? changed : null;
+        }
+
+        @Override public ItemStack getItem(int slot) {
+            ChangedEntity creature = creature();
+            return slot == 0 && creature != null ? creature.getMainHandItem() : ItemStack.EMPTY;
+        }
+
+        @Override public void setItem(int slot, ItemStack stack) {
+            ChangedEntity creature = creature();
+            if (slot == 0 && creature != null) creature.setItemSlot(EquipmentSlot.MAINHAND, stack);
+        }
+
+        @Override public ItemStack removeItem(int slot, int amount) {
+            ChangedEntity creature = creature();
+            if (slot != 0 || creature == null || amount <= 0) return ItemStack.EMPTY;
+            ItemStack remainder = creature.getMainHandItem().copy();
+            ItemStack removed = remainder.split(amount);
+            setItem(0, remainder);
+            return removed;
+        }
+
+        @Override public ItemStack removeItemNoUpdate(int slot) {
+            ChangedEntity creature = creature();
+            if (slot != 0 || creature == null) return ItemStack.EMPTY;
+            ItemStack removed = creature.getMainHandItem();
+            setItem(0, ItemStack.EMPTY);
+            return removed;
+        }
+
+        @Override public boolean isEmpty() { return getItem(0).isEmpty(); }
+        @Override public void clearContent() { setItem(0, ItemStack.EMPTY); }
+        @Override public int getMaxStackSize() { return 1; }
     }
 }

@@ -99,6 +99,14 @@ public class changede {
         ChangedEntitiesFix.REGISTRY.register(bus);
         CEChangedSounds.REGISTRY.register(bus);
         CEMenus.REGISTRY.register(bus);
+        if (CHANGED_SYNERGY) {
+            try {
+                Class<?> morphCompat = Class.forName("github.com.gengyoubo.CE.compat.synergy.ChangedSynergyMorphCompat");
+                morphCompat.getMethod("initialize").invoke(null);
+            } catch (ReflectiveOperationException | LinkageError exception) {
+                LOGGER.error("Failed to initialize Changed: Synergy morph compatibility", exception);
+            }
+        }
         if (CHANGED_SYNERGY && ModList.get().isLoaded("touhou_little_maid")) {
             try {
                 Class<?> maidCompat = Class.forName("github.com.gengyoubo.CE.compat.maid.LatexMaidCompat");

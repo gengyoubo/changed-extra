@@ -14,6 +14,8 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -25,6 +27,10 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
             "touhou_little_maid", "textures/gui/maid_gui_main.png");
     private static final ResourceLocation TASK = ResourceLocation.fromNamespaceAndPath(
             "touhou_little_maid", "textures/gui/maid_gui_task.png");
+    private static final ResourceLocation SIDE = ResourceLocation.fromNamespaceAndPath(
+            "touhou_little_maid", "textures/gui/maid_gui_side.png");
+    private static final ResourceLocation BUTTONS = ResourceLocation.fromNamespaceAndPath(
+            "touhou_little_maid", "textures/gui/maid_gui_button.png");
     private static final int TASKS_PER_PAGE = 12;
     private final List<TaskButton> taskButtons = new ArrayList<>();
     private int taskPage;
@@ -36,7 +42,7 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
     }
 
     private int mainX() { return leftPos + 94; }
-    private int taskX() { return leftPos + 2; }
+    private int taskX() { return mainX() - 93; }
 
     @Override
     protected void init() {
@@ -81,7 +87,7 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
 
         addRenderableWidget(Button.builder(Component.translatable("screen.changede.maid_work.stop"),
                         ignored -> selectTask(menu.tasks().size()))
-                .bounds(mainX() + 90, topPos + 135, 156, 20).build());
+                .bounds(mainX() + 5, topPos + 187, 70, 20).build());
     }
 
     private void selectTask(int index) {
@@ -103,12 +109,21 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
                 }
             }
         }
+        renderSidebarTooltip(graphics, mouseX, mouseY);
     }
 
     @Override
     protected void renderBg(@NotNull GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.blit(MAIN, mainX(), topPos, 0, 0, 256, 256);
-        graphics.blit(TASK, taskX(), topPos, 0, 0, 92, 256);
+        // The TLM atlas also contains an upper-right maid equipment panel. Only
+        // draw the creature sidebar and the player inventory portion here.
+        graphics.blit(MAIN, mainX(), topPos, 0, 0, 80, 256);
+        graphics.blit(MAIN, mainX() + 80, topPos + 166, 80, 166, 176, 90);
+        graphics.blit(TASK, taskX(), topPos + 5, 0, 0, 92, 251);
+
+        graphics.drawString(font, Component.translatable("screen.changede.maid_work.main_hand"),
+                mainX() + 23, topPos + 211, 0x333333, false);
+        graphics.fill(mainX() + 29, topPos + 223, mainX() + 51, topPos + 245, 0xFF373737);
+        graphics.fill(mainX() + 30, topPos + 224, mainX() + 50, topPos + 244, 0xFFB8B8B8);
 
         ChangedEntity creature = minecraft != null && minecraft.level != null
                 && minecraft.level.getEntity(menu.creatureId()) instanceof ChangedEntity changed ? changed : null;
@@ -118,31 +133,61 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
                     mainX() + 40, topPos + 101, 36,
                     mainX() + 40 - mouseX, topPos + 72 - mouseY, creature);
             graphics.disableScissor();
-            float health = Math.max(0.0F, Math.min(1.0F, creature.getHealth() / creature.getMaxHealth()));
-            graphics.fill(mainX() + 5, topPos + 114, mainX() + 72, topPos + 120, 0xFF333333);
-            graphics.fill(mainX() + 6, topPos + 115, mainX() + 6 + Math.round(65 * health), topPos + 119, 0xFFE84C45);
-            graphics.drawString(font, creature.getDisplayName(), mainX() + 5, topPos + 124, 0x303030, false);
         }
+        renderSidebar(graphics, creature);
 
         List<IMaidTask> tasks = menu.tasks();
         int pages = Math.max(1, (tasks.size() + TASKS_PER_PAGE - 1) / TASKS_PER_PAGE);
-        graphics.drawCenteredString(font, (taskPage + 1) + "/" + pages, taskX() + 59, topPos + 11, 0x303030);
+        graphics.drawString(font, (taskPage + 1) + "/" + pages, mainX() - 48, topPos + 12, 0x333333, false);
+    }
 
+    private void renderSidebar(GuiGraphics graphics, ChangedEntity creature) {
+        float health = creature == null ? 0.0F : creature.getHealth();
+        float maxHealth = creature == null ? 1.0F : Math.max(1.0F, creature.getMaxHealth());
+        int armor = creature == null ? 0 : creature.getArmorValue();
+        boolean working = menu.selectedTaskIndex() >= 0;
+        drawStatusBar(graphics, 0, health / maxHealth, Math.round(health));
+        drawStatusBar(graphics, 1, armor / 20.0F, armor);
+        drawStatusBar(graphics, 2, 1.0F, 60);
+        drawStatusBar(graphics, 3, working ? 1.0F : 0.0F, working ? 1 : 0);
+
+        graphics.blit(BUTTONS, mainX() + 4, topPos + 159, 0, 42, 71, 21);
+        List<IMaidTask> tasks = menu.tasks();
         int selected = menu.selectedTaskIndex();
-        graphics.drawString(font, Component.translatable("screen.changede.maid_work.current"),
-                mainX() + 90, topPos + 18, 0x303030, false);
-        if (selected >= 0 && selected < tasks.size()) {
-            IMaidTask task = tasks.get(selected);
-            graphics.renderItem(task.getIcon(), mainX() + 90, topPos + 38);
-            graphics.drawString(font, task.getName(), mainX() + 111, topPos + 42, 0x303030, false);
-        } else {
-            graphics.drawString(font, Component.translatable("screen.changede.maid_work.idle"),
-                    mainX() + 90, topPos + 42, 0x303030, false);
+        ItemStack icon = selected >= 0 && selected < tasks.size()
+                ? tasks.get(selected).getIcon() : new ItemStack(Items.FEATHER);
+        Component name = selected >= 0 && selected < tasks.size()
+                ? tasks.get(selected).getName() : Component.translatable("screen.changede.maid_work.idle");
+        graphics.renderItem(icon, mainX() + 6, topPos + 161);
+        var lines = font.split(name, 42);
+        if (!lines.isEmpty()) {
+            graphics.drawString(font, lines.get(0), mainX() + 28, topPos + 165, 0x333333, false);
         }
-        graphics.drawString(font, Component.translatable("screen.changede.maid_work.select_hint"),
-                mainX() + 90, topPos + 75, 0x555555, false);
-        graphics.drawString(font, Component.translatable("screen.changede.maid_work.player_inventory"),
-                mainX() + 88, topPos + 163, 0x303030, false);
+    }
+
+    private void drawStatusBar(GuiGraphics graphics, int row, float fraction, int value) {
+        int y = topPos + 113 + row * 11;
+        graphics.blit(SIDE, mainX() + 5, y, 0, 9, 47, 9);
+        int filled = (int) (43 * Math.max(0.0F, Math.min(1.0F, fraction)));
+        if (filled > 0) {
+            graphics.blit(SIDE, mainX() + 7, y + 2, 2, 18 + row * 5, filled, 5);
+        }
+        graphics.blit(SIDE, mainX() + 53, y, row * 9, 0, 9, 9);
+        graphics.drawString(font, Integer.toString(value), mainX() + 63, y + 1, 0x333333, false);
+    }
+
+    private void renderSidebarTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (mouseX >= mainX() + 5 && mouseX < mainX() + 75
+                && mouseY >= topPos + 113 && mouseY < topPos + 155) {
+            int row = (mouseY - topPos - 113) / 11;
+            String key = switch (row) {
+                case 0 -> "screen.changede.maid_work.health";
+                case 1 -> "screen.changede.maid_work.armor";
+                case 2 -> "screen.changede.maid_work.familiarity";
+                default -> "screen.changede.maid_work.work_status";
+            };
+            graphics.renderTooltip(font, Component.translatable(key), mouseX, mouseY);
+        }
     }
 
     @Override
