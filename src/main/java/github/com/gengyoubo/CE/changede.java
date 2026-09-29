@@ -106,6 +106,12 @@ public class changede {
             } catch (ReflectiveOperationException | LinkageError exception) {
                 LOGGER.error("Failed to initialize Changed: Synergy morph compatibility", exception);
             }
+            try {
+                Class<?> autoEat = Class.forName("github.com.gengyoubo.CE.compat.synergy.ChangedSynergyAutoEat");
+                autoEat.getMethod("initialize").invoke(null);
+            } catch (ReflectiveOperationException | LinkageError exception) {
+                LOGGER.error("Failed to initialize Changed: Synergy auto-eat", exception);
+            }
         }
         if (CHANGED_SYNERGY && ModList.get().isLoaded("touhou_little_maid")) {
             try {
