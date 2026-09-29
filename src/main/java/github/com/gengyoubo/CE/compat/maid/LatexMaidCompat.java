@@ -2,9 +2,11 @@ package github.com.gengyoubo.CE.compat.maid;
 
 import github.com.gengyoubo.CE.compat.synergy.ChangedSynergyFeedApi;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.MenuProvider;
@@ -147,17 +149,22 @@ public final class LatexMaidCompat {
         if (taskId.isEmpty()) {
             WORKERS.remove(creature.getUUID());
             FAILED_WORKERS.remove(creature.getUUID());
+            restoreNativeAi(creature);
             return;
         }
 
         if (!creature.getPersistentData().hasUUID(WORK_OWNER_TAG)) {
             WORKERS.remove(creature.getUUID());
             FAILED_WORKERS.remove(creature.getUUID());
+            restoreNativeAi(creature);
             return;
         }
         UUID ownerId = creature.getPersistentData().getUUID(WORK_OWNER_TAG);
         ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerId);
-        if (owner == null) return;
+        if (owner == null) {
+            restoreNativeAi(creature);
+            return;
+        }
 
         ResourceLocation id = ResourceLocation.tryParse(taskId);
         IMaidTask task = id == null ? null : TaskManager.getTaskMap().get(id);
@@ -165,8 +172,14 @@ public final class LatexMaidCompat {
             creature.getPersistentData().remove(TASK_TAG);
             WORKERS.remove(creature.getUUID());
             FAILED_WORKERS.remove(creature.getUUID());
+            restoreNativeAi(creature);
             return;
         }
+
+        // The latex body keeps running its own Monster goal AI (wander, transfur,
+        // hunt players) while the TLM maid Brain drives it. Suppress that native AI
+        // so the two "brains" cannot fight over the same body.
+        suppressNativeAi(creature);
 
         SyntheticMaid maid = WORKERS.compute(creature.getUUID(), (uuid, current) -> {
             if (current == null || current.level() != level || current.getTask() != task) {
@@ -183,7 +196,10 @@ public final class LatexMaidCompat {
             current.setWorkOwner(owner);
             return current;
         });
-        if (maid == null) return;
+        if (maid == null) {
+            restoreNativeAi(creature);
+            return;
+        }
 
         // The maid's full entity tick runs its Brain, navigation, movement control,
         // and task actions. Ticking only Brain and navigation leaves it stationary.
@@ -203,9 +219,27 @@ public final class LatexMaidCompat {
             FAILED_WORKERS.remove(creature.getUUID());
         } catch (RuntimeException | LinkageError exception) {
             WORKERS.remove(creature.getUUID());
+            restoreNativeAi(creature);
             if (FAILED_WORKERS.add(creature.getUUID())) {
                 github.com.gengyoubo.CE.changede.LOGGER.warn("Latex maid task {} failed for {}", taskId, creature.getType(), exception);
             }
+        }
+    }
+
+    /** While a maid task is bound, the latex body must not run its own goal AI. */
+    private static void suppressNativeAi(ChangedEntity creature) {
+        if (!creature.isNoAi()) {
+            creature.setNoAi(true);
+        }
+        if (creature.getTarget() != null) {
+            creature.setTarget(null);
+        }
+    }
+
+    /** Restores the latex body's native AI when it is no longer driven as a maid. */
+    private static void restoreNativeAi(ChangedEntity creature) {
+        if (creature.isNoAi()) {
+            creature.setNoAi(false);
         }
     }
 
@@ -228,10 +262,12 @@ public final class LatexMaidCompat {
 
     private static final class SyntheticMaid extends EntityMaid {
         private ServerPlayer workOwner;
+        private final ChangedEntity body;
 
         SyntheticMaid(ServerLevel level, ChangedEntity body, ServerPlayer owner) {
             super(level);
             this.workOwner = owner;
+            this.body = body;
             syncFrom(body);
             setTame(true);
             setOwnerUUID(owner.getUUID());
@@ -285,5 +321,42 @@ public final class LatexMaidCompat {
             }
         }
         @Override public LivingEntity getOwner() { return workOwner; }
+
+        @Override
+        public boolean canAttack(LivingEntity target) {
+            if (isSelfOrSameKind(target)) {
+                return false;
+            }
+            return super.canAttack(target);
+        }
+
+        @Override
+        public boolean doHurtTarget(Entity target) {
+            if (isSelfOrSameKind(target)) {
+                return false;
+            }
+            return super.doHurtTarget(target);
+        }
+
+        @Override
+        public LivingEntity getTarget() {
+            LivingEntity target = super.getTarget();
+            return target != null && isSelfOrSameKind(target) ? null : target;
+        }
+
+        /** The maid is the latex body; it must never target its own body or its own latex kind. */
+        private boolean isSelfOrSameKind(Entity other) {
+            if (other == null) {
+                return false;
+            }
+            if (other == body || other.getUUID().equals(body.getUUID())) {
+                return true;
+            }
+            if (other instanceof ChangedEntity otherChanged) {
+                LatexType selfType = body.getLatexType();
+                return selfType != null && selfType == otherChanged.getLatexType();
+            }
+            return false;
+        }
     }
 }
