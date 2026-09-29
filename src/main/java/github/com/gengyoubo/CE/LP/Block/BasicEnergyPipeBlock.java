@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -52,6 +53,14 @@ public class BasicEnergyPipeBlock extends BaseEntityBlock {
                 .setValue(WEST, false)
                 .setValue(UP, false)
                 .setValue(DOWN, false));
+    }
+
+    protected TransportType getTransportType() {
+        return TransportType.ENERGY;
+    }
+
+    protected BlockEntityType<?> getPipeBlockEntityType() {
+        return CELPBlockEntity.BASIC_WIRE_BLOCK_ENTITIES.get();
     }
 
     @Override
@@ -127,7 +136,7 @@ public class BasicEnergyPipeBlock extends BaseEntityBlock {
             @NotNull BlockState state,
             @NotNull BlockEntityType<T> type
     ) {
-        if (type != CELPBlockEntity.BASIC_WIRE_BLOCK_ENTITIES.get()) {
+        if (type != getPipeBlockEntityType()) {
             return null;
         }
 
@@ -149,16 +158,20 @@ public class BasicEnergyPipeBlock extends BaseEntityBlock {
         };
     }
 
-    private static boolean canConnectTo(LevelAccessor level, BlockPos pos) {
+    private boolean canConnectTo(LevelAccessor level, BlockPos pos) {
         BlockEntity entity = level.getBlockEntity(pos);
         if (entity == null) {
             return false;
         }
 
         if (entity instanceof BasePipeBlockEntity pipeBlockEntity) {
-            return pipeBlockEntity.getTransportType() == TransportType.ENERGY;
+            return pipeBlockEntity.getTransportType() == getTransportType();
         }
 
-        return entity instanceof ILatexEnergyHandler;
+        return switch (getTransportType()) {
+            case ENERGY -> entity instanceof ILatexEnergyHandler;
+            case ITEM -> entity.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent();
+            case FLUID -> entity.getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent();
+        };
     }
 }

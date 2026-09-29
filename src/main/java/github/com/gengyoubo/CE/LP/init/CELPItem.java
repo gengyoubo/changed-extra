@@ -14,6 +14,9 @@ public class CELPItem {
 
     //BlockItem
     public static final RegistryObject<Item> BASIC_WIRE_ITEM;
+    public static final RegistryObject<Item> BASIC_ITEM_PIPE_ITEM;
+    public static final RegistryObject<Item> BASIC_FLUID_PIPE_ITEM;
+    public static final RegistryObject<Item> BASIC_PUMP_ITEM;
     public static final RegistryObject<Item> BASIC_GENERATOR_ITEM;
     public static final RegistryObject<Item> BASIC_CRYSTAL_GENERATOR_ITEM;
     public static final RegistryObject<Item> ELECTRIC_FURNACE_ITEM;
@@ -26,6 +29,12 @@ public class CELPItem {
                 () -> new MimicYufengWingsItem(new Item.Properties().durability(432).rarity(Rarity.RARE)));
         BASIC_WIRE_ITEM = ITEMS.register("basic_wire",
                 () -> new BlockItem(CELPBlock.BASIC_WIRE.get(), new Item.Properties()));
+        BASIC_ITEM_PIPE_ITEM = ITEMS.register("basic_item_pipe",
+                () -> new BlockItem(CELPBlock.BASIC_ITEM_PIPE.get(), new Item.Properties()));
+        BASIC_FLUID_PIPE_ITEM = ITEMS.register("basic_fluid_pipe",
+                () -> new BlockItem(CELPBlock.BASIC_FLUID_PIPE.get(), new Item.Properties()));
+        BASIC_PUMP_ITEM = ITEMS.register("basic_pump",
+                () -> new BlockItem(CELPBlock.BASIC_PUMP.get(), new Item.Properties()));
         BASIC_GENERATOR_ITEM = ITEMS.register("basic_generator",
                 () -> new BlockItem(CELPBlock.BASIC_GENERATOR.get(), new Item.Properties()));
         BASIC_CRYSTAL_GENERATOR_ITEM = ITEMS.register("basic_crystal_generator",

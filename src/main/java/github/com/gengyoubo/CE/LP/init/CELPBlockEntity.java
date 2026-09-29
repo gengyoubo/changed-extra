@@ -3,9 +3,12 @@ package github.com.gengyoubo.CE.LP.init;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicCrystalGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.ElectricFurnaceBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicPumpBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.InfuserPowerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexCreativeExtranalbodyCraftTableBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.BasicEnergyPipeBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.I.BasicItemPipeBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.F.BasicFluidPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerCompat;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -48,6 +51,18 @@ public class CELPBlockEntity {
                             LatexCreativeExtranalbodyCraftTableBlockEntity::new,
                             CELPBlock.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK.get()
                     ).build(null));
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<BasicItemPipeBlockEntity>> BASIC_ITEM_PIPE_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("basic_item_pipe",
+                    () -> BlockEntityType.Builder.of(BasicItemPipeBlockEntity::new, CELPBlock.BASIC_ITEM_PIPE.get()).build(null));
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<BasicFluidPipeBlockEntity>> BASIC_FLUID_PIPE_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("basic_fluid_pipe",
+                    () -> BlockEntityType.Builder.of(BasicFluidPipeBlockEntity::new, CELPBlock.BASIC_FLUID_PIPE.get()).build(null));
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<BasicPumpBlockEntity>> BASIC_PUMP_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("basic_pump",
+                    () -> BlockEntityType.Builder.of(BasicPumpBlockEntity::new, CELPBlock.BASIC_PUMP.get()).build(null));
     @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<BasicCrystalGeneratorBlockEntity>> BASIC_CRYSTAL_GENERATOR_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("basic_crystal_generator",

@@ -1,6 +1,9 @@
 package github.com.gengyoubo.CE.LP.init;
 
 import github.com.gengyoubo.CE.LP.Block.BasicEnergyPipeBlock;
+import github.com.gengyoubo.CE.LP.Block.BasicItemPipeBlock;
+import github.com.gengyoubo.CE.LP.Block.BasicFluidPipeBlock;
+import github.com.gengyoubo.CE.LP.Block.BasicPumpBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicGeneratorBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicCrystalGeneratorBlock;
 import github.com.gengyoubo.CE.LP.Block.ElectricFurnaceBlock;
@@ -16,6 +19,9 @@ public class CELPBlock {
     public static final DeferredRegister<Block> BLOCKS;
     public static final DeferredRegister<Block> WIRE_BLOCKS;
     public static final RegistryObject<Block> BASIC_WIRE;
+    public static final RegistryObject<Block> BASIC_ITEM_PIPE;
+    public static final RegistryObject<Block> BASIC_FLUID_PIPE;
+    public static final RegistryObject<Block> BASIC_PUMP;
     public static final RegistryObject<Block> BASIC_GENERATOR;
     public static final RegistryObject<Block> BASIC_CRYSTAL_GENERATOR;
     public static final RegistryObject<Block> ELECTRIC_FURNACE;
@@ -28,6 +34,12 @@ public class CELPBlock {
         WIRE_BLOCKS = BLOCKS;
         BASIC_WIRE = BLOCKS.register("basic_wire",
                 () -> new BasicEnergyPipeBlock(BlockBehaviour.Properties.of()));
+        BASIC_ITEM_PIPE = BLOCKS.register("basic_item_pipe",
+                () -> new BasicItemPipeBlock(BlockBehaviour.Properties.of()));
+        BASIC_FLUID_PIPE = BLOCKS.register("basic_fluid_pipe",
+                () -> new BasicFluidPipeBlock(BlockBehaviour.Properties.of()));
+        BASIC_PUMP = BLOCKS.register("basic_pump",
+                () -> new BasicPumpBlock(BlockBehaviour.Properties.of()));
         BASIC_GENERATOR = BLOCKS.register("basic_generator",
                 () -> new BasicGeneratorBlock(BlockBehaviour.Properties.of()));
         BASIC_CRYSTAL_GENERATOR = BLOCKS.register("basic_crystal_generator",

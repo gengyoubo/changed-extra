@@ -52,6 +52,9 @@ public class CECreativeModeTab {
                                         .icon(() -> new ItemStack(CELPItem.ELECTRIC_FURNACE_ITEM.get()))
                                         .displayItems((parameters, output) -> {
                                             output.accept(CELPItem.BASIC_WIRE_ITEM.get());
+                                            output.accept(CELPItem.BASIC_ITEM_PIPE_ITEM.get());
+                                            output.accept(CELPItem.BASIC_FLUID_PIPE_ITEM.get());
+                                            output.accept(CELPItem.BASIC_PUMP_ITEM.get());
                                             output.accept(CELPItem.BASIC_GENERATOR_ITEM.get());
                                             output.accept(CELPItem.BASIC_CRYSTAL_GENERATOR_ITEM.get());
                                             output.accept(CELPItem.ELECTRIC_FURNACE_ITEM.get());

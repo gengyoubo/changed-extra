@@ -194,5 +194,12 @@
     "screen.changede.maid_work.main_hand": "Main hand",
     "config.jade.plugin_changede.lp_energy": "LP energy",
     "block.changede.basic_generator": "Basic Latex Generator",
-    "block.changede.basic_crystal_generator": "Basic Crystal Generator"
+    "block.changede.basic_crystal_generator": "Basic Crystal Generator",
+    "block.changede.basic_wire": "Basic Energy Pipe",
+    "block.changede.basic_item_pipe": "Basic Item Pipe",
+    "block.changede.basic_fluid_pipe": "Basic Fluid Pipe",
+    "block.changede.basic_pump": "Basic Pump",
+    "tooltip.changede.pump_fluid": "Pump tank: %1$s %2$s mB",
+    "tooltip.changede.pipe_items": "Network item: %1$s × %2$s",
+    "tooltip.changede.pipe_fluid": "Network fluid: %1$s %2$s mB"
 }

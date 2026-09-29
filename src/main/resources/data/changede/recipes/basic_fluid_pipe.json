@@ -2,19 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "XXX",
-    "XPX",
+    "YYY",
     "XXX"
   ],
   "key": {
     "X": {
       "item": "changede:latex_ingot"
     },
-    "P": {
-      "item": "minecraft:painting"
+    "Y": {
+      "item": "minecraft:bucket"
     }
   },
   "result": {
-    "item": "changede:latex_painting_portal",
-    "count": 1
+    "item": "changede:basic_fluid_pipe",
+    "count": 9
   }
 }
