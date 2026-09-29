@@ -109,7 +109,17 @@ public final class ChangedSynergyFeedApi {
 
     /** Offers a held gift through Synergy's relationship gift API. */
     public static OfferResult offerHeldRelationshipGift(ChangedEntity creature, ServerPlayer player) {
-        return invokeOffer("offerHeldRelationshipGift", creature, player);
+        if (player == null || player.level().isClientSide()) {
+            return invokeOffer("offerHeldRelationshipGift", creature, player);
+        }
+
+        ItemStack original = player.getMainHandItem().copy();
+        OfferResult result = invokeOffer("offerHeldRelationshipGift", creature, player);
+        if (result.isAccepted() && original.isDamageableItem()) {
+            original.hurtAndBreak(1, player, entity -> entity.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+            player.setItemInHand(InteractionHand.MAIN_HAND, original);
+        }
+        return result;
     }
 
     private static OfferResult invokeOffer(String methodName, ChangedEntity creature, ServerPlayer player) {

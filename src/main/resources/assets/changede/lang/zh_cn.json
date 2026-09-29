@@ -287,6 +287,8 @@
 
 
     "jei.changede.latex_food.orange": "Synergy 中大多数具有关系系统的胶兽会接受橘子或金橘，猫科胶兽会拒绝。",
+    "jei.changede.latex_food.enchanted_orange": "陌生阶段（STRANGER）可尝试赠予；猫科胶兽会拒绝。对应 Synergy 的“初次接触”关系阶段。",
+    "jei.changede.latex_food.latex_drink": "关系达到熟悉（FAMILIAR）或亲密（CLOSE）后，可将此胶液料理作为礼物赠予胶兽。",
     "jei.changede.latex_food.accepted_by": "适合喂食：%s",
     "jei.changede.latex_food.diet.aquatic": "水生类胶兽",
     "jei.changede.latex_food.diet.shark": "鲨鱼类胶兽",

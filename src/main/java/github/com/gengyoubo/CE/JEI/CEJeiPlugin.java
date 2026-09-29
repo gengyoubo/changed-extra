@@ -2,6 +2,8 @@ package github.com.gengyoubo.CE.JEI;
 
 import github.com.gengyoubo.CE.LP.init.CELPBlock;
 import github.com.gengyoubo.CE.LP.recipe.CELPRecipes;
+import github.com.gengyoubo.CE.init.CEItem;
+import github.com.gengyoubo.CE.items.LatexDrinkItem;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -127,10 +129,28 @@ public class CEJeiPlugin implements IModPlugin {
             foods.computeIfAbsent(orange, ignored -> EnumSet.noneOf(LatexDiet.class));
         }
 
+        Item enchantedOrange = CEItem.ENCHANTED_GOLDEN_ORANGE.get();
+        foods.computeIfAbsent(enchantedOrange, ignored -> EnumSet.noneOf(LatexDiet.class));
+
+        Set<Item> latexDrinks = new HashSet<>();
+        CEItem.LATEX_DRINKS.stream()
+                .map(registryObject -> registryObject.get())
+                .filter(item -> item instanceof LatexDrinkItem)
+                .forEach(latexDrinks::add);
+        for (Item drink : latexDrinks) {
+            foods.computeIfAbsent(drink, ignored -> EnumSet.noneOf(LatexDiet.class));
+        }
+
         foods.forEach((item, diets) -> {
             List<Component> description = new ArrayList<>();
             if (oranges.contains(item)) {
                 description.add(Component.translatable("jei.changede.latex_food.orange"));
+            }
+            if (item == enchantedOrange) {
+                description.add(Component.translatable("jei.changede.latex_food.enchanted_orange"));
+            }
+            if (latexDrinks.contains(item)) {
+                description.add(Component.translatable("jei.changede.latex_food.latex_drink"));
             }
             if (!diets.isEmpty()) {
                 MutableComponent dietNames = Component.empty();
