@@ -11,7 +11,8 @@
         { "biome": "changede:dark_latex_plains", "parameters": { "temperature": [-1.0, 0.0], "humidity": [-1.0, 0.0], "continentalness": [-0.19, 1.0], "erosion": [-1.0, 1.0], "weirdness": [-1.0, 1.0], "depth": [-1.0, 1.0], "offset": 0.0 } },
         { "biome": "changede:dark_latex_forest", "parameters": { "temperature": [-1.0, 0.0], "humidity": [0.0, 1.0], "continentalness": [-0.19, 1.0], "erosion": [-1.0, 1.0], "weirdness": [-1.0, 1.0], "depth": [-1.0, 1.0], "offset": 0.0 } },
         { "biome": "changede:white_latex_plains", "parameters": { "temperature": [0.0, 1.0], "humidity": [-1.0, 0.0], "continentalness": [-0.19, 1.0], "erosion": [-1.0, 1.0], "weirdness": [-1.0, 1.0], "depth": [-1.0, 1.0], "offset": 0.0 } },
-        { "biome": "changede:white_latex_forest", "parameters": { "temperature": [0.0, 1.0], "humidity": [0.0, 1.0], "continentalness": [-0.19, 1.0], "erosion": [-1.0, 1.0], "weirdness": [-1.0, 1.0], "depth": [-1.0, 1.0], "offset": 0.0 } }
+        { "biome": "changede:white_latex_forest", "parameters": { "temperature": [0.0, 1.0], "humidity": [0.0, 0.55], "continentalness": [-0.19, 1.0], "erosion": [-1.0, 1.0], "weirdness": [-1.0, 1.0], "depth": [-1.0, 1.0], "offset": 0.0 } },
+        { "biome": "changede:luminara_forest", "parameters": { "temperature": [0.0, 1.0], "humidity": [0.55, 1.0], "continentalness": [-0.19, 1.0], "erosion": [-1.0, 1.0], "weirdness": [-1.0, 1.0], "depth": [-1.0, 1.0], "offset": 0.0 } }
       ]
     }
   }

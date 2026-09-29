@@ -38,6 +38,7 @@
         "then_run": {
           "type": "minecraft:sequence",
           "sequence": [
+            { "type": "minecraft:condition", "if_true": { "type": "minecraft:biome", "biome_is": ["changede:luminara_forest"] }, "then_run": { "type": "minecraft:block", "result_state": { "Name": "changede:luminara_grass_block" } } },
             { "type": "minecraft:condition", "if_true": { "type": "minecraft:biome", "biome_is": ["changede:dark_latex_plains", "changede:dark_latex_forest", "changede:dark_latex_sea"] }, "then_run": { "type": "minecraft:block", "result_state": { "Name": "changed:dark_latex_block" } } },
             { "type": "minecraft:block", "result_state": { "Name": "changed:white_latex_block" } }
           ]

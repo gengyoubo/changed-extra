@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "snowy=false": { "model": "changede:block/luminara_grass_block" },
+    "snowy=true": { "model": "changede:block/luminara_grass_block" }
+  }
+}

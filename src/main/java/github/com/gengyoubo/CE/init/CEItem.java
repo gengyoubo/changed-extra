@@ -44,6 +44,8 @@ public class CEItem {
             ITEMS.register("white_latex_stone", () -> new BlockItem(CEBlock.WHITE_LATEX_STONE.get(), new Item.Properties()));
     public static final RegistryObject<Item> WHITE_LATEX_COBBLESTONE =
             ITEMS.register("white_latex_cobblestone", () -> new BlockItem(CEBlock.WHITE_LATEX_COBBLESTONE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> LUMINARA_GRASS_BLOCK =
+            ITEMS.register("luminara_grass_block", () -> new BlockItem(CEBlock.LUMINARA_GRASS_BLOCK.get(), new Item.Properties()));
     public static final RegistryObject<Item> LATEX_PAINTING_PORTAL =
             ITEMS.register("latex_painting_portal", () -> new LatexPaintingPortalItem(new Item.Properties()));
     public static final RegistryObject<Item> PEACH =

@@ -123,9 +123,9 @@ dependencies {
     //原版
     minecraft "net.minecraftforge:forge:1.20.1-47.4.10"
     //changed类
-    implementation fg.deobf("curse.maven:changed-addon-plus-711303:7911538")
-    implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:7906615")
-    implementation fg.deobf("curse.maven:changed-synergy-1670037:9005974")
+    implementation fg.deobf("curse.maven:changed-addon-plus-711303:8515645")
+    implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:8217446")
+    implementation fg.deobf("curse.maven:changed-synergy-1670037:9005974")//可选依赖
     //模组外扩展
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     //优化

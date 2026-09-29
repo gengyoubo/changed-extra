@@ -1,0 +1,27 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.7,
+  "downfall": 0.4,
+  "effects": {
+    "sky_color": 15517176,
+    "fog_color": 13478372,
+    "water_color": 10252984,
+    "water_fog_color": 7557506,
+    "grass_color": 13659093,
+    "foliage_color": 14392555,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "spawners": {},
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [
+    [], [], [], [], [], [], [], [], [],
+    ["changed_addon:luminara_flowers"],
+    ["changede:luminara_forest_trees"]
+  ]
+}

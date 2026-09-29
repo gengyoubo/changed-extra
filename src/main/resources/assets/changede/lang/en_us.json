@@ -127,6 +127,7 @@
     "block.changede.white_latex_leaves": "White Latex Leaves",
     "block.changede.white_latex_stone": "White Latex Stone",
     "block.changede.white_latex_cobblestone": "White Latex Cobblestone",
+    "block.changede.luminara_grass_block": "Luminara Grass Block",
     "block.changede.latex_painting_portal": "Latex Painting Portal",
     "biome.changede.dark_latex_plains": "Dark Latex Plains",
     "biome.changede.dark_latex_forest": "Dark Latex Forest",
@@ -134,6 +135,7 @@
     "biome.changede.white_latex_plains": "White Latex Plains",
     "biome.changede.white_latex_forest": "White Latex Forest",
     "biome.changede.white_latex_sea": "White Latex Sea",
+    "biome.changede.luminara_forest": "Luminara Forest",
     "dimension.changede.latex_space": "Latex Space",
 
     "creativetab.changede1": "CE basic",

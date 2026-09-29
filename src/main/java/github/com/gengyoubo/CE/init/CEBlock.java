@@ -3,6 +3,7 @@ package github.com.gengyoubo.CE.init;
 import github.com.gengyoubo.CE.Block.LatexPaintingPortalBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -35,6 +36,8 @@ public class CEBlock {
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
     public static final RegistryObject<Block> WHITE_LATEX_COBBLESTONE = BLOCKS.register("white_latex_cobblestone",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
+    public static final RegistryObject<Block> LUMINARA_GRASS_BLOCK = BLOCKS.register("luminara_grass_block",
+            () -> new GrassBlock(BlockBehaviour.Properties.copy(Blocks.GRASS_BLOCK)));
     public static final RegistryObject<Block> LATEX_PAINTING_PORTAL = BLOCKS.register("latex_painting_portal",
             LatexPaintingPortalBlock::new);
 }
