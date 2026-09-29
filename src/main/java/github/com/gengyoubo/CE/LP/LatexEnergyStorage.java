@@ -13,14 +13,14 @@ public class LatexEnergyStorage implements ILatexEnergyHandler {
 
     @Override
     public int receiveEnergy(int amount, Direction from) {
-        int accepted = Math.min(capacity - energy, amount);
+        int accepted = Math.min(Math.max(0, capacity - energy), Math.max(0, amount));
         energy += accepted;
         return accepted;
     }
 
     @Override
     public int extractEnergy(int amount, Direction from) {
-        int extracted = Math.min(energy, amount);
+        int extracted = Math.min(Math.max(0, energy), Math.max(0, amount));
         energy -= extracted;
         return extracted;
     }
