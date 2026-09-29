@@ -56,6 +56,7 @@ public class CECreativeModeTab {
                                             output.accept(CELPItem.BASIC_FLUID_PIPE_ITEM.get());
                                             output.accept(CELPItem.BASIC_PUMP_ITEM.get());
                                             output.accept(CELPItem.BASIC_LATEX_FLUID_GENERATOR_ITEM.get());
+                                            output.accept(CELPItem.PIPE_WRENCH.get());
                                             output.accept(CELPItem.BASIC_GENERATOR_ITEM.get());
                                             output.accept(CELPItem.BASIC_CRYSTAL_GENERATOR_ITEM.get());
                                             output.accept(CELPItem.ELECTRIC_FURNACE_ITEM.get());

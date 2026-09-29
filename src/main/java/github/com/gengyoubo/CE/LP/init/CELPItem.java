@@ -18,6 +18,7 @@ public class CELPItem {
     public static final RegistryObject<Item> BASIC_FLUID_PIPE_ITEM;
     public static final RegistryObject<Item> BASIC_PUMP_ITEM;
     public static final RegistryObject<Item> BASIC_LATEX_FLUID_GENERATOR_ITEM;
+    public static final RegistryObject<Item> PIPE_WRENCH;
     public static final RegistryObject<Item> BASIC_GENERATOR_ITEM;
     public static final RegistryObject<Item> BASIC_CRYSTAL_GENERATOR_ITEM;
     public static final RegistryObject<Item> ELECTRIC_FURNACE_ITEM;
@@ -28,6 +29,7 @@ public class CELPItem {
         ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
         MIMIC_YUFENG_WINGS = ITEMS.register("mimic_yufeng_wings",
                 () -> new MimicYufengWingsItem(new Item.Properties().durability(432).rarity(Rarity.RARE)));
+        PIPE_WRENCH = ITEMS.register("pipe_wrench", () -> new Item(new Item.Properties()));
         BASIC_WIRE_ITEM = ITEMS.register("basic_wire",
                 () -> new BlockItem(CELPBlock.BASIC_WIRE.get(), new Item.Properties()));
         BASIC_ITEM_PIPE_ITEM = ITEMS.register("basic_item_pipe",

@@ -14,5 +14,7 @@ public class CEMenus {
             REGISTRY.register("latexcreative_extranalbody_craft_table", () -> IForgeMenuType.create(LatexCreativeExtranalbodyCraftTableMenu::new));
     public static final RegistryObject<MenuType<SpaceTowerMenu>> SPACE_TOWER =
             REGISTRY.register("space_tower", () -> IForgeMenuType.create(SpaceTowerMenu::new));
+    public static final RegistryObject<MenuType<PipeConfigMenu>> PIPE_CONFIG =
+            REGISTRY.register("pipe_config", () -> IForgeMenuType.create(PipeConfigMenu::new));
 
 }

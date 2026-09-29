@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.F;
 
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.BasePipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.TransportType;
+import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.PipeConnectionMode;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,8 +44,9 @@ public abstract class FluidPipeBlockEntity extends BasePipeBlockEntity {
     protected void transfer() {
         List<Endpoint> endpoints = getNetworkEndpoints();
         for (Endpoint source : endpoints) {
+            if (!source.mode().canSource()) continue;
             for (Endpoint target : endpoints) {
-                if (source.pos().equals(target.pos())) continue;
+                if (!target.mode().canSink() || source.pos().equals(target.pos())) continue;
                 if (moveFluid(source.handler(), target.handler())) return;
             }
         }
@@ -75,17 +77,13 @@ public abstract class FluidPipeBlockEntity extends BasePipeBlockEntity {
                 BlockEntity neighbor = level.getBlockEntity(neighborPos);
                 if (neighbor instanceof BasePipeBlockEntity pipe && pipe.getTransportType() == TransportType.FLUID) {
                     if (visited.add(neighborPos)) queue.addLast(neighborPos);
-                } else if (neighbor != null) {
+                } else if (neighbor != null && getConnectionMode(direction) != PipeConnectionMode.DISABLED) {
                     neighbor.getCapability(ForgeCapabilities.FLUID_HANDLER, direction.getOpposite())
-                            .ifPresent(handler -> addEndpoint(endpoints, new Endpoint(neighborPos, handler)));
+                            .ifPresent(handler -> endpoints.add(new Endpoint(neighborPos, handler, getConnectionMode(direction))));
                 }
             }
         }
         return endpoints;
-    }
-
-    private static void addEndpoint(List<Endpoint> endpoints, Endpoint candidate) {
-        if (endpoints.stream().noneMatch(endpoint -> endpoint.pos().equals(candidate.pos()))) endpoints.add(candidate);
     }
 
     private static boolean moveFluid(IFluidHandler source, IFluidHandler target) {
@@ -107,5 +105,5 @@ public abstract class FluidPipeBlockEntity extends BasePipeBlockEntity {
         return false;
     }
 
-    private record Endpoint(BlockPos pos, IFluidHandler handler) { }
+    private record Endpoint(BlockPos pos, IFluidHandler handler, PipeConnectionMode mode) { }
 }

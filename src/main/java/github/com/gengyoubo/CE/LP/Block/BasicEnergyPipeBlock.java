@@ -3,10 +3,18 @@ package github.com.gengyoubo.CE.LP.Block;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.BasePipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.TransportType;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.BasicEnergyPipeBlockEntity;
+import github.com.gengyoubo.CE.LP.world.Menu.PipeConfigMenu;
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
+import github.com.gengyoubo.CE.LP.init.CELPItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -16,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -24,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,6 +76,23 @@ public class BasicEnergyPipeBlock extends BaseEntityBlock {
     @Override
     public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public @NotNull InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+                                          @NotNull Player player, @NotNull InteractionHand hand,
+                                          @NotNull BlockHitResult hit) {
+        ItemStack held = player.getItemInHand(hand);
+        if (!held.is(CELPItem.PIPE_WRENCH.get())) return InteractionResult.PASS;
+        if (level.isClientSide) return InteractionResult.SUCCESS;
+        if (!(player instanceof ServerPlayer serverPlayer)
+                || !(level.getBlockEntity(pos) instanceof BasePipeBlockEntity)) return InteractionResult.PASS;
+
+        NetworkHooks.openScreen(serverPlayer, new net.minecraft.world.SimpleMenuProvider(
+                (containerId, inventory, openingPlayer) -> new PipeConfigMenu(containerId, inventory, pos),
+                Component.translatable("screen.changede.pipe_config")), pos);
+        return InteractionResult.CONSUME;
     }
 
     @Override

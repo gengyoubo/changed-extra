@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -75,7 +76,7 @@ public class BasicPumpBlockEntity extends BlockEntity {
         }
         return false;
     }
-
+    @SuppressWarnings("deprecation")
     private static boolean isSupportedFluid(FluidStack stack) {
         Fluid fluid = stack.getFluid();
         ResourceLocation id = ForgeRegistries.FLUIDS.getKey(fluid);

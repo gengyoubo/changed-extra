@@ -9,6 +9,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;
@@ -46,21 +48,24 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
         if (blockEntity instanceof FluidPipeBlockEntity fluidPipe) {
             var contents = fluidPipe.getNetworkContents();
             if (!contents.isEmpty()) {
-                data.putString(FLUID_NAME_KEY, contents.getDisplayName().getString());
+                ResourceLocation fluidId = ForgeRegistries.FLUIDS.getKey(contents.getFluid());
+                if (fluidId != null) data.putString(FLUID_NAME_KEY, fluidId.toString());
                 data.putInt(FLUID_AMOUNT_KEY, contents.getAmount());
             }
         }
         if (blockEntity instanceof BasicPumpBlockEntity pump) {
             var contents = pump.getStoredFluid();
             if (!contents.isEmpty()) {
-                data.putString(PUMP_FLUID_NAME_KEY, contents.getDisplayName().getString());
+                ResourceLocation fluidId = ForgeRegistries.FLUIDS.getKey(contents.getFluid());
+                if (fluidId != null) data.putString(PUMP_FLUID_NAME_KEY, fluidId.toString());
                 data.putInt(PUMP_FLUID_AMOUNT_KEY, contents.getAmount());
             }
         }
         if (blockEntity instanceof BasicLatexFluidGeneratorBlockEntity generator) {
             var contents = generator.getStoredFluid();
             if (!contents.isEmpty()) {
-                data.putString(GENERATOR_FLUID_NAME_KEY, contents.getDisplayName().getString());
+                ResourceLocation fluidId = ForgeRegistries.FLUIDS.getKey(contents.getFluid());
+                if (fluidId != null) data.putString(GENERATOR_FLUID_NAME_KEY, fluidId.toString());
                 data.putInt(GENERATOR_FLUID_AMOUNT_KEY, contents.getAmount());
             }
         }
@@ -76,14 +81,22 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
             tooltip.add(Component.translatable("tooltip.changede.pipe_items", data.getString(ITEM_NAME_KEY), data.getInt(ITEM_COUNT_KEY)));
         }
         if (data.contains(FLUID_NAME_KEY) && data.contains(FLUID_AMOUNT_KEY)) {
-            tooltip.add(Component.translatable("tooltip.changede.pipe_fluid", data.getString(FLUID_NAME_KEY), data.getInt(FLUID_AMOUNT_KEY)));
+            tooltip.add(Component.translatable("tooltip.changede.pipe_fluid", fluidName(data.getString(FLUID_NAME_KEY)), data.getInt(FLUID_AMOUNT_KEY)));
         }
         if (data.contains(PUMP_FLUID_NAME_KEY) && data.contains(PUMP_FLUID_AMOUNT_KEY)) {
-            tooltip.add(Component.translatable("tooltip.changede.pump_fluid", data.getString(PUMP_FLUID_NAME_KEY), data.getInt(PUMP_FLUID_AMOUNT_KEY)));
+            tooltip.add(Component.translatable("tooltip.changede.pump_fluid", fluidName(data.getString(PUMP_FLUID_NAME_KEY)), data.getInt(PUMP_FLUID_AMOUNT_KEY)));
         }
         if (data.contains(GENERATOR_FLUID_NAME_KEY) && data.contains(GENERATOR_FLUID_AMOUNT_KEY)) {
-            tooltip.add(Component.translatable("tooltip.changede.generator_fluid", data.getString(GENERATOR_FLUID_NAME_KEY), data.getInt(GENERATOR_FLUID_AMOUNT_KEY)));
+            tooltip.add(Component.translatable("tooltip.changede.generator_fluid", fluidName(data.getString(GENERATOR_FLUID_NAME_KEY)), data.getInt(GENERATOR_FLUID_AMOUNT_KEY)));
         }
+    }
+
+    private static Component fluidName(String fluidId) {
+        ResourceLocation id = ResourceLocation.tryParse(fluidId);
+        if (id == null) return Component.literal(fluidId);
+        var fluid = ForgeRegistries.FLUIDS.getValue(id);
+        if (fluid == null) return Component.literal(fluidId);
+        return new FluidStack(fluid, 1).getDisplayName();
     }
 
     @Override

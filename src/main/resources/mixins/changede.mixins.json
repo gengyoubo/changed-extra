@@ -18,6 +18,7 @@
     "DarkLatexYufengQueenBehaviorMixin",
     "GooCoreBlockMixin",
     "LatexCoveredBlocksRendererMixin",
+    "LatexFluidDescriptionIdMixin",
     "LatexSyringeMixin",
     "LatexSpaceFluidPickerMixin",
     "PatreonBenefitsMixin",

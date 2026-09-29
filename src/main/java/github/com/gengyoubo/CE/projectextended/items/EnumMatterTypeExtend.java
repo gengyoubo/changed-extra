@@ -58,7 +58,7 @@ public enum EnumMatterTypeExtend implements StringRepresentable, Tier {
     public float getAttackDamageBonus() {
         return this.attackDamage;
     }
-
+    @SuppressWarnings("deprecation")
     public int getLevel() {
         return this.harvestLevel;
     }

@@ -3,6 +3,7 @@ package github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.GeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.BasePipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.TransportType;
+import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.PipeConnectionMode;
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
 import github.com.gengyoubo.CE.LP.LatexEnergyStorage;
 import net.minecraft.core.BlockPos;
@@ -49,7 +50,7 @@ public abstract class EnergyPipeBlockEntity extends BasePipeBlockEntity implemen
         List<Direction> pipes = new ArrayList<>();
         for (Direction dir : Direction.values()) {
             BlockEntity neighbor = level.getBlockEntity(worldPosition.relative(dir));
-            if (!canConnect(dir) || neighbor instanceof GeneratorBlockEntity) {
+            if (!canConnect(dir) || !getConnectionMode(dir).canSink() || neighbor instanceof GeneratorBlockEntity) {
                 continue;
             }
 
@@ -110,6 +111,9 @@ public abstract class EnergyPipeBlockEntity extends BasePipeBlockEntity implemen
 
     @Override
     public int receiveEnergy(int amount, Direction from) {
+        if (from != null && !getConnectionMode(from).canSource()) {
+            return 0;
+        }
         int received = energy.receiveEnergy(amount, from);
         if (received > 0) {
             lastInputDirection = from;
