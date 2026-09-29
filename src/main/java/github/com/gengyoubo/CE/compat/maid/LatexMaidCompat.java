@@ -28,7 +28,6 @@ import net.parkabird.changedsynergy.world.inventory.BondedCreatureInventoryMenu;
 import net.parkabird.changedsynergy.world.inventory.BondedInventoryService;
 import net.parkabird.changedsynergy.world.inventory.BondedLatexMenu;
 import net.parkabird.changedsynergy.event.LatexSocialEvents;
-import net.parkabird.changedsynergy.ai.LatexSocialMemory;
 
 import java.util.Map;
 import java.util.UUID;
@@ -37,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /** Optional TLM bridge. This class is only loaded when both companion mods are present. */
 public final class LatexMaidCompat {
     private static final String TASK_TAG = "changede_maid_work_task";
+    private static final String WORK_OWNER_TAG = "changede_maid_work_owner";
     private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changede");
     static final RegistryObject<MenuType<MaidWorkMenu>> WORK_MENU = MENUS.register("latex_maid_work", () -> IForgeMenuType.create(MaidWorkMenu::new));
     private static final Map<UUID, SyntheticMaid> WORKERS = new ConcurrentHashMap<>();
@@ -83,9 +83,15 @@ public final class LatexMaidCompat {
                 player.displayClientMessage(Component.translatable("message.changede.maid_work.max_familiarity"), true);
                 return;
             }
-            if (!LatexSocialMemory.isPetOwner(creature, player)) {
-                player.displayClientMessage(Component.translatable("message.changede.maid_work.requires_owner"), true);
+            if (isWorkBoundToOtherPlayer(creature, player)) {
+                player.displayClientMessage(Component.translatable("message.changede.maid_work.bound_other"), true);
                 return;
+            }
+            // Tasks assigned before UUID binding was added are claimed by the next
+            // eligible player who opens their existing Synergy creature menu.
+            if (!creature.getPersistentData().hasUUID(WORK_OWNER_TAG)
+                    && !creature.getPersistentData().getString(TASK_TAG).isEmpty()) {
+                creature.getPersistentData().putUUID(WORK_OWNER_TAG, player.getUUID());
             }
             openWorkScreen(player, creature, fromWheel);
         } else {
@@ -104,12 +110,14 @@ public final class LatexMaidCompat {
             return;
         }
 
-        ServerPlayer owner = level.players().stream()
-                .filter(player -> player.distanceToSqr(creature) <= 64 * 64)
-                .filter(player -> ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, player))
-                .filter(player -> LatexSocialMemory.isPetOwner(creature, player))
-                .min(java.util.Comparator.comparingDouble(creature::distanceToSqr)).orElse(null);
-        if (owner == null) return;
+        if (!creature.getPersistentData().hasUUID(WORK_OWNER_TAG)) {
+            WORKERS.remove(creature.getUUID());
+            return;
+        }
+        UUID ownerId = creature.getPersistentData().getUUID(WORK_OWNER_TAG);
+        ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerId);
+        if (owner == null || owner.level() != level || owner.distanceToSqr(creature) > 64 * 64
+                || !ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, owner)) return;
 
         ResourceLocation id = ResourceLocation.tryParse(taskId);
         IMaidTask task = id == null ? null : TaskManager.getTaskMap().get(id);
@@ -153,6 +161,12 @@ public final class LatexMaidCompat {
 
     static java.util.List<IMaidTask> tasks() { return TaskManager.getTaskIndex(); }
     static String taskTag() { return TASK_TAG; }
+    static String workOwnerTag() { return WORK_OWNER_TAG; }
+
+    static boolean isWorkBoundToOtherPlayer(ChangedEntity creature, Player player) {
+        return creature.getPersistentData().hasUUID(WORK_OWNER_TAG)
+                && !creature.getPersistentData().getUUID(WORK_OWNER_TAG).equals(player.getUUID());
+    }
 
     private record VecPosition(double x, double y, double z) {
         static VecPosition of(EntityMaid maid) { return new VecPosition(maid.getX(), maid.getY(), maid.getZ()); }

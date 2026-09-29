@@ -303,9 +303,13 @@
     "screen.changede.maid_work.title": "胶兽工作",
     "screen.changede.maid_work.tab": "工作",
     "screen.changede.maid_work.unlock": "与胶兽达到满好感后可以安排工作",
-    "screen.changede.maid_work.back": "返回胶兽背包",
+    "screen.changede.maid_work.back": "返回胶兽界面",
+    "screen.changede.maid_work.current": "当前工作",
+    "screen.changede.maid_work.idle": "空闲",
+    "screen.changede.maid_work.select_hint": "从左侧选择工作",
+    "screen.changede.maid_work.player_inventory": "玩家背包",
     "screen.changede.maid_work.no_tasks": "没有可用的女仆任务",
     "message.changede.maid_work.max_familiarity": "需要与这只胶兽达到最高熟悉度才能安排工作",
-    "message.changede.maid_work.requires_owner": "只有这只胶兽的主人才能安排工作",
+    "message.changede.maid_work.bound_other": "这只胶兽的工作已绑定其他玩家",
     "screen.changede.maid_work.stop": "停止工作"
 }
