@@ -62,6 +62,8 @@ public class CECreativeModeTab {
                                             output.accept(CELPItem.ELECTRIC_FURNACE_ITEM.get());
                                             output.accept(CELPItem.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK_ITEM.get());
                                             output.accept(CELPItem.SPACE_TOWER_ITEM.get());
+                                            output.accept(CELPItem.WHITE_LATEX_POWER_CONVERTER_ITEM.get());
+                                            output.accept(CELPItem.DARK_LATEX_POWER_CONVERTER_ITEM.get());
                                             output.accept(CELPItem.MIMIC_YUFENG_WINGS.get());
                                         })
                                         .build()

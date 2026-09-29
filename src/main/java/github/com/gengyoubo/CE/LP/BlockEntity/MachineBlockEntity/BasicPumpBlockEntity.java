@@ -50,12 +50,16 @@ public class BasicPumpBlockEntity extends BlockEntity {
     }
 
     private boolean isAllowedSource(FluidState fluidState) {
+        if (fluidState.is(FluidTags.WATER)) {
+            return isInfiniteWaterSource(worldPosition.below());
+        }
+
         ResourceLocation dimension = level.dimension().location();
         if (dimension.equals(LATEX_SPACE)) {
             ResourceLocation fluidId = ForgeRegistries.FLUIDS.getKey(fluidState.getType());
             return DARK_LATEX.equals(fluidId) || WHITE_LATEX.equals(fluidId);
         }
-        return fluidState.is(FluidTags.WATER) && isInfiniteWaterSource(worldPosition.below());
+        return false;
     }
 
     private boolean isInfiniteWaterSource(BlockPos sourcePos) {

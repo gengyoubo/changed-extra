@@ -6,6 +6,7 @@ import github.com.gengyoubo.CE.LP.Block.BasicFluidPipeBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicPumpBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicLatexFluidGeneratorBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicGeneratorBlock;
+import github.com.gengyoubo.CE.LP.Block.LatexEnergyConverterBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicCrystalGeneratorBlock;
 import github.com.gengyoubo.CE.LP.Block.ElectricFurnaceBlock;
 import github.com.gengyoubo.CE.LP.Block.LatexCreativeExtranalbodyCraftTableBlock;
@@ -29,6 +30,8 @@ public class CELPBlock {
     public static final RegistryObject<Block> ELECTRIC_FURNACE;
     public static final RegistryObject<Block> LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK;
     public static final RegistryObject<Block> SPACE_TOWER;
+    public static final RegistryObject<Block> WHITE_LATEX_POWER_CONVERTER;
+    public static final RegistryObject<Block> DARK_LATEX_POWER_CONVERTER;
 
     static {
         BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
@@ -54,5 +57,9 @@ public class CELPBlock {
                 () -> new LatexCreativeExtranalbodyCraftTableBlock(BlockBehaviour.Properties.of()));
         SPACE_TOWER = BLOCKS.register("space_tower",
                 () -> SpaceTowerCompat.createBlock(BlockBehaviour.Properties.of()));
+        WHITE_LATEX_POWER_CONVERTER = BLOCKS.register("white_latex_power_converter",
+                () -> new LatexEnergyConverterBlock(BlockBehaviour.Properties.of(), true));
+        DARK_LATEX_POWER_CONVERTER = BLOCKS.register("dark_latex_power_converter",
+                () -> new LatexEnergyConverterBlock(BlockBehaviour.Properties.of(), false));
     }
 }
