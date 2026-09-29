@@ -167,10 +167,10 @@ public class LatexPaintingPortalProjectionRenderer {
                     continue;
                 }
 
-                x = (int)Math.round((projectedX + 1.0D) * 0.5D * (GRID_SIZE - 1));
+                x = (int)Math.round((1.0D - projectedX) * 0.5D * (GRID_SIZE - 1));
                 y = (int)Math.round((1.0D - projectedY) * 0.5D * (GRID_SIZE - 1));
             } else {
-                x = block.dx() + GRID_SIZE / 2;
+                x = GRID_SIZE / 2 - block.dx();
                 y = GRID_SIZE / 2 - block.dy();
             }
 

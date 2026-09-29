@@ -18,7 +18,6 @@
     "GooCoreBlockMixin",
     "LatexCoveredBlocksRendererMixin",
     "LatexSyringeMixin",
-    "LiquidBlockLatexSpaceTerrainMixin",
     "PatreonBenefitsMixin",
     "ServerPlayerSpecialVariantMixin",
     "SyncTransfurPacketListingAccessor",

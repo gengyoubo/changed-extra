@@ -72,6 +72,9 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.PLATE_CHESTPLATE.get());
                                             output.accept(CEItem.PLATE_LEGGINGS.get());
                                             output.accept(CEItem.PLATE_BOOTS.get());
+                                            output.accept(CEItem.RIDING_STICK.get());
+                                            output.accept(CEItem.RIDDEN_STICK.get());
+                                            output.accept(CEItem.REMOTE_RIDING_STICK.get());
                                         })
                                         .build()
                         );

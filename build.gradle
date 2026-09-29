@@ -83,6 +83,41 @@ group = mod_group_id
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+repositories {
+    mavenCentral()
+    maven { url "https://maven.createmod.net" }
+    maven {
+        name = "RePlayNeo"
+        url = "https://raw.githubusercontent.com/gengyoubo/RePlayNeo/master/mcmodsrepo/"
+    }
+    flatDir {
+        dir 'libs'
+    }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        url "https://maven.blamejared.com"
+    }
+    maven { url "https://maven.theillusivec4.top/" }
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://cursemaven.com/" }
+    maven { url "https://maven.shadowsoffire.dev/releases" }
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+    mavenLocal()
+}
 dependencies {
     jacocoAgent "org.jacoco:org.jacoco.agent:${jacoco.toolVersion}:runtime"
     //原版
@@ -90,6 +125,7 @@ dependencies {
     //changed类
     implementation fg.deobf("curse.maven:changed-addon-plus-711303:7911538")
     implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:7906615")
+    implementation fg.deobf("curse.maven:changed-synergy-1670037:9005974")
     //模组外扩展
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     //优化
@@ -120,6 +156,8 @@ dependencies {
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:7391695")
     implementation fg.deobf("curse.maven:bakeries-1191781:8041836")
+    //拍摄
+    //runtimeOnly fg.deobf("github.com.gengyoubo.replayneo:RePlay:1.0.4")
     //正版
     implementation fg.deobf("curse.maven:oauth-513857:4575495")
     //compileOnly()
@@ -199,36 +237,6 @@ minecraft {
 }
 tasks.named('test') {
     enabled = false
-}
-repositories {
-    mavenCentral()
-    maven { url "https://maven.createmod.net" }
-    flatDir {
-        dir 'libs'
-    }
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "https://modmaven.dev/"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "https://maven.blamejared.com/"
-    }
-    maven {
-        url "https://maven.blamejared.com"
-    }
-    maven { url "https://maven.theillusivec4.top/" }
-    maven { url "https://maven.shedaniel.me/" }
-    maven { url "https://cursemaven.com/" }
-    maven { url "https://maven.shadowsoffire.dev/releases" }
-    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
 }
 tasks.named('processResources', ProcessResources).configure {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE

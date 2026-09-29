@@ -65,6 +65,12 @@ public class CEItem {
             ITEMS.register("plate_leggings", () -> new ArmorItem(CEArmorMaterials.PLATE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> PLATE_BOOTS =
             ITEMS.register("plate_boots", () -> new ArmorItem(CEArmorMaterials.PLATE, ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<Item> RIDING_STICK =
+            ITEMS.register("riding_stick", () -> new DebugRideStickItem(DebugRideStickItem.Mode.PLAYER_RIDES_TARGET, new Item.Properties()));
+    public static final RegistryObject<Item> RIDDEN_STICK =
+            ITEMS.register("ridden_stick", () -> new DebugRideStickItem(DebugRideStickItem.Mode.TARGET_RIDES_PLAYER, new Item.Properties()));
+    public static final RegistryObject<Item> REMOTE_RIDING_STICK =
+            ITEMS.register("remote_riding_stick", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLACK_LATEX_COFFEE_POWDER = simpleItem("black_latex_coffee_powder");
     public static final RegistryObject<Item> WHITE_LATEX_MILK = simpleItem("white_latex_milk");
     public static final RegistryObject<Item> HOT_LATEX_COFFEE_E_HALF = simpleItem("hot_latex_coffee_e_half");

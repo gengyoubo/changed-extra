@@ -87,7 +87,7 @@ public class LatexPaintingPortalFramebufferRenderer {
         BufferBuilder bufferBuilder = tessellator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-        drawTexturedQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 255, 255, 255);
+        drawTexturedQuadFlippedX(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 255, 255, 255);
         drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.54F, 0.54F, -0.48F, 23, 18, 20);
         drawTexturedQuad(matrix, bufferBuilder, -0.54F, 0.48F, 0.54F, 0.54F, 23, 18, 20);
         drawTexturedQuad(matrix, bufferBuilder, -0.54F, -0.48F, -0.48F, 0.48F, 23, 18, 20);
@@ -371,6 +371,14 @@ public class LatexPaintingPortalFramebufferRenderer {
         bufferBuilder.vertex(matrix, x2, y1, (float) 0.0).uv(1.0F, 1.0F).color(r, g, b, 255).endVertex();
         bufferBuilder.vertex(matrix, x2, y2, (float) 0.0).uv(1.0F, 0.0F).color(r, g, b, 255).endVertex();
         bufferBuilder.vertex(matrix, x1, y2, (float) 0.0).uv(0.0F, 0.0F).color(r, g, b, 255).endVertex();
+    }
+
+    private static void drawTexturedQuadFlippedX(Matrix4f matrix, BufferBuilder bufferBuilder, float x1, float y1, float x2, float y2,
+                                                 int r, int g, int b) {
+        bufferBuilder.vertex(matrix, x1, y1, (float) 0.0).uv(1.0F, 1.0F).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x2, y1, (float) 0.0).uv(0.0F, 1.0F).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x2, y2, (float) 0.0).uv(0.0F, 0.0F).color(r, g, b, 255).endVertex();
+        bufferBuilder.vertex(matrix, x1, y2, (float) 0.0).uv(1.0F, 0.0F).color(r, g, b, 255).endVertex();
     }
 
     private static void drawColorQuad(Matrix4f matrix, BufferBuilder bufferBuilder, float x1, float y1, float x2, float y2,
