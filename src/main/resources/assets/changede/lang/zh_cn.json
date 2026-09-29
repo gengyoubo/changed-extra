@@ -286,6 +286,16 @@
     "screen.changede.space_tower.ce_storage": "CE 储存: %s / %s",
 
 
+    "jei.changede.latex_food.orange": "Synergy 中大多数具有关系系统的胶兽会接受橘子或金橘，猫科胶兽会拒绝。",
+    "jei.changede.latex_food.accepted_by": "适合喂食：%s",
+    "jei.changede.latex_food.diet.aquatic": "水生类胶兽",
+    "jei.changede.latex_food.diet.shark": "鲨鱼类胶兽",
+    "jei.changede.latex_food.diet.cat": "猫科胶兽",
+    "jei.changede.latex_food.diet.dragon": "龙类胶兽",
+    "jei.changede.latex_food.diet.fox": "狐类胶兽",
+    "jei.changede.latex_food.diet.sweet_tooth": "嗜甜胶兽",
+    "jei.changede.latex_food.diet.wolf": "狼类胶兽",
+    "jei.changede.latex_food.diet.special": "特殊饮食胶兽",
     "gamerule.latex_start": "胶兽开局",
     "gamerule.latex_start.description": "玩家进入游戏时是否自动变成随机胶兽形态(其他游戏规则发生变化)\n1. gamerule changed:keepConscious true(一直为开)\n2. gamerule changed:keepForm false(默认为关，如果在玩家死亡时为人类将会退化为胶兽)"
 }

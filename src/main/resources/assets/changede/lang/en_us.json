@@ -164,6 +164,16 @@
   "screen.changede.space_tower.ce_cost": "Cost: %s LP/min",
   "screen.changede.space_tower.ce_storage": "CE Stored: %s / %s",
 
+  "jei.changede.latex_food.orange": "Most Synergy creatures with relationship support accept oranges or golden oranges; feline creatures refuse them.",
+  "jei.changede.latex_food.accepted_by": "Suitable for: %s",
+  "jei.changede.latex_food.diet.aquatic": "Aquatic latex creatures",
+  "jei.changede.latex_food.diet.shark": "Shark latex creatures",
+  "jei.changede.latex_food.diet.cat": "Feline latex creatures",
+  "jei.changede.latex_food.diet.dragon": "Dragon latex creatures",
+  "jei.changede.latex_food.diet.fox": "Fox latex creatures",
+  "jei.changede.latex_food.diet.sweet_tooth": "Sweet-toothed latex creatures",
+  "jei.changede.latex_food.diet.wolf": "Wolf latex creatures",
+  "jei.changede.latex_food.diet.special": "Special-diet latex creatures",
   "gamerule.latex_start": "Latex Start",
   "gamerule.latex_start.description": "Whether the player automatically transforms into a random gel beast form upon entering the game (other game rules are altered)\n1. gamerule changed:keepConscious true (always true)\n2. gamerule changed:keepForm false (default is false; if the player is human when they die, they will degenerate into a latex"
 }

@@ -12,6 +12,7 @@ import github.com.gengyoubo.CE.commands.CheckSpecialFormCommand;
 import github.com.gengyoubo.CE.commands.ItemInfoCommand;
 import github.com.gengyoubo.CE.commands.ReloadEMCCommand;
 import github.com.gengyoubo.CE.events.AdvancementChainEvents;
+import github.com.gengyoubo.CE.events.ChangedSynergyGiftEvents;
 import github.com.gengyoubo.CE.events.DebugRideStickEvents;
 import github.com.gengyoubo.CE.events.GooCoreTooltipEvents;
 import github.com.gengyoubo.CE.events.DarkLatexYufengQueenEvents;
@@ -79,6 +80,7 @@ public class changede {
     public static final boolean PROJECTE = ModList.get().isLoaded("projecte");
     public static final boolean PE = ModList.get().isLoaded("projectextended");
     public static final boolean CHANGED_ADDON = ModList.get().isLoaded("changed_addon");
+    public static final boolean CHANGED_SYNERGY = ModList.get().isLoaded("changed_synergy");
     public static final Logger LOGGER = LogUtils.getLogger();
     private static final AtomicBoolean PATREON_SYNC_STARTED = new AtomicBoolean(false);
 
@@ -132,6 +134,9 @@ public class changede {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, TickEvent.PlayerTickEvent.class, AdvancementChainEvents::onPlayerTick);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, false, PlayerInteractEvent.EntityInteractSpecific.class, DebugRideStickEvents::onEntityInteractSpecific);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, false, PlayerInteractEvent.EntityInteract.class, DebugRideStickEvents::onEntityInteract);
+        if (CHANGED_SYNERGY) {
+            MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, false, PlayerInteractEvent.EntityInteract.class, ChangedSynergyGiftEvents::onEntityInteract);
+        }
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, false, MobSpawnEvent.SpawnPlacementCheck.class, LatexSpaceSpawnEvents::onSpawnPlacementCheck);
         if (CHANGED_ADDON) {
             MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingEvent.LivingTickEvent.class, DarkLatexYufengQueenEvents::onLivingTick);
