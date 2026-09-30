@@ -1,0 +1,10 @@
+{
+  "parent": "changede:changed_technology",
+  "display": {
+    "icon": { "item": "minecraft:lightning_rod" },
+    "title": { "translate": "advancements.changede.weather_transfur.title" },
+    "description": { "translate": "advancements.changede.weather_transfur.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": { "weather_transfur": { "trigger": "minecraft:impossible" } }
+}

@@ -249,5 +249,11 @@
     "item.changede.painite_ingot": "Painite Ingot",
     "gui.changede.alloy_furnace.time": "Time: %s s",
     "gui.changede.alloy_furnace.power": "%s LP/s",
-    "jei.changede.alloy_furnace.swappable": "Input slots are interchangeable"
+    "jei.changede.alloy_furnace.swappable": "Input slots are interchangeable",
+    "advancements.changede.weather_transfur.title": "When Did It Happen?",
+    "advancements.changede.weather_transfur.description": "Be transfurred by the weather in Latex Space.",
+    "advancements.changede.weather_death.title": "Every Drop Pierces My Heart",
+    "advancements.changede.weather_death.description": "Die from the weather in Latex Space.",
+    "death.attack.changede.latex_weather": "%1$s was eroded by the weather in Latex Space",
+    "death.attack.changede.latex_weather.player": "%1$s was eroded by the weather in Latex Space while fighting %2$s"
 }

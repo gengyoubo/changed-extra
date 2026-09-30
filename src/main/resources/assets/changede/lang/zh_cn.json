@@ -371,5 +371,11 @@
     "item.changede.painite_ingot": "硅硼钙铝锭",
     "gui.changede.alloy_furnace.time": "时间：%s 秒",
     "gui.changede.alloy_furnace.power": "%s LP/秒",
-    "jei.changede.alloy_furnace.swappable": "两个输入槽可互换"
+    "jei.changede.alloy_furnace.swappable": "两个输入槽可互换",
+    "advancements.changede.weather_transfur.title": "是什么时候？",
+    "advancements.changede.weather_transfur.description": "被胶空间的维度天气兽化。",
+    "advancements.changede.weather_death.title": "一滴一滴刺痛我的心",
+    "advancements.changede.weather_death.description": "因为胶空间的维度天气死亡。",
+    "death.attack.changede.latex_weather": "%1$s 被胶空间的天气侵蚀了",
+    "death.attack.changede.latex_weather.player": "%1$s 在与 %2$s 战斗时被胶空间的天气侵蚀了"
 }

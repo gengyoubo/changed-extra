@@ -1,0 +1,10 @@
+{
+  "parent": "changede:changed_technology",
+  "display": {
+    "icon": { "item": "minecraft:ghast_tear" },
+    "title": { "translate": "advancements.changede.weather_death.title" },
+    "description": { "translate": "advancements.changede.weather_death.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": { "weather_death": { "trigger": "minecraft:impossible" } }
+}
