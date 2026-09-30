@@ -27,7 +27,6 @@ public class InfuserPowerBlockEntity extends BlockEntity implements WorkbenchEne
     };
     private final LazyOptional<ItemStackHandler> itemCapability = LazyOptional.of(() -> items);
     private final WorkbenchEnergyStorage energy = new WorkbenchEnergyStorage(WorkbenchEnergyRules.NORMAL_CAPACITY, this::markEnergyChanged);
-    private final LazyOptional<WorkbenchEnergyStorage> energyCapability = LazyOptional.of(() -> energy);
 
     public InfuserPowerBlockEntity(BlockPos pos, BlockState state) {
         super(CELPBlockEntity.INFUSER_POWER.get(), pos, state);
@@ -52,9 +51,6 @@ public class InfuserPowerBlockEntity extends BlockEntity implements WorkbenchEne
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return itemCapability.cast();
         }
-        if (cap == ForgeCapabilities.ENERGY) {
-            return energyCapability.cast();
-        }
         return super.getCapability(cap, side);
     }
 
@@ -62,7 +58,6 @@ public class InfuserPowerBlockEntity extends BlockEntity implements WorkbenchEne
     public void setRemoved() {
         super.setRemoved();
         itemCapability.invalidate();
-        energyCapability.invalidate();
     }
 
     @Override

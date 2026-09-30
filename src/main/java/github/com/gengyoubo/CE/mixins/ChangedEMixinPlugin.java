@@ -26,6 +26,10 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
             "github.com.gengyoubo.CE.LP.mixins.UnifuserEnergyMixin",
             "github.com.gengyoubo.CE.LP.mixins.CatalyzerEnergyMixin"
     );
+    private static final Set<String> MEKANISM_MIXINS = Set.of(
+            "github.com.gengyoubo.CE.LP.mixins.InfuserMekanismEnergyMixin",
+            "github.com.gengyoubo.CE.LP.mixins.AddonMekanismEnergyMixin"
+    );
     private static final boolean ADDON_LIGHT_MODE = Boolean.parseBoolean(System.getProperty("changede.mixin.addonLight", "false"));
 
     @Override
@@ -72,6 +76,11 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
         if (ADDON_COMMON_MIXINS.contains(mixinClassName)) {
             return isModLoaded("changed_addon");
+        }
+        if (MEKANISM_MIXINS.contains(mixinClassName)) {
+            return isModLoaded("mekanism")
+                    && (!"github.com.gengyoubo.CE.LP.mixins.AddonMekanismEnergyMixin".equals(mixinClassName)
+                    || isModLoaded("changed_addon"));
         }
 
         // These two mixins only make sense when both optional dependencies exist.

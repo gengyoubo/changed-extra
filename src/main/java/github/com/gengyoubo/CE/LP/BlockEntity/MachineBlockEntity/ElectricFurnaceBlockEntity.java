@@ -30,7 +30,22 @@ public class ElectricFurnaceBlockEntity extends MachineBlockEntity {
             setChanged();
         }
     };
+    private final IItemHandler automationItemHandler = new IItemHandler() {
+        @Override public int getSlots() { return itemHandler.getSlots(); }
+        @Override public ItemStack getStackInSlot(int slot) { return itemHandler.getStackInSlot(slot); }
+        @Override public int getSlotLimit(int slot) { return itemHandler.getSlotLimit(slot); }
+        @Override public boolean isItemValid(int slot, ItemStack stack) {
+            return slot == 0 && itemHandler.isItemValid(slot, stack);
+        }
+        @Override public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            return slot == 0 ? itemHandler.insertItem(slot, stack, simulate) : stack;
+        }
+        @Override public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return slot == 1 ? itemHandler.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+        }
+    };
     private LazyOptional<IItemHandler> itemHandlerCap = LazyOptional.of(() -> itemHandler);
+    private LazyOptional<IItemHandler> automationItemHandlerCap = LazyOptional.of(() -> automationItemHandler);
 
     public ElectricFurnaceBlockEntity(BlockPos pos, BlockState state) {
         super(CELPBlockEntity.ELECTRIC_FURNACE_BLOCK_ENTITY.get(), pos, state, CAPACITY);
@@ -54,13 +69,15 @@ public class ElectricFurnaceBlockEntity extends MachineBlockEntity {
     public void invalidateCaps() {
         super.invalidateCaps();
         itemHandlerCap.invalidate();
+        automationItemHandlerCap.invalidate();
         itemHandlerCap = LazyOptional.of(() -> itemHandler);
+        automationItemHandlerCap = LazyOptional.of(() -> automationItemHandler);
     }
 
     @Override
     public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return itemHandlerCap.cast();
+            return (side == null ? itemHandlerCap : automationItemHandlerCap).cast();
         }
         return super.getCapability(cap, side);
     }
@@ -119,10 +136,8 @@ public class ElectricFurnaceBlockEntity extends MachineBlockEntity {
     }
 
     private SimpleContainer createRecipeInventory() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
+        SimpleContainer inventory = new SimpleContainer(1);
+        inventory.setItem(0, itemHandler.getStackInSlot(0));
         return inventory;
     }
 

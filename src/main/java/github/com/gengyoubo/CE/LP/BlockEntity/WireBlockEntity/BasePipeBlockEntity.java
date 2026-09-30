@@ -22,7 +22,19 @@ public abstract class BasePipeBlockEntity extends BlockEntity {
 
     public void tick() {
         if (level == null || level.isClientSide) return;
-        transfer();
+        if (type == TransportType.ENERGY || PipeNetworkManager.isLeader(this)) transfer();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        PipeNetworkManager.invalidate(level);
+    }
+
+    @Override
+    public void setRemoved() {
+        PipeNetworkManager.invalidate(level);
+        super.setRemoved();
     }
 
     public TransportType getTransportType() {

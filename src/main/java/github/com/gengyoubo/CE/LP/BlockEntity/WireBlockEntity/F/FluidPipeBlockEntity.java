@@ -72,14 +72,16 @@ public abstract class FluidPipeBlockEntity extends BasePipeBlockEntity {
         visited.add(worldPosition);
         while (!queue.isEmpty()) {
             BlockPos pipePos = queue.removeFirst();
+            BlockEntity current = level.getBlockEntity(pipePos);
+            if (!(current instanceof BasePipeBlockEntity currentPipe)) continue;
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pipePos.relative(direction);
                 BlockEntity neighbor = level.getBlockEntity(neighborPos);
                 if (neighbor instanceof BasePipeBlockEntity pipe && pipe.getTransportType() == TransportType.FLUID) {
                     if (visited.add(neighborPos)) queue.addLast(neighborPos);
-                } else if (neighbor != null && getConnectionMode(direction) != PipeConnectionMode.DISABLED) {
+                } else if (neighbor != null && currentPipe.getConnectionMode(direction) != PipeConnectionMode.DISABLED) {
                     neighbor.getCapability(ForgeCapabilities.FLUID_HANDLER, direction.getOpposite())
-                            .ifPresent(handler -> endpoints.add(new Endpoint(neighborPos, handler, getConnectionMode(direction))));
+                            .ifPresent(handler -> endpoints.add(new Endpoint(neighborPos, handler, currentPipe.getConnectionMode(direction))));
                 }
             }
         }
@@ -88,11 +90,17 @@ public abstract class FluidPipeBlockEntity extends BasePipeBlockEntity {
 
     private static boolean moveFluid(IFluidHandler source, IFluidHandler target) {
         for (int tank = 0; tank < source.getTanks(); tank++) {
-            FluidStack offered = source.drain(1000, IFluidHandler.FluidAction.SIMULATE);
-            if (offered.isEmpty()) return false;
-            int accepted = Math.min(offered.getAmount(), target.fill(offered, IFluidHandler.FluidAction.SIMULATE));
+            FluidStack tankContents = source.getFluidInTank(tank);
+            if (tankContents.isEmpty()) continue;
+            FluidStack offered = tankContents.copy();
+            offered.setAmount(Math.min(1000, offered.getAmount()));
+            FluidStack simulatedDrain = source.drain(offered, IFluidHandler.FluidAction.SIMULATE);
+            if (simulatedDrain.isEmpty()) continue;
+            int accepted = Math.min(simulatedDrain.getAmount(), target.fill(simulatedDrain, IFluidHandler.FluidAction.SIMULATE));
             if (accepted <= 0) continue;
-            FluidStack drained = source.drain(accepted, IFluidHandler.FluidAction.EXECUTE);
+            FluidStack requested = offered.copy();
+            requested.setAmount(accepted);
+            FluidStack drained = source.drain(requested, IFluidHandler.FluidAction.EXECUTE);
             if (drained.isEmpty()) continue;
             int filled = target.fill(drained, IFluidHandler.FluidAction.EXECUTE);
             if (filled < drained.getAmount()) {

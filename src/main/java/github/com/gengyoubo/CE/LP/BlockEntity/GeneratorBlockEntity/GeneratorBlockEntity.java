@@ -98,10 +98,6 @@ public abstract class GeneratorBlockEntity extends BaseEnergyBlockEntity {
     }
 
     protected void tryGenerate() {
-        if (getEnergyStored() >= getMaxEnergyStored()) {
-            return;
-        }
-
         ItemStack fuelStack = itemHandler.getStackInSlot(0);
         if (fuelStack.isEmpty()) {
             return;
@@ -109,6 +105,10 @@ public abstract class GeneratorBlockEntity extends BaseEnergyBlockEntity {
 
         int generated = generate(fuelStack);
         if (generated <= 0) {
+            return;
+        }
+
+        if (getMaxEnergyStored() - getEnergyStored() < generated) {
             return;
         }
 

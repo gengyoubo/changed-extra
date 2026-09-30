@@ -15,11 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,7 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = PurifierBlockEntity.class, remap = false)
 public abstract class PurifierEnergyMixin extends BaseContainerBlockEntity implements WorkbenchEnergyHolder, ILatexEnergyHandler {
     @Unique private WorkbenchEnergyStorage changede$energy;
-    @Unique private LazyOptional<IEnergyStorage> changede$energyCapability = LazyOptional.empty();
 
     protected PurifierEnergyMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -44,7 +38,6 @@ public abstract class PurifierEnergyMixin extends BaseContainerBlockEntity imple
     private WorkbenchEnergyStorage changede$ensureEnergy() {
         if (changede$energy == null) {
             changede$energy = new WorkbenchEnergyStorage(WorkbenchEnergyRules.NORMAL_CAPACITY, this::changede$markEnergyChanged);
-            changede$energyCapability = LazyOptional.of(() -> changede$energy);
         }
         return changede$energy;
     }
@@ -66,21 +59,6 @@ public abstract class PurifierEnergyMixin extends BaseContainerBlockEntity imple
                 ci.cancel();
             }
         }
-    }
-
-    @Override
-    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-        if (cap == ForgeCapabilities.ENERGY) {
-            changede$ensureEnergy();
-            return changede$energyCapability.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void setRemoved() {
-        super.setRemoved();
-        changede$energyCapability.invalidate();
     }
 
     @Override

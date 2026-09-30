@@ -14,7 +14,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -62,23 +62,29 @@ public class BasicPumpBlockEntity extends BlockEntity {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     private boolean isInfiniteWaterSource(BlockPos sourcePos) {
-        for (int xOffset = -1; xOffset <= 0; xOffset++) {
-            for (int zOffset = -1; zOffset <= 0; zOffset++) {
-                boolean squareIsWater = true;
-                for (int dx = 0; dx <= 1; dx++) {
-                    for (int dz = 0; dz <= 1; dz++) {
-                        BlockPos pos = sourcePos.offset(xOffset + dx, 0, zOffset + dz);
-                        if (!level.getFluidState(pos).is(FluidTags.WATER)
-                                || !level.getFluidState(pos).isSource()) {
-                            squareIsWater = false;
-                        }
-                    }
-                }
-                if (squareIsWater) return true;
+        FluidState candidate = level.getFluidState(sourcePos);
+        if (!candidate.is(FluidTags.WATER) || !candidate.isSource()
+                || !candidate.canConvertToSource(level, sourcePos)) {
+            return false;
+        }
+
+        int sourceNeighbors = 0;
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            BlockPos neighborPos = sourcePos.relative(direction);
+            FluidState neighbor = level.getFluidState(neighborPos);
+            if (neighbor.is(FluidTags.WATER) && neighbor.isSource()
+                    && ForgeEventFactory.canCreateFluidSource(level, neighborPos,
+                    level.getBlockState(neighborPos), neighbor.canConvertToSource(level, neighborPos))) {
+                sourceNeighbors++;
             }
         }
-        return false;
+        if (sourceNeighbors < 2) return false;
+
+        BlockPos belowPos = sourcePos.below();
+        return level.getBlockState(belowPos).isSolid()
+                || level.getFluidState(belowPos).isSourceOfType(candidate.getType());
     }
     @SuppressWarnings("deprecation")
     private static boolean isSupportedFluid(FluidStack stack) {

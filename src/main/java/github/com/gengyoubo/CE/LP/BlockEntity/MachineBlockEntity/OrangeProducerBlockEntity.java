@@ -41,6 +41,7 @@ public class OrangeProducerBlockEntity extends BlockEntity implements ILatexEner
         if (level == null || level.isClientSide || lp < LP_PER_SECOND / 20 || !canOutputOrange()) return;
         lp -= LP_PER_SECOND / 20;
         progress++;
+        boolean produced = false;
         if (progress >= TICKS_PER_ORANGE) {
             progress = 0;
             Item orange = ForgeRegistries.ITEMS.getValue(ORANGE_ID);
@@ -48,10 +49,11 @@ public class OrangeProducerBlockEntity extends BlockEntity implements ILatexEner
                 ItemStack stored = output.getStackInSlot(0);
                 if (stored.isEmpty()) output.setStackInSlot(0, new ItemStack(orange));
                 else stored.grow(1);
+                produced = true;
             }
         }
         setChanged();
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        if (produced) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
     }
 
     private boolean canOutputOrange() {

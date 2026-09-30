@@ -15,22 +15,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = UnifuserBlockEntity.class, remap = false)
 public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILatexEnergyHandler {
     @Unique private WorkbenchEnergyStorage changede$energy;
-    @Unique private LazyOptional<IEnergyStorage> changede$energyCapability = LazyOptional.empty();
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void changede$initEnergy(CallbackInfo ci) {
@@ -41,7 +35,6 @@ public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILat
     private WorkbenchEnergyStorage changede$ensureEnergy() {
         if (changede$energy == null) {
             changede$energy = new WorkbenchEnergyStorage(WorkbenchEnergyRules.capacityFor(this), this::changede$markEnergyChanged);
-            changede$energyCapability = LazyOptional.of(() -> changede$energy);
         }
         return changede$energy;
     }
@@ -54,19 +47,6 @@ public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILat
     @Inject(method = {"saveAdditional", "m_183515_"}, at = @At("TAIL"))
     private void changede$saveEnergy(CompoundTag tag, CallbackInfo ci) {
         tag.putInt(WorkbenchEnergyRules.NBT_KEY, changede$ensureEnergy().getEnergyStored());
-    }
-
-    @Inject(method = "getCapability", at = @At("HEAD"), cancellable = true)
-    private <T> void changede$getEnergyCapability(Capability<T> cap, Direction side, CallbackInfoReturnable<LazyOptional<T>> cir) {
-        if (cap == ForgeCapabilities.ENERGY) {
-            changede$ensureEnergy();
-            cir.setReturnValue(changede$energyCapability.cast());
-        }
-    }
-
-    @Inject(method = {"setRemoved", "m_7651_"}, at = @At("TAIL"))
-    private void changede$invalidateEnergy(CallbackInfo ci) {
-        changede$energyCapability.invalidate();
     }
 
     @Inject(method = "serverTick", at = @At("HEAD"), cancellable = true)

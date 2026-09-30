@@ -72,14 +72,16 @@ public abstract class ItemPipeBlockEntity extends BasePipeBlockEntity {
         visited.add(worldPosition);
         while (!queue.isEmpty()) {
             BlockPos pipePos = queue.removeFirst();
+            BlockEntity current = level.getBlockEntity(pipePos);
+            if (!(current instanceof BasePipeBlockEntity currentPipe)) continue;
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pipePos.relative(direction);
                 BlockEntity neighbor = level.getBlockEntity(neighborPos);
                 if (neighbor instanceof BasePipeBlockEntity pipe && pipe.getTransportType() == TransportType.ITEM) {
                     if (visited.add(neighborPos)) queue.addLast(neighborPos);
-                } else if (neighbor != null && getConnectionMode(direction) != PipeConnectionMode.DISABLED) {
+                } else if (neighbor != null && currentPipe.getConnectionMode(direction) != PipeConnectionMode.DISABLED) {
                     neighbor.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite())
-                            .ifPresent(handler -> endpoints.add(new Endpoint(neighborPos, handler, getConnectionMode(direction))));
+                            .ifPresent(handler -> endpoints.add(new Endpoint(neighborPos, handler, currentPipe.getConnectionMode(direction))));
                 }
             }
         }
