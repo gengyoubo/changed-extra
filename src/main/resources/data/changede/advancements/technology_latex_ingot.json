@@ -1,0 +1,12 @@
+{
+  "parent": "changede:technology_gray",
+  "display": {
+    "icon": { "item": "changede:latex_ingot" },
+    "title": { "translate": "advancements.changede.technology_latex_ingot.title" },
+    "description": { "translate": "advancements.changede.technology_latex_ingot.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": {
+    "latex_ingot": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changede:latex_ingot"] }] } }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "parent": "changede:technology_latex_ingot",
+  "display": {
+    "icon": { "item": "changede:basic_wire" },
+    "title": { "translate": "advancements.changede.technology_pipe_trio.title" },
+    "description": { "translate": "advancements.changede.technology_pipe_trio.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": {
+    "item_pipe": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changede:basic_item_pipe"] }] } },
+    "energy_pipe": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changede:basic_wire"] }] } },
+    "fluid_pipe": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changede:basic_fluid_pipe"] }] } }
+  },
+  "requirements": [["item_pipe"], ["energy_pipe"], ["fluid_pipe"]]
+}

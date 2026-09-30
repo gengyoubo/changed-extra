@@ -27,6 +27,7 @@ public class CELPItem {
     public static final RegistryObject<Item> MIMIC_YUFENG_WINGS;
     public static final RegistryObject<Item> WHITE_LATEX_POWER_CONVERTER_ITEM;
     public static final RegistryObject<Item> DARK_LATEX_POWER_CONVERTER_ITEM;
+    public static final RegistryObject<Item> ORANGE_PRODUCER_ITEM;
     static {
         ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
         MIMIC_YUFENG_WINGS = ITEMS.register("mimic_yufeng_wings",
@@ -56,5 +57,7 @@ public class CELPItem {
                 () -> new BlockItem(CELPBlock.WHITE_LATEX_POWER_CONVERTER.get(), new Item.Properties()));
         DARK_LATEX_POWER_CONVERTER_ITEM = ITEMS.register("dark_latex_power_converter",
                 () -> new BlockItem(CELPBlock.DARK_LATEX_POWER_CONVERTER.get(), new Item.Properties()));
+        ORANGE_PRODUCER_ITEM = ITEMS.register("orange_producer",
+                () -> new BlockItem(CELPBlock.ORANGE_PRODUCER.get(), new Item.Properties()));
     }
 }

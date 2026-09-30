@@ -1,0 +1,12 @@
+{
+  "parent": "changede:technology_latex_ingot",
+  "display": {
+    "icon": { "item": "changede:orange_producer" },
+    "title": { "translate": "advancements.changede.technology_orange_producer.title" },
+    "description": { "translate": "advancements.changede.technology_orange_producer.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": {
+    "orange_producer": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changede:orange_producer"] }] } }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "changede:technology_latex_ingot",
+  "display": {
+    "icon": { "item": "changede:basic_generator" },
+    "title": { "translate": "advancements.changede.technology_generator.title" },
+    "description": { "translate": "advancements.changede.technology_generator.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": {
+    "basic_generator": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changede:basic_generator"] }] } }
+  }
+}

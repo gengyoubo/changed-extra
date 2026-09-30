@@ -1,0 +1,12 @@
+{
+  "parent": "changede:technology_generator",
+  "display": {
+    "icon": { "item": "changede:basic_crystal_generator" },
+    "title": { "translate": "advancements.changede.technology_crystal_generator.title" },
+    "description": { "translate": "advancements.changede.technology_crystal_generator.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": {
+    "basic_crystal_generator": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changede:basic_crystal_generator"] }] } }
+  }
+}

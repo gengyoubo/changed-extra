@@ -6,6 +6,7 @@ import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.F.FluidPipeBlockEn
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicPumpBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicLatexFluidGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexEnergyConverterBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.OrangeProducerBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +18,8 @@ import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
+import snownee.jade.api.ui.BoxStyle;
+import snownee.jade.api.ui.IElementHelper;
 
 public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
     INSTANCE;
@@ -35,6 +38,7 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
     private static final String CONVERTER_TYPE_KEY = "ConverterType";
     private static final String CONVERTER_FLUID_KEY = "ConverterFluid";
     private static final String CONVERTER_FLUID_ID_KEY = "ConverterFluidId";
+    private static final String ORANGE_COUNT_KEY = "OrangeProducerCount";
 
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
@@ -81,6 +85,9 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
             ResourceLocation fluidId = ForgeRegistries.FLUIDS.getKey(converter.getRequiredFluid());
             if (fluidId != null) data.putString(CONVERTER_FLUID_ID_KEY, fluidId.toString());
         }
+        if (blockEntity instanceof OrangeProducerBlockEntity producer) {
+            data.putInt(ORANGE_COUNT_KEY, producer.getOrangeCount());
+        }
     }
 
     @Override
@@ -93,9 +100,22 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
             tooltip.add(Component.translatable("tooltip.changede.pipe_items", data.getString(ITEM_NAME_KEY), data.getInt(ITEM_COUNT_KEY)));
         }
         if (data.contains(CONVERTER_OUTPUT_KEY)) {
-            String energyKey = "WLP".equals(data.getString(CONVERTER_TYPE_KEY)) ? "energy.changede.wlp" : "energy.changede.dlp";
-            tooltip.add(Component.translatable("tooltip.changede.converter_energy", Component.translatable(energyKey), data.getInt(CONVERTER_OUTPUT_KEY), LatexEnergyConverterBlockEntity.OUTPUT_CAPACITY));
+            boolean white = "WLP".equals(data.getString(CONVERTER_TYPE_KEY));
+            String energyKey = white ? "energy.changede.wlp" : "energy.changede.dlp";
+            int stored = data.getInt(CONVERTER_OUTPUT_KEY);
+            int capacity = LatexEnergyConverterBlockEntity.OUTPUT_CAPACITY;
+            float ratio = capacity <= 0 ? 0 : (float) stored / capacity;
+            IElementHelper elements = tooltip.getElementHelper();
+            int fillColor = white ? 0xFFFFFFFF : 0xFF202020;
+            int backgroundColor = white ? 0xFF666666 : 0xFFAAAAAA;
+            tooltip.add(elements.progress(ratio,
+                    Component.translatable("tooltip.changede.converter_energy", Component.translatable(energyKey), stored, capacity),
+                    elements.progressStyle().color(fillColor, backgroundColor).textColor(0xFFFFFFFF),
+                    BoxStyle.DEFAULT, true));
             tooltip.add(Component.translatable("tooltip.changede.converter_fluid", fluidName(data.getString(CONVERTER_FLUID_ID_KEY)), data.getInt(CONVERTER_FLUID_KEY), LatexEnergyConverterBlockEntity.TANK_CAPACITY));
+        }
+        if (data.contains(ORANGE_COUNT_KEY)) {
+            tooltip.add(Component.translatable("tooltip.changede.orange_producer_output", data.getInt(ORANGE_COUNT_KEY)));
         }
     }
 

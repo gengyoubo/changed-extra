@@ -1,0 +1,15 @@
+{
+  "display": {
+    "background": "minecraft:textures/block/stone.png",
+    "icon": { "item": "changede:basic_generator" },
+    "title": { "translate": "advancements.changede.changed_technology.title" },
+    "description": { "translate": "advancements.changede.changed_technology.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "joined_game": { "trigger": "minecraft:tick" }
+  }
+}

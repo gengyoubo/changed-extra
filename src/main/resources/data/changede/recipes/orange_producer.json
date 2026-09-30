@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "changede:latex_ingot" },
+    "Y": { "item": "changed:orange" }
+  },
+  "result": { "item": "changede:orange_producer" }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "changede:technology_latex_ingot",
+  "display": {
+    "icon": { "item": "changede:pipe_wrench" },
+    "title": { "translate": "advancements.changede.technology_pipe_wrench.title" },
+    "description": { "translate": "advancements.changede.technology_pipe_wrench.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": {
+    "pipe_wrench": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changede:pipe_wrench"] }] } }
+  }
+}

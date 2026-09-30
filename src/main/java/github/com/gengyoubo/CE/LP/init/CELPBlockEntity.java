@@ -7,6 +7,7 @@ import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.ElectricFurnace
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicPumpBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.InfuserPowerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexEnergyConverterBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.OrangeProducerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexCreativeExtranalbodyCraftTableBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.BasicEnergyPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.I.BasicItemPipeBlockEntity;
@@ -91,6 +92,10 @@ public class CELPBlockEntity {
     public static final RegistryObject<BlockEntityType<LatexEnergyConverterBlockEntity>> DARK_LATEX_POWER_CONVERTER =
             BLOCK_ENTITIES.register("dark_latex_power_converter", () -> BlockEntityType.Builder.of(
                     (pos, state) -> new LatexEnergyConverterBlockEntity(pos, state, false), CELPBlock.DARK_LATEX_POWER_CONVERTER.get()).build(null));
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<OrangeProducerBlockEntity>> ORANGE_PRODUCER =
+            BLOCK_ENTITIES.register("orange_producer", () -> BlockEntityType.Builder.of(
+                    OrangeProducerBlockEntity::new, CELPBlock.ORANGE_PRODUCER.get()).build(null));
     @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<InfuserPowerBlockEntity>> INFUSER_POWER =
             BLOCK_ENTITIES.register("infuser_power",
