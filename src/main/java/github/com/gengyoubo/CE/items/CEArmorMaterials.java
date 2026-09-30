@@ -30,7 +30,7 @@ public enum CEArmorMaterials implements ArmorMaterial, StringRepresentable {
             int[] slotProtections,
             Supplier<Ingredient> repairIngredient
     ) {
-        this.name = "iron";
+        this.name = "changede:plate";
         this.durabilityMultiplier = 11;
         this.slotProtections = slotProtections;
         this.enchantmentValue = 8;

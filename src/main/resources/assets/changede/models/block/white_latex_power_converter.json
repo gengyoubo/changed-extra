@@ -1,1 +1,12 @@
-{"parent":"minecraft:block/cube","textures":{"particle":"changede:block/electric_furnace_sideface","down":"changede:block/electric_furnace_topface","up":"changede:block/white_latex_cobblestone","north":"changede:block/electric_furnace_mainface","south":"changede:block/electric_furnace_sideface","west":"changede:block/electric_furnace_sideface","east":"changede:block/electric_furnace_sideface"}}
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "changede:block/machine_side",
+    "down": "changede:block/machine_top",
+    "up": "changede:block/machine_top",
+    "north": "changede:block/white_latex_power_converter_front",
+    "south": "changede:block/machine_rear",
+    "west": "changede:block/machine_side",
+    "east": "changede:block/machine_side"
+  }
+}

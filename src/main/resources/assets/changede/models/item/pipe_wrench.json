@@ -1,3 +1,6 @@
 {
-  "parent": "minecraft:item/iron_hoe"
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "changede:item/pipe_wrench"
+  }
 }

@@ -1,1 +1,3 @@
-{ "parent": "changede:block/basic_alloy_furnace" }
+{
+  "parent": "changede:block/basic_alloy_furnace"
+}

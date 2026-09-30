@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.client.weather;
 
 import github.com.gengyoubo.CE.weather.LatexSpaceWeather;
+import github.com.gengyoubo.CE.weather.WhiteFogExposure;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Camera;
@@ -26,6 +27,7 @@ public final class LatexSpaceFog {
                 || camera.getFluidInCamera() != FogType.NONE) return 0;
         float rain = level.getRainLevel((float) partialTick);
         if (rain <= 0) return 0;
+        if (!WhiteFogExposure.isExposed(level, camera.getBlockPosition())) return 0;
 
         // Bilinear biome samples blend continuously as the camera crosses a border.
         double gridX = camera.getPosition().x / 4;

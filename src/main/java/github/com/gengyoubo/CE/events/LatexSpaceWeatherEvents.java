@@ -2,6 +2,10 @@ package github.com.gengyoubo.CE.events;
 
 import github.com.gengyoubo.CE.player.Perseverance;
 import github.com.gengyoubo.CE.weather.LatexSpaceWeather;
+import github.com.gengyoubo.CE.weather.WhiteFogExposure;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
@@ -35,13 +39,19 @@ public final class LatexSpaceWeatherEvents {
             ResourceLocation.fromNamespaceAndPath("changede", "latex_weather"));
     private static final ResourceLocation WEATHER_TRANSFUR = ResourceLocation.fromNamespaceAndPath("changede", "weather_transfur");
     private static final ResourceLocation WEATHER_DEATH = ResourceLocation.fromNamespaceAndPath("changede", "weather_death");
+    private static final TagKey<EntityType<?>> WHITE_FORMS = TagKey.create(Registries.ENTITY_TYPE,
+            ResourceLocation.fromNamespaceAndPath("changede", "white_latex_weather_immune"));
 
     private LatexSpaceWeatherEvents() { }
 
     private static boolean exposedToWeather(LivingEntity entity) {
         var level = entity.level();
-        return level.dimension().location().equals(LatexSpaceWeather.DIMENSION)
-                && level.isRaining() && level.canSeeSky(entity.blockPosition())
+        if (!level.dimension().location().equals(LatexSpaceWeather.DIMENSION) || !level.isRaining()) return false;
+        var biome = level.getBiome(entity.blockPosition());
+        if (LatexSpaceWeather.isWhite(biome)) {
+            return WhiteFogExposure.isExposed(level, BlockPos.containing(entity.getEyePosition()));
+        }
+        return LatexSpaceWeather.isDark(biome) && level.canSeeSky(entity.blockPosition())
                 && level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, entity.blockPosition()).getY() <= entity.getY();
     }
 
@@ -50,21 +60,25 @@ public final class LatexSpaceWeatherEvents {
         LivingEntity entity = event.getEntity();
         if (entity.level().isClientSide || !entity.isAlive() || entity.tickCount % 20 != 0) return;
         LatexType type;
+        EntityType<?> formType;
         if (entity instanceof ServerPlayer player) {
             if (player.isCreative() || player.isSpectator() || ChangedCompatibility.isPlayerUsedByOtherMod(player)) return;
             var variant = ProcessTransfur.getPlayerTransfurVariant(player);
             type = variant == null ? ChangedLatexTypes.NONE.get() : variant.getLatexType();
+            formType = variant == null ? player.getType() : variant.getChangedEntity().getType();
         } else if (entity instanceof ChangedEntity latex) {
             // Player forms are already handled through their host player.
             if (latex.getUnderlyingPlayer() != null) return;
             type = latex.getLatexType();
+            formType = latex.getType();
         } else {
             return;
         }
         if (!exposedToWeather(entity)) return;
         var biome = entity.level().getBiome(entity.blockPosition());
         boolean incompatible = (LatexSpaceWeather.isDark(biome) && type != ChangedLatexTypes.DARK_LATEX.get())
-                || (LatexSpaceWeather.isWhite(biome) && type != ChangedLatexTypes.WHITE_LATEX.get());
+                || (LatexSpaceWeather.isWhite(biome) && type != ChangedLatexTypes.WHITE_LATEX.get()
+                    && !formType.is(WHITE_FORMS));
         if (incompatible) {
             DamageSource source = new DamageSource(entity.level().registryAccess()
                     .registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(WEATHER_DAMAGE));

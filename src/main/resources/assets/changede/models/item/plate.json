@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:block/smooth_stone_slab_side"
+    "layer0": "changede:item/plate"
   }
 }
