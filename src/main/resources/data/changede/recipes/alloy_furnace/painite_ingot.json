@@ -1,0 +1,7 @@
+{
+  "type": "changede:alloy_furnace",
+  "X": { "item": "changed_addon:painite" },
+  "Y": { "item": "minecraft:iron_ingot" },
+  "time": 10,
+  "result": { "item": "changede:painite_ingot", "count": 1 }
+}

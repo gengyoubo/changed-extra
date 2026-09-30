@@ -1,4 +1,5 @@
 package github.com.gengyoubo.CE.client;
+import github.com.gengyoubo.CE.util.AmountFormat;
 
 import github.com.gengyoubo.CE.changede;
 import github.com.gengyoubo.CE.player.Perseverance;
@@ -112,7 +113,7 @@ public final class PlayerAttributePanelEvents {
         renderPlayerPreview(graphics, player, x, y, mouseX, mouseY);
 
         int textY = y + 102;
-        graphics.drawString(font, Component.translatable("screen.changede.attributes.perseverance", level), x + 8, textY, 0xFFBFE8FF, false);
+        graphics.drawString(font, Component.translatable("screen.changede.attributes.perseverance", AmountFormat.format(level, 10)), x + 8, textY, 0xFFBFE8FF, false);
         graphics.drawString(font, Component.translatable("screen.changede.attributes.keep_form", level * 10), x + 8, textY + 12, 0xFFC8F6C0, false);
         graphics.drawString(font, Component.translatable("screen.changede.attributes.mimic_tf", (int)(Perseverance.getMimicTransfurChance(player) * 100.0D)), x + 8, textY + 24, 0xFFFFD89A, false);
     }

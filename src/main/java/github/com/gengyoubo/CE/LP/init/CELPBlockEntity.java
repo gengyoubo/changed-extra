@@ -4,6 +4,7 @@ import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicGenerato
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicCrystalGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicLatexFluidGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.ElectricFurnaceBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicAlloyFurnaceBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicLatexPurifierBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicPumpBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.InfuserPowerBlockEntity;
@@ -24,6 +25,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class CELPBlockEntity {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changede");
+
+    public static final RegistryObject<BlockEntityType<BasicAlloyFurnaceBlockEntity>> BASIC_ALLOY_FURNACE =
+            BLOCK_ENTITIES.register("basic_alloy_furnace", () -> BlockEntityType.Builder.of(
+                    BasicAlloyFurnaceBlockEntity::new, CELPBlock.BASIC_ALLOY_FURNACE.get()).build(null));
 
     // Keep the old names as aliases so existing registration code keeps compiling.
     public static final DeferredRegister<BlockEntityType<?>> WIRE_BLOCK_ENTITIES = BLOCK_ENTITIES;

@@ -215,8 +215,8 @@
     "block.changede.orange_producer": "橘子生产器",
     "energy.changede.wlp": "WLP",
     "energy.changede.dlp": "DLP",
-    "tooltip.changede.converter_energy": "%1$s：%2$s / %3$s",
-    "tooltip.changede.converter_fluid": "输入胶液：%1$s %2$s / %3$s mB",
+    "tooltip.changede.converter_energy": "%1$s：%2$s",
+    "tooltip.changede.converter_fluid": "输入胶液：%1$s %2$s",
     "tooltip.changede.orange_producer_output": "橘子：%1$s 个",
     "tooltip.changede.pump_fluid": "泵内液体：%1$s %2$s mB",
     "tooltip.changede.generator_fluid": "发电机内胶液：%1$s %2$s mB",
@@ -291,7 +291,7 @@
 
     "screen.changede.attributes.button": "属性",
     "screen.changede.attributes.title": "人物属性",
-    "screen.changede.attributes.perseverance": "毅力: %s / 10",
+    "screen.changede.attributes.perseverance": "毅力: %s",
     "screen.changede.attributes.keep_form": "保持形态概率: %s%%",
     "screen.changede.attributes.mimic_tf": "拟态兽化概率: %s%%",
     "screen.changede.space_tower.title": "空间塔",
@@ -309,7 +309,7 @@
     "screen.changede.space_tower.su": "SU",
     "screen.changede.space_tower.apply": "应用",
     "screen.changede.space_tower.ce_cost": "消耗: %s LP/分钟",
-    "screen.changede.space_tower.ce_storage": "CE 储存: %s / %s",
+    "screen.changede.space_tower.ce_storage": "CE 储存: %s",
 
 
     "jei.changede.latex_food.orange": "Synergy 中大多数具有关系系统的胶兽会接受橘子或金橘，猫科胶兽会拒绝。",
@@ -365,5 +365,11 @@
     "gui.changede.basic_latex_purifier.items": "物品",
     "gui.changede.basic_latex_purifier.fluid": "胶液",
     "gui.changede.basic_latex_purifier.output": "产物",
-    "gui.changede.basic_latex_purifier.energy": "LP：%s / %s"
+    "gui.changede.basic_latex_purifier.energy": "LP：%s",
+    "block.changede.basic_alloy_furnace": "基础合金炉",
+    "item.changede.iridium_ingot": "铱锭",
+    "item.changede.painite_ingot": "硅硼钙铝锭",
+    "gui.changede.alloy_furnace.time": "时间：%s 秒",
+    "gui.changede.alloy_furnace.power": "%s LP/秒",
+    "jei.changede.alloy_furnace.swappable": "两个输入槽可互换"
 }

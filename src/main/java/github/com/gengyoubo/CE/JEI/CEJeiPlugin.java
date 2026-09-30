@@ -60,7 +60,8 @@ public class CEJeiPlugin implements IModPlugin {
                 new LatexCreativeExtranalbodyCraftingCategory(
                         registration.getJeiHelpers().getGuiHelper(),
                         new ItemStack(CELPBlock.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK.get())
-                )
+                ),
+                new AlloyFurnaceCategory(registration.getJeiHelpers().getGuiHelper())
         );
     }
 
@@ -80,10 +81,13 @@ public class CEJeiPlugin implements IModPlugin {
                 .toList();
 
         registration.addRecipes(LatexCreativeExtranalbodyCraftingCategory.TYPE, recipes);
+        registration.addRecipes(AlloyFurnaceCategory.TYPE,
+                mc.level.getRecipeManager().getAllRecipesFor(CELPRecipes.ALLOY_FURNACE_TYPE));
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(CELPBlock.BASIC_ALLOY_FURNACE.get()), AlloyFurnaceCategory.TYPE);
         registration.addRecipeCatalyst(
                 new ItemStack(CELPBlock.ELECTRIC_FURNACE.get()),
                 RecipeTypes.SMELTING

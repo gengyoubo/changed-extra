@@ -22,6 +22,7 @@ public class CELPItem {
     public static final RegistryObject<Item> BASIC_GENERATOR_ITEM;
     public static final RegistryObject<Item> BASIC_CRYSTAL_GENERATOR_ITEM;
     public static final RegistryObject<Item> ELECTRIC_FURNACE_ITEM;
+    public static final RegistryObject<Item> BASIC_ALLOY_FURNACE_ITEM;
     public static final RegistryObject<Item> BASIC_LATEX_PURIFIER_ITEM;
     public static final RegistryObject<Item> LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK_ITEM;
     public static final RegistryObject<Item> SPACE_TOWER_ITEM;
@@ -50,6 +51,8 @@ public class CELPItem {
                 () -> new BlockItem(CELPBlock.BASIC_CRYSTAL_GENERATOR.get(), new Item.Properties()));
         ELECTRIC_FURNACE_ITEM = ITEMS.register("electric_furnace",
                 () -> new BlockItem(CELPBlock.ELECTRIC_FURNACE.get(), new Item.Properties()));
+        BASIC_ALLOY_FURNACE_ITEM = ITEMS.register("basic_alloy_furnace",
+                () -> new BlockItem(CELPBlock.BASIC_ALLOY_FURNACE.get(), new Item.Properties()));
         BASIC_LATEX_PURIFIER_ITEM = ITEMS.register("basic_latex_purifier",
                 () -> new BlockItem(CELPBlock.BASIC_LATEX_PURIFIER.get(), new Item.Properties()));
         LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK_ITEM = ITEMS.register("latexcreative_extranalbody_craft_table_block",

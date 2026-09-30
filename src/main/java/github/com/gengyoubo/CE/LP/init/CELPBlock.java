@@ -10,6 +10,7 @@ import github.com.gengyoubo.CE.LP.Block.LatexEnergyConverterBlock;
 import github.com.gengyoubo.CE.LP.Block.OrangeProducerBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicCrystalGeneratorBlock;
 import github.com.gengyoubo.CE.LP.Block.ElectricFurnaceBlock;
+import github.com.gengyoubo.CE.LP.Block.BasicAlloyFurnaceBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicLatexPurifierBlock;
 import github.com.gengyoubo.CE.LP.Block.LatexCreativeExtranalbodyCraftTableBlock;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerCompat;
@@ -30,6 +31,7 @@ public class CELPBlock {
     public static final RegistryObject<Block> BASIC_GENERATOR;
     public static final RegistryObject<Block> BASIC_CRYSTAL_GENERATOR;
     public static final RegistryObject<Block> ELECTRIC_FURNACE;
+    public static final RegistryObject<Block> BASIC_ALLOY_FURNACE;
     public static final RegistryObject<Block> BASIC_LATEX_PURIFIER;
     public static final RegistryObject<Block> LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK;
     public static final RegistryObject<Block> SPACE_TOWER;
@@ -57,6 +59,8 @@ public class CELPBlock {
                 () -> new BasicCrystalGeneratorBlock(BlockBehaviour.Properties.of()));
         ELECTRIC_FURNACE = BLOCKS.register("electric_furnace",
                 () -> new ElectricFurnaceBlock(BlockBehaviour.Properties.of()));
+        BASIC_ALLOY_FURNACE = BLOCKS.register("basic_alloy_furnace",
+                () -> new BasicAlloyFurnaceBlock(BlockBehaviour.Properties.of()));
         BASIC_LATEX_PURIFIER = BLOCKS.register("basic_latex_purifier",
                 () -> new BasicLatexPurifierBlock(BlockBehaviour.Properties.of()));
         LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK = BLOCKS.register("latexcreative_extranalbody_craft_table_block",

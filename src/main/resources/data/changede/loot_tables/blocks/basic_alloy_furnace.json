@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:block",
+  "pools": [{
+    "rolls": 1,
+    "entries": [{ "type": "minecraft:item", "name": "changede:basic_alloy_furnace" }],
+    "conditions": [{ "condition": "minecraft:survives_explosion" }]
+  }]
+}

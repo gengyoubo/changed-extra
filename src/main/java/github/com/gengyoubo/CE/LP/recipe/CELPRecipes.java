@@ -25,4 +25,9 @@ public final class CELPRecipes {
 
     public static final RecipeType<LatexCreativeExtranalbodyCraftingRecipe> LATEX_CREATIVE_EXTRANALBODY_CRAFTING_TYPE =
             RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MOD_ID, LATEX_CREATIVE_EXTRANALBODY_CRAFTING_ID));
+
+    public static final RegistryObject<RecipeSerializer<AlloyFurnaceRecipe>> ALLOY_FURNACE_SERIALIZER =
+            RECIPE_SERIALIZERS.register("alloy_furnace", AlloyFurnaceRecipe.Serializer::new);
+    public static final RecipeType<AlloyFurnaceRecipe> ALLOY_FURNACE_TYPE =
+            RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MOD_ID, "alloy_furnace"));
 }

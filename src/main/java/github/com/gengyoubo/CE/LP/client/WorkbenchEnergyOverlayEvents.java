@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.LP.client;
 
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
+import github.com.gengyoubo.CE.util.AmountFormat;
 import github.com.gengyoubo.CE.LP.network.CENetwork;
 import github.com.gengyoubo.CE.LP.network.packet.RequestWorkbenchEnergyPacket;
 import net.minecraft.client.Minecraft;
@@ -89,7 +90,7 @@ public final class WorkbenchEnergyOverlayEvents {
         Optional<WorkbenchEnergyClientCache.Entry> cached = WorkbenchEnergyClientCache.get(dimension, pos);
         if (cached.isPresent()) {
             WorkbenchEnergyClientCache.Entry entry = cached.get();
-            return Optional.of("LP: " + entry.stored() + " / " + entry.max());
+            return Optional.of("LP: " + AmountFormat.format(entry.stored(), entry.max()));
         }
 
         BlockEntity blockEntity = minecraft.level == null ? null : minecraft.level.getBlockEntity(pos);
@@ -98,11 +99,11 @@ public final class WorkbenchEnergyOverlayEvents {
         }
 
         if (blockEntity instanceof ILatexEnergyHandler latexEnergyHandler) {
-            return Optional.of("LP: " + latexEnergyHandler.getEnergyStored() + " / " + latexEnergyHandler.getMaxEnergyStored());
+            return Optional.of("LP: " + AmountFormat.format(latexEnergyHandler.getEnergyStored(), latexEnergyHandler.getMaxEnergyStored()));
         }
 
         Optional<IEnergyStorage> energy = blockEntity.getCapability(ForgeCapabilities.ENERGY).resolve();
-        return energy.map(storage -> "LP: " + storage.getEnergyStored() + " / " + storage.getMaxEnergyStored());
+        return energy.map(storage -> "LP: " + AmountFormat.format(storage.getEnergyStored(), storage.getMaxEnergyStored()));
     }
 
     private static int getIntField(Object owner, String name) throws ReflectiveOperationException {

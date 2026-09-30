@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.LP.compat.jade;
 
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
+import github.com.gengyoubo.CE.util.AmountFormat;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.I.ItemPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.F.FluidPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicPumpBlockEntity;
@@ -62,11 +63,6 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
             data.putInt(CONVERTER_OUTPUT_KEY, converter.getOutputStored());
             data.putString(CONVERTER_TYPE_KEY, converter.getOutputType().name());
         }
-
-        // 橘子生产器
-        if (blockEntity instanceof OrangeProducerBlockEntity producer) {
-            data.putInt(ORANGE_COUNT_KEY, producer.getOrangeCount());
-        }
     }
 
     @Override
@@ -80,10 +76,7 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
         // LP
         if (data.contains(STORED_KEY) && data.contains(CAPACITY_KEY)) {
             tooltip.add(Component.literal(
-                    "LP: "
-                            + data.getInt(STORED_KEY)
-                            + " / "
-                            + data.getInt(CAPACITY_KEY)
+                    "LP: " + AmountFormat.format(data.getInt(STORED_KEY), data.getInt(CAPACITY_KEY))
             ));
         }
 
@@ -130,22 +123,13 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
                     Component.translatable(
                             "tooltip.changede.converter_energy",
                             Component.translatable(energyKey),
-                            stored,
-                            capacity
+                            AmountFormat.format(stored, capacity)
                     ),
                     elements.progressStyle()
                             .color(fillColor, backgroundColor)
                             .textColor(0xFFFFFFFF),
                     BoxStyle.DEFAULT,
                     true
-            ));
-        }
-
-        // 橘子生产器
-        if (data.contains(ORANGE_COUNT_KEY)) {
-            tooltip.add(Component.translatable(
-                    "tooltip.changede.orange_producer_output",
-                    data.getInt(ORANGE_COUNT_KEY)
             ));
         }
     }

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["XXX", "Y Y", "XXX"],
+  "key": {
+    "X": { "item": "changede:latex_ingot" },
+    "Y": { "item": "minecraft:furnace" }
+  },
+  "result": { "item": "changede:basic_alloy_furnace" }
+}

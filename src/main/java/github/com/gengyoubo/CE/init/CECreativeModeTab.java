@@ -27,6 +27,8 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.INACTIVE_WHITE_LATEX.get());
                                             output.accept(CEItem.LATEX_GRAY.get());
                                             output.accept(CEItem.LATEX_INGOT.get());
+                                            output.accept(CEItem.IRIDIUM_INGOT.get());
+                                            output.accept(CEItem.PAINITE_INGOT.get());
                                             output.accept(CEItem.UNBAKED_LATEX_INGOT.get());
                                             output.accept(CEItem.DARK_LATEX_LOG.get());
                                             output.accept(CEItem.DARK_LATEX_PLANKS.get());
@@ -60,6 +62,7 @@ public class CECreativeModeTab {
                                             output.accept(CELPItem.BASIC_GENERATOR_ITEM.get());
                                             output.accept(CELPItem.BASIC_CRYSTAL_GENERATOR_ITEM.get());
                                             output.accept(CELPItem.ELECTRIC_FURNACE_ITEM.get());
+                                            output.accept(CELPItem.BASIC_ALLOY_FURNACE_ITEM.get());
                                             output.accept(CELPItem.BASIC_LATEX_PURIFIER_ITEM.get());
                                             output.accept(CELPItem.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK_ITEM.get());
                                             output.accept(CELPItem.SPACE_TOWER_ITEM.get());

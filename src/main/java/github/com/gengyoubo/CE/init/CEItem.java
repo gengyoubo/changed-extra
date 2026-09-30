@@ -57,6 +57,8 @@ public class CEItem {
             ITEMS.register("enchanted_golden_orange", EnchantedGoldenOrange::new);
     public static final RegistryObject<Item> CHAIN_INGOT =
             ITEMS.register("chain_ingot", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> IRIDIUM_INGOT = simpleItem("iridium_ingot");
+    public static final RegistryObject<Item> PAINITE_INGOT = simpleItem("painite_ingot");
     public static final RegistryObject<Item> PLATE =
             ITEMS.register("plate", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> PLATE_HELMET =

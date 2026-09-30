@@ -144,7 +144,7 @@
 
   "screen.changede.attributes.button": "Stats",
   "screen.changede.attributes.title": "Character Stats",
-  "screen.changede.attributes.perseverance": "Perseverance: %s / 10",
+  "screen.changede.attributes.perseverance": "Perseverance: %s",
   "screen.changede.attributes.keep_form": "Keep Form: %s%%",
   "screen.changede.attributes.mimic_tf": "Mimic TF: %s%%",
   "screen.changede.space_tower.title": "Space Tower",
@@ -162,7 +162,7 @@
   "screen.changede.space_tower.su": "SU",
   "screen.changede.space_tower.apply": "Apply",
   "screen.changede.space_tower.ce_cost": "Cost: %s LP/min",
-  "screen.changede.space_tower.ce_storage": "CE Stored: %s / %s",
+  "screen.changede.space_tower.ce_storage": "CE Stored: %s",
 
   "jei.changede.latex_food.orange": "Most Synergy creatures with relationship support accept oranges or golden oranges; feline creatures refuse them.",
   "jei.changede.latex_food.enchanted_orange": "Give it to a latex creature with relationship support to add 100 familiarity and force a bond; feline creatures accept it too. Synergy caps familiarity at 60, so gains stop at that cap.",
@@ -212,8 +212,8 @@
     "block.changede.orange_producer": "Orange Producer",
     "energy.changede.wlp": "WLP",
     "energy.changede.dlp": "DLP",
-    "tooltip.changede.converter_energy": "%1$s: %2$s / %3$s",
-    "tooltip.changede.converter_fluid": "Input latex: %1$s %2$s / %3$s mB",
+    "tooltip.changede.converter_energy": "%1$s: %2$s",
+    "tooltip.changede.converter_fluid": "Input latex: %1$s %2$s",
     "tooltip.changede.orange_producer_output": "Oranges: %1$s",
     "tooltip.changede.pump_fluid": "Pump tank: %1$s %2$s mB",
     "tooltip.changede.generator_fluid": "Generator latex: %1$s %2$s mB",
@@ -243,5 +243,11 @@
     "gui.changede.basic_latex_purifier.items": "Items",
     "gui.changede.basic_latex_purifier.fluid": "Latex",
     "gui.changede.basic_latex_purifier.output": "Output",
-    "gui.changede.basic_latex_purifier.energy": "LP: %s / %s"
+    "gui.changede.basic_latex_purifier.energy": "LP: %s",
+    "block.changede.basic_alloy_furnace": "Basic Alloy Furnace",
+    "item.changede.iridium_ingot": "Iridium Ingot",
+    "item.changede.painite_ingot": "Painite Ingot",
+    "gui.changede.alloy_furnace.time": "Time: %s s",
+    "gui.changede.alloy_furnace.power": "%s LP/s",
+    "jei.changede.alloy_furnace.swappable": "Input slots are interchangeable"
 }
