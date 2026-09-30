@@ -360,5 +360,10 @@
     "advancements.changede.technology_latex_fluid_generator.title": "胶液可燃烧",
     "advancements.changede.technology_latex_fluid_generator.description": "获得基础胶液发电机。",
     "advancements.changede.technology_crystal_generator.title": "别被水晶误伤了",
-    "advancements.changede.technology_crystal_generator.description": "获得基础水晶发电机。"
+    "advancements.changede.technology_crystal_generator.description": "获得基础水晶发电机。",
+    "block.changede.basic_latex_purifier": "基础胶液提纯机",
+    "gui.changede.basic_latex_purifier.items": "物品",
+    "gui.changede.basic_latex_purifier.fluid": "胶液",
+    "gui.changede.basic_latex_purifier.output": "产物",
+    "gui.changede.basic_latex_purifier.energy": "LP：%s / %s"
 }

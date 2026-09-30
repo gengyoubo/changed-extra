@@ -4,6 +4,7 @@ import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicGenerato
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicCrystalGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.BasicLatexFluidGeneratorBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.ElectricFurnaceBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicLatexPurifierBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicPumpBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.InfuserPowerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexEnergyConverterBlockEntity;
@@ -54,6 +55,10 @@ public class CELPBlockEntity {
                             LatexCreativeExtranalbodyCraftTableBlockEntity::new,
                             CELPBlock.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK.get()
                     ).build(null));
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<BasicLatexPurifierBlockEntity>> BASIC_LATEX_PURIFIER =
+            BLOCK_ENTITIES.register("basic_latex_purifier", () -> BlockEntityType.Builder.of(
+                    BasicLatexPurifierBlockEntity::new, CELPBlock.BASIC_LATEX_PURIFIER.get()).build(null));
     @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<BasicLatexFluidGeneratorBlockEntity>> BASIC_LATEX_FLUID_GENERATOR_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("basic_latex_fluid_generator",

@@ -60,6 +60,7 @@ public class CECreativeModeTab {
                                             output.accept(CELPItem.BASIC_GENERATOR_ITEM.get());
                                             output.accept(CELPItem.BASIC_CRYSTAL_GENERATOR_ITEM.get());
                                             output.accept(CELPItem.ELECTRIC_FURNACE_ITEM.get());
+                                            output.accept(CELPItem.BASIC_LATEX_PURIFIER_ITEM.get());
                                             output.accept(CELPItem.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK_ITEM.get());
                                             output.accept(CELPItem.SPACE_TOWER_ITEM.get());
                                             output.accept(CELPItem.WHITE_LATEX_POWER_CONVERTER_ITEM.get());

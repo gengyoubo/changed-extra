@@ -238,5 +238,10 @@
     "advancements.changede.technology_latex_fluid_generator.title": "Latex Fluid Burns",
     "advancements.changede.technology_latex_fluid_generator.description": "Obtain a basic latex fluid generator.",
     "advancements.changede.technology_crystal_generator.title": "Watch Out for Flying Crystals",
-    "advancements.changede.technology_crystal_generator.description": "Obtain a basic crystal generator."
+    "advancements.changede.technology_crystal_generator.description": "Obtain a basic crystal generator.",
+    "block.changede.basic_latex_purifier": "Basic Latex Purifier",
+    "gui.changede.basic_latex_purifier.items": "Items",
+    "gui.changede.basic_latex_purifier.fluid": "Latex",
+    "gui.changede.basic_latex_purifier.output": "Output",
+    "gui.changede.basic_latex_purifier.energy": "LP: %s / %s"
 }
