@@ -21,6 +21,7 @@
     "ChangedFluidDescriptionIdMixin",
     "LatexSyringeMixin",
     "LatexSpaceFluidPickerMixin",
+    "LatexSpaceWeatherMixin",
     "PatreonBenefitsMixin",
     "ServerPlayerSpecialVariantMixin",
     "SyncTransfurPacketListingAccessor",
