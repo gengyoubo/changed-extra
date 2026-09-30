@@ -3,11 +3,13 @@ package github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
 import net.ltxprogrammer.changed.block.entity.PurifierBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -31,16 +33,19 @@ public class BasicLatexPurifierBlockEntity extends MachineBlockEntity {
 
     private final ItemStackHandler items = new ItemStackHandler(2) {
         @Override protected void onContentsChanged(int slot) { setChanged(); }
+        @Override public boolean isItemValid(int slot, ItemStack stack) {
+            return slot == 0 && isValidInput(level, stack);
+        }
     };
     private final IItemHandler automationItems = new IItemHandler() {
         @Override public int getSlots() { return items.getSlots(); }
         @Override public ItemStack getStackInSlot(int slot) { return items.getStackInSlot(slot); }
         @Override public int getSlotLimit(int slot) { return items.getSlotLimit(slot); }
         @Override public boolean isItemValid(int slot, ItemStack stack) {
-            return slot == 0 && PurifierBlockEntity.isConversionRecipe(level == null ? null : level.getRecipeManager(), stack);
+            return items.isItemValid(slot, stack);
         }
         @Override public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            return slot == 0 ? items.insertItem(slot, stack, simulate) : stack;
+            return isItemValid(slot, stack) ? items.insertItem(slot, stack, simulate) : stack;
         }
         @Override public ItemStack extractItem(int slot, int amount, boolean simulate) {
             return slot == 1 ? items.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
@@ -80,16 +85,26 @@ public class BasicLatexPurifierBlockEntity extends MachineBlockEntity {
     public int getFluidProgress() { return fluidProgress; }
     public int getTankCapacity() { return TANK_CAPACITY; }
 
+    public static boolean isValidInput(@Nullable Level level, ItemStack stack) {
+        return level != null && !stack.isEmpty()
+                && PurifierBlockEntity.isConversionRecipe(level.getRecipeManager(), stack);
+    }
+
+    private ItemStack getItemResult() {
+        if (!isValidInput(level, items.getStackInSlot(0))) return ItemStack.EMPTY;
+        return level.getRecipeManager().getAllRecipesFor(ChangedRecipeTypes.PURIFIER_RECIPE.get()).stream()
+                .filter(recipe -> recipe.getIngredient().test(items.getStackInSlot(0)))
+                .findFirst().map(recipe -> recipe.getResultItem(level.registryAccess()).copy())
+                .orElse(ItemStack.EMPTY);
+    }
+
     private boolean canProcessItem() {
-        if (level == null || items.getStackInSlot(0).isEmpty()) return false;
-        ItemStack output = PurifierBlockEntity.isConversionRecipe(level.getRecipeManager(), items.getStackInSlot(0))
-                ? new ItemStack(PurifierBlockEntity.getConversionFor(level.getRecipeManager(), items.getStackInSlot(0))) : ItemStack.EMPTY;
-        return canFitOutput(output);
+        return canFitOutput(getItemResult());
     }
 
     private void completeItemProcess() {
         if (level == null || !canProcessItem()) return;
-        ItemStack result = new ItemStack(PurifierBlockEntity.getConversionFor(level.getRecipeManager(), items.getStackInSlot(0)));
+        ItemStack result = getItemResult();
         items.extractItem(0, 1, false);
         insertOutput(result);
     }

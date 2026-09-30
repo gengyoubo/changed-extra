@@ -1,4 +1,5 @@
 package github.com.gengyoubo.CE.LP.world.Screen;
+import github.com.gengyoubo.CE.util.AmountFormat;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.com.gengyoubo.CE.LP.world.Menu.ElectricFurnaceMenu;
@@ -28,7 +29,7 @@ public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurna
     }
 
     private Component getEnergyText() {
-        return Component.literal(this.menu.getEnergyStored() + " / " + this.menu.getMaxEnergyStored() + " LP");
+        return Component.literal(AmountFormat.format(this.menu.getEnergyStored(), this.menu.getMaxEnergyStored(), "LP"));
     }
 
     private int getCookProgressScaled() {

@@ -1,4 +1,5 @@
 package github.com.gengyoubo.CE.LP.world.Screen;
+import github.com.gengyoubo.CE.util.AmountFormat;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.com.gengyoubo.CE.LP.BlockEntity.RedstoneMode;
@@ -99,7 +100,7 @@ public class BasicGeneratorBlockEntityScreen extends AbstractContainerScreen<Bas
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         guiGraphics.drawString(this.font, "Generator", 10, 10, 0x404040, false);
         //Latex Power
-        String energyText = menu.getEnergyStored() + " / " + menu.getMaxEnergyStored() + " LP";
+        String energyText = AmountFormat.format(menu.getEnergyStored(), menu.getMaxEnergyStored(), "LP");
         guiGraphics.drawString(this.font, energyText, 10, 24, 0x404040, false);
     }
 

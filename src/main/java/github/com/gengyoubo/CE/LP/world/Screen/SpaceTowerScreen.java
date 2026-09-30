@@ -1,4 +1,5 @@
 package github.com.gengyoubo.CE.LP.world.Screen;
+import github.com.gengyoubo.CE.util.AmountFormat;
 
 import github.com.gengyoubo.CE.LP.IOType;
 import github.com.gengyoubo.CE.LP.SpaceTowerEnergyType;
@@ -50,7 +51,7 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
     @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.title"), 10, 8, 0x202020, false);
-        guiGraphics.drawString(font, Component.literal(menu.getEnergyStored() + " / " + menu.getMaxEnergyStored() + " LP"), 12, 24, 0xFFFFFF, false);
+        guiGraphics.drawString(font, Component.literal(AmountFormat.format(menu.getEnergyStored(), menu.getMaxEnergyStored(), "LP")), 12, 24, 0xFFFFFF, false);
 
         int rowY = 43;
         for (SpaceTowerEnergyType type : SpaceTowerEnergyType.values()) {
@@ -62,7 +63,7 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
         guiGraphics.drawString(font, Component.literal("RPM:"), 118, 60, 0x303030, false);
         guiGraphics.drawString(font, Component.literal("SU:"), 118, 82, 0x303030, false);
         guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_cost", menu.getCeCostPerMinute()), 118, 123, 0x303030, false);
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_storage", formatSeconds(menu.getCeStoredSeconds()), "05:00"), 118, 135, 0x303030, false);
+        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_storage", AmountFormat.format(formatSeconds(menu.getCeStoredSeconds()), "05:00")), 118, 135, 0x303030, false);
     }
 
     @Override
