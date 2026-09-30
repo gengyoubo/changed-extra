@@ -30,4 +30,8 @@ public final class CELPRecipes {
             RECIPE_SERIALIZERS.register("alloy_furnace", AlloyFurnaceRecipe.Serializer::new);
     public static final RecipeType<AlloyFurnaceRecipe> ALLOY_FURNACE_TYPE =
             RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MOD_ID, "alloy_furnace"));
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
+            DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, MOD_ID);
+    public static final RegistryObject<RecipeType<AlloyFurnaceRecipe>> ALLOY_FURNACE_TYPE_REGISTRY =
+            RECIPE_TYPES.register("alloy_furnace", () -> ALLOY_FURNACE_TYPE);
 }
