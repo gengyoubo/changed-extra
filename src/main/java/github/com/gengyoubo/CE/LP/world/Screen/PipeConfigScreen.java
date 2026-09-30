@@ -53,8 +53,7 @@ public class PipeConfigScreen extends AbstractContainerScreen<PipeConfigMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xC0101010);
-        graphics.renderOutline(leftPos, topPos, imageWidth, imageHeight, 0xFF777777);
+        MachineGuiStyle.panel(graphics, leftPos, topPos, imageWidth, imageHeight, true, 0xFF58AAC5);
         for (Direction direction : Direction.values()) {
             graphics.drawString(font, Component.translatable("direction." + direction.getName()), leftPos + 12,
                     topPos + 33 + direction.ordinal() * 22, 0xFFFFFF, false);

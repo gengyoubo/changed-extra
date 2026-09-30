@@ -44,9 +44,7 @@ public class BasicLatexFluidGeneratorBlock extends BasicGeneratorBlock {
             @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
         if (player instanceof ServerPlayer serverPlayer) {
-            MenuProvider provider = new SimpleMenuProvider(
-                    (id, inventory, accessPlayer) -> new BasicGeneratorBlockEntityMenu(id, inventory, pos), TITLE);
-            NetworkHooks.openScreen(serverPlayer, provider, pos);
+            github.com.gengyoubo.CE.LP.world.Menu.MachineStatusMenu.open(serverPlayer, pos);
         }
         return InteractionResult.CONSUME;
     }

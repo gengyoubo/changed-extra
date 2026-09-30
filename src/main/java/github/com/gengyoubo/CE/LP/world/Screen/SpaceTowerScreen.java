@@ -32,8 +32,7 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
 
     @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        guiGraphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xFF202734);
-        guiGraphics.fill(leftPos + 4, topPos + 4, leftPos + imageWidth - 4, topPos + imageHeight - 4, 0xFFDEE7F0);
+        MachineGuiStyle.panel(guiGraphics, leftPos, topPos, imageWidth, imageHeight, false, 0xFF60B25F);
         guiGraphics.fill(leftPos + 10, topPos + 22, leftPos + 220, topPos + 34, 0xFF293342);
 
         int max = Math.max(1, menu.getMaxEnergyStored());

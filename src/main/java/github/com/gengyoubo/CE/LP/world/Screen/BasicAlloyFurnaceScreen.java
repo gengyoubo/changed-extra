@@ -28,11 +28,9 @@ public class BasicAlloyFurnaceScreen extends AbstractContainerScreen<BasicAlloyF
         if (isHovering(8, 80, 160, 5, mouseX, mouseY)) graphics.renderTooltip(font, energyText(), mouseX, mouseY);
     }
     @Override protected void renderBg(@NotNull GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xFFCCD0D6);
-        graphics.fill(leftPos + 3, topPos + 20, leftPos + 173, topPos + 58, 0xFFB7BDC6);
+        MachineGuiStyle.panel(graphics, leftPos, topPos, imageWidth, imageHeight, false, 0xFFE79835);
         for (var slot : menu.slots) {
-            graphics.fill(leftPos + slot.x - 1, topPos + slot.y - 1, leftPos + slot.x + 17, topPos + slot.y + 17, 0xFF343B45);
-            graphics.fill(leftPos + slot.x, topPos + slot.y, leftPos + slot.x + 16, topPos + slot.y + 16, 0xFF8A929E);
+            MachineGuiStyle.slot(graphics, leftPos + slot.x, topPos + slot.y);
         }
         graphics.fill(leftPos + 85, topPos + 38, leftPos + 109, topPos + 44, 0xFF626A75);
         if (menu.getProcessTicks() > 0) {

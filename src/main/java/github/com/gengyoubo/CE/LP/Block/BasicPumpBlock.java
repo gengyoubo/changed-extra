@@ -42,6 +42,13 @@ public class BasicPumpBlock extends BaseEntityBlock implements EntityBlock {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(FACING); }
+    @Override public net.minecraft.world.InteractionResult use(BlockState state, Level level, BlockPos pos,
+            net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand,
+            net.minecraft.world.phys.BlockHitResult hit) {
+        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer)
+            github.com.gengyoubo.CE.LP.world.Menu.MachineStatusMenu.open(serverPlayer, pos);
+        return net.minecraft.world.InteractionResult.sidedSuccess(level.isClientSide);
+    }
     @Override public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         if (type != CELPBlockEntity.BASIC_PUMP_BLOCK_ENTITY.get()) return null;
         return (tickLevel, pos, blockState, blockEntity) -> {

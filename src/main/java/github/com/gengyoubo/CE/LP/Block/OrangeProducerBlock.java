@@ -19,6 +19,13 @@ public class OrangeProducerBlock extends BaseEntityBlock {
         super(BlockBehaviour.Properties.of().strength(2f, 10f));
     }
     @Override public @NotNull RenderShape getRenderShape(@NotNull BlockState state) { return RenderShape.MODEL; }
+    @Override public net.minecraft.world.InteractionResult use(BlockState state, Level level, BlockPos pos,
+            net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand,
+            net.minecraft.world.phys.BlockHitResult hit) {
+        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer)
+            github.com.gengyoubo.CE.LP.world.Menu.MachineStatusMenu.open(serverPlayer, pos);
+        return net.minecraft.world.InteractionResult.sidedSuccess(level.isClientSide);
+    }
     @Override public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new OrangeProducerBlockEntity(pos, state);
     }

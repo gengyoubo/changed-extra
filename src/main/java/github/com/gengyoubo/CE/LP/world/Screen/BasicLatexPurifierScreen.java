@@ -41,9 +41,8 @@ public class BasicLatexPurifierScreen extends AbstractContainerScreen<BasicLatex
 
     @Override protected void renderBg(@NotNull GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        graphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xFF252932);
-        graphics.fill(leftPos + 1, topPos + 1, leftPos + imageWidth - 1, topPos + 20, 0xFF3B414D);
-        graphics.fill(leftPos + 1, topPos + 83, leftPos + imageWidth - 1, topPos + imageHeight - 1, 0xFF343A45);
+        MachineGuiStyle.panel(graphics, leftPos, topPos, imageWidth, imageHeight, true, 0xFF58AAC5);
+        for (var slot : menu.slots) MachineGuiStyle.slot(graphics, leftPos + slot.x, topPos + slot.y);
         // slot and tank wells
         graphics.fill(leftPos + 26, topPos + 26, leftPos + 62, topPos + 62, 0xFF16191F);
         graphics.fill(leftPos + 116, topPos + 26, leftPos + 152, topPos + 62, 0xFF16191F);

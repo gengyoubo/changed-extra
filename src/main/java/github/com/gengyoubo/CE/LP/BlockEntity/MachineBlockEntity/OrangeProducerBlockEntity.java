@@ -64,6 +64,7 @@ public class OrangeProducerBlockEntity extends BlockEntity implements ILatexEner
     }
 
     public int getOrangeCount() { return output.getStackInSlot(0).getCount(); }
+    public int getProgress() { return progress; }
 
     @Override public int receiveEnergy(int amount, Direction from) {
         int received = Math.min(Math.max(amount, 0), LP_CAPACITY - lp);

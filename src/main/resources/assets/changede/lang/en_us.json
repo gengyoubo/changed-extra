@@ -255,5 +255,12 @@
     "advancements.changede.weather_death.title": "Every Drop Pierces My Heart",
     "advancements.changede.weather_death.description": "Die from the weather in Latex Space.",
     "death.attack.changede.latex_weather": "%1$s was eroded by the weather in Latex Space",
-    "death.attack.changede.latex_weather.player": "%1$s was eroded by the weather in Latex Space while fighting %2$s"
+    "death.attack.changede.latex_weather.player": "%1$s was eroded by the weather in Latex Space while fighting %2$s",
+    "gui.changede.machine.production": "Production",
+    "gui.changede.machine.passive_pump": "Passive fluid pump",
+    "gui.changede.machine.fuel": "Fuel",
+    "gui.changede.redstone.always_on": "Always On",
+    "gui.changede.redstone.always_off": "Always Off",
+    "gui.changede.redstone.on_with_redstone": "Signal On",
+    "gui.changede.redstone.off_with_redstone": "Signal Off"
 }

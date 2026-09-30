@@ -14,6 +14,8 @@ function Export-Tiles($source, $names, $folder) {
     $atlas = [Drawing.Bitmap]::new($source)
     New-Item -ItemType Directory -Force (Join-Path $assets $folder) | Out-Null
     for ($i=0; $i -lt $names.Count; $i++) {
+        # Historical plate assets are imported separately from the original game textures.
+        if ($names[$i] -like 'plate*' -or $names[$i] -in @('peach','enchanted_golden_orange')) { continue }
         $tile = [Drawing.Bitmap]::new(32,32,[Drawing.Imaging.PixelFormat]::Format32bppArgb)
         $g=[Drawing.Graphics]::FromImage($tile)
         $g.InterpolationMode=[Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
@@ -27,6 +29,9 @@ function Export-Tiles($source, $names, $folder) {
 }
 Export-Tiles $MachineAtlas @('machine_side','machine_top','basic_crystal_generator_front','basic_latex_fluid_generator_front','basic_latex_purifier_front','basic_alloy_furnace_front','white_latex_power_converter_front','dark_latex_power_converter_front','orange_producer_front','energy_pipe','item_pipe','fluid_pipe','machine_rear','purifier_top','panel_light','panel_dark') 'textures/block'
 Export-Tiles $ItemAtlas @('pipe_wrench','iridium_ingot','painite_ingot','chain_ingot','plate','plate_helmet','plate_chestplate','plate_leggings','plate_boots','riding_stick','ridden_stick','remote_riding_stick','peach','enchanted_golden_orange','tank_icon','energy_icon') 'textures/item'
+foreach($shade in @('light','dark')) {
+    Copy-Item -LiteralPath (Join-Path $assets ('textures/block/panel_'+$shade+'.png')) -Destination (Join-Path $assets ('textures/gui/machine_panel_'+$shade+'.png'))
+}
 function Write-Json($path,$obj) {
     $obj | ConvertTo-Json -Depth 30 | Set-Content -LiteralPath (Join-Path $assets $path) -Encoding utf8
 }
@@ -38,7 +43,7 @@ foreach($id in @('basic_crystal_generator','basic_latex_fluid_generator','basic_
     $state=(Get-Content -LiteralPath $statePath -Raw).Replace('changede:block/basic_generator','changede:block/'+$id)
     $state | Set-Content -LiteralPath $statePath -Encoding utf8
 }
-foreach($id in @('pipe_wrench','iridium_ingot','painite_ingot','chain_ingot','plate','plate_helmet','plate_chestplate','plate_leggings','plate_boots','riding_stick','ridden_stick','remote_riding_stick','peach','enchanted_golden_orange')) {
+foreach($id in @('pipe_wrench','iridium_ingot','painite_ingot','chain_ingot','plate','plate_helmet','plate_chestplate','plate_leggings','plate_boots','riding_stick','ridden_stick','remote_riding_stick')) {
     Write-Json ('models/item/'+$id+'.json') @{parent=$(if($id -like '*stick' -or $id -eq 'pipe_wrench'){'minecraft:item/handheld'}else{'minecraft:item/generated'});textures=@{layer0=('changede:item/'+$id)}}
 }
 foreach($kind in @('energy','item','fluid')) {
@@ -54,17 +59,5 @@ foreach($kind in @('energy','item','fluid')) {
     (Get-Content -LiteralPath $path -Raw).Replace('changede:block/pipe_center','changede:block/'+$kind+'_pipe_center').Replace('changede:block/pipe_arm','changede:block/'+$kind+'_pipe_arm') | Set-Content -LiteralPath $path -Encoding utf8
     Write-Json ('models/item/'+$id+'.json') @{parent=('changede:block/'+$kind+'_pipe_center')}
 }
-# Pack the generated steel plate material into the standard 64x32 armor UV layout.
-$plate=[Drawing.Bitmap]::new((Join-Path $assets 'textures/item/plate.png'))
-$armorDir=Join-Path $assets 'textures/models/armor'
-New-Item -ItemType Directory -Force $armorDir | Out-Null
-foreach($layer in @(1,2)) {
-    $skin=[Drawing.Bitmap]::new(64,32,[Drawing.Imaging.PixelFormat]::Format32bppArgb)
-    $regions=if($layer -eq 1){@(@(0,0,32,16),@(16,16,24,16),@(40,16,16,16),@(0,24,16,8))}else{@(@(16,16,24,16),@(0,16,16,16))}
-    foreach($region in $regions){for($y=$region[1];$y -lt $region[1]+$region[3];$y++){for($x=$region[0];$x -lt $region[0]+$region[2];$x++){$skin.SetPixel($x,$y,$plate.GetPixel(8+($x%16),8+($y%16)))}}}
-    if($layer -eq 1){for($y=10;$y -le 11;$y++){for($x=8;$x -le 15;$x++){$skin.SetPixel($x,$y,[Drawing.Color]::FromArgb(255,34,41,49))}}}
-    $skin.Save((Join-Path $armorDir ('plate_layer_'+$layer+'.png')),[Drawing.Imaging.ImageFormat]::Png)
-    $skin.Dispose()
-}
-$plate.Dispose()
+& (Join-Path $PSScriptRoot 'import-legacy-plate.ps1')
 Write-Output 'Imported technology texture atlases, models, pipe variants, item icons and armor UV textures.'

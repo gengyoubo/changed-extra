@@ -377,5 +377,12 @@
     "advancements.changede.weather_death.title": "一滴一滴刺痛我的心",
     "advancements.changede.weather_death.description": "因为胶空间的维度天气死亡。",
     "death.attack.changede.latex_weather": "%1$s 被胶空间的天气侵蚀了",
-    "death.attack.changede.latex_weather.player": "%1$s 在与 %2$s 战斗时被胶空间的天气侵蚀了"
+    "death.attack.changede.latex_weather.player": "%1$s 在与 %2$s 战斗时被胶空间的天气侵蚀了",
+    "gui.changede.machine.production": "生产进度",
+    "gui.changede.machine.passive_pump": "无耗能 · 缓慢抽液",
+    "gui.changede.machine.fuel": "燃料",
+    "gui.changede.redstone.always_on": "始终开启",
+    "gui.changede.redstone.always_off": "始终关闭",
+    "gui.changede.redstone.on_with_redstone": "有信号开启",
+    "gui.changede.redstone.off_with_redstone": "有信号关闭"
 }

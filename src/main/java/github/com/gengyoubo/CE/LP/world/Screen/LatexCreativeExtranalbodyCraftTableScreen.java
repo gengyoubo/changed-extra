@@ -37,9 +37,8 @@ public class LatexCreativeExtranalbodyCraftTableScreen extends AbstractContainer
         int left = this.leftPos;
         int top = this.topPos;
 
-        guiGraphics.fill(left, top, left + this.imageWidth, top + this.imageHeight, 0xFF12151E);
-        guiGraphics.fill(left + 4, top + 4, left + this.imageWidth - 4, top + 78, 0xFF1D2230);
-        guiGraphics.fill(left + 4, top + 80, left + this.imageWidth - 4, top + this.imageHeight - 4, 0xFF161A24);
+        MachineGuiStyle.panel(guiGraphics, left, top, imageWidth, imageHeight, true, 0xFF5FE3B1);
+        for (var slot : menu.slots) MachineGuiStyle.slot(guiGraphics, left + slot.x, top + slot.y);
 
         // 3x3 machine grid + output slot
         for (int row = 0; row < 3; row++) {

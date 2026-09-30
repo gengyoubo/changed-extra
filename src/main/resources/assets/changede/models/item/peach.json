@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "changede:item/peach"
+    "layer0": "changede:item/pitch"
   }
 }
