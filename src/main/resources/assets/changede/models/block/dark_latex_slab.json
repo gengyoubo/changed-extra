@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "changede:block/dark_latex_planks",
+    "side": "changede:block/dark_latex_planks",
+    "top": "changede:block/dark_latex_planks"
+  }
+}

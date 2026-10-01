@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "C C",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "X": {
+      "item": "changede:white_latex_stripped_log"
+    }
+  },
+  "result": {
+    "item": "changede:white_latex_hanging_sign",
+    "count": 6
+  }
+}

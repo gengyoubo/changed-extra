@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "changede:dark_latex_planks"
+    }
+  ],
+  "result": {
+    "item": "changede:dark_latex_button"
+  }
+}

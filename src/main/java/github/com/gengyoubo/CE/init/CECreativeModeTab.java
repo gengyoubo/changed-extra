@@ -40,6 +40,7 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.WHITE_LATEX_LEAVES.get());
                                             output.accept(CEItem.WHITE_LATEX_STONE.get());
                                             output.accept(CEItem.WHITE_LATEX_COBBLESTONE.get());
+                                            CEWoodFamilies.ALL.forEach(family -> family.items.forEach(item -> output.accept(item.get())));
                                             output.accept(CEItem.LUMINARA_GRASS_BLOCK.get());
                                             output.accept(CEItem.LATEX_PAINTING_PORTAL.get());
                                             output.accept(CEItem.PEACH.get());

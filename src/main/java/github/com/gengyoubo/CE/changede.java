@@ -86,6 +86,7 @@ public class changede {
 
     public changede(FMLJavaModLoadingContext context) {
         IEventBus bus = context.getModEventBus();
+        github.com.gengyoubo.CE.init.CEWoodFamilies.initialize();
         bus.addListener(EventPriority.NORMAL, false, FMLCommonSetupEvent.class, this::commonSetup);
         CEEnchantment.ENCHANTMENTS.register(bus);
         CECreativeModeTab.CREATIVE_MODE_TABS.register(bus);

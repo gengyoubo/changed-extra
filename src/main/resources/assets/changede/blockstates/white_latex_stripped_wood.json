@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "changede:block/white_latex_stripped_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "changede:block/white_latex_stripped_wood"
+    },
+    "axis=z": {
+      "model": "changede:block/white_latex_stripped_wood",
+      "x": 90
+    }
+  }
+}

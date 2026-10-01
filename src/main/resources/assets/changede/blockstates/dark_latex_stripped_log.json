@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "changede:block/dark_latex_stripped_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "changede:block/dark_latex_stripped_log"
+    },
+    "axis=z": {
+      "model": "changede:block/dark_latex_stripped_log_horizontal",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "changede:block/dark_latex_slab"
+    },
+    "type=double": {
+      "model": "changede:block/dark_latex_planks"
+    },
+    "type=top": {
+      "model": "changede:block/dark_latex_slab_top"
+    }
+  }
+}

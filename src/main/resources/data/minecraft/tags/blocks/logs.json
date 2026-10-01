@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "changede:dark_latex_log",
-    "changede:white_latex_log"
+    "changede:white_latex_log",
+    "#changede:dark_latex_logs",
+    "#changede:white_latex_logs"
   ]
 }

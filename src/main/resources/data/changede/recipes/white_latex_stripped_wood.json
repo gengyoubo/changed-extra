@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "changede:white_latex_stripped_log"
+    }
+  },
+  "result": {
+    "item": "changede:white_latex_stripped_wood",
+    "count": 3
+  }
+}
