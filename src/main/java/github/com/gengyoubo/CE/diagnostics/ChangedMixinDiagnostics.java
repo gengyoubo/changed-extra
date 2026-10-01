@@ -25,14 +25,10 @@ public final class ChangedMixinDiagnostics {
                     + "\nFailing Mixin: " + mixin + "\nMixin Config: " + config + "\nLikely Source Mod: " + owner()
                     + "\nRoot Cause: " + rootType + ": " + rootMessage + "\nAttribution: " + distinction();
         }
-        public String ui(boolean chinese) {
+        public String ui() {
             String root = rootType.substring(rootType.lastIndexOf('.') + 1) + ": " + rootMessage.replace('\n', ' ').replace('\r', ' ');
             if (root.length() > 700) root = root.substring(0, 700) + "…";
-            return chinese ? "\n\nChanged Mixin 诊断（补充信息）\n受影响模组：Changed (changed)\n失败 Mixin 来源：" + owner()
-                    + "\nMixin：" + mixin + "\n目标类：" + target + "\n根因：" + root
-                    + "\n" + (source == null ? "来源未能确认，请同时查看原始崩溃报告。" : source.id().equals("changed")
-                    ? "此次失败的 Mixin 属于 Changed。" : "Changed 是加载失败的模组；失败的 Mixin 属于 " + source.display() + "。")
-                    : "\n\nChanged Mixin Diagnostics (additional information)\nAffected mod: Changed (changed)\nFailing Mixin source: " + owner()
+            return "\n\nChanged Mixin Diagnostics (additional information)\nAffected mod: Changed (changed)\nFailing Mixin source: " + owner()
                     + "\nMixin: " + mixin + "\nTarget class: " + target + "\nRoot cause: " + root + "\n" + distinction();
         }
     }

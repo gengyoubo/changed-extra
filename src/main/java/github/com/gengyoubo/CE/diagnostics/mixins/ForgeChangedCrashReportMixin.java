@@ -12,7 +12,8 @@ import java.io.File;
 
 @Mixin(value = CrashReportExtender.class, remap = false)
 public abstract class ForgeChangedCrashReportMixin {
-    @ModifyVariable(method = "dumpModLoadingCrashReport", at = @At("STORE"), ordinal = 0, require = 0)
+    @ModifyVariable(method = "dumpModLoadingCrashReport", at = @At(value = "INVOKE",
+            target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V", shift = At.Shift.AFTER), ordinal = 0, require = 0)
     private static CrashReport changede$appendDiagnostics(CrashReport report, Logger logger, LoadingFailedException error, File directory) {
         ChangedCrashReports.append(report, error);
         return report;

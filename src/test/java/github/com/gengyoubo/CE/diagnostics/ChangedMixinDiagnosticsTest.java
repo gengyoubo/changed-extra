@@ -51,8 +51,9 @@ public class ChangedMixinDiagnosticsTest {
         check(result.rootMessage().equals(message));
         check(result.report().contains("Affected Mod: Changed (changed)"));
         check(result.distinction().contains("belongs to Changed Extra (changede)"));
-        check(result.ui(true).contains("受影响模组"));
-        check(result.ui(false).contains("Affected mod"));
+        check(result.ui().contains("Affected mod: Changed (changed)"));
+        check(result.ui().contains("Failing Mixin source: Changed Extra (changede)"));
+        check(result.ui().contains("Root cause: InvalidInjectionException: " + message));
         check(error.getCause().getCause() == injection && injection.getMessage().equals(message));
         check(Arrays.equals(injection.getStackTrace(), stack));
         check(ChangedMixinDiagnostics.inspect(error, "changed", (c,m) -> Optional.empty()).orElseThrow().source() == null);

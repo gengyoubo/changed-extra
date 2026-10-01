@@ -1,7 +1,6 @@
 package github.com.gengyoubo.CE.diagnostics.mixins;
 
 import github.com.gengyoubo.CE.diagnostics.ChangedCrashReports;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.gui.LoadingErrorScreen;
 import net.minecraftforge.fml.ModLoadingException;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +19,7 @@ public abstract class ForgeChangedLoadingErrorMixin {
     private static String changede$message(ModLoadingException error) {
         String original = error.formatToString();
         try {
-            return ChangedCrashReports.ui(error, original, Minecraft.getInstance().options.languageCode.startsWith("zh"));
+            return ChangedCrashReports.ui(error, original);
         } catch (Throwable ignored) { return original; }
     }
 }

@@ -24,6 +24,7 @@
     "LatexSyringeMixin",
     "LatexSpaceFluidPickerMixin",
     "LatexSpaceWeatherMixin",
+    "MenuUpdatePacketThreadMixin",
     "PatreonBenefitsMixin",
     "ServerPlayerSpecialVariantMixin",
     "SkillFoodDataMixin",

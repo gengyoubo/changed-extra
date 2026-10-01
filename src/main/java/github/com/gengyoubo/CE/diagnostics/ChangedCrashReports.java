@@ -1,6 +1,8 @@
 package github.com.gengyoubo.CE.diagnostics;
 
 import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import github.com.gengyoubo.CE.diagnostics.mixins.CrashReportDetailsAccessor;
 import net.minecraftforge.fml.LoadingFailedException;
 import net.minecraftforge.fml.ModLoadingException;
 import net.minecraftforge.fml.loading.LoadingModList;
@@ -35,7 +37,8 @@ public final class ChangedCrashReports {
             Set<String> added = new HashSet<>();
             for (var error : failure.getErrors()) inspect(error).ifPresent(diagnostic -> {
                 if (added.add(diagnostic.report())) {
-                    var category = report.addCategory("Changed Mixin Diagnostics");
+                    // addCategory also changes the report's Head/stack tracking; append data only.
+                    var category = new CrashReportCategory("Changed Mixin Diagnostics");
                     category.setDetail("Affected Mod", "Changed (changed)");
                     category.setDetail("Failure occurred while transforming", diagnostic.target());
                     category.setDetail("Failing Mixin", diagnostic.mixin());
@@ -43,12 +46,13 @@ public final class ChangedCrashReports {
                     category.setDetail("Likely Source Mod", diagnostic.owner());
                     category.setDetail("Root Cause", diagnostic.rootType() + ": " + diagnostic.rootMessage());
                     category.setDetail("Attribution", diagnostic.distinction());
+                    ((CrashReportDetailsAccessor) report).changede$getDiagnosticCategories().add(category);
                 }
             });
         } catch (Throwable ignored) { /* The original Forge report must still be saved. */ }
     }
-    public static String ui(ModLoadingException error, String original, boolean chinese) {
-        try { return inspect(error).map(d -> original + d.ui(chinese)).orElse(original); }
+    public static String ui(ModLoadingException error, String original) {
+        try { return inspect(error).map(d -> original + d.ui()).orElse(original); }
         catch (Throwable ignored) { return original; }
     }
 }
