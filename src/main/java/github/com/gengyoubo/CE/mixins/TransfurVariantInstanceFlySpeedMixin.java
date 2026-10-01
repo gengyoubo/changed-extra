@@ -40,6 +40,9 @@ public abstract class TransfurVariantInstanceFlySpeedMixin {
             }
         }
 
+        if (!this.host.isCreative() && !this.host.isSpectator()) {
+            targetSpeed *= (float) (1.0D + github.com.gengyoubo.CE.skill.LatexSkills.flightControl(this.host));
+        }
         if (Float.compare(abilities.getFlyingSpeed(), targetSpeed) != 0) {
             abilities.setFlyingSpeed(targetSpeed);
         }

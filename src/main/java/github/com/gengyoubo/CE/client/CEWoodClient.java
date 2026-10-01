@@ -2,6 +2,8 @@ package github.com.gengyoubo.CE.client;
 
 import github.com.gengyoubo.CE.init.CEWoodFamilies;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,6 +19,10 @@ public final class CEWoodClient {
         event.registerBlockEntityRenderer(CEWoodFamilies.HANGING_SIGN.get(), HangingSignRenderer::new);
     }
     @SubscribeEvent public static void setup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> CEWoodFamilies.ALL.forEach(family -> Sheets.addWoodType(family.woodType)));
+        event.enqueueWork(() -> CEWoodFamilies.ALL.forEach(family -> {
+            Sheets.addWoodType(family.woodType);
+            ItemBlockRenderTypes.setRenderLayer(family.blocks.get("door").get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(family.blocks.get("trapdoor").get(), RenderType.cutout());
+        }));
     }
 }
