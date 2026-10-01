@@ -382,5 +382,9 @@
 
   "item.changede.latex_spear": "Latex Spear",
   "tooltip.changede.latex_spear.jab": "Left-click to jab targets 2–4.5 blocks ahead; no critical hits.",
-  "tooltip.changede.latex_spear.charge": "Hold right-click to charge: closing speed increases damage; prolonged use causes fatigue."
+  "tooltip.changede.latex_spear.charge": "Hold right-click to charge: closing speed increases damage; prolonged use causes fatigue.",
+  "advancements.changede.aerial_assassin.title": "Aerial Assassin",
+  "advancements.changede.aerial_assassin.description": "In a flight-capable latex form, kill a full-health mob with one spear hit.",
+  "advancements.changede.excuse_me.title": "Excuse Me, Coming Through",
+  "advancements.changede.excuse_me.description": "In a flight-capable latex form, pierce and kill 10 mobs during a single continuous spear charge."
 }

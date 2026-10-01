@@ -1,0 +1,15 @@
+{
+  "parent": "changede:aerial_assassin",
+  "display": {
+    "icon": { "item": "changede:latex_spear" },
+    "title": { "translate": "advancements.changede.excuse_me.title" },
+    "description": { "translate": "advancements.changede.excuse_me.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "ten_charge_kills": { "trigger": "minecraft:impossible" }
+  }
+}

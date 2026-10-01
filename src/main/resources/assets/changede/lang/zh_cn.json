@@ -504,5 +504,9 @@
 
   "item.changede.latex_spear": "胶锭矛",
   "tooltip.changede.latex_spear.jab": "左键戳刺：攻击前方 2～4.5 格的目标，无法暴击。",
-  "tooltip.changede.latex_spear.charge": "按住右键持矛冲锋：相对速度越快伤害越高；久持会疲劳。"
+  "tooltip.changede.latex_spear.charge": "按住右键持矛冲锋：相对速度越快伤害越高；久持会疲劳。",
+  "advancements.changede.aerial_assassin.title": "空中刺客",
+  "advancements.changede.aerial_assassin.description": "处于可飞行的胶兽形态时，用矛一击击杀一只满血生物。",
+  "advancements.changede.excuse_me.title": "抱歉，接过一下",
+  "advancements.changede.excuse_me.description": "处于可飞行的胶兽形态时，在一次持续持矛冲锋中穿刺击杀 10 只生物。"
 }

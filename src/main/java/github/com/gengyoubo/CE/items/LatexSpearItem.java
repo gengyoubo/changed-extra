@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.items;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import github.com.gengyoubo.CE.events.LatexSpearAdvancements;
 import github.com.gengyoubo.CE.init.CEItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -75,6 +76,7 @@ public final class LatexSpearItem extends Item {
         if (player.isSpectator() || player.getCooldowns().isOnCooldown(this)) return InteractionResultHolder.fail(stack);
         chargeHits.remove(player);
         player.startUsingItem(hand);
+        LatexSpearAdvancements.beginCharge(player, stack);
         if (!level.isClientSide) player.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResultHolder.consume(stack);
     }
@@ -85,6 +87,7 @@ public final class LatexSpearItem extends Item {
     }
     private void endCharge(LivingEntity entity) {
         chargeHits.remove(entity);
+        LatexSpearAdvancements.endCharge(entity);
         if (entity instanceof Player player) player.getCooldowns().addCooldown(this, 20);
     }
 
@@ -158,10 +161,13 @@ public final class LatexSpearItem extends Item {
         if (MinecraftForge.EVENT_BUS.post(new AttackEntityEvent(player, target))) return false;
         HitContext previous = CURRENT_HIT.get();
         CURRENT_HIT.set(new HitContext(player, target));
+        boolean wasAtFullHealth = target.getHealth() >= target.getMaxHealth();
         boolean damaged;
         try { damaged = target.hurt(player.damageSources().playerAttack(player), damage); }
         finally { if (previous == null) CURRENT_HIT.remove(); else CURRENT_HIT.set(previous); }
         if (!damaged) return false;
+        // Count only the spear's direct damage, before fire or post-attack enchantment effects.
+        LatexSpearAdvancements.onHit(player, target, stack, wasAtFullHealth);
         player.setLastHurtMob(target);
         EnchantmentHelper.doPostHurtEffects(target, player);
         stack.getAllEnchantments().forEach((enchantment, level) -> enchantment.doPostAttack(player, target, level));

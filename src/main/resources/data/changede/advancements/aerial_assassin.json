@@ -1,0 +1,15 @@
+{
+  "parent": "changede:hot_latex_ingot",
+  "display": {
+    "icon": { "item": "changede:latex_spear" },
+    "title": { "translate": "advancements.changede.aerial_assassin.title" },
+    "description": { "translate": "advancements.changede.aerial_assassin.description" },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "spear_one_shot": { "trigger": "minecraft:impossible" }
+  }
+}
