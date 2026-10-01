@@ -12,7 +12,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class CENetwork {
-    private static final String PROTOCOL_VERSION = "4";
+    private static final String PROTOCOL_VERSION = "5";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             ResourceLocation.fromNamespaceAndPath("changede", "main"),
             () -> PROTOCOL_VERSION,
@@ -23,6 +23,11 @@ public class CENetwork {
     private static int packetId = 0;
 
     public static void register() {
+        INSTANCE.registerMessage(packetId++, github.com.gengyoubo.CE.LP.network.packet.SpearJabAnimationPacket.class,
+                github.com.gengyoubo.CE.LP.network.packet.SpearJabAnimationPacket::encode,
+                github.com.gengyoubo.CE.LP.network.packet.SpearJabAnimationPacket::decode,
+                github.com.gengyoubo.CE.LP.network.packet.SpearJabAnimationPacket::handle,
+                java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(packetId++, github.com.gengyoubo.CE.LP.network.packet.SpearJabPacket.class,
                 github.com.gengyoubo.CE.LP.network.packet.SpearJabPacket::encode,
                 github.com.gengyoubo.CE.LP.network.packet.SpearJabPacket::decode,

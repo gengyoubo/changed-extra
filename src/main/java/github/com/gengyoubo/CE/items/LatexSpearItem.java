@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import github.com.gengyoubo.CE.events.LatexSpearAdvancements;
 import github.com.gengyoubo.CE.init.CEItem;
+import github.com.gengyoubo.CE.LP.network.CENetwork;
+import github.com.gengyoubo.CE.LP.network.packet.SpearJabAnimationPacket;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -95,6 +97,11 @@ public final class LatexSpearItem extends Item {
         if (player.level().isClientSide || !player.isAlive() || player.isSpectator() || player.isUsingItem()
                 || !player.getMainHandItem().is(this) || player.getCooldowns().isOnCooldown(this)) return;
         ItemStack stack = player.getMainHandItem();
+        if (player instanceof net.minecraft.server.level.ServerPlayer
+                && !(player instanceof net.minecraftforge.common.util.FakePlayer)) {
+            CENetwork.INSTANCE.send(net.minecraftforge.network.PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+                    new SpearJabAnimationPacket(player.getId(), player.getUUID(), player.level().dimension().location()));
+        }
         player.awardStat(Stats.ITEM_USED.get(this));
         player.level().playSound(null, player.blockPosition(), SoundEvents.TRIDENT_THROW, player.getSoundSource(), 0.5F, 1.4F);
         for (LivingEntity target : targets(player)) {

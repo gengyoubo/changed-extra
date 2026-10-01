@@ -42,6 +42,9 @@
   "server": [
   ],
   "client": [
+    "LatexSpearItemInHandMixin",
+    "LatexSpearHumanoidModelMixin",
+    "LatexSpearChangedAnimatorMixin",
     "LatexSpearAttackInputMixin",
     "LatexSpearMovementMixin",
     "LatexSpearAttackIndicatorMixin",

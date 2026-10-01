@@ -27,7 +27,7 @@ public final class LatexSpearClient {
         boolean ready = !player.isUsingItem() && !player.getCooldowns().isOnCooldown(CEItem.LATEX_SPEAR.get());
         if (ready) {
             CENetwork.INSTANCE.sendToServer(new SpearJabPacket());
-            player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+            // The server broadcasts STAB after accepting the jab; never send a vanilla slash.
             player.resetAttackStrengthTicker();
             player.getCooldowns().addCooldown(CEItem.LATEX_SPEAR.get(), github.com.gengyoubo.CE.items.SpearCombatRules.JAB_COOLDOWN);
         }
