@@ -8,67 +8,65 @@
       "description": "skill.changede.white_vitality.description",
       "cost": 25,
       "parents": [
-        "changede:resilience"
+        "changede:common_strength_2"
       ],
-      "x": -7,
-      "y": 4,
+      "x": -1,
+      "y": 11,
       "key": true,
       "rewards": [
         {
-          "type": "changede:attribute",
-          "attribute": "minecraft:generic.max_health",
-          "amount": 2
+          "type": "changede:none"
         }
       ]
     },
     {
-      "id": "changede:white_agility",
-      "title": "skill.changede.white_agility",
-      "description": "skill.changede.white_agility.description",
+      "id": "changede:white_endurance",
+      "title": "skill.changede.growth.health.1",
+      "description": "skill.changede.growth.health.description",
       "cost": 25,
       "parents": [
         "changede:white_vitality"
       ],
-      "x": -7,
-      "y": 5,
+      "x": -1,
+      "y": 12,
       "key": false,
       "rewards": [
         {
           "type": "changede:attribute",
-          "attribute": "minecraft:generic.movement_speed",
-          "amount": 0.01
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1
         }
       ]
     },
     {
-      "id": "changede:white_defense",
-      "title": "skill.changede.white_defense",
-      "description": "skill.changede.white_defense.description",
+      "id": "changede:white_continuation",
+      "title": "skill.changede.growth.armor.1",
+      "description": "skill.changede.growth.armor.description",
       "cost": 25,
       "parents": [
-        "changede:white_agility"
+        "changede:white_endurance"
       ],
-      "x": -7,
-      "y": 6,
+      "x": -1,
+      "y": 13,
       "key": false,
       "rewards": [
         {
           "type": "changede:attribute",
           "attribute": "minecraft:generic.armor",
-          "amount": 2
+          "amount": 1
         }
       ]
     },
     {
       "id": "changede:white_strength",
-      "title": "skill.changede.white_strength",
-      "description": "skill.changede.white_strength.description",
+      "title": "skill.changede.growth.strength.1",
+      "description": "skill.changede.growth.strength.description",
       "cost": 25,
       "parents": [
-        "changede:white_defense"
+        "changede:white_continuation"
       ],
-      "x": -7,
-      "y": 7,
+      "x": -1,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -79,97 +77,211 @@
       ]
     },
     {
-      "id": "changede:dark_hunter",
-      "title": "skill.changede.dark_hunter",
-      "description": "skill.changede.dark_hunter.description",
-      "cost": 40,
+      "id": "changede:white_regeneration_1",
+      "title": "skill.changede.growth.regen.1",
+      "description": "skill.changede.growth.regen.description",
+      "cost": 25,
       "parents": [
-        "changede:white_agility"
+        "changede:white_strength"
       ],
-      "x": -9,
-      "y": 6,
+      "x": -1,
+      "y": 15,
       "key": false,
       "rewards": [
         {
           "type": "changede:attribute",
-          "attribute": "changede:damage_vs_dark",
-          "amount": 0.15
+          "attribute": "changede:regeneration_speed",
+          "amount": 0.2
         }
       ]
     },
     {
-      "id": "changede:white_predator",
-      "title": "skill.changede.white_predator",
-      "description": "skill.changede.white_predator.description",
-      "cost": 50,
+      "id": "changede:white_hunger_x_1",
+      "title": "skill.changede.growth.hunger_x.1",
+      "description": "skill.changede.growth.hunger_x.description",
+      "cost": 25,
       "parents": [
-        "changede:dark_hunter"
+        "changede:white_regeneration_1"
       ],
-      "x": -9,
-      "y": 7,
+      "x": -1,
+      "y": 16,
       "key": false,
       "rewards": [
         {
           "type": "changede:attribute",
-          "attribute": "changede:damage_vs_dark",
+          "attribute": "changede:exhaustion_reduction",
           "amount": 0.1
         }
       ]
     },
     {
-      "id": "changede:white_continuation",
-      "title": "skill.changede.white_continuation",
-      "description": "skill.changede.white_continuation.description",
+      "id": "changede:white_hunger_y_1",
+      "title": "skill.changede.growth.hunger_y.1",
+      "description": "skill.changede.growth.hunger_y.description",
       "cost": 25,
       "parents": [
-        "changede:white_strength"
+        "changede:white_hunger_x_1"
       ],
-      "x": -6,
-      "y": 8,
+      "x": 0,
+      "y": 17,
       "key": false,
       "rewards": [
         {
           "type": "changede:attribute",
-          "attribute": "minecraft:generic.armor",
-          "amount": 2
+          "attribute": "changede:food_saturation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:white_hunger_z_1",
+      "title": "skill.changede.growth.hunger_z.1",
+      "description": "skill.changede.growth.hunger_z.description",
+      "cost": 25,
+      "parents": [
+        "changede:white_hunger_y_1"
+      ],
+      "x": 0,
+      "y": 18,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:saturation_capacity",
+          "amount": 1
         }
       ]
     },
     {
       "id": "changede:white_persistence",
-      "title": "skill.changede.white_persistence",
-      "description": "skill.changede.white_persistence.description",
+      "title": "skill.changede.growth.health.2",
+      "description": "skill.changede.growth.health.description",
       "cost": 25,
       "parents": [
-        "changede:white_continuation"
+        "changede:white_hunger_z_1"
       ],
-      "x": -6,
-      "y": 9,
+      "x": 0,
+      "y": 19,
       "key": false,
       "rewards": [
         {
           "type": "changede:attribute",
           "attribute": "minecraft:generic.max_health",
-          "amount": 2
+          "amount": 1
         }
       ]
     },
     {
-      "id": "changede:white_cohesion",
-      "title": "skill.changede.white_cohesion",
-      "description": "skill.changede.white_cohesion.description",
+      "id": "changede:white_constitution",
+      "title": "skill.changede.growth.armor.2",
+      "description": "skill.changede.growth.armor.description",
       "cost": 25,
       "parents": [
         "changede:white_persistence"
       ],
-      "x": -6,
-      "y": 10,
+      "x": 0,
+      "y": 20,
       "key": false,
       "rewards": [
         {
           "type": "changede:attribute",
-          "attribute": "minecraft:generic.knockback_resistance",
-          "amount": 0.05
+          "attribute": "minecraft:generic.armor",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:white_strength_2",
+      "title": "skill.changede.growth.strength.2",
+      "description": "skill.changede.growth.strength.description",
+      "cost": 25,
+      "parents": [
+        "changede:white_constitution"
+      ],
+      "x": 0,
+      "y": 21,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:white_regeneration_2",
+      "title": "skill.changede.growth.regen.2",
+      "description": "skill.changede.growth.regen.description",
+      "cost": 25,
+      "parents": [
+        "changede:white_strength_2"
+      ],
+      "x": 0,
+      "y": 22,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:regeneration_speed",
+          "amount": 0.2
+        }
+      ]
+    },
+    {
+      "id": "changede:white_hunger_x_2",
+      "title": "skill.changede.growth.hunger_x.2",
+      "description": "skill.changede.growth.hunger_x.description",
+      "cost": 25,
+      "parents": [
+        "changede:white_regeneration_2"
+      ],
+      "x": 0,
+      "y": 23,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:exhaustion_reduction",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changede:white_hunger_y_2",
+      "title": "skill.changede.growth.hunger_y.2",
+      "description": "skill.changede.growth.hunger_y.description",
+      "cost": 25,
+      "parents": [
+        "changede:white_hunger_x_2"
+      ],
+      "x": 0,
+      "y": 24,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:food_saturation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:white_hunger_z_2",
+      "title": "skill.changede.growth.hunger_z.2",
+      "description": "skill.changede.growth.hunger_z.description",
+      "cost": 25,
+      "parents": [
+        "changede:white_hunger_y_2"
+      ],
+      "x": 0,
+      "y": 25,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:saturation_capacity",
+          "amount": 1
         }
       ]
     }

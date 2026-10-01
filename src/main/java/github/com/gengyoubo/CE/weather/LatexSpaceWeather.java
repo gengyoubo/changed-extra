@@ -8,6 +8,8 @@ import net.minecraft.world.level.biome.Biome;
 
 public final class LatexSpaceWeather {
     public static final ResourceLocation DIMENSION = ResourceLocation.fromNamespaceAndPath("changede", "latex_space");
+    public static final net.minecraft.resources.ResourceKey<net.minecraft.world.damagesource.DamageType> WHITE_FOG_DAMAGE =
+            net.minecraft.resources.ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath("changede", "white_fog"));
     public static final TagKey<Biome> WHITE_BIOMES = TagKey.create(Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath("changede", "white_latex_weather"));
     public static final TagKey<Biome> DARK_BIOMES = TagKey.create(Registries.BIOME,

@@ -10,7 +10,7 @@ public final class LatexSkillBackground {
     private LatexSkillBackground() { }
 
     public static void render(GuiGraphics graphics, double panX, double panY, double zoom,
-                              int left, int top, int right, int bottom, int columnSpacing, int rowSpacing) {
+                              int left, int top, int right, int bottom, int columnSpacing, int rowSpacing, String viewedType) {
         int x0 = (int) Math.floor((left - panX) / zoom / TILE);
         int x1 = (int) Math.ceil((right - panX) / zoom / TILE);
         int y0 = (int) Math.floor((top - panY) / zoom / TILE);
@@ -18,7 +18,7 @@ public final class LatexSkillBackground {
         var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
         for (int row = y0; row < y1; row++) for (int col = x0; col < x1; col++) {
             int x = col * TILE, y = row * TILE;
-            var weights = SkillVisuals.weights((x + TILE / 2.0) / columnSpacing, (y + TILE / 2.0) / rowSpacing);
+            var weights = SkillVisuals.weights((x + TILE / 2.0) / columnSpacing, (y + TILE / 2.0) / rowSpacing, viewedType);
             // Straight-alpha compositing must divide each layer by cumulative weight;
             // otherwise two 50% textures would leave 25% of the canvas visible underneath.
             double cumulative = 0;

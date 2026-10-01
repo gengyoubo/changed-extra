@@ -45,8 +45,12 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
         return orderedNodes.stream().filter(n -> matching.contains(n.tree())).toList();
     }
 
-    /** Keep every branch on the canvas, including learned branches belonging to previous forms. */
+    /** Keep every branch in snapshots and learning history; the client chooses a shared species layer. */
     public static List<SkillNode> all() { return orderedNodes; }
+
+    public static String latexType(SkillNode node) {
+        return trees.stream().filter(t -> t.id().equals(node.tree())).findFirst().orElseThrow().latexType();
+    }
 
     public static List<SkillBlockReason> formRequirements(Player player, SkillNode node) {
         Tree tree = trees.stream().filter(t -> t.id().equals(node.tree())).findFirst().orElseThrow();
@@ -102,7 +106,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
                     int x = GsonHelper.getAsInt(node, "x"), y = GsonHelper.getAsInt(node, "y");
                     if (cost < 0 || cost > 1000000 || rewards.size() > 16
                             || (scope.equals("global") && rewards.stream().anyMatch(r -> r instanceof SkillRewards.AttributeReward a
-                                && !a.attribute().getNamespace().equals("minecraft")))
+                                && !a.attribute().getNamespace().equals("minecraft") && !SkillAttributes.isUniversalGrowth(a.attribute())))
                             || Math.abs((long) x) > 10000 || Math.abs((long) y) > 10000
                             || nodes.stream().anyMatch(n -> n.id().equals(id) || (n.x() == x && n.y() == y)))
                         throw new IllegalArgumentException("Invalid or duplicate skill node: " + id);

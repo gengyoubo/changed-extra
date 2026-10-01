@@ -40,7 +40,7 @@ import java.util.*;
 bug:本来应该是攻击完应该有一个冷却的，但是变成了瞄准冷却后才能攻击了
  */
 public final class LatexSpearItem extends Item {
-    private record HitContext(Player attacker, LivingEntity target) { }
+    private record HitContext(Player attacker, LivingEntity target, ItemStack weapon) { }
     private static final ThreadLocal<HitContext> CURRENT_HIT = new ThreadLocal<>();
     private final Multimap<Attribute, AttributeModifier> attributes;
     private final Map<LivingEntity, Map<Integer, Integer>> chargeHits = new WeakHashMap<>();
@@ -167,7 +167,7 @@ public final class LatexSpearItem extends Item {
     private static boolean hit(Player player, LivingEntity target, ItemStack stack, float damage, InteractionHand hand) {
         if (MinecraftForge.EVENT_BUS.post(new AttackEntityEvent(player, target))) return false;
         HitContext previous = CURRENT_HIT.get();
-        CURRENT_HIT.set(new HitContext(player, target));
+        CURRENT_HIT.set(new HitContext(player, target, stack));
         boolean wasAtFullHealth = target.getHealth() >= target.getMaxHealth();
         boolean damaged;
         try { damaged = target.hurt(player.damageSources().playerAttack(player), damage); }
@@ -187,6 +187,11 @@ public final class LatexSpearItem extends Item {
     public static boolean resolvingHitOn(LivingEntity target) {
         HitContext context = CURRENT_HIT.get();
         return context != null && context.target == target;
+    }
+    /** Actual strike weapon, including offhand charge; unrelated hits must not inherit it. */
+    public static ItemStack weaponForHit(Player attacker, LivingEntity target) {
+        HitContext context = CURRENT_HIT.get();
+        return context != null && context.attacker == attacker && context.target == target ? context.weapon : ItemStack.EMPTY;
     }
     public static boolean blocksMainHandShieldCheck(LivingEntity attacker, LivingEntity target) {
         HitContext context = CURRENT_HIT.get();

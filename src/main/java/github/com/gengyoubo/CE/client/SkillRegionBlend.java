@@ -7,13 +7,18 @@ public final class SkillRegionBlend {
     private SkillRegionBlend() { }
 
     public static Map<String, Double> weights(List<SkillRegion> regions, String fallback, double x, double y) {
+        return weights(regions, fallback, x, y, "any");
+    }
+
+    public static Map<String, Double> weights(List<SkillRegion> regions, String fallback, double x, double y, String viewedType) {
         Map<String, Double> weights = new LinkedHashMap<>();
         weights.put(fallback, 1.0);
         for (SkillRegion region : regions) {
+            if (!region.visible(viewedType)) continue;
             double coverage = region.coverage(x, y);
             if (coverage == 0) continue;
             weights.replaceAll((theme, weight) -> weight * (1 - coverage));
-            weights.merge(region.theme(), coverage, Double::sum);
+            weights.merge(region.theme(viewedType), coverage, Double::sum);
         }
         weights.values().removeIf(weight -> weight < 0.000001);
         return weights;

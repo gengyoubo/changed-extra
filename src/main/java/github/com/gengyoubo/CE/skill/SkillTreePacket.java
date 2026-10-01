@@ -49,6 +49,9 @@ public final class SkillTreePacket {
                 CompoundTag data = new CompoundTag();
                 var form = LatexSkills.form(player);
                 data.putString("form", form == null ? "" : form.toString());
+                var type = SkillCombat.latexType(player);
+                data.putString("latex_type", type == net.ltxprogrammer.changed.init.ChangedLatexTypes.DARK_LATEX.get() ? "dark"
+                        : type == net.ltxprogrammer.changed.init.ChangedLatexTypes.WHITE_LATEX.get() ? "white" : "any");
                 data.putInt("experience", LatexSkills.experience(player));
                 data.putBoolean("creative", player.isCreative());
                 ListTag nodes = new ListTag();
@@ -59,6 +62,7 @@ public final class SkillTreePacket {
                     CompoundTag tag = new CompoundTag();
                     tag.putString("tree", node.tree().toString());
                     tag.putString("scope", node.scope());
+                    tag.putString("latex_type", LatexSkillTrees.latexType(node));
                     tag.putString("id", node.id().toString());
                     tag.putString("title", node.title());
                     tag.putString("description", node.description());

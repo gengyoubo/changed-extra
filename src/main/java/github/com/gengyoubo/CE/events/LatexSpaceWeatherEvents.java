@@ -84,7 +84,8 @@ public final class LatexSpaceWeatherEvents {
                     && !formType.is(WHITE_FORMS));
         if (incompatible) {
             DamageSource source = new DamageSource(entity.level().registryAccess()
-                    .registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(WEATHER_DAMAGE));
+                    .registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(LatexSpaceWeather.isWhite(biome)
+                            ? LatexSpaceWeather.WHITE_FOG_DAMAGE : WEATHER_DAMAGE));
             entity.hurt(source, entity.level().isThundering()
                     ? THUNDER_DAMAGE_PER_SECOND : RAIN_DAMAGE_PER_SECOND);
             if (entity instanceof ServerPlayer player && !player.isAlive()) {

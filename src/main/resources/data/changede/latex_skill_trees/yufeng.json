@@ -9,10 +9,10 @@
       "description": "skill.changede.yufeng_gate.description",
       "cost": 18,
       "parents": [
-        "changede:dark_agility"
+        "changede:dark_weapon_adaptation_1"
       ],
       "x": -2,
-      "y": 8,
+      "y": 17,
       "key": true,
       "rewards": [
         {
@@ -29,7 +29,7 @@
         "changede:yufeng_gate"
       ],
       "x": -3,
-      "y": 9,
+      "y": 18,
       "key": false,
       "rewards": [
         {
@@ -48,7 +48,7 @@
         "changede:flight_technique"
       ],
       "x": -4,
-      "y": 10,
+      "y": 19,
       "key": false,
       "rewards": [
         {
@@ -67,7 +67,7 @@
         "changede:aerobatics"
       ],
       "x": -5,
-      "y": 11,
+      "y": 20,
       "key": false,
       "rewards": [
         {
@@ -86,7 +86,7 @@
         "changede:aerobatics"
       ],
       "x": -4,
-      "y": 11,
+      "y": 20,
       "key": false,
       "rewards": [
         {
@@ -105,7 +105,7 @@
         "changede:safe_landing"
       ],
       "x": -4,
-      "y": 12,
+      "y": 21,
       "key": false,
       "rewards": [
         {
@@ -124,7 +124,7 @@
         "changede:yufeng_body_growth"
       ],
       "x": -2,
-      "y": 10,
+      "y": 19,
       "key": false,
       "rewards": [
         {
@@ -143,7 +143,7 @@
         "changede:yufeng_gate"
       ],
       "x": -2,
-      "y": 9,
+      "y": 18,
       "key": false,
       "rewards": [
         {

@@ -29,8 +29,8 @@ public final class SkillVisuals extends SimpleJsonResourceReloadListener {
         event.registerReloadListener(new SkillVisuals());
     }
     public static Theme theme(String id) { return themes.getOrDefault(id, FALLBACK); }
-    public static Map<String, Double> weights(double x, double y) {
-        return SkillRegionBlend.weights(regions, LABORATORY, x, y);
+    public static Map<String, Double> weights(double x, double y, String viewedType) {
+        return SkillRegionBlend.weights(regions, LABORATORY, x, y, viewedType);
     }
     public static String dominant(Map<String, Double> weights) {
         return weights.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
@@ -71,15 +71,23 @@ public final class SkillVisuals extends SimpleJsonResourceReloadListener {
                     JsonObject r = element.getAsJsonObject();
                     String id = sprite(GsonHelper.getAsString(r, "id")).toString();
                     if (!regionIds.add(id)) throw new IllegalArgumentException("Duplicate region " + id);
+                    Map<String, String> variants = new HashMap<>();
+                    if (r.has("themes_by_type")) for (var variant : r.getAsJsonObject("themes_by_type").entrySet())
+                        variants.put(variant.getKey(), sprite(variant.getValue().getAsString()).toString());
+                    Set<String> types = new HashSet<>();
+                    for (var type : GsonHelper.getAsJsonArray(r, "latex_types", new JsonArray())) types.add(type.getAsString());
                     nextRegions.add(new SkillRegion(id, GsonHelper.getAsDouble(r, "x"), GsonHelper.getAsDouble(r, "y"),
                             GsonHelper.getAsDouble(r, "width"), GsonHelper.getAsDouble(r, "height"),
                             sprite(GsonHelper.getAsString(r, "theme")).toString(),
-                            GsonHelper.getAsDouble(r, "feather", 1), GsonHelper.getAsInt(r, "priority", 0)));
+                            GsonHelper.getAsDouble(r, "feather", 1), GsonHelper.getAsInt(r, "priority", 0), variants, types));
                 }
             }
             if (nextRegions.size() > 256 || nextThemes.size() > 64) throw new IllegalArgumentException("Too many skill visuals");
-            for (SkillRegion region : nextRegions) if (!nextThemes.containsKey(region.theme()))
-                throw new IllegalArgumentException("Unknown theme " + region.theme());
+            for (SkillRegion region : nextRegions) {
+                if (!nextThemes.containsKey(region.theme())) throw new IllegalArgumentException("Unknown theme " + region.theme());
+                for (String variant : region.themesByType().values())
+                    if (!nextThemes.containsKey(variant)) throw new IllegalArgumentException("Unknown theme " + variant);
+            }
             nextRegions.sort(Comparator.comparingInt(SkillRegion::priority).thenComparing(SkillRegion::id));
             themes = Map.copyOf(nextThemes);
             regions = List.copyOf(nextRegions);

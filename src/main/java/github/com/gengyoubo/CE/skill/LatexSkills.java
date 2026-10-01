@@ -1,7 +1,6 @@
 package github.com.gengyoubo.CE.skill;
 
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraft.world.damagesource.DamageTypes;
+import github.com.gengyoubo.CE.weather.LatexSpaceWeather;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -93,6 +95,7 @@ public final class LatexSkills {
     }
     public static void refresh(ServerPlayer player) {
         SkillRewards.reconcile(player, active(player));
+        SkillCombat.refreshEquipment(player);
         if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());
         SkillTreePacket.FlightState state = new SkillTreePacket.FlightState(form(player), flightControl(player));
         if (!state.equals(FLIGHT_STATES.put(player, state))) github.com.gengyoubo.CE.LP.network.CENetwork.INSTANCE.send(
@@ -103,16 +106,29 @@ public final class LatexSkills {
             event.setDamageMultiplier(event.getDamageMultiplier() * (float) (1 - player.getAttributeValue(SkillAttributes.LANDING_RESISTANCE.get())));
     }
     @SubscribeEvent public static void damage(LivingHurtEvent event) {
-        if (event.getAmount() <= 0 || !(event.getSource().getEntity() instanceof ServerPlayer player)) return;
-        var target = event.getEntity();
-        var type = target instanceof ChangedEntity latex ? latex.getLatexType() : null;
-        if (target instanceof Player targetPlayer) {
-            var variant = ProcessTransfur.getPlayerTransfurVariant(targetPlayer);
-            if (variant != null) type = variant.getLatexType();
+        if (event.getAmount() <= 0) return;
+        float amount = event.getAmount();
+        if (event.getSource().getEntity() instanceof ServerPlayer attacker) {
+            var type = SkillCombat.latexType(event.getEntity());
+            double ratio = type == ChangedLatexTypes.WHITE_LATEX.get() ? attacker.getAttributeValue(SkillAttributes.DAMAGE_VS_WHITE.get())
+                    : type == ChangedLatexTypes.DARK_LATEX.get() ? attacker.getAttributeValue(SkillAttributes.DAMAGE_VS_DARK.get()) : 0;
+            double targetBonus = type == ChangedLatexTypes.WHITE_LATEX.get() ? attacker.getAttributeValue(SkillAttributes.FLAT_DAMAGE_VS_WHITE.get()) : 0;
+            boolean latexWeapon = event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                    && SkillCombat.attackWeapon(attacker, event.getEntity()).is(SkillCombat.LATEX_WEAPONS);
+            amount = SkillCombatRules.outgoing(amount, ratio, targetBonus,
+                    latexWeapon ? attacker.getAttributeValue(SkillAttributes.LATEX_WEAPON_DAMAGE.get()) : 0);
         }
-        double bonus = type == ChangedLatexTypes.WHITE_LATEX.get() ? player.getAttributeValue(SkillAttributes.DAMAGE_VS_WHITE.get())
-                : type == ChangedLatexTypes.DARK_LATEX.get() ? player.getAttributeValue(SkillAttributes.DAMAGE_VS_DARK.get()) : 0;
-        event.setAmount(event.getAmount() * (float) (1 + bonus));
+        if (event.getEntity() instanceof ServerPlayer defender) {
+            boolean white = SkillCombat.latexType(event.getSource().getEntity()) == ChangedLatexTypes.WHITE_LATEX.get();
+            boolean fog = event.getSource().is(LatexSpaceWeather.WHITE_FOG_DAMAGE);
+            amount = SkillCombatRules.incoming(amount,
+                    white ? defender.getAttributeValue(SkillAttributes.WHITE_LATEX_RESISTANCE.get()) : 0,
+                    fog ? defender.getAttributeValue(SkillAttributes.WHITE_FOG_RESISTANCE.get()) : 0);
+        }
+        event.setAmount(amount);
+    }
+    @SubscribeEvent public static void equipment(LivingEquipmentChangeEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) SkillCombat.refreshEquipment(player);
     }
     public static double flightControl(Player player) {
         if (player.level().isClientSide) return Objects.equals(form(player), clientForm) ? clientFlightControl : 0;

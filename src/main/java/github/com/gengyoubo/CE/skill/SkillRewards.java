@@ -16,6 +16,8 @@ public final class SkillRewards {
     private static final String PREFIX = "changede.skill.";
     private static final ResourceLocation ATTRIBUTE = id("changede:attribute"), NONE = id("changede:none");
     private static final Map<ResourceLocation, Function<JsonObject, SkillReward>> TYPES = new LinkedHashMap<>();
+    private record Source(ResourceLocation node, int index) { }
+    private static final Map<Player, Map<Source, SkillReward>> APPLIED = new WeakHashMap<>();
     static {
         register(ATTRIBUTE, json -> {
             ResourceLocation attribute = id(GsonHelper.getAsString(json, "attribute"));
@@ -93,11 +95,17 @@ public final class SkillRewards {
     }
     public static void reconcile(Player player, List<SkillNode> active) {
         Map<Attribute, Set<UUID>> desired = new HashMap<>();
+        Map<Source, SkillReward> next = new LinkedHashMap<>();
         for (SkillNode node : active) for (int i = 0; i < node.rewards().size(); i++) {
+            next.put(new Source(node.id(), i), node.rewards().get(i));
             if (node.rewards().get(i) instanceof AttributeReward reward)
                 desired.computeIfAbsent(ForgeRegistries.ATTRIBUTES.getValue(reward.attribute()), ignored -> new HashSet<>())
                         .add(modifierId(node.id(), i));
         }
+        Map<Source, SkillReward> previous = APPLIED.getOrDefault(player, Map.of());
+        previous.forEach((source, reward) -> {
+            if (!reward.equals(next.get(source))) reward.remove(player, source.node(), source.index());
+        });
         // Includes attributes removed from a datapack and modifiers from the previous schema.
         for (Attribute attribute : ForgeRegistries.ATTRIBUTES.getValues()) {
             AttributeInstance instance = player.getAttribute(attribute);
@@ -106,6 +114,12 @@ public final class SkillRewards {
                 if (modifier.getName().startsWith(PREFIX) && !desired.getOrDefault(attribute, Set.of()).contains(modifier.getId()))
                     instance.removeModifier(modifier.getId());
         }
-        for (SkillNode node : active) for (int i = 0; i < node.rewards().size(); i++) node.rewards().get(i).apply(player, node.id(), i);
+        next.forEach((source, reward) -> {
+            // Attributes also repair missing transient modifiers. Other future reward types
+            // receive apply once per source/change and remove on deactivation or reload.
+            if (reward instanceof AttributeReward || !reward.equals(previous.get(source)))
+                reward.apply(player, source.node(), source.index());
+        });
+        APPLIED.put(player, Map.copyOf(next));
     }
 }

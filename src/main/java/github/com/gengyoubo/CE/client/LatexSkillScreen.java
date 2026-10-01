@@ -27,6 +27,8 @@ public final class LatexSkillScreen extends Screen {
     private boolean positioned, dragging, moved, pending;
     private String pressedNode;
     private int refreshTicks;
+    private String viewedType = "any";
+    private Button layerButton;
 
     public LatexSkillScreen(Screen parent) {
         super(Component.translatable("screen.changede.skills.title"));
@@ -35,16 +37,53 @@ public final class LatexSkillScreen extends Screen {
 
     public static void receive(CompoundTag data) {
         if (Minecraft.getInstance().screen instanceof LatexSkillScreen screen) {
+            String previousActual = screen.data.getString("latex_type");
             screen.data = data;
+            String nextType = SkillCanvasLayer.select(previousActual, data.getString("latex_type"), screen.viewedType, screen.layers());
+            if (!nextType.equals(screen.viewedType)) screen.changeLayer(nextType);
+            screen.updateLayerButton();
             screen.pending = false;
             if (!screen.positioned && !screen.nodes().isEmpty()) screen.centerRoot();
         }
     }
 
-    private List<CompoundTag> nodes() {
+    private List<CompoundTag> allNodes() {
         List<CompoundTag> result = new ArrayList<>();
         for (Tag tag : data.getList("nodes", Tag.TAG_COMPOUND)) result.add((CompoundTag) tag);
         return result;
+    }
+
+    private List<CompoundTag> nodes() {
+        return allNodes().stream().filter(n -> SkillCanvasLayer.visible(n.getString("latex_type"), viewedType)).toList();
+    }
+
+    private Set<String> layers() {
+        Set<String> result = new TreeSet<>();
+        for (CompoundTag node : allNodes()) {
+            String type = node.getString("latex_type");
+            if (!type.isEmpty() && !type.equals("any")) result.add(type);
+        }
+        return result;
+    }
+
+    private void changeLayer(String type) {
+        viewedType = type;
+        dragging = false;
+        pressedNode = null;
+        updateLayerButton();
+    }
+
+    private void updateLayerButton() {
+        if (layerButton == null) return;
+        layerButton.visible = !layers().isEmpty();
+        layerButton.active = layers().size() > 1;
+        layerButton.setMessage(Component.translatable("screen.changede.skills.layer",
+                Component.translatable("screen.changede.skills.type." + viewedType)));
+    }
+
+    private void nextLayer() {
+        List<String> choices = new ArrayList<>(layers());
+        if (!choices.isEmpty()) changeLayer(choices.get((choices.indexOf(viewedType) + 1) % choices.size()));
     }
 
     private void centerRoot() {
@@ -58,6 +97,8 @@ public final class LatexSkillScreen extends Screen {
 
     @Override
     protected void init() {
+        layerButton = addRenderableWidget(Button.builder(Component.empty(), b -> nextLayer()).bounds(6, 6, 98, 20).build());
+        updateLayerButton();
         addRenderableWidget(Button.builder(Component.translatable("screen.changede.skills.center"), b -> centerRoot())
                 .bounds(width - 64, 6, 58, 20).build());
         centerRoot();
@@ -154,7 +195,7 @@ public final class LatexSkillScreen extends Screen {
         });
     }
 
-    private static void line(GuiGraphics graphics, int x1, int y1, int x2, int y2, String state) {
+    private void line(GuiGraphics graphics, int x1, int y1, int x2, int y2, String state) {
         int steps = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
         int color = 0;
         String motif = "grid";
@@ -162,7 +203,7 @@ public final class LatexSkillScreen extends Screen {
             double t = steps == 0 ? 0 : (double) i / steps;
             int x = (int) Math.round(x1 + (x2 - x1) * t), y = (int) Math.round(y1 + (y2 - y1) * t);
             if (i % 16 == 0) {
-                var weights = SkillVisuals.weights(x / (double) COLUMN, y / (double) ROW);
+                var weights = SkillVisuals.weights(x / (double) COLUMN, y / (double) ROW, viewedType);
                 color = stateColor(weights, state);
                 motif = SkillVisuals.theme(SkillVisuals.dominant(weights)).motif();
             }
@@ -193,6 +234,14 @@ public final class LatexSkillScreen extends Screen {
             if (attribute.endsWith("attack_damage") || attribute.contains("damage_vs")) return new ItemStack(Items.IRON_SWORD);
             if (attribute.endsWith("landing_resistance")) return new ItemStack(Items.SLIME_BALL);
             if (attribute.endsWith("flight_control")) return new ItemStack(Items.ELYTRA);
+            if (attribute.endsWith("regeneration_speed")) return new ItemStack(Items.GOLDEN_APPLE);
+            if (attribute.endsWith("exhaustion_reduction")) return new ItemStack(Items.BREAD);
+            if (attribute.endsWith("food_saturation")) return new ItemStack(Items.HONEY_BOTTLE);
+            if (attribute.endsWith("saturation_capacity")) return new ItemStack(Items.MUSHROOM_STEW);
+            if (attribute.endsWith("white_latex_resistance")) return new ItemStack(Items.SHIELD);
+            if (attribute.endsWith("white_fog_resistance")) return new ItemStack(Items.GLASS_BOTTLE);
+            if (attribute.endsWith("armor_adaptation")) return new ItemStack(Items.IRON_CHESTPLATE);
+            if (attribute.endsWith("weapon_adaptation") || attribute.endsWith("latex_weapon_damage")) return new ItemStack(Items.IRON_SWORD);
         }
         return new ItemStack(Items.FEATHER);
     }
@@ -226,6 +275,20 @@ public final class LatexSkillScreen extends Screen {
         var attribute = id == null ? null : ForgeRegistries.ATTRIBUTES.getValue(id);
         Component label = attribute == null ? Component.literal(tag.getString("attribute")) : Component.translatable(attribute.getDescriptionId());
         double amount = tag.getDouble("amount") * (tag.getInt("operation") == 0 ? 1 : 100);
+        String growth = switch (tag.getString("attribute")) {
+            case "changede:regeneration_speed" -> "regeneration";
+            case "changede:exhaustion_reduction" -> "exhaustion";
+            case "changede:food_saturation" -> "food_saturation";
+            case "changede:saturation_capacity" -> "saturation_capacity";
+            case "changede:white_latex_resistance" -> "white_latex_resistance";
+            case "changede:white_fog_resistance" -> "white_fog_resistance";
+            default -> "";
+        };
+        if (!growth.isEmpty() && tag.getInt("operation") == 0) {
+            String value = String.format(Locale.ROOT, "%.2f", tag.getDouble("amount") * (growth.equals("saturation_capacity") ? 1 : 100))
+                    .replaceAll("\\.?0+$", "");
+            return Component.translatable("screen.changede.skills.reward." + growth, value).withStyle(ChatFormatting.AQUA);
+        }
         String value = String.format(Locale.ROOT, "%.2f", amount).replaceAll("\\.?0+$", "") + (tag.getInt("operation") == 0 ? "" : "%");
         return Component.translatable("screen.changede.skills.reward.attribute", label, value).withStyle(ChatFormatting.AQUA);
     }
@@ -242,7 +305,7 @@ public final class LatexSkillScreen extends Screen {
         graphics.pose().translate(panX, panY, 0);
         graphics.pose().scale((float) zoom, (float) zoom, 1);
         LatexSkillBackground.render(graphics, panX, panY, zoom,
-                4, TOP, width - 4, height - 32, COLUMN, ROW);
+                4, TOP, width - 4, height - 32, COLUMN, ROW, viewedType);
         for (CompoundTag node : nodes) for (Tag parentId : node.getList("parents", Tag.TAG_STRING)) {
             CompoundTag prerequisite = byId.get(parentId.getAsString());
             if (prerequisite == null) continue;
@@ -267,7 +330,7 @@ public final class LatexSkillScreen extends Screen {
             int x = node.getInt("x") * COLUMN, y = node.getInt("y") * ROW;
             if (x * zoom + panX < -100 || x * zoom + panX > width + 100
                     || y * zoom + panY < TOP - 50 || y * zoom + panY > height + 50) continue;
-            var weights = SkillVisuals.weights(node.getInt("x"), node.getInt("y"));
+            var weights = SkillVisuals.weights(node.getInt("x"), node.getInt("y"), viewedType);
             String state = state(node), motif = SkillVisuals.theme(SkillVisuals.dominant(weights)).motif();
             int color = stateColor(weights, state), surface = SkillVisuals.color(weights, SkillVisuals.Theme::surface);
             Component label = Component.translatable(node.getString("title"));
