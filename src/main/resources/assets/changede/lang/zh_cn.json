@@ -480,5 +480,19 @@
   "skill.changede.flight_mastery": "飞行精通",
   "skill.changede.flight_mastery.description": "原有飞行速度和起飞滑翔推进额外 +10%",
   "skill.changede.yufeng_endurance": "Yufeng 耐力",
-  "skill.changede.yufeng_endurance.description": "最大生命值 +2"
+  "skill.changede.yufeng_endurance.description": "最大生命值 +2",
+  "skill.changede.common_strength": "胶体力量",
+  "skill.changede.common_strength.description": "攻击伤害 +1；延续所有胶兽的通用成长",
+  "skill.changede.common_endurance": "胶体耐力",
+  "skill.changede.common_endurance.description": "最大生命值 +2",
+  "skill.changede.common_coordination": "胶体协调",
+  "skill.changede.common_coordination.description": "移动速度 +0.01",
+  "skill.changede.dark_continuation": "黑胶韧性",
+  "skill.changede.dark_continuation.description": "护甲 +2；延续黑胶群体成长",
+  "skill.changede.dark_persistence": "黑胶耐力",
+  "skill.changede.dark_persistence.description": "最大生命值 +2",
+  "skill.changede.white_continuation": "白胶协调",
+  "skill.changede.white_continuation.description": "护甲 +2；延续白胶群体成长",
+  "skill.changede.white_persistence": "白胶耐力",
+  "skill.changede.white_persistence.description": "最大生命值 +2"
 }

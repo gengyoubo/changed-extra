@@ -54,6 +54,48 @@
       "key": false,
       "power": "armor",
       "amount": 2
+    },
+    {
+      "id": "changede:common_strength",
+      "title": "skill.changede.common_strength",
+      "description": "skill.changede.common_strength.description",
+      "cost": 5,
+      "parents": [
+        "changede:resilience"
+      ],
+      "x": 1,
+      "y": 4,
+      "key": false,
+      "power": "attack",
+      "amount": 1
+    },
+    {
+      "id": "changede:common_endurance",
+      "title": "skill.changede.common_endurance",
+      "description": "skill.changede.common_endurance.description",
+      "cost": 5,
+      "parents": [
+        "changede:common_strength"
+      ],
+      "x": 1,
+      "y": 5,
+      "key": false,
+      "power": "health",
+      "amount": 2
+    },
+    {
+      "id": "changede:common_coordination",
+      "title": "skill.changede.common_coordination",
+      "description": "skill.changede.common_coordination.description",
+      "cost": 5,
+      "parents": [
+        "changede:common_endurance"
+      ],
+      "x": 1,
+      "y": 6,
+      "key": false,
+      "power": "speed",
+      "amount": 0.01
     }
   ]
 }

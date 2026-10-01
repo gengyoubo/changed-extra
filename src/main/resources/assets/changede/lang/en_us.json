@@ -358,5 +358,19 @@
   "skill.changede.flight_mastery": "Flight Mastery",
   "skill.changede.flight_mastery.description": "Additional 10% existing flight speed and launch/glide boost",
   "skill.changede.yufeng_endurance": "Yufeng Endurance",
-  "skill.changede.yufeng_endurance.description": "Max health +2"
+  "skill.changede.yufeng_endurance.description": "Max health +2",
+  "skill.changede.common_strength": "Latex Strength",
+  "skill.changede.common_strength.description": "Attack damage +1; continues shared latex growth",
+  "skill.changede.common_endurance": "Latex Endurance",
+  "skill.changede.common_endurance.description": "Max health +2",
+  "skill.changede.common_coordination": "Latex Coordination",
+  "skill.changede.common_coordination.description": "Movement speed +0.01",
+  "skill.changede.dark_continuation": "Dark Resilience",
+  "skill.changede.dark_continuation.description": "Armor +2; continues dark latex group growth",
+  "skill.changede.dark_persistence": "Dark Endurance",
+  "skill.changede.dark_persistence.description": "Max health +2",
+  "skill.changede.white_continuation": "White Coordination",
+  "skill.changede.white_continuation.description": "Armor +2; continues white latex group growth",
+  "skill.changede.white_persistence": "White Endurance",
+  "skill.changede.white_persistence.description": "Max health +2"
 }

@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -76,7 +77,7 @@ public class MachineStatusMenu extends AbstractContainerMenu {
             @Override public int getCount() { return DATA_COUNT; }
         };
     }
-
+    @SuppressWarnings("deprecation")
     private static int value(BlockEntity be, int index) {
         if (be == null) return 0;
         ILatexEnergyHandler energy = be instanceof ILatexEnergyHandler handler ? handler : null;
@@ -108,6 +109,7 @@ public class MachineStatusMenu extends AbstractContainerMenu {
     }
 
     public int getValue(int index) { return (data.get(index * 2) & 0xFFFF) | ((data.get(index * 2 + 1) & 0xFFFF) << 16); }
+    @SuppressWarnings("deprecation")
     public FluidStack getFluid() {
         var fluid = BuiltInRegistries.FLUID.byId(getValue(6));
         return fluid == null || getValue(4) <= 0 ? FluidStack.EMPTY : new FluidStack(fluid, getValue(4));

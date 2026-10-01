@@ -10,7 +10,7 @@
       "parents": [
         "changede:resilience"
       ],
-      "x": 0,
+      "x": -1,
       "y": 4,
       "key": true,
       "power": "health",
@@ -64,10 +64,10 @@
       "description": "skill.changede.dark_hunter.description",
       "cost": 8,
       "parents": [
-        "changede:white_vitality"
+        "changede:white_agility"
       ],
-      "x": 1,
-      "y": 5,
+      "x": -3,
+      "y": 6,
       "key": false,
       "power": "damage_vs_dark",
       "amount": 0.15
@@ -80,11 +80,39 @@
       "parents": [
         "changede:dark_hunter"
       ],
-      "x": 1,
-      "y": 6,
+      "x": -3,
+      "y": 7,
       "key": false,
       "power": "damage_vs_dark",
       "amount": 0.1
+    },
+    {
+      "id": "changede:white_continuation",
+      "title": "skill.changede.white_continuation",
+      "description": "skill.changede.white_continuation.description",
+      "cost": 5,
+      "parents": [
+        "changede:white_strength"
+      ],
+      "x": 0,
+      "y": 8,
+      "key": false,
+      "power": "armor",
+      "amount": 2
+    },
+    {
+      "id": "changede:white_persistence",
+      "title": "skill.changede.white_persistence",
+      "description": "skill.changede.white_persistence.description",
+      "cost": 5,
+      "parents": [
+        "changede:white_continuation"
+      ],
+      "x": 0,
+      "y": 9,
+      "key": false,
+      "power": "health",
+      "amount": 2
     }
   ]
 }

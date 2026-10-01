@@ -18,6 +18,7 @@ public final class CEWoodClient {
         event.registerBlockEntityRenderer(CEWoodFamilies.SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(CEWoodFamilies.HANGING_SIGN.get(), HangingSignRenderer::new);
     }
+    @SuppressWarnings("removal")
     @SubscribeEvent public static void setup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> CEWoodFamilies.ALL.forEach(family -> {
             Sheets.addWoodType(family.woodType);

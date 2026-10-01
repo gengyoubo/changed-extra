@@ -32,7 +32,7 @@ public final class CEWoodFamilies {
                 ? (level, pos, state, entity) -> SignBlockEntity.tick(level, pos, state, (SignBlockEntity) entity) : null;
     }
     public static void initialize() { /* Force registration before the deferred registers attach. */ }
-
+    @SuppressWarnings("deprecation")
     public static final class Family {
         public final String name;
         public final WoodType woodType;
