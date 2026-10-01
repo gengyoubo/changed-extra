@@ -53,6 +53,10 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if ("github.com.gengyoubo.CE.mixins.LatexSocialInventoryBackupMixin".equals(mixinClassName)
+                || "github.com.gengyoubo.CE.mixins.CreatureMorphInventoryBackupMixin".equals(mixinClassName)) {
+            return isModLoaded("changed_synergy");
+        }
         if ("github.com.gengyoubo.CE.mixins.CreatureMorphWorkStateMixin".equals(mixinClassName)) {
             return isModLoaded("changed_synergy") && isModLoaded("touhou_little_maid");
         }

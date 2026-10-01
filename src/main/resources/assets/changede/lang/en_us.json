@@ -486,5 +486,11 @@
   "attribute.changede.latex_weapon_damage": "Latex ingot weapon damage",
   "screen.changede.skills.reward.white_latex_resistance": "White latex damage -%s%%",
   "screen.changede.skills.reward.white_fog_resistance": "White fog damage -%s%%",
-  "screen.changede.skills.layer": "View: %s"
+  "screen.changede.skills.layer": "View: %s",
+  "command.changede.inventory_backup.creature_required": "Select a Changed creature.",
+  "command.changede.inventory_backup.count": "Inventory recovery checkpoints: %s (index 0 is the newest).",
+  "command.changede.inventory_backup.record": "[%s] World tick %s, trigger: %s",
+  "command.changede.inventory_backup.missing": "That inventory checkpoint does not exist.",
+  "command.changede.inventory_backup.native_unavailable": "The native inventory is unavailable. Restore the native tame state first; the backup has been kept.",
+  "command.changede.inventory_backup.restored": "Recovered %s empty slots. Occupied slots were preserved."
 }

@@ -608,5 +608,11 @@
   "attribute.changede.latex_weapon_damage": "胶锭武器伤害",
   "screen.changede.skills.reward.white_latex_resistance": "白胶伤害 -%s%%",
   "screen.changede.skills.reward.white_fog_resistance": "白雾伤害 -%s%%",
-  "screen.changede.skills.layer": "预览：%s"
+  "screen.changede.skills.layer": "预览：%s",
+  "command.changede.inventory_backup.creature_required": "请选择一只胶兽。",
+  "command.changede.inventory_backup.count": "物品备份：%s 份（编号 0 为最新记录）。",
+  "command.changede.inventory_backup.record": "[%s] 世界时间 %s 刻，备份原因：%s",
+  "command.changede.inventory_backup.missing": "该物品备份不存在。",
+  "command.changede.inventory_backup.native_unavailable": "胶兽的原生背包不可用，请先恢复原生驯服状态；备份仍已保留。",
+  "command.changede.inventory_backup.restored": "已恢复 %s 个空槽位，已有物品未被覆盖。"
 }

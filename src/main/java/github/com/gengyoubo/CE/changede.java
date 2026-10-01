@@ -101,6 +101,7 @@ public class changede {
         CEChangedSounds.REGISTRY.register(bus);
         CEMenus.REGISTRY.register(bus);
         if (CHANGED_SYNERGY) {
+            github.com.gengyoubo.CE.compat.synergy.CreatureInventoryBackup.initialize();
             try {
                 Class<?> morphCompat = Class.forName("github.com.gengyoubo.CE.compat.synergy.ChangedSynergyMorphCompat");
                 morphCompat.getMethod("initialize").invoke(null);
