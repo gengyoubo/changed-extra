@@ -7,7 +7,6 @@ import net.foxyas.changedaddon.block.entity.UnifuserBlockEntity;
 import mekanism.api.energy.IStrictEnergyHandler;
 import mekanism.common.capabilities.Capabilities;
 import net.minecraft.core.Direction;
-import net.ltxprogrammer.changed.block.entity.PurifierBlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = {PurifierBlockEntity.class, UnifuserBlockEntity.class, CatalyzerBlockEntity.class}, remap = false)
+@Mixin(value = {UnifuserBlockEntity.class, CatalyzerBlockEntity.class}, remap = false)
 public abstract class AddonMekanismEnergyMixin {
     @Unique private LazyOptional<IStrictEnergyHandler> changede$strictEnergy = LazyOptional.empty();
 

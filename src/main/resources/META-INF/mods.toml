@@ -15,6 +15,8 @@ config="mixins/changede.mixins.json"
 config="mixins/changede-proext.mixins.json"
 [[mixins]]
 config="mixins/changede-lp.mixins.json"
+[[mixins]]
+config="mixins/changede-diagnostics.mixins.json"
 [[dependencies.changede]]
     modId="minecraft"
     mandatory=true

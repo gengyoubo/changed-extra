@@ -27,6 +27,7 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
             "github.com.gengyoubo.CE.LP.mixins.CatalyzerEnergyMixin"
     );
     private static final Set<String> MEKANISM_MIXINS = Set.of(
+            "github.com.gengyoubo.CE.LP.mixins.PurifierMekanismEnergyMixin",
             "github.com.gengyoubo.CE.LP.mixins.InfuserMekanismEnergyMixin",
             "github.com.gengyoubo.CE.LP.mixins.AddonMekanismEnergyMixin"
     );
@@ -34,6 +35,9 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
+        try {
+            org.spongepowered.asm.mixin.Mixins.registerErrorHandlerClass("github.com.gengyoubo.CE.diagnostics.ChangedMixinErrorHandler");
+        } catch (Throwable ignored) { /* Diagnostics must never stop mod loading. */ }
         LOGGER.info(
                 "ChangedE mixin plugin loaded: addonLight={}, dist={}, changed_addon_loaded={}",
                 ADDON_LIGHT_MODE,

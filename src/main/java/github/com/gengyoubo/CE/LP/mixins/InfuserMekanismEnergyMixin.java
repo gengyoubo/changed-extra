@@ -33,6 +33,6 @@ public abstract class InfuserMekanismEnergyMixin {
         if (cap == Capabilities.STRICT_ENERGY) cir.setReturnValue(changede$getStrictEnergy().cast());
     }
 
-    @Inject(method = "setRemoved", at = @At("TAIL"))
+    @Inject(method = {"setRemoved", "m_7651_"}, at = @At("TAIL"))
     private void changede$invalidateStrictEnergy(CallbackInfo ci) { changede$strictEnergy.invalidate(); }
 }

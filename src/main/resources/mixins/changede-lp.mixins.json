@@ -17,6 +17,7 @@
     "UnifuserEnergyMixin",
     "CatalyzerEnergyMixin",
     "InfuserMekanismEnergyMixin",
+    "PurifierMekanismEnergyMixin",
     "AddonMekanismEnergyMixin"
   ],
   "client": [
