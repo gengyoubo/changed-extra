@@ -31,8 +31,10 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LatexSpaceWeatherEvents {
-    private static final double RAIN_CHANCE_PER_SECOND = 0.01;
-    private static final double THUNDER_CHANCE_PER_SECOND = 0.03;
+    private static final double RAIN_MIN_CHANCE_PER_SECOND = 0.10;
+    private static final double RAIN_MAX_CHANCE_PER_SECOND = 0.50;
+    private static final double THUNDER_MIN_CHANCE_PER_SECOND = 0.30;
+    private static final double THUNDER_MAX_CHANCE_PER_SECOND = 0.80;
     private static final float RAIN_DAMAGE_PER_SECOND = 1.0F;
     private static final float THUNDER_DAMAGE_PER_SECOND = 2.0F;
     private static final ResourceKey<DamageType> WEATHER_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
@@ -106,9 +108,19 @@ public final class LatexSpaceWeatherEvents {
         var biome = level.getBiome(player.blockPosition());
         boolean dark = LatexSpaceWeather.isDark(biome);
         if (!dark && !LatexSpaceWeather.isWhite(biome)) return;
-        double baseChance = level.isThundering() ? THUNDER_CHANCE_PER_SECOND : RAIN_CHANCE_PER_SECOND;
+        double baseChance = getWeatherBaseChance(player, level.isThundering());
         double chance = baseChance * level.getRainLevel(1) * (1 - Perseverance.getKeepFormChance(player));
         if (player.getRandom().nextDouble() < chance) transfur(player, dark);
+    }
+
+    private static double getWeatherBaseChance(ServerPlayer player, boolean thundering) {
+        double maxHealth = player.getMaxHealth();
+        double healthRatio = maxHealth > 0 ? player.getHealth() / maxHealth : 0;
+        double missingHealthRatio = 1 - Math.max(0, Math.min(1, healthRatio));
+        double minChance = thundering ? THUNDER_MIN_CHANCE_PER_SECOND : RAIN_MIN_CHANCE_PER_SECOND;
+        double maxChance = thundering ? THUNDER_MAX_CHANCE_PER_SECOND : RAIN_MAX_CHANCE_PER_SECOND;
+        // Use the player's actual maximum health, including attributes from other mods.
+        return minChance + (maxChance - minChance) * missingHealthRatio;
     }
 
     @SubscribeEvent

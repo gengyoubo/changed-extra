@@ -15,7 +15,7 @@ function Export-Tiles($source, $names, $folder) {
     New-Item -ItemType Directory -Force (Join-Path $assets $folder) | Out-Null
     for ($i=0; $i -lt $names.Count; $i++) {
         # Historical plate assets are imported separately from the original game textures.
-        if ($names[$i] -like 'plate*' -or $names[$i] -in @('peach','enchanted_golden_orange')) { continue }
+        if ($names[$i] -like 'plate*' -or $names[$i] -in @('iridium_ingot','painite_ingot','chain_ingot','peach','enchanted_golden_orange')) { continue }
         $tile = [Drawing.Bitmap]::new(32,32,[Drawing.Imaging.PixelFormat]::Format32bppArgb)
         $g=[Drawing.Graphics]::FromImage($tile)
         $g.InterpolationMode=[Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
@@ -29,6 +29,9 @@ function Export-Tiles($source, $names, $folder) {
 }
 Export-Tiles $MachineAtlas @('machine_side','machine_top','basic_crystal_generator_front','basic_latex_fluid_generator_front','basic_latex_purifier_front','basic_alloy_furnace_front','white_latex_power_converter_front','dark_latex_power_converter_front','orange_producer_front','energy_pipe','item_pipe','fluid_pipe','machine_rear','purifier_top','panel_light','panel_dark') 'textures/block'
 Export-Tiles $ItemAtlas @('pipe_wrench','iridium_ingot','painite_ingot','chain_ingot','plate','plate_helmet','plate_chestplate','plate_leggings','plate_boots','riding_stick','ridden_stick','remote_riding_stick','peach','enchanted_golden_orange','tank_icon','energy_icon') 'textures/item'
+# The revised chain ingot uses a separate vanilla-style 16x16 source.
+& (Join-Path $PSScriptRoot 'import-chain-ingot.ps1')
+& (Join-Path $PSScriptRoot 'import-alloy-ingots.ps1')
 foreach($shade in @('light','dark')) {
     Copy-Item -LiteralPath (Join-Path $assets ('textures/block/panel_'+$shade+'.png')) -Destination (Join-Path $assets ('textures/gui/machine_panel_'+$shade+'.png'))
 }
