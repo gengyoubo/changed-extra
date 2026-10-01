@@ -23,7 +23,7 @@ public final class WhiteFogExposure {
     private static final Map<Level, Cache> CACHES = new WeakHashMap<>();
 
     private WhiteFogExposure() { }
-
+    @SuppressWarnings("deprecation")
     public static boolean isExposed(Level level, BlockPos origin) {
         Cache cache;
         synchronized (CACHES) { cache = CACHES.computeIfAbsent(level, ignored -> new Cache()); }
@@ -60,7 +60,7 @@ public final class WhiteFogExposure {
             return exposed;
         }
     }
-
+    @SuppressWarnings("deprecation")
     private static boolean permeable(Level level, BlockPos from, BlockPos pos, Direction direction) {
         if (!level.hasChunkAt(pos) || !level.isInWorldBounds(pos)) return true;
         var state = level.getBlockState(pos);

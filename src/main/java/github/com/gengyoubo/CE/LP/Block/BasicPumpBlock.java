@@ -42,6 +42,7 @@ public class BasicPumpBlock extends BaseEntityBlock implements EntityBlock {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(FACING); }
+    @SuppressWarnings("deprecation")
     @Override public net.minecraft.world.InteractionResult use(BlockState state, Level level, BlockPos pos,
             net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand,
             net.minecraft.world.phys.BlockHitResult hit) {
