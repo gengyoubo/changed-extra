@@ -3,7 +3,7 @@ package github.com.gengyoubo.CE.client;
 import java.util.Map;
 import java.util.Set;
 
-/** Visual coordinates use the same grid as the graph, independent of nodes and form selectors. */
+/** Visual geometry uses the graph grid; species can share geometry with different theme variants. */
 public record SkillRegion(String id, double x, double y, double width, double height,
                           String theme, double feather, int priority,
                           Map<String, String> themesByType, Set<String> latexTypes) {

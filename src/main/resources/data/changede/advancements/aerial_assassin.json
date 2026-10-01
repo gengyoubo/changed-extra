@@ -1,5 +1,5 @@
 {
-  "parent": "changede:hot_latex_ingot",
+  "parent": "changede:changed_technology",
   "display": {
     "icon": { "item": "changede:latex_spear" },
     "title": { "translate": "advancements.changede.aerial_assassin.title" },
