@@ -31,10 +31,11 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LatexSpaceWeatherEvents {
-    private static final double RAIN_MIN_CHANCE_PER_SECOND = 0.10;
+    private static final double RAIN_MIN_CHANCE_PER_SECOND = 0.05;
     private static final double RAIN_MAX_CHANCE_PER_SECOND = 0.50;
-    private static final double THUNDER_MIN_CHANCE_PER_SECOND = 0.30;
+    private static final double THUNDER_MIN_CHANCE_PER_SECOND = 0.15;
     private static final double THUNDER_MAX_CHANCE_PER_SECOND = 0.80;
+    private static final double HEALTH_CHANCE_EXPONENT = 3.0;
     private static final float RAIN_DAMAGE_PER_SECOND = 1.0F;
     private static final float THUNDER_DAMAGE_PER_SECOND = 2.0F;
     private static final ResourceKey<DamageType> WEATHER_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
@@ -120,7 +121,11 @@ public final class LatexSpaceWeatherEvents {
         double minChance = thundering ? THUNDER_MIN_CHANCE_PER_SECOND : RAIN_MIN_CHANCE_PER_SECOND;
         double maxChance = thundering ? THUNDER_MAX_CHANCE_PER_SECOND : RAIN_MAX_CHANCE_PER_SECOND;
         // Use the player's actual maximum health, including attributes from other mods.
-        return minChance + (maxChance - minChance) * missingHealthRatio;
+        // Normalize the exponential curve so full health is exactly the minimum,
+        // and zero health approaches exactly the maximum.
+        double growth = Math.expm1(HEALTH_CHANCE_EXPONENT * missingHealthRatio)
+                / Math.expm1(HEALTH_CHANCE_EXPONENT);
+        return minChance + (maxChance - minChance) * growth;
     }
 
     @SubscribeEvent
