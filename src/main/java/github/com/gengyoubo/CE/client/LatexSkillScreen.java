@@ -10,10 +10,14 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 import java.util.*;
 
-/** One pannable graph for all applicable branches, including cross-definition edges. */
+/** One continuous graph retains learned history across form changes. */
 public final class LatexSkillScreen extends Screen {
     private static final int COLUMN = 150, ROW = 64, TOP = 36;
     private final Screen parent;
@@ -31,7 +35,6 @@ public final class LatexSkillScreen extends Screen {
 
     public static void receive(CompoundTag data) {
         if (Minecraft.getInstance().screen instanceof LatexSkillScreen screen) {
-            if (!screen.data.getString("form").equals(data.getString("form"))) screen.positioned = false;
             screen.data = data;
             screen.pending = false;
             if (!screen.positioned && !screen.nodes().isEmpty()) screen.centerRoot();
@@ -74,11 +77,7 @@ public final class LatexSkillScreen extends Screen {
     }
 
     private boolean available(CompoundTag node) {
-        if (pending || node.getBoolean("unlocked")) return false;
-        Set<String> enabled = new HashSet<>();
-        nodes().stream().filter(n -> n.getBoolean("active")).forEach(n -> enabled.add(n.getString("id")));
-        for (Tag parent : node.getList("parents", Tag.TAG_STRING)) if (!enabled.contains(parent.getAsString())) return false;
-        return data.getBoolean("creative") || data.getInt("levels") >= node.getInt("cost");
+        return !pending && node.getBoolean("purchasable");
     }
 
     @Override
@@ -141,12 +140,34 @@ public final class LatexSkillScreen extends Screen {
         return true;
     }
 
-    private static void line(GuiGraphics graphics, int x1, int y1, int x2, int y2, int color) {
+    private static String state(CompoundTag node) {
+        return node.getBoolean("active") ? "active" : node.getBoolean("unlocked") ? "dormant"
+                : node.getBoolean("purchasable") ? "available" : "locked";
+    }
+
+    private static int stateColor(Map<String, Double> weights, String state) {
+        return SkillVisuals.color(weights, t -> switch (state) {
+            case "active" -> t.active();
+            case "dormant" -> t.dormant();
+            case "available" -> t.available();
+            default -> t.locked();
+        });
+    }
+
+    private static void line(GuiGraphics graphics, int x1, int y1, int x2, int y2, String state) {
         int steps = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+        int color = 0;
+        String motif = "grid";
         for (int i = 0; i <= steps; i++) {
             double t = steps == 0 ? 0 : (double) i / steps;
             int x = (int) Math.round(x1 + (x2 - x1) * t), y = (int) Math.round(y1 + (y2 - y1) * t);
-            graphics.fill(x, y, x + 2, y + 2, color);
+            if (i % 16 == 0) {
+                var weights = SkillVisuals.weights(x / (double) COLUMN, y / (double) ROW);
+                color = stateColor(weights, state);
+                motif = SkillVisuals.theme(SkillVisuals.dominant(weights)).motif();
+            }
+            graphics.fill(x, y, x + (motif.equals("latex") ? 3 : 2), y + 2, color);
+            if (motif.equals("wings") && i % 16 < 8) graphics.fill(x + 4, y, x + 5, y + 1, color);
         }
     }
 
@@ -155,6 +176,58 @@ public final class LatexSkillScreen extends Screen {
             int dy = (int) Math.sqrt(radius * radius - dx * dx);
             graphics.fill(x + dx, y - dy, x + dx + 1, y + dy + 1, color);
         }
+    }
+
+    private static void diamond(GuiGraphics graphics, int x, int y, int radius, int color) {
+        for (int dy = -radius; dy <= radius; dy++) {
+            int half = radius - Math.abs(dy);
+            graphics.fill(x - half, y + dy, x + half + 1, y + dy + 1, color);
+        }
+    }
+
+    private static ItemStack icon(CompoundTag node) {
+        for (Tag value : node.getList("rewards", Tag.TAG_COMPOUND)) {
+            String attribute = ((CompoundTag) value).getString("attribute");
+            if (attribute.endsWith("max_health")) return new ItemStack(Items.APPLE);
+            if (attribute.endsWith("armor") || attribute.endsWith("armor_toughness")) return new ItemStack(Items.SHIELD);
+            if (attribute.endsWith("attack_damage") || attribute.contains("damage_vs")) return new ItemStack(Items.IRON_SWORD);
+            if (attribute.endsWith("landing_resistance")) return new ItemStack(Items.SLIME_BALL);
+            if (attribute.endsWith("flight_control")) return new ItemStack(Items.ELYTRA);
+        }
+        return new ItemStack(Items.FEATHER);
+    }
+
+    private Component requirement(CompoundTag tag, Map<String, CompoundTag> byId) {
+        String type = tag.getString("type"), subject = tag.getString("subject");
+        Component detail;
+        if (type.equals("changede:parent") || type.equals("changede:inactive_parent")) {
+            CompoundTag parent = byId.get(subject);
+            detail = Component.translatable("screen.changede.skills.reason." + (type.endsWith("inactive_parent") ? "inactive_parent" : "parent"),
+                    parent == null ? Component.literal(subject) : Component.translatable(parent.getString("title")));
+        } else if (type.equals("changede:experience")) {
+            detail = Component.translatable("screen.changede.skills.reason.experience", tag.getInt("current"), tag.getInt("required"));
+        } else if (type.equals("changede:latex_type")) {
+            detail = Component.translatable("screen.changede.skills.reason.latex_type", Component.translatable("screen.changede.skills.type." + subject));
+        } else if (type.equals("changede:entity_tag")) {
+            ResourceLocation id = ResourceLocation.tryParse(subject);
+            String key = id == null ? subject : "skill_tag." + id.getNamespace() + "." + id.getPath().replace('/', '.');
+            detail = Component.translatable("screen.changede.skills.reason.form", Component.translatableWithFallback(key, subject));
+        } else if (type.equals("changede:form")) {
+            detail = Component.translatable("screen.changede.skills.reason.form", subject);
+        } else if (type.equals("changede:latex_form") || type.equals("changede:player_state")) {
+            detail = Component.translatable("screen.changede.skills.reason." + type.substring(type.indexOf(':') + 1));
+        } else detail = Component.translatable("screen.changede.skills.reason.other", type, subject);
+        return Component.literal(tag.getBoolean("met") ? "✓ " : "✗ ").append(detail)
+                .withStyle(tag.getBoolean("met") ? ChatFormatting.GREEN : ChatFormatting.RED);
+    }
+
+    private Component reward(CompoundTag tag) {
+        ResourceLocation id = ResourceLocation.tryParse(tag.getString("attribute"));
+        var attribute = id == null ? null : ForgeRegistries.ATTRIBUTES.getValue(id);
+        Component label = attribute == null ? Component.literal(tag.getString("attribute")) : Component.translatable(attribute.getDescriptionId());
+        double amount = tag.getDouble("amount") * (tag.getInt("operation") == 0 ? 1 : 100);
+        String value = String.format(Locale.ROOT, "%.2f", amount).replaceAll("\\.?0+$", "") + (tag.getInt("operation") == 0 ? "" : "%");
+        return Component.translatable("screen.changede.skills.reward.attribute", label, value).withStyle(ChatFormatting.AQUA);
     }
 
     @Override
@@ -168,7 +241,7 @@ public final class LatexSkillScreen extends Screen {
         graphics.pose().pushPose();
         graphics.pose().translate(panX, panY, 0);
         graphics.pose().scale((float) zoom, (float) zoom, 1);
-        LatexSkillBackground.render(graphics, nodes, data.getString("latex_background"), panX, panY, zoom,
+        LatexSkillBackground.render(graphics, panX, panY, zoom,
                 4, TOP, width - 4, height - 32, COLUMN, ROW);
         for (CompoundTag node : nodes) for (Tag parentId : node.getList("parents", Tag.TAG_STRING)) {
             CompoundTag prerequisite = byId.get(parentId.getAsString());
@@ -178,7 +251,6 @@ public final class LatexSkillScreen extends Screen {
             // Cull distant edges before rasterizing; very deep datapacks must remain cheap to pan.
             if (Math.max(y1, y2) * zoom + panY < TOP || Math.min(y1, y2) * zoom + panY > height - 32
                     || Math.max(x1, x2) * zoom + panX < 4 || Math.min(x1, x2) * zoom + panX > width - 4) continue;
-            int color = prerequisite.getBoolean("active") ? 0xFF74CE99 : 0xFF4B586A;
             // Clip the line in world coordinates before drawing, including long cross-file connections.
             double start = 0, end = 1;
             double[] from = {x1, y1}, delta = {x2 - x1, y2 - y1};
@@ -189,32 +261,59 @@ public final class LatexSkillScreen extends Screen {
                 start = Math.max(start, Math.min(a, b)); end = Math.min(end, Math.max(a, b));
             }
             if (start <= end) line(graphics, (int) (x1 + delta[0] * start), (int) (y1 + delta[1] * start),
-                    (int) (x1 + delta[0] * end), (int) (y1 + delta[1] * end), color);
+                    (int) (x1 + delta[0] * end), (int) (y1 + delta[1] * end), state(node));
         }
         for (CompoundTag node : nodes) {
             int x = node.getInt("x") * COLUMN, y = node.getInt("y") * ROW;
             if (x * zoom + panX < -100 || x * zoom + panX > width + 100
                     || y * zoom + panY < TOP - 50 || y * zoom + panY > height + 50) continue;
-            int color = node.getBoolean("active") ? 0xFF74CE99 : available(node) ? 0xFFE6C66B : 0xFF566478;
+            var weights = SkillVisuals.weights(node.getInt("x"), node.getInt("y"));
+            String state = state(node), motif = SkillVisuals.theme(SkillVisuals.dominant(weights)).motif();
+            int color = stateColor(weights, state), surface = SkillVisuals.color(weights, SkillVisuals.Theme::surface);
             Component label = Component.translatable(node.getString("title"));
             if (node.getBoolean("key")) {
                 graphics.fill(x - 62, y - 16, x + 62, y + 16, color);
-                graphics.fill(x - 60, y - 14, x + 60, y + 14, 0xFF172335);
+                graphics.fill(x - 60, y - 14, x + 60, y + 14, surface);
+                if (motif.equals("wings")) {
+                    diamond(graphics, x - 66, y, 7, color);
+                    diamond(graphics, x + 66, y, 7, color);
+                } else if (motif.equals("latex")) {
+                    circle(graphics, x - 62, y, 5, color);
+                    circle(graphics, x + 62, y, 5, color);
+                }
                 var lines = font.split(label, 116);
                 for (int i = 0; i < Math.min(lines.size(), 2); i++) {
                     var text = lines.get(i);
-                    graphics.drawString(font, text, x - font.width(text) / 2, y - lines.size() * 4 + i * 9, 0xFFFFFF, false);
+                    graphics.drawString(font, text, x - font.width(text) / 2, y - Math.min(lines.size(), 2) * 4 + i * 9,
+                            state.equals("dormant") ? color : 0xFFFFFF, false);
                 }
             } else {
-                circle(graphics, x, y, 12, color);
-                circle(graphics, x, y, 9, 0xFF172335);
-                graphics.drawCenteredString(font, label, x, y + 17, 0xDFE8F5);
+                if (motif.equals("wings")) {
+                    diamond(graphics, x, y, 14, color);
+                    diamond(graphics, x, y, 11, surface);
+                    graphics.fill(x - 19, y - 4, x - 15, y - 2, color);
+                    graphics.fill(x + 16, y - 4, x + 20, y - 2, color);
+                } else {
+                    circle(graphics, x, y, 12, color);
+                    circle(graphics, x, y, motif.equals("latex") ? 8 : 10, surface);
+                }
+                graphics.renderItem(icon(node), x - 8, y - 8);
+            }
+            // Filled, hollow and star markers distinguish states even in monochrome packs.
+            if (state.equals("active")) circle(graphics, x + 10, y + 10, 3, color);
+            else if (state.equals("dormant")) {
+                circle(graphics, x + 10, y + 10, 3, color);
+                circle(graphics, x + 10, y + 10, 1, surface);
+            } else if (state.equals("available")) {
+                diamond(graphics, x + 10, y + 10, 4, color);
+                graphics.fill(x + 9, y + 5, x + 11, y + 16, color);
             }
         }
         graphics.pose().popPose();
         graphics.disableScissor();
         graphics.drawCenteredString(font, title, width / 2, 10, 0xFFFFFF);
-        graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.levels", data.getInt("levels")), width / 2, height - 26, 0xBFE8FF);
+        graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.legend"), width / 2, 25, 0xB9BED0);
+        graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.experience", data.getInt("experience")), width / 2, height - 26, 0xBFE8FF);
         graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.navigation"), width / 2, height - 13, 0xAABBCD);
         if (nodes.isEmpty()) graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.empty"), width / 2, TOP + 50, 0xAAAAAA);
         super.render(graphics, mouseX, mouseY, partialTick);
@@ -224,13 +323,18 @@ public final class LatexSkillScreen extends Screen {
             tooltip.add(Component.translatable(hovered.getString("title")));
             tooltip.add(Component.translatable(hovered.getString("description")));
             tooltip.add(Component.translatable("screen.changede.skills.cost", hovered.getInt("cost")));
-            String state = hovered.getBoolean("active") ? "learned" : hovered.getBoolean("unlocked") ? "inactive" : "unlock";
+            String state = hovered.getBoolean("active") ? "learned" : hovered.getBoolean("unlocked") ? "inactive"
+                    : hovered.getBoolean("purchasable") ? "unlock" : "locked";
             tooltip.add(Component.translatable("screen.changede.skills." + state));
-            for (Tag id : hovered.getList("parents", Tag.TAG_STRING)) {
-                CompoundTag prerequisite = byId.get(id.getAsString());
-                tooltip.add(Component.translatable("screen.changede.skills.requires", prerequisite == null
-                        ? Component.literal(id.getAsString()) : Component.translatable(prerequisite.getString("title"))));
+            tooltip.add(Component.translatable("screen.changede.skills.requirements").withStyle(ChatFormatting.GRAY));
+            for (Tag tag : hovered.getList("requirements", Tag.TAG_COMPOUND)) tooltip.add(requirement((CompoundTag) tag, byId));
+            tooltip.add(Component.translatable("screen.changede.skills.effects").withStyle(ChatFormatting.GRAY));
+            boolean effect = false;
+            for (Tag tag : hovered.getList("rewards", Tag.TAG_COMPOUND)) if (((CompoundTag) tag).getString("type").equals("changede:attribute")) {
+                tooltip.add(reward((CompoundTag) tag));
+                effect = true;
             }
+            if (!effect) tooltip.add(Component.translatable("screen.changede.skills.reward.none"));
             graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
         }
     }

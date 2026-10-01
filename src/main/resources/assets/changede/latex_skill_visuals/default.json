@@ -1,0 +1,14 @@
+{
+  "themes": [
+    { "id": "changede:laboratory", "tile": "changed:block/wall_white", "stripe": "changed:block/wall_blue_striped", "tint": "#FFFFFF", "active": "#74CE99", "available": "#E6C66B", "dormant": "#A6BAC9", "locked": "#566478", "surface": "#172335", "motif": "grid" },
+    { "id": "changede:dark_latex", "tile": "changed:block/dark_latex_block_side", "tint": "#B8C0D2", "active": "#B6BCD9", "available": "#E5B879", "dormant": "#8A8D9F", "locked": "#4B495F", "surface": "#17141F", "motif": "latex" },
+    { "id": "changede:white_latex", "tile": "changed:block/white_latex_block_side", "tint": "#E9F3FA", "active": "#91D7E8", "available": "#ECD287", "dormant": "#AEBBC2", "locked": "#647985", "surface": "#253B48", "motif": "latex" },
+    { "id": "changede:yufeng", "tile": "changed:block/dark_latex_block_side", "tint": "#AA8DCB", "active": "#DBB9F5", "available": "#F1CD83", "dormant": "#9986AD", "locked": "#564466", "surface": "#251A36", "motif": "wings" }
+  ],
+  "regions": [
+    { "id": "changede:common", "x": -11, "y": -2, "width": 15, "height": 16, "theme": "changede:laboratory", "feather": 1, "priority": 0 },
+    { "id": "changede:dark_latex", "x": -4, "y": 3.5, "width": 4.5, "height": 7.5, "theme": "changede:dark_latex", "feather": 0.8, "priority": 10 },
+    { "id": "changede:white_latex", "x": -10, "y": 3.5, "width": 4.5, "height": 7.5, "theme": "changede:white_latex", "feather": 0.8, "priority": 10 },
+    { "id": "changede:yufeng", "x": -6.75, "y": 7.5, "width": 5.25, "height": 6, "theme": "changede:yufeng", "feather": 1, "priority": 20 }
+  ]
+}

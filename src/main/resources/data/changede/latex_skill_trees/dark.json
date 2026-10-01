@@ -6,113 +6,172 @@
       "id": "changede:dark_shell",
       "title": "skill.changede.dark_shell",
       "description": "skill.changede.dark_shell.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:resilience"
       ],
       "x": -1,
       "y": 4,
       "key": true,
-      "power": "armor",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:dark_strength",
       "title": "skill.changede.dark_strength",
       "description": "skill.changede.dark_strength.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:dark_shell"
       ],
       "x": -1,
       "y": 5,
       "key": false,
-      "power": "attack",
-      "amount": 1
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 1
+        }
+      ]
     },
     {
       "id": "changede:dark_endurance",
       "title": "skill.changede.dark_endurance",
       "description": "skill.changede.dark_endurance.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:dark_strength"
       ],
       "x": -1,
       "y": 6,
       "key": false,
-      "power": "health",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:dark_agility",
       "title": "skill.changede.dark_agility",
       "description": "skill.changede.dark_agility.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:dark_endurance"
       ],
       "x": -1,
       "y": 7,
       "key": false,
-      "power": "speed",
-      "amount": 0.01
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.01
+        }
+      ]
     },
     {
       "id": "changede:white_hunter",
       "title": "skill.changede.white_hunter",
       "description": "skill.changede.white_hunter.description",
-      "cost": 8,
+      "cost": 40,
       "parents": [
         "changede:dark_strength"
       ],
       "x": -3,
       "y": 6,
       "key": false,
-      "power": "damage_vs_white",
-      "amount": 0.15
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:damage_vs_white",
+          "amount": 0.15
+        }
+      ]
     },
     {
       "id": "changede:dark_predator",
       "title": "skill.changede.dark_predator",
       "description": "skill.changede.dark_predator.description",
-      "cost": 10,
+      "cost": 50,
       "parents": [
         "changede:white_hunter"
       ],
       "x": -3,
       "y": 7,
       "key": false,
-      "power": "damage_vs_white",
-      "amount": 0.1
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:damage_vs_white",
+          "amount": 0.1
+        }
+      ]
     },
     {
       "id": "changede:dark_continuation",
       "title": "skill.changede.dark_continuation",
       "description": "skill.changede.dark_continuation.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:dark_agility"
       ],
       "x": 0,
       "y": 8,
       "key": false,
-      "power": "armor",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:dark_persistence",
       "title": "skill.changede.dark_persistence",
       "description": "skill.changede.dark_persistence.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:dark_continuation"
       ],
       "x": 0,
       "y": 9,
       "key": false,
-      "power": "health",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "changede:dark_constitution",
+      "title": "skill.changede.dark_constitution",
+      "description": "skill.changede.dark_constitution.description",
+      "cost": 25,
+      "parents": [
+        "changede:dark_persistence"
+      ],
+      "x": 0,
+      "y": 10,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor_toughness",
+          "amount": 1
+        }
+      ]
     }
   ]
 }

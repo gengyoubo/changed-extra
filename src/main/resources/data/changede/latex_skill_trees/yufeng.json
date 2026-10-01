@@ -7,127 +7,151 @@
       "id": "changede:yufeng_gate",
       "title": "skill.changede.yufeng_gate",
       "description": "skill.changede.yufeng_gate.description",
-      "cost": 3,
+      "cost": 18,
       "parents": [
         "changede:dark_agility"
       ],
       "x": -2,
       "y": 8,
       "key": true,
-      "power": "none",
-      "amount": 0
+      "rewards": [
+        {
+          "type": "changede:none"
+        }
+      ]
     },
     {
       "id": "changede:flight_technique",
       "title": "skill.changede.flight_technique",
       "description": "skill.changede.flight_technique.description",
-      "cost": 5,
-      "parents": [
-        "changede:yufeng_boost"
-      ],
-      "x": -4,
-      "y": 10,
-      "key": false,
-      "power": "flight_control",
-      "amount": 0.15
-    },
-    {
-      "id": "changede:aerobatics",
-      "title": "skill.changede.aerobatics",
-      "description": "skill.changede.aerobatics.description",
-      "cost": 8,
-      "parents": [
-        "changede:flight_technique"
-      ],
-      "x": -5,
-      "y": 11,
-      "key": false,
-      "power": "flight_control",
-      "amount": 0.1
-    },
-    {
-      "id": "changede:flight_mastery",
-      "title": "skill.changede.flight_mastery",
-      "description": "skill.changede.flight_mastery.description",
-      "cost": 10,
-      "parents": [
-        "changede:aerobatics"
-      ],
-      "x": -6,
-      "y": 12,
-      "key": false,
-      "power": "flight_control",
-      "amount": 0.1
-    },
-    {
-      "id": "changede:safe_landing",
-      "title": "skill.changede.safe_landing",
-      "description": "skill.changede.safe_landing.description",
-      "cost": 5,
-      "parents": [
-        "changede:yufeng_gate"
-      ],
-      "x": -1,
-      "y": 9,
-      "key": false,
-      "power": "fall_resistance",
-      "amount": 0.25
-    },
-    {
-      "id": "changede:soft_landing",
-      "title": "skill.changede.soft_landing",
-      "description": "skill.changede.soft_landing.description",
-      "cost": 8,
-      "parents": [
-        "changede:safe_landing"
-      ],
-      "x": -1,
-      "y": 10,
-      "key": false,
-      "power": "fall_resistance",
-      "amount": 0.25
-    },
-    {
-      "id": "changede:yufeng_endurance",
-      "title": "skill.changede.yufeng_endurance",
-      "description": "skill.changede.yufeng_endurance.description",
-      "cost": 10,
-      "parents": [
-        "changede:soft_landing"
-      ],
-      "x": -1,
-      "y": 11,
-      "key": false,
-      "power": "health",
-      "amount": 2
-    },
-    {
-      "id": "changede:yufeng_takeoff",
-      "title": "skill.changede.yufeng_takeoff",
-      "description": "skill.changede.yufeng_takeoff.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:yufeng_gate"
       ],
       "x": -3,
       "y": 9,
       "key": false,
-      "power": "yufeng_takeoff",
-      "amount": 0
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:flight_control",
+          "amount": 0.15
+        }
+      ]
     },
     {
-      "id": "changede:yufeng_boost",
-      "title": "skill.changede.yufeng_boost",
-      "description": "skill.changede.yufeng_boost.description",
-      "cost": 5,
+      "id": "changede:aerobatics",
+      "title": "skill.changede.aerobatics",
+      "description": "skill.changede.aerobatics.description",
+      "cost": 40,
+      "parents": [
+        "changede:flight_technique"
+      ],
+      "x": -4,
+      "y": 10,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:flight_control",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changede:flight_mastery",
+      "title": "skill.changede.flight_mastery",
+      "description": "skill.changede.flight_mastery.description",
+      "cost": 50,
+      "parents": [
+        "changede:aerobatics"
+      ],
+      "x": -5,
+      "y": 11,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:flight_control",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changede:safe_landing",
+      "title": "skill.changede.safe_landing",
+      "description": "skill.changede.safe_landing.description",
+      "cost": 25,
+      "parents": [
+        "changede:aerobatics"
+      ],
+      "x": -4,
+      "y": 11,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:landing_resistance",
+          "amount": 0.25
+        }
+      ]
+    },
+    {
+      "id": "changede:soft_landing",
+      "title": "skill.changede.soft_landing",
+      "description": "skill.changede.soft_landing.description",
+      "cost": 40,
+      "parents": [
+        "changede:safe_landing"
+      ],
+      "x": -4,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:landing_resistance",
+          "amount": 0.25
+        }
+      ]
+    },
+    {
+      "id": "changede:yufeng_endurance",
+      "title": "skill.changede.yufeng_endurance",
+      "description": "skill.changede.yufeng_endurance.description",
+      "cost": 50,
+      "parents": [
+        "changede:yufeng_body_growth"
+      ],
+      "x": -2,
+      "y": 10,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "changede:yufeng_body_growth",
+      "title": "skill.changede.yufeng_body_growth",
+      "description": "skill.changede.yufeng_body_growth.description",
+      "cost": 25,
       "parents": [
         "changede:yufeng_gate"
       ],
-      "x": -4,
+      "x": -2,
       "y": 9,
       "key": false,
-      "power": "yufeng_boost",
-      "amount": 0
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
     }
   ]
 }

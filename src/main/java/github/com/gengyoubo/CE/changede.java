@@ -126,6 +126,7 @@ public class changede {
         CELPRecipes.RECIPE_TYPES.register(bus);
         PatreonBenefitsFix.REGISTRY.register(bus);
         github.com.gengyoubo.CE.ability.CESkillAbilities.REGISTRY.register(bus);
+        github.com.gengyoubo.CE.skill.SkillAttributes.REGISTRY.register(bus);
         CENetwork.register();
         CEGameRules.register();
         bus.addListener(EventPriority.NORMAL, false, FMLCommonSetupEvent.class, latexStartEvents::setup);

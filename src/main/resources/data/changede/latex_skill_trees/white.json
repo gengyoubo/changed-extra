@@ -6,113 +6,172 @@
       "id": "changede:white_vitality",
       "title": "skill.changede.white_vitality",
       "description": "skill.changede.white_vitality.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:resilience"
       ],
-      "x": -1,
+      "x": -7,
       "y": 4,
       "key": true,
-      "power": "health",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:white_agility",
       "title": "skill.changede.white_agility",
       "description": "skill.changede.white_agility.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:white_vitality"
       ],
-      "x": -1,
+      "x": -7,
       "y": 5,
       "key": false,
-      "power": "speed",
-      "amount": 0.01
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.01
+        }
+      ]
     },
     {
       "id": "changede:white_defense",
       "title": "skill.changede.white_defense",
       "description": "skill.changede.white_defense.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:white_agility"
       ],
-      "x": -1,
+      "x": -7,
       "y": 6,
       "key": false,
-      "power": "armor",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:white_strength",
       "title": "skill.changede.white_strength",
       "description": "skill.changede.white_strength.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:white_defense"
       ],
-      "x": -1,
+      "x": -7,
       "y": 7,
       "key": false,
-      "power": "attack",
-      "amount": 1
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 1
+        }
+      ]
     },
     {
       "id": "changede:dark_hunter",
       "title": "skill.changede.dark_hunter",
       "description": "skill.changede.dark_hunter.description",
-      "cost": 8,
+      "cost": 40,
       "parents": [
         "changede:white_agility"
       ],
-      "x": -3,
+      "x": -9,
       "y": 6,
       "key": false,
-      "power": "damage_vs_dark",
-      "amount": 0.15
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:damage_vs_dark",
+          "amount": 0.15
+        }
+      ]
     },
     {
       "id": "changede:white_predator",
       "title": "skill.changede.white_predator",
       "description": "skill.changede.white_predator.description",
-      "cost": 10,
+      "cost": 50,
       "parents": [
         "changede:dark_hunter"
       ],
-      "x": -3,
+      "x": -9,
       "y": 7,
       "key": false,
-      "power": "damage_vs_dark",
-      "amount": 0.1
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:damage_vs_dark",
+          "amount": 0.1
+        }
+      ]
     },
     {
       "id": "changede:white_continuation",
       "title": "skill.changede.white_continuation",
       "description": "skill.changede.white_continuation.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:white_strength"
       ],
-      "x": 0,
+      "x": -6,
       "y": 8,
       "key": false,
-      "power": "armor",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:white_persistence",
       "title": "skill.changede.white_persistence",
       "description": "skill.changede.white_persistence.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:white_continuation"
       ],
-      "x": 0,
+      "x": -6,
       "y": 9,
       "key": false,
-      "power": "health",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "changede:white_cohesion",
+      "title": "skill.changede.white_cohesion",
+      "description": "skill.changede.white_cohesion.description",
+      "cost": 25,
+      "parents": [
+        "changede:white_persistence"
+      ],
+      "x": -6,
+      "y": 10,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.05
+        }
+      ]
     }
   ]
 }

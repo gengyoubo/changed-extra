@@ -15,9 +15,6 @@ public final class CESkillAbilities {
     public static final RegistryObject<YufengFlightAbility> BOOST = REGISTRY.register("yufeng_boost", () -> new YufengFlightAbility(false));
 
     @SubscribeEvent public static void abilities(TransfurVariant.UniversalAbilitiesEvent event) {
-        // Candidates are instantiated by Changed; matching skill definitions and learned progress
-        // determine visibility and server authorization, including custom forms matched by tags.
-        event.addAbility(TAKEOFF);
-        event.addAbility(BOOST);
+        // Registry IDs remain reserved, but active skill grants wait for the WLP/Power stage.
     }
 }

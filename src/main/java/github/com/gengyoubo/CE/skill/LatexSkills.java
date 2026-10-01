@@ -6,7 +6,6 @@ import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -14,110 +13,96 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Mod.EventBusSubscriber(modid = "changede")
 public final class LatexSkills {
     private static final String TAG = "changede_latex_skills";
-    private static final String MODIFIER_PREFIX = "changede.skill.";
     private static final Map<ServerPlayer, SkillTreePacket.FlightState> FLIGHT_STATES = new WeakHashMap<>();
     private static ResourceLocation clientForm;
     private static double clientFlightControl;
-    private static boolean clientTakeoff, clientBoost;
-    private static final Map<String, Attribute> ATTRIBUTES = Map.of("health", Attributes.MAX_HEALTH,
-            "attack", Attributes.ATTACK_DAMAGE, "armor", Attributes.ARMOR, "speed", Attributes.MOVEMENT_SPEED);
 
     public static ResourceLocation form(Player player) {
         var variant = ProcessTransfur.getPlayerTransfurVariant(player);
         return variant == null ? null : variant.getFormId();
     }
-
+    public static int experience(Player player) { return SkillExperience.points(player.experienceLevel, player.experienceProgress); }
     public static Set<ResourceLocation> unlocked(Player player) {
         Set<ResourceLocation> result = new HashSet<>();
         CompoundTag root = player.getPersistentData().getCompound(TAG);
-        for (SkillNode node : LatexSkillTrees.forPlayer(player)) {
+        for (SkillNode node : LatexSkillTrees.all())
             if (root.getCompound(node.tree().toString()).getBoolean(node.id().toString())) result.add(node.id());
-        }
         return result;
     }
-
+    public static List<SkillNode> active(Player player) {
+        List<SkillNode> eligible = LatexSkillTrees.forPlayer(player);
+        Set<ResourceLocation> enabled = SkillGraph.enabled(eligible, SkillNode::id, SkillNode::parents, unlocked(player));
+        return eligible.stream().filter(n -> enabled.contains(n.id())).toList();
+    }
+    public static SkillAvailability availability(Player player, SkillNode node, Set<ResourceLocation> learned, Set<ResourceLocation> active) {
+        List<SkillBlockReason> reasons = requirements(player, node, learned, active).stream().filter(r -> r.current() < r.required()).toList();
+        return SkillAvailability.of(learned.contains(node.id()), active.contains(node.id()), reasons);
+    }
+    public static List<SkillBlockReason> requirements(Player player, SkillNode node, Set<ResourceLocation> learned, Set<ResourceLocation> active) {
+        boolean unlocked = learned.contains(node.id());
+        List<SkillBlockReason> reasons = new ArrayList<>(LatexSkillTrees.formRequirements(player, node));
+        for (ResourceLocation parent : node.parents())
+            reasons.add(new SkillBlockReason(learned.contains(parent) && !active.contains(parent) ? "changede:inactive_parent" : "changede:parent",
+                    parent.toString(), active.contains(parent) ? 1 : 0, 1));
+        if (!unlocked) {
+            if (!player.isAlive() || player.isSpectator()) reasons.add(new SkillBlockReason("changede:player_state", "", 0, 1));
+            int xp = experience(player);
+            reasons.add(new SkillBlockReason("changede:experience", "", player.isCreative() ? Math.max(xp, node.cost()) : xp, node.cost()));
+        }
+        return List.copyOf(reasons);
+    }
     public static void unlock(ServerPlayer player, ResourceLocation expectedForm, ResourceLocation id) {
         ResourceLocation form = form(player);
-        if (form == null || !form.equals(expectedForm) || !player.isAlive() || player.isSpectator()) return;
-        Set<ResourceLocation> learned = unlocked(player);
-        Set<ResourceLocation> enabled = new HashSet<>();
-        active(player).forEach(n -> enabled.add(n.id()));
-        SkillNode node = LatexSkillTrees.forPlayer(player).stream().filter(n -> n.id().equals(id)).findFirst().orElse(null);
-        if (node == null || learned.contains(id) || !enabled.containsAll(node.parents())
-                || (!player.isCreative() && player.experienceLevel < node.cost())) return;
+        if (form == null || !form.equals(expectedForm)) return;
+        SkillNode node = LatexSkillTrees.all().stream().filter(n -> n.id().equals(id)).findFirst().orElse(null);
+        Set<ResourceLocation> active = new HashSet<>();
+        active(player).forEach(n -> active.add(n.id()));
+        if (node == null || !availability(player, node, unlocked(player), active).purchasable()) return;
+        if (!player.isCreative() && !spendExperience(player, node.cost())) return;
         CompoundTag root = player.getPersistentData().getCompound(TAG);
         CompoundTag progress = root.getCompound(node.tree().toString());
         progress.putBoolean(id.toString(), true);
         root.put(node.tree().toString(), progress);
         player.getPersistentData().put(TAG, root);
-        if (!player.isCreative()) player.giveExperienceLevels(-node.cost());
         refresh(player);
     }
-
-    @SubscribeEvent
-    public static void clone(PlayerEvent.Clone event) {
+    private static boolean spendExperience(ServerPlayer player, int cost) {
+        if (cost == 0) return true;
+        int before = experience(player), level = player.experienceLevel, total = player.totalExperience, score = player.getScore();
+        float progress = player.experienceProgress;
+        player.giveExperiencePoints(-cost);
+        if (experience(player) == before - cost) return true;
+        // A Forge XP event can cancel or alter the debit. Do not save a free/overcharged unlock.
+        player.experienceLevel = level;
+        player.experienceProgress = progress;
+        player.totalExperience = total;
+        player.setScore(score);
+        return false;
+    }
+    @SubscribeEvent public static void clone(PlayerEvent.Clone event) {
         if (event.getOriginal().getPersistentData().contains(TAG))
             event.getEntity().getPersistentData().put(TAG, event.getOriginal().getPersistentData().getCompound(TAG).copy());
     }
-
-    @SubscribeEvent
-    public static void tick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END && event.player instanceof ServerPlayer player && player.tickCount % 20 == 0)
-            refresh(player);
+    @SubscribeEvent public static void tick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END && event.player instanceof ServerPlayer player && player.tickCount % 20 == 0) refresh(player);
     }
-
-    public static List<SkillNode> active(Player player) {
-        ResourceLocation form = form(player);
-        if (form == null) return List.of();
-        Set<ResourceLocation> learned = unlocked(player);
-        List<SkillNode> eligible = LatexSkillTrees.forPlayer(player);
-        Set<ResourceLocation> enabled = SkillGraph.enabled(eligible, SkillNode::id, SkillNode::parents, learned);
-        return eligible.stream().filter(n -> enabled.contains(n.id())).toList();
-    }
-
     public static void refresh(ServerPlayer player) {
-        List<SkillNode> active = active(player);
-        for (var entry : ATTRIBUTES.entrySet()) {
-            AttributeInstance attribute = player.getAttribute(entry.getValue());
-            if (attribute == null) continue;
-            Map<UUID, SkillNode> desired = new HashMap<>();
-            for (SkillNode node : active) if (node.power().equals(entry.getKey()))
-                desired.put(UUID.nameUUIDFromBytes((MODIFIER_PREFIX + node.id()).getBytes(StandardCharsets.UTF_8)), node);
-            for (AttributeModifier modifier : List.copyOf(attribute.getModifiers())) {
-                if (!modifier.getName().startsWith(MODIFIER_PREFIX)) continue;
-                SkillNode node = desired.get(modifier.getId());
-                if (node == null || node.amount() != modifier.getAmount()) attribute.removeModifier(modifier.getId());
-            }
-            desired.forEach((id, node) -> {
-                if (attribute.getModifier(id) == null) attribute.addTransientModifier(new AttributeModifier(id,
-                        MODIFIER_PREFIX + node.id(), node.amount(), AttributeModifier.Operation.ADDITION));
-            });
-        }
+        SkillRewards.reconcile(player, active(player));
         if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());
-        SkillTreePacket.FlightState state = new SkillTreePacket.FlightState(form(player), flightControl(player),
-                hasActivePower(player, "yufeng_takeoff"), hasActivePower(player, "yufeng_boost"));
-        if (!state.equals(FLIGHT_STATES.put(player, state))) {
-            github.com.gengyoubo.CE.LP.network.CENetwork.INSTANCE.send(
-                    net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> player), state);
-        }
+        SkillTreePacket.FlightState state = new SkillTreePacket.FlightState(form(player), flightControl(player));
+        if (!state.equals(FLIGHT_STATES.put(player, state))) github.com.gengyoubo.CE.LP.network.CENetwork.INSTANCE.send(
+                net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> player), state);
     }
-
-    @SubscribeEvent
-    public static void fall(LivingFallEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            double reduction = active(player).stream().filter(n -> n.power().equals("fall_resistance")).mapToDouble(SkillNode::amount).sum();
-            event.setDamageMultiplier(event.getDamageMultiplier() * (float) Math.max(0, 1 - reduction));
-        }
+    @SubscribeEvent public static void fall(LivingFallEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player)
+            event.setDamageMultiplier(event.getDamageMultiplier() * (float) (1 - player.getAttributeValue(SkillAttributes.LANDING_RESISTANCE.get())));
     }
-
-    @SubscribeEvent
-    public static void damage(LivingHurtEvent event) {
+    @SubscribeEvent public static void damage(LivingHurtEvent event) {
         if (event.getAmount() <= 0 || !(event.getSource().getEntity() instanceof ServerPlayer player)) return;
         var target = event.getEntity();
         var type = target instanceof ChangedEntity latex ? latex.getLatexType() : null;
@@ -125,35 +110,18 @@ public final class LatexSkills {
             var variant = ProcessTransfur.getPlayerTransfurVariant(targetPlayer);
             if (variant != null) type = variant.getLatexType();
         }
-        String power = type == ChangedLatexTypes.WHITE_LATEX.get() ? "damage_vs_white"
-                : type == ChangedLatexTypes.DARK_LATEX.get() ? "damage_vs_dark" : "";
-        if (!power.isEmpty()) {
-            double bonus = active(player).stream().filter(n -> n.power().equals(power)).mapToDouble(SkillNode::amount).sum();
-            event.setAmount(event.getAmount() * (float) (1 + bonus));
-        }
+        double bonus = type == ChangedLatexTypes.WHITE_LATEX.get() ? player.getAttributeValue(SkillAttributes.DAMAGE_VS_WHITE.get())
+                : type == ChangedLatexTypes.DARK_LATEX.get() ? player.getAttributeValue(SkillAttributes.DAMAGE_VS_DARK.get()) : 0;
+        event.setAmount(event.getAmount() * (float) (1 + bonus));
     }
-
     public static double flightControl(Player player) {
         if (player.level().isClientSide) return Objects.equals(form(player), clientForm) ? clientFlightControl : 0;
-        return Math.min(1, active(player).stream().filter(n -> n.power().equals("flight_control")).mapToDouble(SkillNode::amount).sum());
+        return player.getAttributeValue(SkillAttributes.FLIGHT_CONTROL.get());
     }
-
     public static void applyClientFlight(ResourceLocation form, double amount) {
-        applyClientFlight(form, amount, false, false);
-    }
-
-    public static void applyClientFlight(ResourceLocation form, double amount, boolean takeoff, boolean boost) {
         clientForm = form;
         clientFlightControl = amount;
-        clientTakeoff = takeoff;
-        clientBoost = boost;
     }
-
-    public static boolean hasActivePower(Player player, String power) {
-        if (player.level().isClientSide) {
-            if (!Objects.equals(form(player), clientForm)) return false;
-            return power.equals("yufeng_takeoff") ? clientTakeoff : power.equals("yufeng_boost") && clientBoost;
-        }
-        return active(player).stream().anyMatch(n -> n.power().equals(power));
-    }
+    /** Active grants are intentionally unavailable until the WLP/Power reward stage. */
+    public static boolean hasActivePower(Player player, String power) { return false; }
 }

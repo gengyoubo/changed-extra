@@ -10,92 +10,146 @@
       "x": 0,
       "y": 0,
       "key": true,
-      "power": "health",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:vitality",
       "title": "skill.changede.vitality",
       "description": "skill.changede.vitality.description",
-      "cost": 3,
+      "cost": 18,
       "parents": [
         "changede:latex_mastery"
       ],
       "x": 0,
       "y": 1,
       "key": false,
-      "power": "health",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:agility",
       "title": "skill.changede.agility",
       "description": "skill.changede.agility.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:vitality"
       ],
       "x": 0,
       "y": 2,
       "key": false,
-      "power": "speed",
-      "amount": 0.01
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.01
+        }
+      ]
     },
     {
       "id": "changede:resilience",
       "title": "skill.changede.resilience",
       "description": "skill.changede.resilience.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:agility"
       ],
       "x": 0,
       "y": 3,
       "key": false,
-      "power": "armor",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:common_strength",
       "title": "skill.changede.common_strength",
       "description": "skill.changede.common_strength.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:resilience"
       ],
       "x": 1,
       "y": 4,
       "key": false,
-      "power": "attack",
-      "amount": 1
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 1
+        }
+      ]
     },
     {
       "id": "changede:common_endurance",
       "title": "skill.changede.common_endurance",
       "description": "skill.changede.common_endurance.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:common_strength"
       ],
       "x": 1,
       "y": 5,
       "key": false,
-      "power": "health",
-      "amount": 2
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "changede:common_coordination",
       "title": "skill.changede.common_coordination",
       "description": "skill.changede.common_coordination.description",
-      "cost": 5,
+      "cost": 25,
       "parents": [
         "changede:common_endurance"
       ],
       "x": 1,
       "y": 6,
       "key": false,
-      "power": "speed",
-      "amount": 0.01
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.01
+        }
+      ]
+    },
+    {
+      "id": "changede:common_recovery",
+      "title": "skill.changede.common_recovery",
+      "description": "skill.changede.common_recovery.description",
+      "cost": 25,
+      "parents": [
+        "changede:common_coordination"
+      ],
+      "x": 1,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor_toughness",
+          "amount": 1
+        }
+      ]
     }
   ]
 }

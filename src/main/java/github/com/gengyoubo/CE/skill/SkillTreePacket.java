@@ -12,21 +12,18 @@ import java.util.function.Supplier;
 public final class SkillTreePacket {
     private SkillTreePacket() { }
 
-    public record FlightState(ResourceLocation form, double amount, boolean takeoff, boolean boost) {
+    public record FlightState(ResourceLocation form, double amount) {
         public static void encode(FlightState packet, FriendlyByteBuf buf) {
             buf.writeBoolean(packet.form != null);
             if (packet.form != null) buf.writeResourceLocation(packet.form);
             buf.writeDouble(packet.amount);
-            buf.writeBoolean(packet.takeoff);
-            buf.writeBoolean(packet.boost);
         }
         public static FlightState decode(FriendlyByteBuf buf) {
-            return new FlightState(buf.readBoolean() ? buf.readResourceLocation() : null, buf.readDouble(),
-                    buf.readBoolean(), buf.readBoolean());
+            return new FlightState(buf.readBoolean() ? buf.readResourceLocation() : null, buf.readDouble());
         }
         public static void handle(FlightState packet, Supplier<NetworkEvent.Context> supplier) {
             var context = supplier.get();
-            context.enqueueWork(() -> LatexSkills.applyClientFlight(packet.form, packet.amount, packet.takeoff, packet.boost));
+            context.enqueueWork(() -> LatexSkills.applyClientFlight(packet.form, packet.amount));
             context.setPacketHandled(true);
         }
     }
@@ -52,17 +49,13 @@ public final class SkillTreePacket {
                 CompoundTag data = new CompoundTag();
                 var form = LatexSkills.form(player);
                 data.putString("form", form == null ? "" : form.toString());
-                var variant = net.ltxprogrammer.changed.process.ProcessTransfur.getPlayerTransfurVariant(player);
-                var latexType = variant == null ? null : variant.getLatexType();
-                data.putString("latex_background", latexType == net.ltxprogrammer.changed.init.ChangedLatexTypes.DARK_LATEX.get()
-                        ? "dark" : latexType == net.ltxprogrammer.changed.init.ChangedLatexTypes.WHITE_LATEX.get() ? "white" : "common");
-                data.putInt("levels", player.experienceLevel);
+                data.putInt("experience", LatexSkills.experience(player));
                 data.putBoolean("creative", player.isCreative());
                 ListTag nodes = new ListTag();
                 var unlocked = LatexSkills.unlocked(player);
                 java.util.Set<ResourceLocation> active = new java.util.HashSet<>();
                 LatexSkills.active(player).forEach(n -> active.add(n.id()));
-                for (SkillNode node : LatexSkillTrees.forPlayer(player)) {
+                for (SkillNode node : LatexSkillTrees.all()) {
                     CompoundTag tag = new CompoundTag();
                     tag.putString("tree", node.tree().toString());
                     tag.putString("scope", node.scope());
@@ -73,8 +66,17 @@ public final class SkillTreePacket {
                     tag.putInt("x", node.x());
                     tag.putInt("y", node.y());
                     tag.putBoolean("key", node.key());
-                    tag.putBoolean("unlocked", unlocked.contains(node.id()));
-                    tag.putBoolean("active", active.contains(node.id()));
+                    var availability = LatexSkills.availability(player, node, unlocked, active);
+                    tag.putBoolean("unlocked", availability.unlocked());
+                    tag.putBoolean("active", availability.active());
+                    tag.putBoolean("purchasable", availability.purchasable());
+                    ListTag reasons = new ListTag(), requirements = new ListTag(), rewards = new ListTag();
+                    availability.reasons().forEach(reason -> reasons.add(describe(reason)));
+                    LatexSkills.requirements(player, node, unlocked, active).forEach(reason -> requirements.add(describe(reason)));
+                    node.rewards().forEach(reward -> rewards.add(reward.describe()));
+                    tag.put("reasons", reasons);
+                    tag.put("requirements", requirements);
+                    tag.put("rewards", rewards);
                     ListTag parents = new ListTag();
                     node.parents().forEach(parent -> parents.add(StringTag.valueOf(parent.toString())));
                     tag.put("parents", parents);
@@ -85,6 +87,16 @@ public final class SkillTreePacket {
             });
             context.setPacketHandled(true);
         }
+    }
+
+    private static CompoundTag describe(SkillBlockReason reason) {
+        CompoundTag tag = new CompoundTag();
+        tag.putString("type", reason.type());
+        tag.putString("subject", reason.subject());
+        tag.putInt("current", reason.current());
+        tag.putInt("required", reason.required());
+        tag.putBoolean("met", reason.current() >= reason.required());
+        return tag;
     }
 
     public record Snapshot(CompoundTag data) {

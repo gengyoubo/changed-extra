@@ -21,9 +21,6 @@ import java.util.*;
 public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
     private static List<Tree> trees = List.of();
     private static List<SkillNode> orderedNodes = List.of();
-    private static final Set<String> ATTRIBUTES = Set.of("health", "attack", "armor", "speed");
-    private static final Set<String> POWERS = Set.of("none", "health", "attack", "armor", "speed", "fall_resistance",
-            "damage_vs_white", "damage_vs_dark", "flight_control", "yufeng_takeoff", "yufeng_boost");
 
     private record Tree(ResourceLocation id, String scope, String latexType, ResourceLocation entityTag,
                         List<ResourceLocation> forms, List<SkillNode> nodes) {
@@ -46,6 +43,29 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
         Set<ResourceLocation> matching = new HashSet<>();
         trees.stream().filter(t -> t.matches(player)).forEach(t -> matching.add(t.id()));
         return orderedNodes.stream().filter(n -> matching.contains(n.tree())).toList();
+    }
+
+    /** Keep every branch on the canvas, including learned branches belonging to previous forms. */
+    public static List<SkillNode> all() { return orderedNodes; }
+
+    public static List<SkillBlockReason> formRequirements(Player player, SkillNode node) {
+        Tree tree = trees.stream().filter(t -> t.id().equals(node.tree())).findFirst().orElseThrow();
+        var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+        List<SkillBlockReason> reasons = new ArrayList<>();
+        boolean latex = variant != null && variant.getLatexType() != ChangedLatexTypes.NONE.get();
+        reasons.add(new SkillBlockReason("changede:latex_form", "", latex ? 1 : 0, 1));
+        if (!tree.latexType().equals("any")) {
+            boolean matches = latex && variant.getLatexType() == (tree.latexType().equals("dark")
+                    ? ChangedLatexTypes.DARK_LATEX.get() : ChangedLatexTypes.WHITE_LATEX.get());
+            reasons.add(new SkillBlockReason("changede:latex_type", tree.latexType(), matches ? 1 : 0, 1));
+        }
+        if (!tree.forms().isEmpty())
+            reasons.add(new SkillBlockReason("changede:form", String.join(", ", tree.forms().stream().map(Object::toString).toList()),
+                    latex && tree.forms().contains(variant.getFormId()) ? 1 : 0, 1));
+        if (tree.entityTag() != null)
+            reasons.add(new SkillBlockReason("changede:entity_tag", tree.entityTag().toString(),
+                    latex && variant.getChangedEntity().getType().is(TagKey.create(Registries.ENTITY_TYPE, tree.entityTag())) ? 1 : 0, 1));
+        return List.copyOf(reasons);
     }
 
     @Override
@@ -74,19 +94,20 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
                     for (JsonElement parent : GsonHelper.getAsJsonArray(node, "parents", new JsonArray())) parents.add(parse(parent.getAsString()));
                     int cost = GsonHelper.getAsInt(node, "cost");
                     boolean key = GsonHelper.getAsBoolean(node, "key", false);
-                    String power = GsonHelper.getAsString(node, "power", "none");
-                    double amount = GsonHelper.getAsDouble(node, "amount", 0);
+                    if (node.has("power") || node.has("amount"))
+                        throw new IllegalArgumentException("Legacy power/amount fields must be migrated to rewards[]: " + id);
+                    List<SkillReward> rewards = new ArrayList<>();
+                    for (JsonElement reward : GsonHelper.getAsJsonArray(node, "rewards"))
+                        rewards.add(SkillRewards.parse(reward.getAsJsonObject()));
                     int x = GsonHelper.getAsInt(node, "x"), y = GsonHelper.getAsInt(node, "y");
-                    if (cost < 0 || cost > 100 || !POWERS.contains(power)
-                            || (scope.equals("global") && !ATTRIBUTES.contains(power) && !power.equals("none"))
-                            || (power.equals("none") && amount != 0)
-                            || !Double.isFinite(amount) || amount < 0 || amount > 100
-                            || (!ATTRIBUTES.contains(power) && amount > 1)
+                    if (cost < 0 || cost > 1000000 || rewards.size() > 16
+                            || (scope.equals("global") && rewards.stream().anyMatch(r -> r instanceof SkillRewards.AttributeReward a
+                                && !a.attribute().getNamespace().equals("minecraft")))
                             || Math.abs((long) x) > 10000 || Math.abs((long) y) > 10000
                             || nodes.stream().anyMatch(n -> n.id().equals(id) || (n.x() == x && n.y() == y)))
                         throw new IllegalArgumentException("Invalid or duplicate skill node: " + id);
                     nodes.add(new SkillNode(treeId, scope, id, GsonHelper.getAsString(node, "title"),
-                            GsonHelper.getAsString(node, "description"), cost, List.copyOf(parents), x, y, key, power, amount));
+                            GsonHelper.getAsString(node, "description"), cost, List.copyOf(parents), x, y, key, rewards));
                 }
                 next.add(new Tree(treeId, scope, latexType, tag, List.copyOf(forms), List.copyOf(nodes)));
             }

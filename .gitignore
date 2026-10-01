@@ -6,4 +6,6 @@
 /tools
 /docs
 /net
-/tests
+/tests/*
+!/tests/skill/
+/tests/skill/SkillGrowthTest.java
