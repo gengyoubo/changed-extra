@@ -17,11 +17,17 @@ public final class LatexSpearClient {
     @SubscribeEvent public static void attack(InputEvent.InteractionKeyMappingTriggered event) {
         var player = Minecraft.getInstance().player;
         if (!event.isAttack() || player == null || !player.getMainHandItem().is(CEItem.LATEX_SPEAR.get())) return;
+        // This event also fires every tick while holding attack over a block. Never jab from it.
         event.setCanceled(true);
+        event.setSwingHand(false);
+    }
+    public static void requestJab() {
+        var player = Minecraft.getInstance().player;
+        if (player == null || player.isSpectator() || !player.getMainHandItem().is(CEItem.LATEX_SPEAR.get())) return;
         boolean ready = !player.isUsingItem() && !player.getCooldowns().isOnCooldown(CEItem.LATEX_SPEAR.get());
-        event.setSwingHand(ready);
         if (ready) {
             CENetwork.INSTANCE.sendToServer(new SpearJabPacket());
+            player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
             player.resetAttackStrengthTicker();
             player.getCooldowns().addCooldown(CEItem.LATEX_SPEAR.get(), github.com.gengyoubo.CE.items.SpearCombatRules.JAB_COOLDOWN);
         }

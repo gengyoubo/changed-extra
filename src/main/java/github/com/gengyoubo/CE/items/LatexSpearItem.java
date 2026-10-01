@@ -92,20 +92,21 @@ public final class LatexSpearItem extends Item {
         if (player.level().isClientSide || !player.isAlive() || player.isSpectator() || player.isUsingItem()
                 || !player.getMainHandItem().is(this) || player.getCooldowns().isOnCooldown(this)) return;
         ItemStack stack = player.getMainHandItem();
-        float strength = player.getAttackStrengthScale(0.5F);
-        player.resetAttackStrengthTicker();
-        player.getCooldowns().addCooldown(this, SpearCombatRules.JAB_COOLDOWN);
         player.awardStat(Stats.ITEM_USED.get(this));
         player.level().playSound(null, player.blockPosition(), SoundEvents.TRIDENT_THROW, player.getSoundSource(), 0.5F, 1.4F);
         for (LivingEntity target : targets(player)) {
-            float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) * (0.2F + strength * strength * 0.8F)
-                    + EnchantmentHelper.getDamageBonus(stack, target.getMobType()) * strength;
+            // The spear enforces a post-attack cooldown; swapping to it must not weaken its first jab.
+            float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE)
+                    + EnchantmentHelper.getDamageBonus(stack, target.getMobType());
             if (hit(player, target, stack, damage, InteractionHand.MAIN_HAND)) {
                 target.knockback(0.35 + stack.getEnchantmentLevel(Enchantments.KNOCKBACK) * 0.5,
                         player.getX() - target.getX(), player.getZ() - target.getZ());
             }
             if (stack.isEmpty()) break;
         }
+        // Native attack hooks run before resetting strength. Keep that ordering for compatibility.
+        player.resetAttackStrengthTicker();
+        player.getCooldowns().addCooldown(this, SpearCombatRules.JAB_COOLDOWN);
     }
 
     @Override public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remaining) {
@@ -151,9 +152,7 @@ public final class LatexSpearItem extends Item {
                 target != player && target.isAlive() && target.isPickable() && !target.isSpectator()
                         && !target.isAlliedTo(player) && !target.isPassengerOfSameVehicle(player)
                         && (!(target instanceof Player other) || player.canHarmPlayer(other))
-                        && target.getBoundingBox().inflate(SpearCombatRules.HITBOX_MARGIN).clip(eye, tip)
-                        .filter(point -> SpearCombatRules.inReach(point.distanceTo(eye), player.isCreative()))
-                        .isPresent());
+                        && SpearTargeting.intersects(target.getBoundingBox(), start, tip));
     }
     private static boolean hit(Player player, LivingEntity target, ItemStack stack, float damage, InteractionHand hand) {
         if (MinecraftForge.EVENT_BUS.post(new AttackEntityEvent(player, target))) return false;
