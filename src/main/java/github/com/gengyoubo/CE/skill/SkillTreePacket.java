@@ -12,18 +12,21 @@ import java.util.function.Supplier;
 public final class SkillTreePacket {
     private SkillTreePacket() { }
 
-    public record FlightState(ResourceLocation form, double amount) {
+    public record FlightState(ResourceLocation form, double amount, boolean takeoff, boolean boost) {
         public static void encode(FlightState packet, FriendlyByteBuf buf) {
             buf.writeBoolean(packet.form != null);
             if (packet.form != null) buf.writeResourceLocation(packet.form);
             buf.writeDouble(packet.amount);
+            buf.writeBoolean(packet.takeoff);
+            buf.writeBoolean(packet.boost);
         }
         public static FlightState decode(FriendlyByteBuf buf) {
-            return new FlightState(buf.readBoolean() ? buf.readResourceLocation() : null, buf.readDouble());
+            return new FlightState(buf.readBoolean() ? buf.readResourceLocation() : null, buf.readDouble(),
+                    buf.readBoolean(), buf.readBoolean());
         }
         public static void handle(FlightState packet, Supplier<NetworkEvent.Context> supplier) {
             var context = supplier.get();
-            context.enqueueWork(() -> LatexSkills.applyClientFlight(packet.form, packet.amount));
+            context.enqueueWork(() -> LatexSkills.applyClientFlight(packet.form, packet.amount, packet.takeoff, packet.boost));
             context.setPacketHandled(true);
         }
     }

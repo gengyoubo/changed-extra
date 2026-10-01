@@ -372,5 +372,15 @@
   "skill.changede.white_continuation": "White Coordination",
   "skill.changede.white_continuation.description": "Armor +2; continues white latex group growth",
   "skill.changede.white_persistence": "White Endurance",
-  "skill.changede.white_persistence.description": "Max health +2"
+  "skill.changede.white_persistence.description": "Max health +2",
+  "screen.changede.abilities.previous": "Previous abilities",
+  "screen.changede.abilities.next": "Next abilities",
+  "skill.changede.yufeng_takeoff": "Ground Takeoff",
+  "skill.changede.yufeng_takeoff.description": "Unlock an active ability: launch forward from land and begin gliding. 2-second cooldown; unavailable in water.",
+  "skill.changede.yufeng_boost": "Flight Boost",
+  "skill.changede.yufeng_boost.description": "Unlock an active ability: boost along your look direction while flying or gliding. 1-second cooldown; unavailable on the ground or in water.",
+
+  "item.changede.latex_spear": "Latex Spear",
+  "tooltip.changede.latex_spear.jab": "Left-click to jab targets 2–4.5 blocks ahead; no critical hits.",
+  "tooltip.changede.latex_spear.charge": "Hold right-click to charge: closing speed increases damage; prolonged use causes fatigue."
 }

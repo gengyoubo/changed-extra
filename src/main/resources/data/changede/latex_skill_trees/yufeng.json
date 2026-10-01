@@ -23,10 +23,10 @@
       "description": "skill.changede.flight_technique.description",
       "cost": 5,
       "parents": [
-        "changede:yufeng_gate"
+        "changede:yufeng_boost"
       ],
-      "x": -3,
-      "y": 9,
+      "x": -4,
+      "y": 10,
       "key": false,
       "power": "flight_control",
       "amount": 0.15
@@ -39,8 +39,8 @@
       "parents": [
         "changede:flight_technique"
       ],
-      "x": -4,
-      "y": 10,
+      "x": -5,
+      "y": 11,
       "key": false,
       "power": "flight_control",
       "amount": 0.1
@@ -53,8 +53,8 @@
       "parents": [
         "changede:aerobatics"
       ],
-      "x": -5,
-      "y": 11,
+      "x": -6,
+      "y": 12,
       "key": false,
       "power": "flight_control",
       "amount": 0.1
@@ -100,6 +100,34 @@
       "key": false,
       "power": "health",
       "amount": 2
+    },
+    {
+      "id": "changede:yufeng_takeoff",
+      "title": "skill.changede.yufeng_takeoff",
+      "description": "skill.changede.yufeng_takeoff.description",
+      "cost": 5,
+      "parents": [
+        "changede:yufeng_gate"
+      ],
+      "x": -3,
+      "y": 9,
+      "key": false,
+      "power": "yufeng_takeoff",
+      "amount": 0
+    },
+    {
+      "id": "changede:yufeng_boost",
+      "title": "skill.changede.yufeng_boost",
+      "description": "skill.changede.yufeng_boost.description",
+      "cost": 5,
+      "parents": [
+        "changede:yufeng_gate"
+      ],
+      "x": -4,
+      "y": 9,
+      "key": false,
+      "power": "yufeng_boost",
+      "amount": 0
     }
   ]
 }

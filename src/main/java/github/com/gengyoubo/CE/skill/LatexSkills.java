@@ -24,6 +24,7 @@ public final class LatexSkills {
     private static final Map<ServerPlayer, SkillTreePacket.FlightState> FLIGHT_STATES = new WeakHashMap<>();
     private static ResourceLocation clientForm;
     private static double clientFlightControl;
+    private static boolean clientTakeoff, clientBoost;
     private static final Map<String, Attribute> ATTRIBUTES = Map.of("health", Attributes.MAX_HEALTH,
             "attack", Attributes.ATTACK_DAMAGE, "armor", Attributes.ARMOR, "speed", Attributes.MOVEMENT_SPEED);
 
@@ -99,7 +100,8 @@ public final class LatexSkills {
             });
         }
         if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());
-        SkillTreePacket.FlightState state = new SkillTreePacket.FlightState(form(player), flightControl(player));
+        SkillTreePacket.FlightState state = new SkillTreePacket.FlightState(form(player), flightControl(player),
+                hasActivePower(player, "yufeng_takeoff"), hasActivePower(player, "yufeng_boost"));
         if (!state.equals(FLIGHT_STATES.put(player, state))) {
             github.com.gengyoubo.CE.LP.network.CENetwork.INSTANCE.send(
                     net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> player), state);
@@ -137,7 +139,21 @@ public final class LatexSkills {
     }
 
     public static void applyClientFlight(ResourceLocation form, double amount) {
+        applyClientFlight(form, amount, false, false);
+    }
+
+    public static void applyClientFlight(ResourceLocation form, double amount, boolean takeoff, boolean boost) {
         clientForm = form;
         clientFlightControl = amount;
+        clientTakeoff = takeoff;
+        clientBoost = boost;
+    }
+
+    public static boolean hasActivePower(Player player, String power) {
+        if (player.level().isClientSide) {
+            if (!Objects.equals(form(player), clientForm)) return false;
+            return power.equals("yufeng_takeoff") ? clientTakeoff : power.equals("yufeng_boost") && clientBoost;
+        }
+        return active(player).stream().anyMatch(n -> n.power().equals(power));
     }
 }

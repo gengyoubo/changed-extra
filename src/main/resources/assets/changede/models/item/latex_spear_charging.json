@@ -1,0 +1,39 @@
+{
+  "display": {
+    "firstperson_lefthand": {
+      "translation": [
+        0,
+        -5,
+        -5
+      ],
+      "rotation": [
+        -35,
+        35,
+        -10
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ]
+    },
+    "firstperson_righthand": {
+      "translation": [
+        0,
+        -5,
+        -5
+      ],
+      "rotation": [
+        -35,
+        -35,
+        10
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ]
+    }
+  },
+  "parent": "changede:item/latex_spear_base"
+}

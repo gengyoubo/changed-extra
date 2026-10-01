@@ -1,0 +1,23 @@
+{
+  "overrides": [
+    {
+      "model": "changede:item/latex_spear_charging",
+      "predicate": {
+        "changede:charging": 1
+      }
+    },
+    {
+      "model": "changede:item/latex_spear_tired",
+      "predicate": {
+        "changede:charging": 2
+      }
+    },
+    {
+      "model": "changede:item/latex_spear_lowered",
+      "predicate": {
+        "changede:charging": 3
+      }
+    }
+  ],
+  "parent": "changede:item/latex_spear_base"
+}

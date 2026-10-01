@@ -23,7 +23,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
     private static List<SkillNode> orderedNodes = List.of();
     private static final Set<String> ATTRIBUTES = Set.of("health", "attack", "armor", "speed");
     private static final Set<String> POWERS = Set.of("none", "health", "attack", "armor", "speed", "fall_resistance",
-            "damage_vs_white", "damage_vs_dark", "flight_control");
+            "damage_vs_white", "damage_vs_dark", "flight_control", "yufeng_takeoff", "yufeng_boost");
 
     private record Tree(ResourceLocation id, String scope, String latexType, ResourceLocation entityTag,
                         List<ResourceLocation> forms, List<SkillNode> nodes) {

@@ -494,5 +494,15 @@
   "skill.changede.white_continuation": "白胶协调",
   "skill.changede.white_continuation.description": "护甲 +2；延续白胶群体成长",
   "skill.changede.white_persistence": "白胶耐力",
-  "skill.changede.white_persistence.description": "最大生命值 +2"
+  "skill.changede.white_persistence.description": "最大生命值 +2",
+  "screen.changede.abilities.previous": "上一页技能",
+  "screen.changede.abilities.next": "下一页技能",
+  "skill.changede.yufeng_takeoff": "陆地起飞",
+  "skill.changede.yufeng_takeoff.description": "解锁主动技能：在陆地上向前起飞并进入滑翔。冷却 2 秒；水中不可用。",
+  "skill.changede.yufeng_boost": "飞行加速",
+  "skill.changede.yufeng_boost.description": "解锁主动技能：飞行或滑翔时沿视线推进加速。冷却 1 秒；地面和水中不可用。",
+
+  "item.changede.latex_spear": "胶锭矛",
+  "tooltip.changede.latex_spear.jab": "左键戳刺：攻击前方 2～4.5 格的目标，无法暴击。",
+  "tooltip.changede.latex_spear.charge": "按住右键持矛冲锋：相对速度越快伤害越高；久持会疲劳。"
 }

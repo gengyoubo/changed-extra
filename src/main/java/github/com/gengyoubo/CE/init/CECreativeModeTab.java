@@ -27,6 +27,7 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.INACTIVE_WHITE_LATEX.get());
                                             output.accept(CEItem.LATEX_GRAY.get());
                                             output.accept(CEItem.LATEX_INGOT.get());
+                                            output.accept(CEItem.LATEX_SPEAR.get());
                                             output.accept(CEItem.IRIDIUM_INGOT.get());
                                             output.accept(CEItem.PAINITE_INGOT.get());
                                             output.accept(CEItem.UNBAKED_LATEX_INGOT.get());

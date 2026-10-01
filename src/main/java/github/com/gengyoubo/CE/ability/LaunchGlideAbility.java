@@ -27,28 +27,28 @@ public class LaunchGlideAbility extends SimpleAbility {
         LivingEntity living = entity.getEntity();
         if (!(living instanceof Player player) || living.isInWaterOrBubble()) return;
 
-        Vec3 look = living.getLookAngle().normalize();
         double technique = 1.0D + github.com.gengyoubo.CE.skill.LatexSkills.flightControl(player);
-
         if (living.isFallFlying()) {
-            Vec3 velocity = living.getDeltaMovement();
-            living.setDeltaMovement(
-                    velocity.x + look.x * GLIDE_BOOST * technique,
-                    velocity.y + Math.max(look.y * GLIDE_BOOST * technique, GLIDE_UPWARD_BOOST),
-                    velocity.z + look.z * GLIDE_BOOST * technique
-            );
+            boost(player, technique);
         } else if (living.onGround()) {
-            living.setDeltaMovement(
-                    look.x * FORWARD_BOOST * technique,
-                    LAUNCH_UPWARD_BOOST * technique,
-                    look.z * FORWARD_BOOST * technique
-            );
-            living.setOnGround(false);
-            player.startFallFlying();
-        } else {
-            return;
+            takeoff(player, technique);
         }
+    }
 
-        living.hurtMarked = true;
+    public static void takeoff(Player player, double technique) {
+        Vec3 look = player.getLookAngle().normalize();
+        player.setDeltaMovement(look.x * FORWARD_BOOST * technique, LAUNCH_UPWARD_BOOST * technique,
+                look.z * FORWARD_BOOST * technique);
+        player.setOnGround(false);
+        player.startFallFlying();
+        player.hurtMarked = true;
+    }
+
+    public static void boost(Player player, double technique) {
+        Vec3 look = player.getLookAngle().normalize(), velocity = player.getDeltaMovement();
+        player.setDeltaMovement(velocity.x + look.x * GLIDE_BOOST * technique,
+                velocity.y + Math.max(look.y * GLIDE_BOOST * technique, GLIDE_UPWARD_BOOST),
+                velocity.z + look.z * GLIDE_BOOST * technique);
+        player.hurtMarked = true;
     }
 }

@@ -22,6 +22,8 @@ public class CEItem {
             ITEMS.register("latex_gray", LatexGray::new);
     public static final RegistryObject<Item> LATEX_INGOT =
             ITEMS.register("latex_ingot", LatexIngot::new);
+    public static final RegistryObject<Item> LATEX_SPEAR =
+            ITEMS.register("latex_spear", LatexSpearItem::new);
     public static final RegistryObject<Item> UNBAKED_LATEX_INGOT =
             ITEMS.register("unbaked_latex_ingot", UnbakedLatexIngot::new);
     public static final RegistryObject<Item> DARK_LATEX_LOG =

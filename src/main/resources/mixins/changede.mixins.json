@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "changede.refmap.json",
   "mixins": [
+    "LatexSpearShieldMixin",
     "FireBlockAccessor",
     "ChangedBlocksMixin",
     "ChainmailArmorMaterialMixin",
@@ -41,6 +42,10 @@
   "server": [
   ],
   "client": [
+    "LatexSpearMovementMixin",
+    "LatexSpearAttackIndicatorMixin",
+    "AbilityRadialPagingAccessor",
+    "AbilityRadialLearnedSkillsMixin",
     "AccessorySlotsSafetyMixin",
     "BondedLatexWorkSlotMixin",
     "ClientEventMixin",
