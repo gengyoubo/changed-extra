@@ -168,6 +168,8 @@ public final class LatexSkillScreen extends Screen {
         graphics.pose().pushPose();
         graphics.pose().translate(panX, panY, 0);
         graphics.pose().scale((float) zoom, (float) zoom, 1);
+        LatexSkillBackground.render(graphics, nodes, data.getString("latex_background"), panX, panY, zoom,
+                4, TOP, width - 4, height - 32, COLUMN, ROW);
         for (CompoundTag node : nodes) for (Tag parentId : node.getList("parents", Tag.TAG_STRING)) {
             CompoundTag prerequisite = byId.get(parentId.getAsString());
             if (prerequisite == null) continue;

@@ -49,6 +49,10 @@ public final class SkillTreePacket {
                 CompoundTag data = new CompoundTag();
                 var form = LatexSkills.form(player);
                 data.putString("form", form == null ? "" : form.toString());
+                var variant = net.ltxprogrammer.changed.process.ProcessTransfur.getPlayerTransfurVariant(player);
+                var latexType = variant == null ? null : variant.getLatexType();
+                data.putString("latex_background", latexType == net.ltxprogrammer.changed.init.ChangedLatexTypes.DARK_LATEX.get()
+                        ? "dark" : latexType == net.ltxprogrammer.changed.init.ChangedLatexTypes.WHITE_LATEX.get() ? "white" : "common");
                 data.putInt("levels", player.experienceLevel);
                 data.putBoolean("creative", player.isCreative());
                 ListTag nodes = new ListTag();
