@@ -65,7 +65,14 @@ public final class LatexSpearAnimations {
     @SubscribeEvent public static void firstPerson(RenderHandEvent event) {
         var player = Minecraft.getInstance().player;
         ItemStack stack = event.getItemStack();
-        if (player == null || player.isScoping() || !(stack.getItem() instanceof LatexSpearItem)) return;
+        if (player == null || player.isScoping()) return;
+        // Apply visibility before filtering the rendered stack: the other hand may be empty,
+        // hold a sword/food, or hold a second spear.
+        if (hideOtherHand(player, event.getHand())) {
+            event.setCanceled(true);
+            return;
+        }
+        if (!(stack.getItem() instanceof LatexSpearItem)) return;
         event.setCanceled(true);
         HumanoidArm arm = event.getHand() == InteractionHand.MAIN_HAND
                 ? player.getMainArm() : player.getMainArm().getOpposite();
@@ -85,6 +92,12 @@ public final class LatexSpearAnimations {
                             : ItemDisplayContext.FIRST_PERSON_LEFT_HAND,
                     arm == HumanoidArm.LEFT, pose, event.getMultiBufferSource(), event.getPackedLight());
         } finally { pose.popPose(); }
+    }
+
+    public static boolean hideOtherHand(LivingEntity entity, InteractionHand renderedHand) {
+        LivingEntity source = owner(entity);
+        return source.isUsingItem() && source.getUseItem().getItem() instanceof LatexSpearItem
+                && source.getUsedItemHand() != renderedHand;
     }
 
     public static void firstPersonAttackItem(PoseStack pose, HumanoidArm arm, float progress) {
@@ -124,9 +137,13 @@ public final class LatexSpearAnimations {
         InteractionHand hand = side == entity.getMainArm() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         float progress = hand == InteractionHand.MAIN_HAND ? jabProgress(entity, partialTick) : -1;
         int sign = side == HumanoidArm.RIGHT ? 1 : -1;
+        float aimPitch = entity.isFallFlying() && !entity.isAutoSpinAttack()
+                ? SpearFlightPose.aimPitch(entity.getViewXRot(partialTick), entity.getXRot(),
+                    entity.getFallFlyingTicks() + partialTick) * Mth.DEG_TO_RAD
+                : head.xRot;
         if (progress >= 0) {
             var sample = SpearJabAnimation.sample(progress);
-            arm.xRot = Mth.lerp(sample.raise(), arm.xRot, head.xRot) + sample.armPitch() * Mth.DEG_TO_RAD;
+            arm.xRot = Mth.lerp(sample.raise(), arm.xRot, aimPitch) + sample.armPitch() * Mth.DEG_TO_RAD;
             arm.yRot = Mth.lerp(sample.raise(), arm.yRot, head.yRot - sign * 0.1F);
             arm.zRot *= 1 - sample.raise();
         } else if (using(entity, hand, entity.getItemInHand(hand))) {
@@ -134,7 +151,7 @@ public final class LatexSpearAnimations {
             float raise = chargeRaise(ticks);
             float tired = ramp(ticks, SpearCombatRules.WARMUP + SpearCombatRules.TIRED, 20);
             float lower = ramp(ticks, SpearCombatRules.WARMUP + SpearCombatRules.DISENGAGED, 20);
-            arm.xRot = head.xRot + (-50 * raise + 20 * tired + 30 * lower) * Mth.DEG_TO_RAD;
+            arm.xRot = aimPitch + (-50 * raise + 20 * tired + 30 * lower) * Mth.DEG_TO_RAD;
             arm.yRot = head.yRot - sign * 0.1F;
             arm.zRot = sign * Mth.sin(ticks * 0.3F) * 0.015F * tired;
         }

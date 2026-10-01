@@ -68,8 +68,50 @@ public final class LatexSpearRegressionChecks {
                 spear.onUseTick(level, player, player.getMainHandItem(), SpearCombatRules.USE_DURATION - SpearCombatRules.WARMUP);
                 check(target.getHealth() < health, "Charge deals damage using measured movement");
             } finally { timeData.setGameTime(originalTime); player.stopUsingItem(); target.discard(); }
+            for (InteractionHand hand : InteractionHand.values()) {
+                for (double distance : new double[]{3.25, 3.75, 4.4}) {
+                    chargeThroughPlayerTicks(level, spear, hand, distance, false);
+                    chargeThroughPlayerTicks(level, spear, hand, distance, true);
+                }
+            }
             LogManager.getLogger("changede-spear-check").info("ALL SPEAR SERVER CHECKS PASSED");
         } finally { event.getServer().halt(false); }
+    }
+    private static void chargeThroughPlayerTicks(ServerLevel level, LatexSpearItem spear,
+                                                  InteractionHand hand, double distance, boolean startNearTarget) {
+        var player = FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "ChargeRangeTest"));
+        player.setPos(0, 260, 0);
+        player.setNoGravity(true);
+        player.setYRot(0);
+        player.setXRot(0);
+        player.setSprinting(true);
+        player.setItemInHand(hand, new ItemStack(spear));
+        double step = 0.28; // Approximately normal forward sprint speed, in blocks/tick.
+        int ticks = SpearCombatRules.WARMUP + 1;
+        Zombie target = target(level, distance + (startNearTarget ? 0 : step * ticks));
+        float health = target.getHealth();
+        long originalTime = level.getGameTime();
+        var timeData = (net.minecraft.world.level.storage.ServerLevelData) level.getLevelData();
+        try {
+            spear.use(level, player, hand);
+            for (int tick = 0; tick <= ticks; tick++) {
+                timeData.setGameTime(originalTime + tick + 1);
+                player.setPos(0, 260, step * tick);
+                player.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+                // Exercises Forge PlayerTickEvent -> real LivingEntity use tick, rather than
+                // manually calling onUseTick with a prepared movement sample.
+                player.doTick();
+            }
+            if (startNearTarget) {
+                check(target.getHealth() == health, "Starting charge at " + distance + " blocks enters minimum-range blind spot during warmup using " + hand);
+            } else {
+                check(target.getHealth() < health, "Sprint charge through player ticks hits " + distance + " blocks using " + hand);
+            }
+        } finally {
+            timeData.setGameTime(originalTime);
+            player.stopUsingItem();
+            target.discard();
+        }
     }
     private static Zombie target(ServerLevel level, double z) {
         Zombie zombie = EntityType.ZOMBIE.create(level);

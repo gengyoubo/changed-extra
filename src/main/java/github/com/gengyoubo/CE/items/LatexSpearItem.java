@@ -195,5 +195,6 @@ public final class LatexSpearItem extends Item {
     @Override public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.changede.latex_spear.jab"));
         tooltip.add(Component.translatable("tooltip.changede.latex_spear.charge"));
+        tooltip.add(Component.translatable("tooltip.changede.latex_spear.charge_ready"));
     }
 }

@@ -22,7 +22,7 @@ public final class LatexSpearAnimationRegressionChecks {
     @SubscribeEvent public static void verify(TickEvent.ClientTickEvent event) {
         if (finished || event.phase != TickEvent.Phase.END || !Boolean.getBoolean("changede.verifySpearAnimations")) return;
         Minecraft minecraft = Minecraft.getInstance();
-        if (!(minecraft.screen instanceof TitleScreen)) return;
+        if (!(minecraft.screen instanceof TitleScreen) || minecraft.getOverlay() != null) return;
         finished = true;
         try {
             // Force every rendering target through the real Forge/Mixin class loader.
