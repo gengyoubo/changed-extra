@@ -1,0 +1,90 @@
+{
+  "scope": "group",
+  "latex_type": "dark",
+  "nodes": [
+    {
+      "id": "changede:dark_shell",
+      "title": "skill.changede.dark_shell",
+      "description": "skill.changede.dark_shell.description",
+      "cost": 5,
+      "parents": [
+        "changede:resilience"
+      ],
+      "x": 0,
+      "y": 4,
+      "key": true,
+      "power": "armor",
+      "amount": 2
+    },
+    {
+      "id": "changede:dark_strength",
+      "title": "skill.changede.dark_strength",
+      "description": "skill.changede.dark_strength.description",
+      "cost": 5,
+      "parents": [
+        "changede:dark_shell"
+      ],
+      "x": -1,
+      "y": 5,
+      "key": false,
+      "power": "attack",
+      "amount": 1
+    },
+    {
+      "id": "changede:dark_endurance",
+      "title": "skill.changede.dark_endurance",
+      "description": "skill.changede.dark_endurance.description",
+      "cost": 5,
+      "parents": [
+        "changede:dark_strength"
+      ],
+      "x": -1,
+      "y": 6,
+      "key": false,
+      "power": "health",
+      "amount": 2
+    },
+    {
+      "id": "changede:dark_agility",
+      "title": "skill.changede.dark_agility",
+      "description": "skill.changede.dark_agility.description",
+      "cost": 5,
+      "parents": [
+        "changede:dark_endurance"
+      ],
+      "x": -1,
+      "y": 7,
+      "key": false,
+      "power": "speed",
+      "amount": 0.01
+    },
+    {
+      "id": "changede:white_hunter",
+      "title": "skill.changede.white_hunter",
+      "description": "skill.changede.white_hunter.description",
+      "cost": 8,
+      "parents": [
+        "changede:dark_shell"
+      ],
+      "x": 1,
+      "y": 5,
+      "key": false,
+      "power": "damage_vs_white",
+      "amount": 0.15
+    },
+    {
+      "id": "changede:dark_predator",
+      "title": "skill.changede.dark_predator",
+      "description": "skill.changede.dark_predator.description",
+      "cost": 10,
+      "parents": [
+        "changede:white_hunter"
+      ],
+      "x": 1,
+      "y": 6,
+      "key": false,
+      "power": "damage_vs_white",
+      "amount": 0.1
+    }
+  ]
+}

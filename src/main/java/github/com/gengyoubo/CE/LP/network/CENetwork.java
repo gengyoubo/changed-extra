@@ -12,7 +12,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class CENetwork {
-    private static final String PROTOCOL_VERSION = "1";
+    private static final String PROTOCOL_VERSION = "2";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             ResourceLocation.fromNamespaceAndPath("changede", "main"),
             () -> PROTOCOL_VERSION,
@@ -23,6 +23,21 @@ public class CENetwork {
     private static int packetId = 0;
 
     public static void register() {
+        INSTANCE.registerMessage(packetId++, github.com.gengyoubo.CE.skill.SkillTreePacket.FlightState.class,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.FlightState::encode,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.FlightState::decode,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.FlightState::handle,
+                java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(packetId++, github.com.gengyoubo.CE.skill.SkillTreePacket.Request.class,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.Request::encode,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.Request::decode,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.Request::handle,
+                java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER));
+        INSTANCE.registerMessage(packetId++, github.com.gengyoubo.CE.skill.SkillTreePacket.Snapshot.class,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.Snapshot::encode,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.Snapshot::decode,
+                github.com.gengyoubo.CE.skill.SkillTreePacket.Snapshot::handle,
+                java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(
                 packetId++,
                 CycleGeneratorRedstoneModePacket.class,

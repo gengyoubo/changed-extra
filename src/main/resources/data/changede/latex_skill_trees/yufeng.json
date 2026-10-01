@@ -1,0 +1,105 @@
+{
+  "scope": "form",
+  "latex_type": "dark",
+  "entity_tag": "changede:skill_yufeng",
+  "nodes": [
+    {
+      "id": "changede:yufeng_gate",
+      "title": "skill.changede.yufeng_gate",
+      "description": "skill.changede.yufeng_gate.description",
+      "cost": 3,
+      "parents": [
+        "changede:dark_agility"
+      ],
+      "x": -1,
+      "y": 8,
+      "key": true,
+      "power": "none",
+      "amount": 0
+    },
+    {
+      "id": "changede:flight_technique",
+      "title": "skill.changede.flight_technique",
+      "description": "skill.changede.flight_technique.description",
+      "cost": 5,
+      "parents": [
+        "changede:yufeng_gate"
+      ],
+      "x": -2,
+      "y": 9,
+      "key": false,
+      "power": "flight_control",
+      "amount": 0.15
+    },
+    {
+      "id": "changede:aerobatics",
+      "title": "skill.changede.aerobatics",
+      "description": "skill.changede.aerobatics.description",
+      "cost": 8,
+      "parents": [
+        "changede:flight_technique"
+      ],
+      "x": -3,
+      "y": 10,
+      "key": false,
+      "power": "flight_control",
+      "amount": 0.1
+    },
+    {
+      "id": "changede:flight_mastery",
+      "title": "skill.changede.flight_mastery",
+      "description": "skill.changede.flight_mastery.description",
+      "cost": 10,
+      "parents": [
+        "changede:aerobatics"
+      ],
+      "x": -4,
+      "y": 11,
+      "key": false,
+      "power": "flight_control",
+      "amount": 0.1
+    },
+    {
+      "id": "changede:safe_landing",
+      "title": "skill.changede.safe_landing",
+      "description": "skill.changede.safe_landing.description",
+      "cost": 5,
+      "parents": [
+        "changede:yufeng_gate"
+      ],
+      "x": 0,
+      "y": 9,
+      "key": false,
+      "power": "fall_resistance",
+      "amount": 0.25
+    },
+    {
+      "id": "changede:soft_landing",
+      "title": "skill.changede.soft_landing",
+      "description": "skill.changede.soft_landing.description",
+      "cost": 8,
+      "parents": [
+        "changede:safe_landing"
+      ],
+      "x": 0,
+      "y": 10,
+      "key": false,
+      "power": "fall_resistance",
+      "amount": 0.25
+    },
+    {
+      "id": "changede:yufeng_endurance",
+      "title": "skill.changede.yufeng_endurance",
+      "description": "skill.changede.yufeng_endurance.description",
+      "cost": 10,
+      "parents": [
+        "changede:soft_landing"
+      ],
+      "x": 0,
+      "y": 11,
+      "key": false,
+      "power": "health",
+      "amount": 2
+    }
+  ]
+}

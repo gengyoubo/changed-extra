@@ -28,19 +28,20 @@ public class LaunchGlideAbility extends SimpleAbility {
         if (!(living instanceof Player player) || living.isInWaterOrBubble()) return;
 
         Vec3 look = living.getLookAngle().normalize();
+        double technique = 1.0D + github.com.gengyoubo.CE.skill.LatexSkills.flightControl(player);
 
         if (living.isFallFlying()) {
             Vec3 velocity = living.getDeltaMovement();
             living.setDeltaMovement(
-                    velocity.x + look.x * GLIDE_BOOST,
-                    velocity.y + Math.max(look.y * GLIDE_BOOST, GLIDE_UPWARD_BOOST),
-                    velocity.z + look.z * GLIDE_BOOST
+                    velocity.x + look.x * GLIDE_BOOST * technique,
+                    velocity.y + Math.max(look.y * GLIDE_BOOST * technique, GLIDE_UPWARD_BOOST),
+                    velocity.z + look.z * GLIDE_BOOST * technique
             );
         } else if (living.onGround()) {
             living.setDeltaMovement(
-                    look.x * FORWARD_BOOST,
-                    LAUNCH_UPWARD_BOOST,
-                    look.z * FORWARD_BOOST
+                    look.x * FORWARD_BOOST * technique,
+                    LAUNCH_UPWARD_BOOST * technique,
+                    look.z * FORWARD_BOOST * technique
             );
             living.setOnGround(false);
             player.startFallFlying();

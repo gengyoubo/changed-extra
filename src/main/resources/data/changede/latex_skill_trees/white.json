@@ -1,0 +1,90 @@
+{
+  "scope": "group",
+  "latex_type": "white",
+  "nodes": [
+    {
+      "id": "changede:white_vitality",
+      "title": "skill.changede.white_vitality",
+      "description": "skill.changede.white_vitality.description",
+      "cost": 5,
+      "parents": [
+        "changede:resilience"
+      ],
+      "x": 0,
+      "y": 4,
+      "key": true,
+      "power": "health",
+      "amount": 2
+    },
+    {
+      "id": "changede:white_agility",
+      "title": "skill.changede.white_agility",
+      "description": "skill.changede.white_agility.description",
+      "cost": 5,
+      "parents": [
+        "changede:white_vitality"
+      ],
+      "x": -1,
+      "y": 5,
+      "key": false,
+      "power": "speed",
+      "amount": 0.01
+    },
+    {
+      "id": "changede:white_defense",
+      "title": "skill.changede.white_defense",
+      "description": "skill.changede.white_defense.description",
+      "cost": 5,
+      "parents": [
+        "changede:white_agility"
+      ],
+      "x": -1,
+      "y": 6,
+      "key": false,
+      "power": "armor",
+      "amount": 2
+    },
+    {
+      "id": "changede:white_strength",
+      "title": "skill.changede.white_strength",
+      "description": "skill.changede.white_strength.description",
+      "cost": 5,
+      "parents": [
+        "changede:white_defense"
+      ],
+      "x": -1,
+      "y": 7,
+      "key": false,
+      "power": "attack",
+      "amount": 1
+    },
+    {
+      "id": "changede:dark_hunter",
+      "title": "skill.changede.dark_hunter",
+      "description": "skill.changede.dark_hunter.description",
+      "cost": 8,
+      "parents": [
+        "changede:white_vitality"
+      ],
+      "x": 1,
+      "y": 5,
+      "key": false,
+      "power": "damage_vs_dark",
+      "amount": 0.15
+    },
+    {
+      "id": "changede:white_predator",
+      "title": "skill.changede.white_predator",
+      "description": "skill.changede.white_predator.description",
+      "cost": 10,
+      "parents": [
+        "changede:dark_hunter"
+      ],
+      "x": 1,
+      "y": 6,
+      "key": false,
+      "power": "damage_vs_dark",
+      "amount": 0.1
+    }
+  ]
+}

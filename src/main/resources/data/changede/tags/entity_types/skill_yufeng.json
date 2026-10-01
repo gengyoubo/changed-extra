@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "changed:dark_latex_yufeng",
+    "changed:dark_latex_double_yufeng",
+    {
+      "id": "changed_addon:dark_latex_yufeng_queen",
+      "required": false
+    }
+  ]
+}
