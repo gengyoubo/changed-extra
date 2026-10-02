@@ -7,6 +7,5 @@
 /docs
 /net
 /tests/*
-!/tests/skill/
 /tests/skill/SkillGrowthTest.java
 /tests/skill/validate_skill_resources.py
