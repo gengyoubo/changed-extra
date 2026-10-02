@@ -1027,5 +1027,7 @@
   "tooltip.changede.morphic_crystal.ore": "产于胶空间地下，需要铁镐及以上；精准采集保留矿石。",
   "tooltip.changede.morphic_crystal.crystal": "与胶锭在合金炉中加工成形质晶合金。",
   "tooltip.changede.morphic_crystal.alloy": "四个合金与一个硅硼钙铝锭可制成形质晶核心。",
-  "tooltip.changede.morphic_crystal.core": "用于胶兽学研究。只在开始研究时消耗；继续研究无需再次投入。"
+  "tooltip.changede.morphic_crystal.core": "用于胶兽学研究。只在开始研究时消耗；继续研究无需再次投入。",
+  "block.changede.wlp_pipe": "基础 WLP 管道",
+  "block.changede.dlp_pipe": "基础 DLP 管道"
 }

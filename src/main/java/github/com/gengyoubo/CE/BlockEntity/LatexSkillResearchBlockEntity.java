@@ -63,7 +63,7 @@ public final class LatexSkillResearchBlockEntity extends BlockEntity implements 
             int space=CAPACITY-energy.getEnergyStored();if(space<=0)break;
             if(level.getBlockEntity(worldPosition.relative(direction)) instanceof ILatexTypedEnergyHandler source
                     && source.getEnergyType()==LatexEnergyType.WLP) {
-                int extracted=source.extractTypedEnergy(LatexEnergyType.WLP,Math.min(1000,space));
+                int extracted=source.extractTypedEnergy(LatexEnergyType.WLP,Math.min(1000,space),direction.getOpposite());
                 receiveTypedEnergy(LatexEnergyType.WLP,extracted);
             }
         }

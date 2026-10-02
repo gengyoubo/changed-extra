@@ -1,0 +1,15 @@
+// Opt-in isolated world and source set; no probes in ordinary releases.
+gradle.beforeProject { project ->
+    project.afterEvaluate {
+        def probeDir=project.file('build/typed-pipe-integration-source')
+        project.copy {
+            from project.file('tests/skill/TypedPipeIntegrationProbe.java')
+            into probeDir
+        }
+        project.sourceSets.main.java.srcDir(probeDir)
+        project.minecraft.runs.server.workingDirectory project.file('build/typed-pipe-integration-run')
+        project.minecraft.runs.server.jvmArgs '-Xmx3G'
+        project.minecraft.runs.server.property 'forge.logging.console.level','info'
+        project.minecraft.runs.server.property 'changede.typedPipeProbe','true'
+    }
+}

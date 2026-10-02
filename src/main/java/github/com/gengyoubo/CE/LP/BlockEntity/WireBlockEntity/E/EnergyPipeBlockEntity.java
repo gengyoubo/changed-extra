@@ -32,7 +32,7 @@ public abstract class EnergyPipeBlockEntity extends BasePipeBlockEntity implemen
 
     @Override
     protected boolean canConnectToPipe(BasePipeBlockEntity other, Direction direction) {
-        return other.getTransportType() == TransportType.ENERGY;
+        return other instanceof EnergyPipeBlockEntity;
     }
 
     @Override

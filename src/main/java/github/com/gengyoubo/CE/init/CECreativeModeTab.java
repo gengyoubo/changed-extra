@@ -60,6 +60,8 @@ public class CECreativeModeTab {
                                         .icon(() -> new ItemStack(CELPItem.ELECTRIC_FURNACE_ITEM.get()))
                                         .displayItems((parameters, output) -> {
                                             output.accept(CELPItem.BASIC_WIRE_ITEM.get());
+                                            output.accept(CELPItem.WLP_PIPE_ITEM.get());
+                                            output.accept(CELPItem.DLP_PIPE_ITEM.get());
                                             output.accept(CEItem.PAINITE_WORKBENCH_CORE.get());
                                             output.accept(CEItem.MORPHIC_CRYSTAL_CORE.get());
                                             output.accept(CEItem.LATEX_SKILL_RESEARCH_TABLE.get());

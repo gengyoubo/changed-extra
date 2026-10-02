@@ -14,6 +14,8 @@ public class CELPItem {
 
     //BlockItem
     public static final RegistryObject<Item> BASIC_WIRE_ITEM;
+    public static final RegistryObject<Item> WLP_PIPE_ITEM;
+    public static final RegistryObject<Item> DLP_PIPE_ITEM;
     public static final RegistryObject<Item> BASIC_ITEM_PIPE_ITEM;
     public static final RegistryObject<Item> BASIC_FLUID_PIPE_ITEM;
     public static final RegistryObject<Item> BASIC_PUMP_ITEM;
@@ -37,6 +39,8 @@ public class CELPItem {
         PIPE_WRENCH = ITEMS.register("pipe_wrench", () -> new Item(new Item.Properties()));
         BASIC_WIRE_ITEM = ITEMS.register("basic_wire",
                 () -> new BlockItem(CELPBlock.BASIC_WIRE.get(), new Item.Properties()));
+        WLP_PIPE_ITEM = ITEMS.register("wlp_pipe",()->new BlockItem(CELPBlock.WLP_PIPE.get(),new Item.Properties()));
+        DLP_PIPE_ITEM = ITEMS.register("dlp_pipe",()->new BlockItem(CELPBlock.DLP_PIPE.get(),new Item.Properties()));
         BASIC_ITEM_PIPE_ITEM = ITEMS.register("basic_item_pipe",
                 () -> new BlockItem(CELPBlock.BASIC_ITEM_PIPE.get(), new Item.Properties()));
         BASIC_FLUID_PIPE_ITEM = ITEMS.register("basic_fluid_pipe",

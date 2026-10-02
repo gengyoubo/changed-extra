@@ -3,6 +3,7 @@ package github.com.gengyoubo.CE.LP.Block;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.BasePipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.TransportType;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.BasicEnergyPipeBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.EnergyPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.world.Menu.PipeConfigMenu;
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
@@ -185,13 +186,14 @@ public class BasicEnergyPipeBlock extends BaseEntityBlock {
         };
     }
 
-    private boolean canConnectTo(LevelAccessor level, BlockPos pos) {
+    protected boolean canConnectTo(LevelAccessor level, BlockPos pos) {
         BlockEntity entity = level.getBlockEntity(pos);
         if (entity == null) {
             return false;
         }
 
         if (entity instanceof BasePipeBlockEntity pipeBlockEntity) {
+            if(getTransportType()==TransportType.ENERGY)return entity instanceof EnergyPipeBlockEntity;
             return pipeBlockEntity.getTransportType() == getTransportType();
         }
 

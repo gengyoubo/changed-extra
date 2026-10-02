@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.LP.compat.jade;
 
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
+import github.com.gengyoubo.CE.LP.ILatexTypedEnergyHandler;
 import github.com.gengyoubo.CE.util.AmountFormat;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.I.ItemPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.F.FluidPipeBlockEntity;
@@ -32,8 +33,9 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
     private static final String ITEM_NAME_KEY = "PipeItemName";
     private static final String ITEM_COUNT_KEY = "PipeItemCount";
 
-    private static final String CONVERTER_OUTPUT_KEY = "ConverterOutput";
-    private static final String CONVERTER_TYPE_KEY = "ConverterType";
+    private static final String TYPED_STORED_KEY = "StoredTypedEnergy";
+    private static final String TYPED_CAPACITY_KEY = "CapacityTypedEnergy";
+    private static final String TYPED_TYPE_KEY = "TypedEnergyType";
 
     private static final String ORANGE_COUNT_KEY = "OrangeProducerCount";
 
@@ -59,9 +61,10 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
 
         // DLP / WLP
         // 这是 CE 自定义能源，Jade 不认识，因此保留
-        if (blockEntity instanceof LatexEnergyConverterBlockEntity converter) {
-            data.putInt(CONVERTER_OUTPUT_KEY, converter.getOutputStored());
-            data.putString(CONVERTER_TYPE_KEY, converter.getOutputType().name());
+        if (blockEntity instanceof ILatexTypedEnergyHandler energy) {
+            data.putInt(TYPED_STORED_KEY, energy.getTypedEnergyStored());
+            data.putInt(TYPED_CAPACITY_KEY, energy.getTypedEnergyCapacity());
+            data.putString(TYPED_TYPE_KEY, energy.getEnergyType().name());
         }
     }
 
@@ -90,23 +93,23 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
         }
 
         // DLP / WLP
-        if (data.contains(CONVERTER_OUTPUT_KEY)
-                && data.contains(CONVERTER_TYPE_KEY)) {
+        if (data.contains(TYPED_STORED_KEY) && data.contains(TYPED_CAPACITY_KEY)
+                && data.contains(TYPED_TYPE_KEY)) {
 
             boolean white = "WLP".equals(
-                    data.getString(CONVERTER_TYPE_KEY)
+                    data.getString(TYPED_TYPE_KEY)
             );
 
             String energyKey = white
                     ? "energy.changede.wlp"
                     : "energy.changede.dlp";
 
-            int stored = data.getInt(CONVERTER_OUTPUT_KEY);
-            int capacity = LatexEnergyConverterBlockEntity.OUTPUT_CAPACITY;
+            int stored = data.getInt(TYPED_STORED_KEY);
+            int capacity = data.getInt(TYPED_CAPACITY_KEY);
 
             float ratio = capacity <= 0
                     ? 0
-                    : (float) stored / capacity;
+                    : Math.max(0,Math.min(1,(float) stored / capacity));
 
             IElementHelper elements = tooltip.getElementHelper();
 

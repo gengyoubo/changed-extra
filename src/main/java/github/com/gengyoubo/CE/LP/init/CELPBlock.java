@@ -1,6 +1,8 @@
 package github.com.gengyoubo.CE.LP.init;
 
 import github.com.gengyoubo.CE.LP.Block.BasicEnergyPipeBlock;
+import github.com.gengyoubo.CE.LP.Block.TypedEnergyPipeBlock;
+import github.com.gengyoubo.CE.LP.LatexEnergyType;
 import github.com.gengyoubo.CE.LP.Block.BasicItemPipeBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicFluidPipeBlock;
 import github.com.gengyoubo.CE.LP.Block.BasicPumpBlock;
@@ -24,6 +26,8 @@ public class CELPBlock {
     public static final DeferredRegister<Block> BLOCKS;
     public static final DeferredRegister<Block> WIRE_BLOCKS;
     public static final RegistryObject<Block> BASIC_WIRE;
+    public static final RegistryObject<Block> WLP_PIPE;
+    public static final RegistryObject<Block> DLP_PIPE;
     public static final RegistryObject<Block> BASIC_ITEM_PIPE;
     public static final RegistryObject<Block> BASIC_FLUID_PIPE;
     public static final RegistryObject<Block> BASIC_PUMP;
@@ -45,6 +49,8 @@ public class CELPBlock {
         WIRE_BLOCKS = BLOCKS;
         BASIC_WIRE = BLOCKS.register("basic_wire",
                 () -> new BasicEnergyPipeBlock(BlockBehaviour.Properties.of()));
+        WLP_PIPE = BLOCKS.register("wlp_pipe",()->new TypedEnergyPipeBlock(BlockBehaviour.Properties.of().strength(0.5F).noOcclusion(),LatexEnergyType.WLP));
+        DLP_PIPE = BLOCKS.register("dlp_pipe",()->new TypedEnergyPipeBlock(BlockBehaviour.Properties.of().strength(0.5F).noOcclusion(),LatexEnergyType.DLP));
         BASIC_ITEM_PIPE = BLOCKS.register("basic_item_pipe",
                 () -> new BasicItemPipeBlock(BlockBehaviour.Properties.of()));
         BASIC_FLUID_PIPE = BLOCKS.register("basic_fluid_pipe",

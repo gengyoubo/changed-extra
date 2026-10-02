@@ -12,6 +12,8 @@ import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexEnergyConv
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.OrangeProducerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexCreativeExtranalbodyCraftTableBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.BasicEnergyPipeBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E.TypedEnergyPipeBlockEntity;
+import github.com.gengyoubo.CE.LP.LatexEnergyType;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.I.BasicItemPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.F.BasicFluidPipeBlockEntity;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerCompat;
@@ -32,6 +34,12 @@ public class CELPBlockEntity {
 
     // Keep the old names as aliases so existing registration code keeps compiling.
     public static final DeferredRegister<BlockEntityType<?>> WIRE_BLOCK_ENTITIES = BLOCK_ENTITIES;
+    public static final RegistryObject<BlockEntityType<TypedEnergyPipeBlockEntity>> WLP_PIPE =
+            BLOCK_ENTITIES.register("wlp_pipe",()->BlockEntityType.Builder.of(
+                    (pos,state)->new TypedEnergyPipeBlockEntity(pos,state,LatexEnergyType.WLP),CELPBlock.WLP_PIPE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TypedEnergyPipeBlockEntity>> DLP_PIPE =
+            BLOCK_ENTITIES.register("dlp_pipe",()->BlockEntityType.Builder.of(
+                    (pos,state)->new TypedEnergyPipeBlockEntity(pos,state,LatexEnergyType.DLP),CELPBlock.DLP_PIPE.get()).build(null));
     @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<BasicEnergyPipeBlockEntity>> BASIC_WIRE_BLOCK_ENTITIES =
             BLOCK_ENTITIES.register("wire",
