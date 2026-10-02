@@ -924,5 +924,16 @@
   "gui.changede.ingot_filler.fluid": "Latex",
   "gui.changede.ingot_filler.clear": "Clear",
   "gui.changede.ingot_filler.clear_hint": "Discard stored latex and cancel this batch. The input ingot stays; consumed fluid and LP are not refunded.",
-  "gui.changede.ingot_filler.recipe_errors": "Skipped invalid recipes:\n%s\nFix the data pack, reload and reopen this screen."
+  "gui.changede.ingot_filler.recipe_errors": "Skipped invalid recipes:\n%s\nFix the data pack, reload and reopen this screen.",
+  "advancements.changede.changed_skills.title": "Changed: Skills",
+  "advancements.changede.changed_skills.description": "The beginning of latex improvement",
+  "advancements.changede.skill_distinction.title": "Latex Identity",
+  "advancements.changede.skill_distinction.description": "This is where differences begin",
+  "advancements.changede.skill_evolution.title": "Evolution Never Ends",
+  "advancements.changede.skill_evolution.description": "You can still do better",
+  "skill.changede.growth.health.5": "Strength X V",
+  "skill.changede.growth.armor.5": "Strength Y V",
+  "skill.changede.growth.strength.5": "Power V",
+  "skill.changede.growth.regen.4": "Vitality IV",
+  "skill.changede.growth.hunger_x.4": "Hunger Resistance X IV"
 }

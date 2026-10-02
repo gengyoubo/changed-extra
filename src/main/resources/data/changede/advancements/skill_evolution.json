@@ -1,0 +1,23 @@
+{
+  "parent": "changede:changed_skills",
+  "display": {
+    "icon": {
+      "item": "changede:morphic_crystal_core"
+    },
+    "title": {
+      "translate": "advancements.changede.skill_evolution.title"
+    },
+    "description": {
+      "translate": "advancements.changede.skill_evolution.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "learned": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

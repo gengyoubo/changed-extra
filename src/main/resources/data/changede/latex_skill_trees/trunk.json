@@ -471,6 +471,101 @@
           "amount": 1
         }
       ]
+    },
+    {
+      "id": "changede:common_vitality_5",
+      "title": "skill.changede.growth.health.5",
+      "description": "skill.changede.growth.health.description",
+      "cost": 25,
+      "parents": [
+        "changede:common_hunger_z_3"
+      ],
+      "x": 0,
+      "y": 25,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:common_armor_5",
+      "title": "skill.changede.growth.armor.5",
+      "description": "skill.changede.growth.armor.description",
+      "cost": 25,
+      "parents": [
+        "changede:common_vitality_5"
+      ],
+      "x": 0,
+      "y": 26,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:common_strength_5",
+      "title": "skill.changede.growth.strength.5",
+      "description": "skill.changede.growth.strength.description",
+      "cost": 25,
+      "parents": [
+        "changede:common_armor_5"
+      ],
+      "x": 0,
+      "y": 27,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:common_regeneration_4",
+      "title": "skill.changede.growth.regen.4",
+      "description": "skill.changede.growth.regen.description",
+      "cost": 25,
+      "parents": [
+        "changede:common_strength_5"
+      ],
+      "x": 0,
+      "y": 28,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:regeneration_speed",
+          "amount": 0.2
+        }
+      ]
+    },
+    {
+      "id": "changede:common_hunger_x_4",
+      "title": "skill.changede.growth.hunger_x.4",
+      "description": "skill.changede.growth.hunger_x.description",
+      "cost": 25,
+      "parents": [
+        "changede:common_regeneration_4"
+      ],
+      "x": 0,
+      "y": 29,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:exhaustion_reduction",
+          "amount": 0.1
+        }
+      ]
     }
   ]
 }

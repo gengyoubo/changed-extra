@@ -99,6 +99,7 @@ public final class LatexSkills {
     }
     public static void refresh(ServerPlayer player) {
         SkillMechanics.migrate(player);
+        SkillAdvancements.reconcile(player);
         SkillRewards.reconcile(player, active(player));
         SkillMechanics.bindForm(player);
         SkillMechanics.refreshHealth(player);

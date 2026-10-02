@@ -33,7 +33,7 @@
 | 鲨系 | 7 |
 | 蛇身 | 7 |
 | 半人马形 | 7 |
-| 通用 | 25 |
+| 通用 | 30 |
 | 白胶 | 15 |
 
 ## 空
@@ -381,6 +381,11 @@
 | 耐饿X III | 25 | `changede:common_regeneration_3` | 饥饿消耗减少 10%，多个节点加算。 |
 | 耐饿Y III | 25 | `changede:common_hunger_x_3` | 食物提供的饱和度增加原始值的 100%；多个节点加算，上限另由耐饿Z提高。 |
 | 耐饿Z III | 25 | `changede:common_hunger_y_3` | 饱和度上限 +1；不直接恢复饥饿或饱和度。 |
+| 强壮X V | 25 | `changede:common_hunger_z_3` | 最大生命值 +1 |
+| 强壮Y V | 25 | `changede:common_vitality_5` | 护甲 +1 |
+| 力量 V | 25 | `changede:common_armor_5` | 攻击伤害 +1 |
+| 生命力 IV | 25 | `changede:common_strength_5` | 自然回血速度 +20%；仍需满足原版回血条件。 |
+| 耐饿X IV | 25 | `changede:common_regeneration_4` | 饥饿消耗减少 10%，多个节点加算。 |
 
 ## 白胶
 

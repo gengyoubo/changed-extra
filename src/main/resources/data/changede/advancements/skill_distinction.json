@@ -1,0 +1,23 @@
+{
+  "parent": "changede:changed_skills",
+  "display": {
+    "icon": {
+      "item": "changede:latex_skill_research_table"
+    },
+    "title": {
+      "translate": "advancements.changede.skill_distinction.title"
+    },
+    "description": {
+      "translate": "advancements.changede.skill_distinction.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "learned": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

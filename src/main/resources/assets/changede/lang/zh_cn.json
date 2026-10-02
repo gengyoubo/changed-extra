@@ -1036,5 +1036,16 @@
   "gui.changede.ingot_filler.fluid": "胶液",
   "gui.changede.ingot_filler.clear": "清空",
   "gui.changede.ingot_filler.clear_hint": "清空储存胶液并取消当前加工。保留输入锭，已消耗的胶液和 LP 不返还。",
-  "gui.changede.ingot_filler.recipe_errors": "以下配方加载失败，已跳过：\n%s\n修正数据包后重新加载并打开界面。"
+  "gui.changede.ingot_filler.recipe_errors": "以下配方加载失败，已跳过：\n%s\n修正数据包后重新加载并打开界面。",
+  "advancements.changede.changed_skills.title": "changed：技能",
+  "advancements.changede.changed_skills.description": "胶兽强化的开始",
+  "advancements.changede.skill_distinction.title": "胶兽的特色",
+  "advancements.changede.skill_distinction.description": "从这开始才是差异",
+  "advancements.changede.skill_evolution.title": "进化永无止境",
+  "advancements.changede.skill_evolution.description": "你还能做的更好",
+  "skill.changede.growth.health.5": "强壮X V",
+  "skill.changede.growth.armor.5": "强壮Y V",
+  "skill.changede.growth.strength.5": "力量 V",
+  "skill.changede.growth.regen.4": "生命力 IV",
+  "skill.changede.growth.hunger_x.4": "耐饿X IV"
 }
