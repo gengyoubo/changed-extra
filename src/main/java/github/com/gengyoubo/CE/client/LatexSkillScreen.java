@@ -41,6 +41,7 @@ public final class LatexSkillScreen extends Screen {
     }
 
     public static void receive(CompoundTag data) {
+        LatexSkillResearchScreen.receive(data);
         if (Minecraft.getInstance().screen instanceof LatexSkillScreen screen) {
             String previousActual = screen.data.getString("latex_type");
             boolean changedForm = !screen.data.getString("form").equals(data.getString("form"));
@@ -302,7 +303,7 @@ public final class LatexSkillScreen extends Screen {
             detail = Component.translatable("screen.changede.skills.reason.form", Component.translatableWithFallback(key, subject));
         } else if (type.equals("changede:form")) {
             detail = Component.translatable("screen.changede.skills.reason.form", Component.translatableWithFallback("skill_branch." + subject.replace(':','.'),subject));
-        } else if (type.equals("changede:latex_form") || type.equals("changede:player_state")) {
+        } else if (type.equals("changede:latex_form") || type.equals("changede:player_state") || type.equals("changede:research_table")) {
             detail = Component.translatable("screen.changede.skills.reason." + type.substring(type.indexOf(':') + 1));
         } else detail = Component.translatable("screen.changede.skills.reason.other", type, subject);
         return Component.literal(tag.getBoolean("met") ? "✓ " : "✗ ").append(detail)

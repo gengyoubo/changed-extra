@@ -866,5 +866,17 @@
   "screen.changede.skills.preview_matching": "Matching branches",
   "screen.changede.skills.preview_all": "Preview all",
   "screen.changede.skills.next_branch": "Next branch",
-  "screen.changede.skills.lives": "Nine lives remaining: %s / 9"
+  "screen.changede.skills.lives": "Nine lives remaining: %s / 9",
+  "block.changede.latex_skill_research_table": "Latex Creature Skill Research Table",
+  "item.changede.painite_workbench_core": "Painite Workbench Core",
+  "screen.changede.research.race": "Race key nodes",
+  "screen.changede.research.core": "Special cores",
+  "screen.changede.research.all": "All races",
+  "screen.changede.research.matching": "Matching races",
+  "screen.changede.research.learn": "Research and learn",
+  "screen.changede.research.pending": "Researching...",
+  "screen.changede.research.empty": "No matching research nodes. Change Form or view all races.",
+  "screen.changede.research.parent": "Prerequisite skill",
+  "screen.changede.research.form_match": "Current Form matches this branch",
+  "screen.changede.skills.reason.research_table": "Use a Latex Creature Skill Research Table"
 }

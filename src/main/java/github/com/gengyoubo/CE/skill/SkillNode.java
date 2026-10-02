@@ -5,7 +5,7 @@ import java.util.List;
 
 /** Serializable, data-driven node; amounts use vanilla attribute units. */
 public record SkillNode(ResourceLocation tree, String scope, ResourceLocation id, String title, String description, int cost,
-                        List<ResourceLocation> parents, int x, int y, boolean key, List<SkillReward> rewards) {
+                        List<ResourceLocation> parents, int x, int y, boolean key, List<SkillReward> rewards, SkillResearchType research) {
     public SkillNode {
         parents = List.copyOf(parents);
         rewards = List.copyOf(rewards);

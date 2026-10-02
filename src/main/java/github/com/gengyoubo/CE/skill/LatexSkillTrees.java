@@ -105,6 +105,9 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
                     for (JsonElement parent : GsonHelper.getAsJsonArray(node, "parents", new JsonArray())) parents.add(parse(parent.getAsString()));
                     int cost = GsonHelper.getAsInt(node, "cost");
                     boolean key = GsonHelper.getAsBoolean(node, "key", false);
+                    SkillResearchType research=SkillResearchType.parse(GsonHelper.getAsString(node,"research","none"));
+                    if(research.requiresStation() && (!key || scope.equals("global")))
+                        throw new IllegalArgumentException("Research requires a non-global key node: "+id);
                     if (node.has("power") || node.has("amount"))
                         throw new IllegalArgumentException("Legacy power/amount fields must be migrated to rewards[]: " + id);
                     List<SkillReward> rewards = new ArrayList<>();
@@ -118,7 +121,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
                             || nodes.stream().anyMatch(n -> n.id().equals(id) || (n.x() == x && n.y() == y)))
                         throw new IllegalArgumentException("Invalid or duplicate skill node: " + id);
                     nodes.add(new SkillNode(treeId, scope, id, GsonHelper.getAsString(node, "title"),
-                            GsonHelper.getAsString(node, "description"), cost, List.copyOf(parents), x, y, key, rewards));
+                            GsonHelper.getAsString(node, "description"), cost, List.copyOf(parents), x, y, key, rewards,research));
                 }
                 if (nodes.size() > 30) throw new IllegalArgumentException("Branch exceeds 30 nodes: " + treeId);
                 next.add(new Tree(treeId, scope, latexType, tag, List.copyOf(forms), List.copyOf(nodes)));

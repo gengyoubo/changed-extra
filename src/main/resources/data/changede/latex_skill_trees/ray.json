@@ -16,7 +16,8 @@
       "x": 43,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:ray_swimming_1",

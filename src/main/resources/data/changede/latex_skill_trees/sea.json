@@ -39,7 +39,8 @@
           "effect": "sea_core",
           "value": 1
         }
-      ]
+      ],
+      "research": "race"
     },
     {
       "id": "changede:sea_work_1",

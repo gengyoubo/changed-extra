@@ -15,7 +15,8 @@
       "x": 55,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:humanoid_strength_1",

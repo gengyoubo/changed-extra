@@ -17,7 +17,8 @@
       "x": -51,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:cephalopod_strength_1",

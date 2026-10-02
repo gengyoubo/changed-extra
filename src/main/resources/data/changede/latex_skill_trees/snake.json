@@ -15,7 +15,8 @@
       "x": 11,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:snake_stride_1",

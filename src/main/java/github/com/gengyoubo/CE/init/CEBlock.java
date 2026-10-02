@@ -14,6 +14,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class CEBlock {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
+    public static final RegistryObject<Block> LATEX_SKILL_RESEARCH_TABLE = BLOCKS.register("latex_skill_research_table",
+            github.com.gengyoubo.CE.Block.LatexSkillResearchTableBlock::new);
 
     public static final RegistryObject<Block> DARK_LATEX_LOG = BLOCKS.register("dark_latex_log",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));

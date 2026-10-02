@@ -20,7 +20,8 @@
       "x": 7,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:feral_stride_1",

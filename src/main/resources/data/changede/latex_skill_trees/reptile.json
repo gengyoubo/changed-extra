@@ -30,7 +30,8 @@
           "effect": "blast_guard",
           "value": 0.3
         }
-      ]
+      ],
+      "research": "race"
     },
     {
       "id": "changede:reptile_blast_guard_1",

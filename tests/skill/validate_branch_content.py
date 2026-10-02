@@ -22,6 +22,8 @@ for branch,tree in trees.items():
         expected={r['form'] for r in catalog if (r[dimension]==branch if dimension=='body' else branch in r[dimension])}
         assert set(tree['forms'])==expected and expected,branch
     for n in tree['nodes']:
+        assert n.get('research','none') in {'none','race','core'}
+        if n.get('research','none')!='none':assert n['key'] and tree['scope']!='global'
         assert n['id'] not in nodes
         assert (n['x'],n['y']) not in positions,('Overlapping nodes',n['id'])
         positions.add((n['x'],n['y']));nodes[n['id']]=n

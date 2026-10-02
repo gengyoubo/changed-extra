@@ -8,6 +8,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class CEMenus {
     public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changede");
+    public static final RegistryObject<MenuType<github.com.gengyoubo.CE.skill.LatexSkillResearchMenu>> LATEX_SKILL_RESEARCH =
+            REGISTRY.register("latex_skill_research",()->IForgeMenuType.create(github.com.gengyoubo.CE.skill.LatexSkillResearchMenu::new));
     public static final RegistryObject<MenuType<MachineStatusMenu>> MACHINE_STATUS = REGISTRY.register("machine_status", () -> IForgeMenuType.create(MachineStatusMenu::new));
     public static final RegistryObject<MenuType<BasicAlloyFurnaceMenu>> BASIC_ALLOY_FURNACE = REGISTRY.register("basic_alloy_furnace", () -> IForgeMenuType.create(BasicAlloyFurnaceMenu::new));
     public static final RegistryObject<MenuType<BasicGeneratorBlockEntityMenu>> BASIC_GENERATOR_BLOCK_ENTITY = REGISTRY.register("basic_generator_block_entity", () -> IForgeMenuType.create(BasicGeneratorBlockEntityMenu::new));

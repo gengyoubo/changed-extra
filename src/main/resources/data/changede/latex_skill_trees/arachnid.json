@@ -15,7 +15,8 @@
       "x": -38,
       "y": 13,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:arachnid_balance_1",

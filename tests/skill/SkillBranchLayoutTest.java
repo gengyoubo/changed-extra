@@ -31,6 +31,12 @@ public class SkillBranchLayoutTest {
                 check(a.maxX()+SkillBranchLayout.BRANCH_GAP<=b.minX()+1e-8 || b.maxX()+SkillBranchLayout.BRANCH_GAP<=a.minX()+1e-8);
             }
         }
+        var left=groups.stream().filter(b->b.maxX()<0).sorted(Comparator.comparingDouble(SkillBranchLayout.Bounds::maxX).reversed()).toList();
+        var right=groups.stream().filter(b->b.minX()>0).sorted(Comparator.comparingDouble(SkillBranchLayout.Bounds::minX)).toList();
+        if(!left.isEmpty())near(-left.get(0).maxX(),SkillBranchLayout.TRUNK_GAP);
+        if(!right.isEmpty())near(right.get(0).minX(),SkillBranchLayout.TRUNK_GAP);
+        for(int i=1;i<left.size();i++)near(left.get(i-1).minX()-left.get(i).maxX(),SkillBranchLayout.BRANCH_GAP);
+        for(int i=1;i<right.size();i++)near(right.get(i).minX()-right.get(i-1).maxX(),SkillBranchLayout.BRANCH_GAP);
         var reversed=new ArrayList<>(nodes);Collections.reverse(reversed);
         check(layout(reversed).equals(layout)); // Incoming snapshot order never controls placement.
     }
@@ -61,10 +67,12 @@ public class SkillBranchLayoutTest {
         near(nested.nodes().get("arachnid").x()-nested.nodes().get("arth").x(),-3);
         check(layout(List.of(arth)).groups().get("changede:arthropod").width()<nested.groups().get("changede:arthropod").width());
         verify(List.of(ROOT,land,arth,insect,arachnid),nested);
-        var style=new SkillRegionTemplate("cat","changede:feline","lab",.6,10,.75,Map.of(),Set.of());
+        var style=new SkillRegionTemplate("cat","changede:feline","dark",.6,10,.75,Map.of(),Set.of());
         var region=style.resolve(added.branches().get("changede:feline"));
         near(region.x(),added.nodes().get("cat").x()-.75);
         near(region.width(),1.5);near(region.height(),1.5);
+        near(SkillRegionBlend.weights(List.of(region),"lab",added.nodes().get("cat").x(),11).get("dark"),1);
+        check(!SkillRegionBlend.weights(List.of(region),"lab",cat.x(),11).containsKey("dark"));
         var padded=SkillBranchLayout.arrange(List.of(cat),Map.of("changede:feline",2.0));
         near(padded.groups().get("changede:feline").maxX(),-SkillBranchLayout.TRUNK_GAP);
         check(!padded.branches().containsKey("changede:sea"));
@@ -72,13 +80,13 @@ public class SkillBranchLayoutTest {
             List<SkillBranchLayout.Node> all=new ArrayList<>();
             List<String[]> forms=new ArrayList<>();
             for(String line:Files.readAllLines(Path.of(args[0]))) {
-                String[] p=line.split("\t");
+                String[] p=line.split("\t",-1);
                 if(p[0].equals("node"))all.add(new SkillBranchLayout.Node(p[1],p[2],Double.parseDouble(p[3]),Double.parseDouble(p[4]),Boolean.parseBoolean(p[5])));
                 else forms.add(p);
             }
             verify(all,layout(all)); // All-preview mode.
             for(var form:forms) {
-                Set<String> branches=new HashSet<>(Arrays.asList(form[2].split(",")));
+                Set<String> branches=form[2].isEmpty() ? Set.of() : new HashSet<>(Arrays.asList(form[2].split(",")));
                 var visible=all.stream().filter(n->n.global() || branches.contains(n.branch())).toList();
                 var current=layout(visible);verify(visible,current);
                 check(current.branches().keySet().equals(branches));

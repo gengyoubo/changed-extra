@@ -75,6 +75,7 @@ public final class SkillTreePacket {
                     tag.putInt("x", node.x());
                     tag.putInt("y", node.y());
                     tag.putBoolean("key", node.key());
+                    tag.putString("research",node.research().id());
                     var availability = LatexSkills.availability(player, node, unlocked, active);
                     tag.putBoolean("unlocked", availability.unlocked());
                     tag.putBoolean("active", availability.active());

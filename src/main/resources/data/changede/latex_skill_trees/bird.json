@@ -15,7 +15,8 @@
       "x": 35,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:bird_landing_1",

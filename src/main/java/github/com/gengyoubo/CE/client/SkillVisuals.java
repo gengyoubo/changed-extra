@@ -92,7 +92,8 @@ public final class SkillVisuals extends SimpleJsonResourceReloadListener {
                     JsonObject r = element.getAsJsonObject();
                     String branch = r.has("branch") ? GsonHelper.getAsString(r,"branch") : "";
                     if (!branch.isEmpty()) branch=sprite(branch.contains(":") ? branch : "changede:"+branch).toString();
-                    String id = sprite(GsonHelper.getAsString(r, "id", branch+"_branch")).toString();
+                    String id = sprite(branch.isEmpty() ? GsonHelper.getAsString(r,"id")
+                            : GsonHelper.getAsString(r,"id",branch+"_branch")).toString();
                     if (!regionIds.add(id)) throw new IllegalArgumentException("Duplicate region " + id);
                     Map<String, String> variants = new HashMap<>();
                     if (r.has("themes_by_type")) for (var variant : r.getAsJsonObject("themes_by_type").entrySet())

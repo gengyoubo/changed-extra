@@ -61,6 +61,9 @@ public class CEItem {
             ITEMS.register("chain_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> IRIDIUM_INGOT = simpleItem("iridium_ingot");
     public static final RegistryObject<Item> PAINITE_INGOT = simpleItem("painite_ingot");
+    public static final RegistryObject<Item> PAINITE_WORKBENCH_CORE = simpleItem("painite_workbench_core");
+    public static final RegistryObject<Item> LATEX_SKILL_RESEARCH_TABLE = ITEMS.register("latex_skill_research_table",
+            () -> new BlockItem(CEBlock.LATEX_SKILL_RESEARCH_TABLE.get(),new Item.Properties()));
     public static final RegistryObject<Item> PLATE =
             ITEMS.register("plate", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> PLATE_HELMET =

@@ -17,7 +17,8 @@
       "x": 51,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:plant_armor_1",

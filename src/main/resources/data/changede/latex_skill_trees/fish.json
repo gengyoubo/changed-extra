@@ -15,7 +15,8 @@
       "x": -47,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:fish_swimming_1",

@@ -978,5 +978,17 @@
   "screen.changede.skills.preview_matching": "适用分支",
   "screen.changede.skills.preview_all": "全部预览",
   "screen.changede.skills.next_branch": "下个分支",
-  "screen.changede.skills.lives": "九条命剩余：%s / 9"
+  "screen.changede.skills.lives": "九条命剩余：%s / 9",
+  "block.changede.latex_skill_research_table": "胶兽学技能研究台",
+  "item.changede.painite_workbench_core": "硅硼钙铝工作台核心",
+  "screen.changede.research.race": "种族关键节点",
+  "screen.changede.research.core": "特殊核心",
+  "screen.changede.research.all": "全部种族",
+  "screen.changede.research.matching": "适用种族",
+  "screen.changede.research.learn": "研发并学习",
+  "screen.changede.research.pending": "研发中…",
+  "screen.changede.research.empty": "没有适用的研发节点。切换形态或查看全部种族。",
+  "screen.changede.research.parent": "前置技能",
+  "screen.changede.research.form_match": "当前形态符合该路线",
+  "screen.changede.skills.reason.research_table": "需要使用胶兽学技能研究台"
 }

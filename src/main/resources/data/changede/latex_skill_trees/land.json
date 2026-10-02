@@ -159,7 +159,8 @@
       "x": -19,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:land_stride_1",

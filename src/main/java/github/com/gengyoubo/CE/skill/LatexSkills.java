@@ -54,6 +54,8 @@ public final class LatexSkills {
             reasons.add(new SkillBlockReason(learned.contains(parent) && !active.contains(parent) ? "changede:inactive_parent" : "changede:parent",
                     parent.toString(), active.contains(parent) ? 1 : 0, 1));
         if (!unlocked) {
+            if(node.research().requiresStation()) reasons.add(new SkillBlockReason("changede:research_table",node.research().id(),
+                    node.research().canLearn(unlocked,LatexSkillResearchMenu.isResearching(player)) ? 1 : 0,1));
             if (!player.isAlive() || player.isSpectator()) reasons.add(new SkillBlockReason("changede:player_state", "", 0, 1));
             int xp = experience(player);
             reasons.add(new SkillBlockReason("changede:experience", "", player.isCreative() ? Math.max(xp, node.cost()) : xp, node.cost()));

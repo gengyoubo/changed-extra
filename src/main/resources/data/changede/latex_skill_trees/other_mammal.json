@@ -27,7 +27,8 @@
       "x": -55,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:other_mammal_health_1",

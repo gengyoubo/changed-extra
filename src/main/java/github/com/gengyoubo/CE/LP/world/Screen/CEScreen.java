@@ -35,6 +35,7 @@ public class CEScreen {
     @SuppressWarnings("removal")
     public static void clientLoad(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            MenuScreens.register(CEMenus.LATEX_SKILL_RESEARCH.get(),github.com.gengyoubo.CE.client.LatexSkillResearchScreen::new);
             MenuScreens.register(CEMenus.BASIC_GENERATOR_BLOCK_ENTITY.get(), BasicGeneratorBlockEntityScreen::new);
             MenuScreens.register(CEMenus.MACHINE_STATUS.get(), MachineStatusScreen::new);
             MenuScreens.register(CEMenus.ELECTRIC_FURNACE.get(), ElectricFurnaceScreen::new);

@@ -16,7 +16,8 @@
       "x": 47,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:marine_mammal_swimming_1",

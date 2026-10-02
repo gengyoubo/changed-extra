@@ -151,7 +151,8 @@
       "x": -7,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:biped_dexterity_1",

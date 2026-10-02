@@ -33,7 +33,8 @@
           "effect": "air_core",
           "value": 1
         }
-      ]
+      ],
+      "research": "race"
     },
     {
       "id": "changede:air_endurance_1",

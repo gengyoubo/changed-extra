@@ -53,7 +53,8 @@
       "x": 23,
       "y": 11,
       "key": true,
-      "rewards": []
+      "rewards": [],
+      "research": "race"
     },
     {
       "id": "changede:canine_strength_1",

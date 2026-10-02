@@ -55,7 +55,8 @@
           "effect": "feline_damage",
           "value": 0.1
         }
-      ]
+      ],
+      "research": "race"
     },
     {
       "id": "changede:feline_presence_1",
@@ -212,7 +213,8 @@
           "effect": "nine_lives",
           "value": 1
         }
-      ]
+      ],
+      "research": "core"
     }
   ]
 }

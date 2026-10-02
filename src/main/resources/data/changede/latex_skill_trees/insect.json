@@ -22,7 +22,8 @@
           "effect": "insect_core",
           "value": 1
         }
-      ]
+      ],
+      "research": "race"
     },
     {
       "id": "changede:insect_recovery_1",

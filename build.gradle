@@ -402,3 +402,104 @@ tasks.configureEach {
         }
     }
 }
+
+// A running Forge client loads classes lazily. Recompiling its live classes directory
+// can temporarily remove classes and poison the loader with ClassNotFoundException.
+// Keep each development launch on its own merged, untracked runtime snapshot.
+def createDevRunSnapshot = {
+    def snapshot = file(".gradle/changede-runtime/${UUID.randomUUID()}/main")
+    copy {
+        from(sourceSets.main.output)
+        from(mixinRefmapDir) {
+            include '**/*.refmap.json'
+        }
+        into(snapshot)
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    def required = [
+            'META-INF/mods.toml',
+            'mixins/changede.mixins.json',
+            'changede.refmap.json',
+            'github/com/gengyoubo/CE/changede.class',
+            'github/com/gengyoubo/CE/LP/client/renderer/MimicYufengWingsRenderer.class',
+            'github/com/gengyoubo/CE/LP/client/renderer/MimicYufengWingsItemRenderer.class'
+    ]
+    required.each { path ->
+        if (!new File(snapshot, path).isFile()) {
+            throw new GradleException("Development runtime snapshot is missing ${path}")
+        }
+    }
+    snapshot
+}
+
+def bindDevRunSnapshot = { runTask, snapshot ->
+    def coordinates = "${mod_id}%%${snapshot.absolutePath}".toString()
+    // ForgeGradle reapplies RunConfig.environment in MinecraftRunTask.exec(),
+    // after doFirst. Update that config as well as JavaExec's environment.
+    runTask.getRunConfig().get().environment('MOD_CLASSES', coordinates)
+    runTask.environment('MOD_CLASSES', coordinates)
+}
+
+tasks.register('verifyDevRunSnapshot') {
+    group = 'verification'
+    description = 'Checks merged development runtime snapshots without starting Minecraft.'
+    dependsOn tasks.named('classes')
+    doLast {
+        def first = createDevRunSnapshot()
+        def second = createDevRunSnapshot()
+        if (first == second) throw new GradleException('Development launches must use distinct snapshots')
+        def outputFiles = sourceSets.main.output.asFileTree.files.findAll { it.isFile() }
+        outputFiles.each { source ->
+            def outputRoot = sourceSets.main.output.files.find { source.toPath().startsWith(it.toPath()) }
+            def relative = outputRoot.toPath().relativize(source.toPath()).toString()
+            if (!Arrays.equals(source.bytes, new File(first, relative).bytes)) {
+                throw new GradleException("Runtime snapshot differs from compiled output: ${relative}")
+            }
+        }
+        def runTask = tasks.named('runClient').get()
+        bindDevRunSnapshot(runTask, first)
+        def coordinates = "${mod_id}%%${first.absolutePath}".toString()
+        if (runTask.getRunConfig().get().environment['MOD_CLASSES'] != coordinates
+                || runTask.environment['MOD_CLASSES'] != coordinates) {
+            throw new GradleException('ForgeGradle run config must retain the snapshot coordinates')
+        }
+        logger.lifecycle("Verified independent development snapshots ({} output files): {}", outputFiles.size(), first)
+    }
+}
+
+tasks.configureEach {
+    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer']) {
+        dependsOn tasks.named('classes')
+        doFirst { runTask ->
+            def snapshot = createDevRunSnapshot()
+            bindDevRunSnapshot(runTask, snapshot)
+            logger.lifecycle('Development mod runtime snapshot: {}', snapshot)
+        }
+    }
+}
+
+def configureStableIdeRuns = {
+    ['runClient', 'runServer'].each { runName ->
+        def config = file(".idea/runConfigurations/${runName}.xml")
+        config.parentFile.mkdirs()
+        config.setText("""<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="${runName}" type="GradleRunConfiguration" factoryName="Gradle">
+    <ExternalSystemSettings>
+      <option name="externalProjectPath" value="\$PROJECT_DIR\$" />
+      <option name="externalSystemIdString" value="GRADLE" />
+      <option name="taskNames"><list><option value="${runName}" /></list></option>
+    </ExternalSystemSettings>
+    <method v="2" />
+  </configuration>
+</component>
+""", 'UTF-8')
+    }
+}
+tasks.register('configureStableIdeRuns') {
+    group = 'ide'
+    description = 'Uses snapshot-backed Gradle tasks for IDEA development launches.'
+    doLast { configureStableIdeRuns() }
+}
+tasks.configureEach {
+    if (name == 'genIntellijRuns') doLast { configureStableIdeRuns() }
+}

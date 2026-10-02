@@ -23,7 +23,8 @@
           "effect": "arthropod",
           "value": 1
         }
-      ]
+      ],
+      "research": "race"
     },
     {
       "id": "changede:arthropod_shell_1",
