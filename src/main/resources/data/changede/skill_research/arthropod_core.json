@@ -1,0 +1,15 @@
+{
+  "duration_ticks": 2400,
+  "wlp_per_second": 40,
+  "tier": "intermediate",
+  "startup_materials": [
+    {
+      "item": "minecraft:book",
+      "count": 1
+    },
+    {
+      "item": "changede:latex_ingot",
+      "count": 4
+    }
+  ]
+}

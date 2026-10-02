@@ -1,0 +1,19 @@
+{
+  "duration_ticks": 6000,
+  "wlp_per_second": 120,
+  "tier": "advanced",
+  "startup_materials": [
+    {
+      "item": "minecraft:book",
+      "count": 1
+    },
+    {
+      "item": "changede:latex_ingot",
+      "count": 8
+    },
+    {
+      "item": "changede:painite_workbench_core",
+      "count": 1
+    }
+  ]
+}

@@ -6,7 +6,7 @@
       "id": "changede:dark_shell",
       "title": "skill.changede.dark_shell",
       "description": "skill.changede.dark_shell.description",
-      "cost": 25,
+      "cost": 0,
       "parents": [
         "changede:common_strength_2"
       ],

@@ -49,54 +49,65 @@ public final class SkillTreePacket {
                 var player = context.getSender();
                 if (player == null) return;
                 if (packet.node != null) LatexSkills.unlock(player, packet.form, packet.node);
-                CompoundTag data = new CompoundTag();
-                var form = LatexSkills.form(player);
-                data.putString("form", form == null ? "" : form.toString());
-                var type = SkillCombat.latexType(player);
-                data.putString("latex_type", type == net.ltxprogrammer.changed.init.ChangedLatexTypes.DARK_LATEX.get() ? "dark"
-                        : type == net.ltxprogrammer.changed.init.ChangedLatexTypes.WHITE_LATEX.get() ? "white" : "any");
-                data.putInt("experience", LatexSkills.experience(player));
-                data.putInt("lives", SkillMechanics.lives(player));
-                data.putBoolean("creative", player.isCreative());
-                ListTag nodes = new ListTag();
-                var unlocked = LatexSkills.unlocked(player);
-                java.util.Set<ResourceLocation> active = new java.util.HashSet<>();
-                LatexSkills.active(player).forEach(n -> active.add(n.id()));
-                for (SkillNode node : LatexSkillTrees.all()) {
-                    CompoundTag tag = new CompoundTag();
-                    tag.putString("tree", node.tree().toString());
-                    tag.putString("scope", node.scope());
-                    tag.putBoolean("applicable", LatexSkillTrees.applicable(player, node));
-                    tag.putString("latex_type", LatexSkillTrees.latexType(node));
-                    tag.putString("id", node.id().toString());
-                    tag.putString("title", node.title());
-                    tag.putString("description", node.description());
-                    tag.putInt("cost", node.cost());
-                    tag.putInt("x", node.x());
-                    tag.putInt("y", node.y());
-                    tag.putBoolean("key", node.key());
-                    tag.putString("research",node.research().id());
-                    var availability = LatexSkills.availability(player, node, unlocked, active);
-                    tag.putBoolean("unlocked", availability.unlocked());
-                    tag.putBoolean("active", availability.active());
-                    tag.putBoolean("purchasable", availability.purchasable());
-                    ListTag reasons = new ListTag(), requirements = new ListTag(), rewards = new ListTag();
-                    availability.reasons().forEach(reason -> reasons.add(describe(reason)));
-                    LatexSkills.requirements(player, node, unlocked, active).forEach(reason -> requirements.add(describe(reason)));
-                    node.rewards().forEach(reward -> rewards.add(reward.describe()));
-                    tag.put("reasons", reasons);
-                    tag.put("requirements", requirements);
-                    tag.put("rewards", rewards);
-                    ListTag parents = new ListTag();
-                    node.parents().forEach(parent -> parents.add(StringTag.valueOf(parent.toString())));
-                    tag.put("parents", parents);
-                    nodes.add(tag);
-                }
-                data.put("nodes", nodes);
-                CENetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new Snapshot(data));
+                sendSnapshot(player);
             });
             context.setPacketHandled(true);
         }
+    }
+
+    public static void sendSnapshot(net.minecraft.server.level.ServerPlayer player) {
+        CompoundTag data = new CompoundTag();
+        var form = LatexSkills.form(player);
+        data.putString("form", form == null ? "" : form.toString());
+        var type = SkillCombat.latexType(player);
+        data.putString("latex_type", type == net.ltxprogrammer.changed.init.ChangedLatexTypes.DARK_LATEX.get() ? "dark"
+                : type == net.ltxprogrammer.changed.init.ChangedLatexTypes.WHITE_LATEX.get() ? "white" : "any");
+        data.putInt("experience", LatexSkills.experience(player));
+        data.putInt("lives", SkillMechanics.lives(player));
+        data.putBoolean("creative", player.isCreative());
+        ListTag nodes = new ListTag();
+        var unlocked = LatexSkills.unlocked(player);
+        java.util.Set<ResourceLocation> active = new java.util.HashSet<>();
+        LatexSkills.active(player).forEach(n -> active.add(n.id()));
+        for (SkillNode node : LatexSkillTrees.all()) {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("tree", node.tree().toString());
+            tag.putString("scope", node.scope());
+            tag.putBoolean("applicable", LatexSkillTrees.applicable(player, node));
+            tag.putString("latex_type", LatexSkillTrees.latexType(node));
+            tag.putString("id", node.id().toString());
+            tag.putString("title", node.title());
+            tag.putString("description", node.description());
+            tag.putInt("cost", node.cost());
+            tag.putInt("x", node.x());
+            tag.putInt("y", node.y());
+            tag.putBoolean("key", node.key());
+            tag.putString("research",node.research().id());
+            if(node.research().requiresStation())tag.put("research_data",SkillResearchAccounts.snapshot(player,node));
+            var availability = LatexSkills.availability(player, node, unlocked, active);
+            tag.putBoolean("unlocked", availability.unlocked());
+            tag.putBoolean("active", availability.active());
+            tag.putBoolean("purchasable", availability.purchasable());
+            ListTag reasons = new ListTag(), requirements = new ListTag(), rewards = new ListTag();
+            availability.reasons().forEach(reason -> reasons.add(describe(reason)));
+            LatexSkills.requirements(player, node, unlocked, active).forEach(reason -> requirements.add(describe(reason)));
+            node.rewards().forEach(reward -> rewards.add(reward.describe()));
+            tag.put("reasons", reasons);
+            tag.put("requirements", requirements);
+            tag.put("rewards", rewards);
+            ListTag parents = new ListTag();
+            node.parents().forEach(parent -> parents.add(StringTag.valueOf(parent.toString())));
+            tag.put("parents", parents);
+            nodes.add(tag);
+        }
+        data.put("nodes", nodes);
+        data.putString("active_research",SkillResearchAccounts.active(player));
+        if(player.containerMenu instanceof LatexSkillResearchMenu menu && menu.stillValid(player) && menu.station()!=null) {
+            data.putInt("station_wlp",menu.station().getTypedEnergyStored());
+            data.putInt("station_capacity",menu.station().getTypedEnergyCapacity());
+            data.putBoolean("station_available",menu.station().canBind(player));
+        }
+        CENetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new Snapshot(data));
     }
 
     private static CompoundTag describe(SkillBlockReason reason) {

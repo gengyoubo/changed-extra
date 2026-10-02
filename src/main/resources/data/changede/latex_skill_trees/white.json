@@ -6,7 +6,7 @@
       "id": "changede:white_vitality",
       "title": "skill.changede.white_vitality",
       "description": "skill.changede.white_vitality.description",
-      "cost": 25,
+      "cost": 0,
       "parents": [
         "changede:common_strength_2"
       ],

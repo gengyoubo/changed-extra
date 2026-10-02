@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "AZA",
+    "YXY",
+    "YYY"
+  ],
+  "key": {
+    "A": {
+      "tag": "changede:latex_planks"
+    },
+    "Z": {
+      "item": "minecraft:book"
+    },
+    "Y": {
+      "item": "changede:latex_ingot"
+    },
+    "X": {
+      "item": "changede:painite_workbench_core"
+    }
+  },
+  "result": {
+    "item": "changede:latex_skill_research_table",
+    "count": 1
+  }
+}

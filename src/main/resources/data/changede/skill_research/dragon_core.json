@@ -1,0 +1,23 @@
+{
+  "duration_ticks": 36000,
+  "wlp_per_second": 500,
+  "tier": "rare",
+  "startup_materials": [
+    {
+      "item": "minecraft:book",
+      "count": 1
+    },
+    {
+      "item": "changede:latex_ingot",
+      "count": 16
+    },
+    {
+      "item": "changede:painite_workbench_core",
+      "count": 2
+    },
+    {
+      "item": "changede:iridium_ingot",
+      "count": 4
+    }
+  ]
+}

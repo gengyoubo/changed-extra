@@ -1,0 +1,14 @@
+// Uses only an isolated build-directory world; the probe is not part of regular builds.
+gradle.beforeProject { project ->
+    project.afterEvaluate {
+        def probeDir=project.file('build/research-integration-source')
+        project.copy {
+            from project.file('tests/skill/ResearchIntegrationProbe.java')
+            into probeDir
+        }
+        project.sourceSets.main.java.srcDir(probeDir)
+        project.minecraft.runs.server.workingDirectory project.file('build/research-integration-run')
+        project.minecraft.runs.server.jvmArgs '-Xmx3G'
+        project.minecraft.runs.server.property 'forge.logging.console.level','info'
+    }
+}

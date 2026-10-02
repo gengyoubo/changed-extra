@@ -125,7 +125,7 @@
 
 | 技能 | XP | 前置 | 效果 |
 | --- | --- | --- | --- |
-| 黑胶关键节点（关键） | 25 | `changede:common_strength_2` | 开启黑胶同族的克制、抗性和装备适配成长。 |
+| 黑胶关键节点（关键） | 0 | `changede:common_strength_2` | 开启黑胶同族的克制、抗性和装备适配成长。 |
 | 白胶克星 I | 25 | `changede:dark_shell` | 对白胶系列目标的伤害 +1，多个节点加算。 |
 | 白胶抵抗 I | 25 | `changede:dark_white_nemesis_1` | 受到白胶系列攻击的伤害减少 10%，多个节点减免比例加算。 |
 | 白雾抵抗 I | 25 | `changede:dark_white_resistance_1` | 受到白雾的伤害减少 10%；不影响黑雨伤害。 |
@@ -386,7 +386,7 @@
 
 | 技能 | XP | 前置 | 效果 |
 | --- | --- | --- | --- |
-| 白胶关键节点（关键） | 25 | `changede:common_strength_2` | 开启白胶同族身体成长。 |
+| 白胶关键节点（关键） | 0 | `changede:common_strength_2` | 开启白胶同族身体成长。 |
 | 强壮X I | 25 | `changede:white_vitality` | 最大生命值 +1 |
 | 强壮Y I | 25 | `changede:white_endurance` | 护甲 +1 |
 | 力量 I | 25 | `changede:white_continuation` | 攻击伤害 +1 |
