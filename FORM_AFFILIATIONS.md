@@ -1,6 +1,6 @@
 # Form 归属表
 
-本表用于下一版技能树设计，尚未由游戏加载。入口复用现有 `changede:latex_mastery`，顶层分类入口直接依赖它；节肢动物先设关键节点，再分昆虫／蛛形等详细节点，不新建通用入口。机器可读清单见 [FORM_AFFILIATIONS.json](FORM_AFFILIATIONS.json)，机制设计见 [SKILL_TREE_DESIGN.md](SKILL_TREE_DESIGN.md)。
+本表作为已实装技能树 forms 选择器的来源；游戏读取各分支 JSON，不直接加载这份 Markdown。入口复用现有 `changede:latex_mastery`，顶层分类入口直接依赖它；节肢动物先设关键节点，再分昆虫／蛛形等详细节点，不新建通用入口。机器可读清单见 [FORM_AFFILIATIONS.json](FORM_AFFILIATIONS.json)，机制设计见 [SKILL_TREE_DESIGN.md](SKILL_TREE_DESIGN.md)。
 
 ## 核对范围与证据
 
@@ -196,4 +196,4 @@
 
 命中昆虫或蛛形时显示节肢动物入口及对应后代；学习节肢动物关键节点后才能学习细分节点。蜘蛛虎同时显示猫系，以及节肢动物→蛛形路线，不获得昆虫路线。多个节肢子类命中时共享同一个父关键节点，节肢杀手不重复计算。
 
-分类清单与分支是否可学习是两件事：只有分类命中才显示入口，已学习且当前适用才生效。不匹配的分支隐藏但保留培养记录；多运动或混合族群同时显示多个入口。当前旧黑白胶/Yufeng 数据尚未迁移，游戏行为以 SKILL_TREES.md 为准。
+分类清单与分支是否可学习是两件事：只有分类命中才显示入口，已学习且当前适用才生效。不匹配的分支隐藏但保留培养记录；多运动或混合族群同时显示多个入口。黑白胶入口与 Yufeng 已迁移到新分类结构，当前技能见 SKILL_CONTENT.md，游戏行为以 SKILL_TREES.md 为准。

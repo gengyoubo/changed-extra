@@ -8,10 +8,10 @@
       "description": "skill.changede.white_vitality.description",
       "cost": 25,
       "parents": [
-        "changede:common_strength_2"
+        "changede:latex_mastery"
       ],
-      "x": -1,
-      "y": 11,
+      "x": -8,
+      "y": 2,
       "key": true,
       "rewards": [
         {
@@ -27,8 +27,8 @@
       "parents": [
         "changede:white_vitality"
       ],
-      "x": -1,
-      "y": 12,
+      "x": -7,
+      "y": 3,
       "key": false,
       "rewards": [
         {
@@ -46,8 +46,8 @@
       "parents": [
         "changede:white_endurance"
       ],
-      "x": -1,
-      "y": 13,
+      "x": -8,
+      "y": 4,
       "key": false,
       "rewards": [
         {
@@ -65,8 +65,8 @@
       "parents": [
         "changede:white_continuation"
       ],
-      "x": -1,
-      "y": 14,
+      "x": -7,
+      "y": 5,
       "key": false,
       "rewards": [
         {
@@ -84,8 +84,8 @@
       "parents": [
         "changede:white_strength"
       ],
-      "x": -1,
-      "y": 15,
+      "x": -8,
+      "y": 6,
       "key": false,
       "rewards": [
         {
@@ -103,8 +103,8 @@
       "parents": [
         "changede:white_regeneration_1"
       ],
-      "x": -1,
-      "y": 16,
+      "x": -7,
+      "y": 7,
       "key": false,
       "rewards": [
         {
@@ -122,8 +122,8 @@
       "parents": [
         "changede:white_hunger_x_1"
       ],
-      "x": 0,
-      "y": 17,
+      "x": -8,
+      "y": 8,
       "key": false,
       "rewards": [
         {
@@ -141,8 +141,8 @@
       "parents": [
         "changede:white_hunger_y_1"
       ],
-      "x": 0,
-      "y": 18,
+      "x": -7,
+      "y": 9,
       "key": false,
       "rewards": [
         {
@@ -160,8 +160,8 @@
       "parents": [
         "changede:white_hunger_z_1"
       ],
-      "x": 0,
-      "y": 19,
+      "x": -8,
+      "y": 10,
       "key": false,
       "rewards": [
         {
@@ -179,8 +179,8 @@
       "parents": [
         "changede:white_persistence"
       ],
-      "x": 0,
-      "y": 20,
+      "x": -7,
+      "y": 11,
       "key": false,
       "rewards": [
         {
@@ -198,8 +198,8 @@
       "parents": [
         "changede:white_constitution"
       ],
-      "x": 0,
-      "y": 21,
+      "x": -8,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -217,8 +217,8 @@
       "parents": [
         "changede:white_strength_2"
       ],
-      "x": 0,
-      "y": 22,
+      "x": -7,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -236,8 +236,8 @@
       "parents": [
         "changede:white_regeneration_2"
       ],
-      "x": 0,
-      "y": 23,
+      "x": -8,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -255,8 +255,8 @@
       "parents": [
         "changede:white_hunger_x_2"
       ],
-      "x": 0,
-      "y": 24,
+      "x": -7,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -274,8 +274,8 @@
       "parents": [
         "changede:white_hunger_y_2"
       ],
-      "x": 0,
-      "y": 25,
+      "x": -8,
+      "y": 16,
       "key": false,
       "rewards": [
         {

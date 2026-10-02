@@ -12,18 +12,21 @@ import java.util.function.Supplier;
 public final class SkillTreePacket {
     private SkillTreePacket() { }
 
-    public record FlightState(ResourceLocation form, double amount) {
+    public record FlightState(ResourceLocation form, double amount, CompoundTag mechanics) {
         public static void encode(FlightState packet, FriendlyByteBuf buf) {
             buf.writeBoolean(packet.form != null);
             if (packet.form != null) buf.writeResourceLocation(packet.form);
             buf.writeDouble(packet.amount);
+            buf.writeNbt(packet.mechanics);
         }
         public static FlightState decode(FriendlyByteBuf buf) {
-            return new FlightState(buf.readBoolean() ? buf.readResourceLocation() : null, buf.readDouble());
+            ResourceLocation form=buf.readBoolean() ? buf.readResourceLocation() : null;
+            double amount=buf.readDouble(); CompoundTag mechanics=buf.readNbt();
+            return new FlightState(form,amount,mechanics==null?new CompoundTag():mechanics);
         }
         public static void handle(FlightState packet, Supplier<NetworkEvent.Context> supplier) {
             var context = supplier.get();
-            context.enqueueWork(() -> LatexSkills.applyClientFlight(packet.form, packet.amount));
+            context.enqueueWork(() -> { LatexSkills.applyClientFlight(packet.form, packet.amount); SkillMechanics.applyClient(packet.form,packet.mechanics); });
             context.setPacketHandled(true);
         }
     }
@@ -53,6 +56,7 @@ public final class SkillTreePacket {
                 data.putString("latex_type", type == net.ltxprogrammer.changed.init.ChangedLatexTypes.DARK_LATEX.get() ? "dark"
                         : type == net.ltxprogrammer.changed.init.ChangedLatexTypes.WHITE_LATEX.get() ? "white" : "any");
                 data.putInt("experience", LatexSkills.experience(player));
+                data.putInt("lives", SkillMechanics.lives(player));
                 data.putBoolean("creative", player.isCreative());
                 ListTag nodes = new ListTag();
                 var unlocked = LatexSkills.unlocked(player);
@@ -62,6 +66,7 @@ public final class SkillTreePacket {
                     CompoundTag tag = new CompoundTag();
                     tag.putString("tree", node.tree().toString());
                     tag.putString("scope", node.scope());
+                    tag.putBoolean("applicable", LatexSkillTrees.applicable(player, node));
                     tag.putString("latex_type", LatexSkillTrees.latexType(node));
                     tag.putString("id", node.id().toString());
                     tag.putString("title", node.title());

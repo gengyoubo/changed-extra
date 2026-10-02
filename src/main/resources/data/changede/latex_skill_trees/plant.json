@@ -1,0 +1,143 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_leaf",
+    "changed:form_latex_mimic_plant",
+    "changed_addon:form_luminara_flower_beast"
+  ],
+  "nodes": [
+    {
+      "id": "changede:plant_core",
+      "title": "skill.changede.plant_core",
+      "description": "skill.changede.plant_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 69,
+      "y": 2,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:plant_armor_1",
+      "title": "skill.changede.plant_armor_1",
+      "description": "skill.changede.plant_armor_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:plant_core"
+      ],
+      "x": 70,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:plant_armor_2",
+      "title": "skill.changede.plant_armor_2",
+      "description": "skill.changede.plant_armor_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:plant_armor_1"
+      ],
+      "x": 69,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:plant_health_1",
+      "title": "skill.changede.plant_health_1",
+      "description": "skill.changede.plant_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:plant_core"
+      ],
+      "x": 70,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:plant_health_2",
+      "title": "skill.changede.plant_health_2",
+      "description": "skill.changede.plant_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:plant_health_1"
+      ],
+      "x": 69,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:plant_recovery_1",
+      "title": "skill.changede.plant_recovery_1",
+      "description": "skill.changede.plant_recovery_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:plant_core"
+      ],
+      "x": 70,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:regeneration_speed",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:plant_recovery_2",
+      "title": "skill.changede.plant_recovery_2",
+      "description": "skill.changede.plant_recovery_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:plant_recovery_1"
+      ],
+      "x": 69,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:regeneration_speed",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

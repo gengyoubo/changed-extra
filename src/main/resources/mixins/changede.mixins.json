@@ -36,7 +36,10 @@
     "TransfurVariantInstanceFlySpeedMixin",
     "TransfurVariantsInfoMixin",
     "TransfurVariantSpecialLatexMixin",
-    "WhiteLatexBlockLatexSpaceMixin"
+    "WhiteLatexBlockLatexSpaceMixin",
+    "SkillArthropodMixin",
+    "SkillDragonDropsMixin",
+    "SkillGlideMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -44,8 +47,7 @@
   "overwrites": {
     "conformVisibility": true
   },
-  "server": [
-  ],
+  "server": [],
   "client": [
     "LatexSpearItemInHandMixin",
     "LatexSpearHumanoidModelMixin",

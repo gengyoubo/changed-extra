@@ -36,6 +36,12 @@ public final class SkillRewards {
             return new AttributeReward(attribute, amount, op);
         });
         register(NONE, json -> new NoneReward());
+        register(id("changede:mechanic"), json -> {
+            String effect = GsonHelper.getAsString(json, "effect");
+            double value = GsonHelper.getAsDouble(json, "value", 1);
+            SkillMechanics.validate(effect, value);
+            return new MechanicReward(effect, value);
+        });
     }
     private SkillRewards() { }
     public static void register(ResourceLocation type, Function<JsonObject, SkillReward> factory) {
@@ -90,6 +96,16 @@ public final class SkillRewards {
         @Override public CompoundTag describe() {
             CompoundTag tag = new CompoundTag();
             tag.putString("type", type().toString());
+            return tag;
+        }
+    }
+    public record MechanicReward(String effect, double value) implements SkillReward {
+        @Override public ResourceLocation type() { return id("changede:mechanic"); }
+        @Override public void apply(Player player, ResourceLocation node, int index) { SkillMechanics.grant(player, node + "." + index, effect, value); }
+        @Override public void remove(Player player, ResourceLocation node, int index) { SkillMechanics.revoke(player, node + "." + index); }
+        @Override public CompoundTag describe() {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("type", type().toString()); tag.putString("effect", effect); tag.putDouble("value", value);
             return tag;
         }
     }

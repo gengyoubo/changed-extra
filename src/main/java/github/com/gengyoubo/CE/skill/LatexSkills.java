@@ -32,8 +32,10 @@ public final class LatexSkills {
     public static Set<ResourceLocation> unlocked(Player player) {
         Set<ResourceLocation> result = new HashSet<>();
         CompoundTag root = player.getPersistentData().getCompound(TAG);
-        for (SkillNode node : LatexSkillTrees.all())
-            if (root.getCompound(node.tree().toString()).getBoolean(node.id().toString())) result.add(node.id());
+        for (String tree : root.getAllKeys())
+            for (String node : root.getCompound(tree).getAllKeys())
+                if (root.getCompound(tree).getBoolean(node) && ResourceLocation.tryParse(node) != null)
+                    result.add(new ResourceLocation(node));
         return result;
     }
     public static List<SkillNode> active(Player player) {
@@ -94,10 +96,13 @@ public final class LatexSkills {
         if (event.phase == TickEvent.Phase.END && event.player instanceof ServerPlayer player && player.tickCount % 20 == 0) refresh(player);
     }
     public static void refresh(ServerPlayer player) {
+        SkillMechanics.migrate(player);
         SkillRewards.reconcile(player, active(player));
+        SkillMechanics.bindForm(player);
+        SkillMechanics.refreshHealth(player);
         SkillCombat.refreshEquipment(player);
         if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());
-        SkillTreePacket.FlightState state = new SkillTreePacket.FlightState(form(player), flightControl(player));
+        SkillTreePacket.FlightState state = new SkillTreePacket.FlightState(form(player), flightControl(player), SkillMechanics.snapshot(player));
         if (!state.equals(FLIGHT_STATES.put(player, state))) github.com.gengyoubo.CE.LP.network.CENetwork.INSTANCE.send(
                 net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> player), state);
     }
@@ -132,7 +137,7 @@ public final class LatexSkills {
     }
     public static double flightControl(Player player) {
         if (player.level().isClientSide) return Objects.equals(form(player), clientForm) ? clientFlightControl : 0;
-        return player.getAttributeValue(SkillAttributes.FLIGHT_CONTROL.get());
+        return (1 + player.getAttributeValue(SkillAttributes.FLIGHT_CONTROL.get())) * SkillMechanics.flightMultiplier(player) - 1;
     }
     public static void applyClientFlight(ResourceLocation form, double amount) {
         clientForm = form;

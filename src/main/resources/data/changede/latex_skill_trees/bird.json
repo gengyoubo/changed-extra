@@ -1,0 +1,141 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_crow"
+  ],
+  "nodes": [
+    {
+      "id": "changede:bird_core",
+      "title": "skill.changede.bird_core",
+      "description": "skill.changede.bird_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 51,
+      "y": 2,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:bird_landing_1",
+      "title": "skill.changede.bird_landing_1",
+      "description": "skill.changede.bird_landing_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:bird_core"
+      ],
+      "x": 52,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:landing_resistance",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:bird_landing_2",
+      "title": "skill.changede.bird_landing_2",
+      "description": "skill.changede.bird_landing_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:bird_landing_1"
+      ],
+      "x": 51,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:landing_resistance",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:bird_stride_1",
+      "title": "skill.changede.bird_stride_1",
+      "description": "skill.changede.bird_stride_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:bird_core"
+      ],
+      "x": 52,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.02,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:bird_stride_2",
+      "title": "skill.changede.bird_stride_2",
+      "description": "skill.changede.bird_stride_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:bird_stride_1"
+      ],
+      "x": 51,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.02,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:bird_energy_1",
+      "title": "skill.changede.bird_energy_1",
+      "description": "skill.changede.bird_energy_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:bird_core"
+      ],
+      "x": 52,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:exhaustion_reduction",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:bird_energy_2",
+      "title": "skill.changede.bird_energy_2",
+      "description": "skill.changede.bird_energy_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:bird_energy_1"
+      ],
+      "x": 51,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:exhaustion_reduction",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

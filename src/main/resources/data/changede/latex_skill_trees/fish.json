@@ -1,0 +1,141 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_eel"
+  ],
+  "nodes": [
+    {
+      "id": "changede:fish_core",
+      "title": "skill.changede.fish_core",
+      "description": "skill.changede.fish_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 60,
+      "y": 2,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:fish_swimming_1",
+      "title": "skill.changede.fish_swimming_1",
+      "description": "skill.changede.fish_swimming_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:fish_core"
+      ],
+      "x": 61,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:fish_swimming_2",
+      "title": "skill.changede.fish_swimming_2",
+      "description": "skill.changede.fish_swimming_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:fish_swimming_1"
+      ],
+      "x": 60,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:fish_health_1",
+      "title": "skill.changede.fish_health_1",
+      "description": "skill.changede.fish_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:fish_core"
+      ],
+      "x": 61,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:fish_health_2",
+      "title": "skill.changede.fish_health_2",
+      "description": "skill.changede.fish_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:fish_health_1"
+      ],
+      "x": 60,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:fish_energy_1",
+      "title": "skill.changede.fish_energy_1",
+      "description": "skill.changede.fish_energy_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:fish_core"
+      ],
+      "x": 61,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:food_saturation",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:fish_energy_2",
+      "title": "skill.changede.fish_energy_2",
+      "description": "skill.changede.fish_energy_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:fish_energy_1"
+      ],
+      "x": 60,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:food_saturation",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_green_lizard",
+    "changed:form_latex_crocodile",
+    "changed:form_latex_snake",
+    "changed:form_latex_translucent_lizard",
+    "changed_addon:form_blue_lizard"
+  ],
+  "nodes": [
+    {
+      "id": "changede:reptile_core",
+      "title": "skill.changede.reptile_core",
+      "description": "skill.changede.reptile_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 18,
+      "y": 2,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "reptile_core",
+          "value": 1
+        },
+        {
+          "type": "changede:mechanic",
+          "effect": "blast_guard",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "changede:reptile_blast_guard_1",
+      "title": "skill.changede.reptile_blast_guard_1",
+      "description": "skill.changede.reptile_blast_guard_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:reptile_core"
+      ],
+      "x": 18,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "blast_guard",
+          "value": 0.4
+        }
+      ]
+    },
+    {
+      "id": "changede:reptile_blast_guard_2",
+      "title": "skill.changede.reptile_blast_guard_2",
+      "description": "skill.changede.reptile_blast_guard_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:reptile_blast_guard_1"
+      ],
+      "x": 18,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "blast_guard",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "changede:reptile_scales_1",
+      "title": "skill.changede.reptile_scales_1",
+      "description": "skill.changede.reptile_scales_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:reptile_core"
+      ],
+      "x": 19,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:reptile_scales_2",
+      "title": "skill.changede.reptile_scales_2",
+      "description": "skill.changede.reptile_scales_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:reptile_scales_1"
+      ],
+      "x": 18,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:reptile_balance_1",
+      "title": "skill.changede.reptile_balance_1",
+      "description": "skill.changede.reptile_balance_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:reptile_core"
+      ],
+      "x": 19,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:reptile_balance_2",
+      "title": "skill.changede.reptile_balance_2",
+      "description": "skill.changede.reptile_balance_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:reptile_balance_1"
+      ],
+      "x": 18,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_crystal_wolf",
+    "changed:form_crystal_wolf_horned",
+    "changed:form_dark_latex_wolf/female",
+    "changed:form_dark_latex_wolf/male",
+    "changed:form_dark_latex_wolf_partial",
+    "changed:form_dark_latex_wolf_pup",
+    "changed:form_gas_wolf/female",
+    "changed:form_gas_wolf/male",
+    "changed:form_gas_wolf_pup",
+    "changed:form_latex_benign_wolf",
+    "changed:form_latex_blue_wolf",
+    "changed:form_latex_fennec_fox",
+    "changed:form_latex_keon_wolf",
+    "changed:form_latex_mutant_bloodcell_wolf",
+    "changed:form_latex_purple_fox",
+    "changed:form_latex_squid_dog/female",
+    "changed:form_latex_squid_dog/male",
+    "changed:form_phage_latex_wolf/female",
+    "changed:form_phage_latex_wolf/male",
+    "changed:form_pooltoy_wolf",
+    "changed:form_pure_white_latex_cerberus",
+    "changed:form_pure_white_latex_wolf",
+    "changed:form_pure_white_latex_wolf_pup",
+    "changed:form_sniper_dog",
+    "changed:form_white_latex_wolf/female",
+    "changed:form_white_latex_wolf/male",
+    "changed:form_white_wolf/female",
+    "changed:form_white_wolf/male",
+    "changed_addon:form_fengqi_wolf",
+    "changed_addon:form_foxta_foxy",
+    "changed_addon:form_foxyas",
+    "changed_addon:form_hayden_fennec_fox",
+    "changed_addon:form_latex_border_collie",
+    "changed_addon:form_latex_kitsune/female",
+    "changed_addon:form_latex_kitsune/male",
+    "changed_addon:form_latex_snow_fox/female",
+    "changed_addon:form_latex_snow_fox/male",
+    "changed_addon:form_void_fox",
+    "changed_addon:form_white_fox"
+  ],
+  "nodes": [
+    {
+      "id": "changede:canine_core",
+      "title": "skill.changede.canine_core",
+      "description": "skill.changede.canine_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 48,
+      "y": 2,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:canine_strength_1",
+      "title": "skill.changede.canine_strength_1",
+      "description": "skill.changede.canine_strength_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:canine_core"
+      ],
+      "x": 49,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:canine_strength_2",
+      "title": "skill.changede.canine_strength_2",
+      "description": "skill.changede.canine_strength_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:canine_strength_1"
+      ],
+      "x": 48,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:canine_stride_1",
+      "title": "skill.changede.canine_stride_1",
+      "description": "skill.changede.canine_stride_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:canine_core"
+      ],
+      "x": 49,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.025,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:canine_stride_2",
+      "title": "skill.changede.canine_stride_2",
+      "description": "skill.changede.canine_stride_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:canine_stride_1"
+      ],
+      "x": 48,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.025,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:canine_health_1",
+      "title": "skill.changede.canine_health_1",
+      "description": "skill.changede.canine_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:canine_core"
+      ],
+      "x": 49,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:canine_health_2",
+      "title": "skill.changede.canine_health_2",
+      "description": "skill.changede.canine_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:canine_health_1"
+      ],
+      "x": 48,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

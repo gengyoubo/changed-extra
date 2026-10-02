@@ -1,0 +1,146 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_bee",
+    "changed:form_latex_moth"
+  ],
+  "nodes": [
+    {
+      "id": "changede:insect_core",
+      "title": "skill.changede.insect_core",
+      "description": "skill.changede.insect_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:arthropod_core"
+      ],
+      "x": 27,
+      "y": 4,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "insect_core",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:insect_recovery_1",
+      "title": "skill.changede.insect_recovery_1",
+      "description": "skill.changede.insect_recovery_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:insect_core"
+      ],
+      "x": 27,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "insect_recovery",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "changede:insect_recovery_2",
+      "title": "skill.changede.insect_recovery_2",
+      "description": "skill.changede.insect_recovery_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:insect_recovery_1"
+      ],
+      "x": 27,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "insect_recovery",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "changede:insect_health_1",
+      "title": "skill.changede.insect_health_1",
+      "description": "skill.changede.insect_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:insect_core"
+      ],
+      "x": 28,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:insect_health_2",
+      "title": "skill.changede.insect_health_2",
+      "description": "skill.changede.insect_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:insect_health_1"
+      ],
+      "x": 27,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:insect_energy_1",
+      "title": "skill.changede.insect_energy_1",
+      "description": "skill.changede.insect_energy_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:insect_core"
+      ],
+      "x": 28,
+      "y": 9,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:food_saturation",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:insect_energy_2",
+      "title": "skill.changede.insect_energy_2",
+      "description": "skill.changede.insect_energy_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:insect_energy_1"
+      ],
+      "x": 27,
+      "y": 10,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:food_saturation",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

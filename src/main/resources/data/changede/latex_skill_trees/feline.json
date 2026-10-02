@@ -1,0 +1,218 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_gas_tiger",
+    "changed:form_latex_hypno_cat",
+    "changed:form_latex_medusa_cat",
+    "changed:form_latex_ming_cat",
+    "changed:form_latex_siamese_cat",
+    "changed:form_latex_snow_leopard/female",
+    "changed:form_latex_snow_leopard/male",
+    "changed:form_latex_stiger",
+    "changed:form_latex_watermelon_cat",
+    "changed:form_latex_white_tiger",
+    "changed_addon:form_biosynth_snow_leopard/female",
+    "changed_addon:form_biosynth_snow_leopard/male",
+    "changed_addon:form_exp2/female",
+    "changed_addon:form_exp2/male",
+    "changed_addon:form_himalayan_crystal_gas_cat/female",
+    "changed_addon:form_himalayan_crystal_gas_cat/male",
+    "changed_addon:form_latex_calico_cat",
+    "changed_addon:form_latex_cheetah/female",
+    "changed_addon:form_latex_cheetah/male",
+    "changed_addon:form_latex_dragon_snow_leopard_shark",
+    "changed_addon:form_latex_snow_leopard_partial",
+    "changed_addon:form_latex_white_snow_leopard/female",
+    "changed_addon:form_latex_white_snow_leopard/male",
+    "changed_addon:form_latex_wind_cat/female",
+    "changed_addon:form_latex_wind_cat/male",
+    "changed_addon:form_luminarctic_leopard/female",
+    "changed_addon:form_luminarctic_leopard/male",
+    "changed_addon:form_lynx",
+    "changed_addon:form_mirror_white_tiger_female",
+    "changed_addon:form_snepsi_leopard"
+  ],
+  "nodes": [
+    {
+      "id": "changede:feline_core",
+      "title": "skill.changede.feline_core",
+      "description": "skill.changede.feline_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 15,
+      "y": 2,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "feline_fear",
+          "value": 8
+        },
+        {
+          "type": "changede:mechanic",
+          "effect": "feline_damage",
+          "value": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changede:feline_presence_1",
+      "title": "skill.changede.feline_presence_1",
+      "description": "skill.changede.feline_presence_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:feline_core"
+      ],
+      "x": 14,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "feline_fear",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "id": "changede:feline_claws_1",
+      "title": "skill.changede.feline_claws_1",
+      "description": "skill.changede.feline_claws_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:feline_core"
+      ],
+      "x": 16,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "feline_damage",
+          "value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "changede:feline_claws_2",
+      "title": "skill.changede.feline_claws_2",
+      "description": "skill.changede.feline_claws_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:feline_claws_1"
+      ],
+      "x": 16,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "feline_damage",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "changede:feline_balance_1",
+      "title": "skill.changede.feline_balance_1",
+      "description": "skill.changede.feline_balance_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:feline_core"
+      ],
+      "x": 16,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:landing_resistance",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:feline_balance_2",
+      "title": "skill.changede.feline_balance_2",
+      "description": "skill.changede.feline_balance_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:feline_balance_1"
+      ],
+      "x": 15,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:landing_resistance",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:feline_health_1",
+      "title": "skill.changede.feline_health_1",
+      "description": "skill.changede.feline_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:feline_core"
+      ],
+      "x": 16,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:feline_health_2",
+      "title": "skill.changede.feline_health_2",
+      "description": "skill.changede.feline_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:feline_health_1"
+      ],
+      "x": 15,
+      "y": 9,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:feline_nine_lives",
+      "title": "skill.changede.feline_nine_lives",
+      "description": "skill.changede.feline_nine_lives.description",
+      "cost": 150,
+      "parents": [
+        "changede:feline_presence_1",
+        "changede:feline_claws_2"
+      ],
+      "x": 15,
+      "y": 10,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "nine_lives",
+          "value": 1
+        }
+      ]
+    }
+  ]
+}

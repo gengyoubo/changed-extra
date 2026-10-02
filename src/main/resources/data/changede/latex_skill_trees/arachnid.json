@@ -1,0 +1,141 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_stiger"
+  ],
+  "nodes": [
+    {
+      "id": "changede:arachnid_core",
+      "title": "skill.changede.arachnid_core",
+      "description": "skill.changede.arachnid_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:arthropod_core"
+      ],
+      "x": 30,
+      "y": 4,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:arachnid_balance_1",
+      "title": "skill.changede.arachnid_balance_1",
+      "description": "skill.changede.arachnid_balance_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:arachnid_core"
+      ],
+      "x": 31,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:arachnid_balance_2",
+      "title": "skill.changede.arachnid_balance_2",
+      "description": "skill.changede.arachnid_balance_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:arachnid_balance_1"
+      ],
+      "x": 30,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:arachnid_strength_1",
+      "title": "skill.changede.arachnid_strength_1",
+      "description": "skill.changede.arachnid_strength_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:arachnid_core"
+      ],
+      "x": 31,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:arachnid_strength_2",
+      "title": "skill.changede.arachnid_strength_2",
+      "description": "skill.changede.arachnid_strength_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:arachnid_strength_1"
+      ],
+      "x": 30,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:arachnid_health_1",
+      "title": "skill.changede.arachnid_health_1",
+      "description": "skill.changede.arachnid_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:arachnid_core"
+      ],
+      "x": 31,
+      "y": 9,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:arachnid_health_2",
+      "title": "skill.changede.arachnid_health_2",
+      "description": "skill.changede.arachnid_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:arachnid_health_1"
+      ],
+      "x": 30,
+      "y": 10,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

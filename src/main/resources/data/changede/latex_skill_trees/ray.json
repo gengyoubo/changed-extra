@@ -1,0 +1,142 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_manta_ray/female",
+    "changed:form_latex_manta_ray/male"
+  ],
+  "nodes": [
+    {
+      "id": "changede:ray_core",
+      "title": "skill.changede.ray_core",
+      "description": "skill.changede.ray_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 57,
+      "y": 2,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:ray_swimming_1",
+      "title": "skill.changede.ray_swimming_1",
+      "description": "skill.changede.ray_swimming_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:ray_core"
+      ],
+      "x": 58,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:ray_swimming_2",
+      "title": "skill.changede.ray_swimming_2",
+      "description": "skill.changede.ray_swimming_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:ray_swimming_1"
+      ],
+      "x": 57,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:ray_balance_1",
+      "title": "skill.changede.ray_balance_1",
+      "description": "skill.changede.ray_balance_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:ray_core"
+      ],
+      "x": 58,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:ray_balance_2",
+      "title": "skill.changede.ray_balance_2",
+      "description": "skill.changede.ray_balance_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:ray_balance_1"
+      ],
+      "x": 57,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:ray_energy_1",
+      "title": "skill.changede.ray_energy_1",
+      "description": "skill.changede.ray_energy_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:ray_core"
+      ],
+      "x": 58,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:exhaustion_reduction",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:ray_energy_2",
+      "title": "skill.changede.ray_energy_2",
+      "description": "skill.changede.ray_energy_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:ray_energy_1"
+      ],
+      "x": 57,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:exhaustion_reduction",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

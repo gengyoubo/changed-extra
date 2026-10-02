@@ -6,6 +6,10 @@ import java.util.Set;
 public final class SkillCanvasLayer {
     private SkillCanvasLayer() { }
 
+    public static boolean visibleApplicable(boolean applicable, boolean global, boolean previewAll) {
+        return applicable || global || previewAll;
+    }
+
     public static boolean visible(String nodeType, String viewedType) {
         return nodeType.isEmpty() || nodeType.equals("any") || nodeType.equals(viewedType);
     }

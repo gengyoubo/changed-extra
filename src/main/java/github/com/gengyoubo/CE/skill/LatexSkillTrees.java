@@ -26,7 +26,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
                         List<ResourceLocation> forms, List<SkillNode> nodes) {
         boolean matches(Player player) {
             var variant = ProcessTransfur.getPlayerTransfurVariant(player);
-            if (variant == null || variant.getLatexType() == ChangedLatexTypes.NONE.get()) return false;
+            if (variant == null) return false;
             if (latexType.equals("dark") && variant.getLatexType() != ChangedLatexTypes.DARK_LATEX.get()) return false;
             if (latexType.equals("white") && variant.getLatexType() != ChangedLatexTypes.WHITE_LATEX.get()) return false;
             if (!forms.isEmpty() && !forms.contains(variant.getFormId())) return false;
@@ -52,11 +52,18 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
         return trees.stream().filter(t -> t.id().equals(node.tree())).findFirst().orElseThrow().latexType();
     }
 
+    public static boolean applicable(Player player, SkillNode node) {
+        return trees.stream().filter(t -> t.id().equals(node.tree())).anyMatch(t -> t.matches(player));
+    }
+    public static boolean hasForm(String branch, ResourceLocation form) {
+        return trees.stream().filter(t -> t.id().equals(new ResourceLocation("changede",branch))).anyMatch(t -> t.forms().contains(form));
+    }
+
     public static List<SkillBlockReason> formRequirements(Player player, SkillNode node) {
         Tree tree = trees.stream().filter(t -> t.id().equals(node.tree())).findFirst().orElseThrow();
         var variant = ProcessTransfur.getPlayerTransfurVariant(player);
         List<SkillBlockReason> reasons = new ArrayList<>();
-        boolean latex = variant != null && variant.getLatexType() != ChangedLatexTypes.NONE.get();
+        boolean latex = variant != null;
         reasons.add(new SkillBlockReason("changede:latex_form", "", latex ? 1 : 0, 1));
         if (!tree.latexType().equals("any")) {
             boolean matches = latex && variant.getLatexType() == (tree.latexType().equals("dark")
@@ -64,7 +71,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
             reasons.add(new SkillBlockReason("changede:latex_type", tree.latexType(), matches ? 1 : 0, 1));
         }
         if (!tree.forms().isEmpty())
-            reasons.add(new SkillBlockReason("changede:form", String.join(", ", tree.forms().stream().map(Object::toString).toList()),
+            reasons.add(new SkillBlockReason("changede:form", tree.id().toString(),
                     latex && tree.forms().contains(variant.getFormId()) ? 1 : 0, 1));
         if (tree.entityTag() != null)
             reasons.add(new SkillBlockReason("changede:entity_tag", tree.entityTag().toString(),
@@ -105,7 +112,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
                         rewards.add(SkillRewards.parse(reward.getAsJsonObject()));
                     int x = GsonHelper.getAsInt(node, "x"), y = GsonHelper.getAsInt(node, "y");
                     if (cost < 0 || cost > 1000000 || rewards.size() > 16
-                            || (scope.equals("global") && rewards.stream().anyMatch(r -> r instanceof SkillRewards.AttributeReward a
+                            || (scope.equals("global") && rewards.stream().anyMatch(r -> r instanceof SkillRewards.MechanicReward || r instanceof SkillRewards.AttributeReward a
                                 && !a.attribute().getNamespace().equals("minecraft") && !SkillAttributes.isUniversalGrowth(a.attribute())))
                             || Math.abs((long) x) > 10000 || Math.abs((long) y) > 10000
                             || nodes.stream().anyMatch(n -> n.id().equals(id) || (n.x() == x && n.y() == y)))
@@ -113,6 +120,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
                     nodes.add(new SkillNode(treeId, scope, id, GsonHelper.getAsString(node, "title"),
                             GsonHelper.getAsString(node, "description"), cost, List.copyOf(parents), x, y, key, rewards));
                 }
+                if (nodes.size() > 30) throw new IllegalArgumentException("Branch exceeds 30 nodes: " + treeId);
                 next.add(new Tree(treeId, scope, latexType, tag, List.copyOf(forms), List.copyOf(nodes)));
             }
             List<SkillNode> nodes = next.stream().flatMap(t -> t.nodes().stream()).toList();
@@ -120,6 +128,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
             List<SkillNode> ordered = SkillGraph.order(nodes, SkillNode::id, SkillNode::parents);
             trees = List.copyOf(next);
             orderedNodes = ordered;
+            changede.LOGGER.info("Loaded {} skill nodes across {} nonempty branches",nodes.size(),trees.stream().filter(t->!t.nodes().isEmpty()).count());
         } catch (RuntimeException ex) {
             changede.LOGGER.error("Latex skill tree reload rejected; retaining previous trees: {}", ex.getMessage());
         }

@@ -11,7 +11,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = TransfurVariantInstance.class, remap = false)
 public abstract class TransfurVariantInstanceFlySpeedMixin {
@@ -22,6 +24,19 @@ public abstract class TransfurVariantInstanceFlySpeedMixin {
 
     @Unique
     private float changede$defaultFlyingSpeed = Float.NaN;
+
+    @ModifyArg(method="tickFlying",at=@At(value="INVOKE",target="Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V",remap=true),index=0)
+    private float changede$flightExhaustion(float amount) {
+        return amount*(float)github.com.gengyoubo.CE.skill.SkillMechanics.flightFoodMultiplier(host);
+    }
+
+    @Inject(method="meetsCriteriaForFlying",at=@At("RETURN"),cancellable=true)
+    private void changede$hungryFlight(CallbackInfoReturnable<Boolean> ci) {
+        if(!host.isCreative()&&!host.isSpectator()&&github.com.gengyoubo.CE.skill.SkillMechanics.value(host,"air_core")>0&&host.getFoodData().getFoodLevel()<=6) {
+            if(host.getAbilities().flying)host.startFallFlying();
+            ci.setReturnValue(false);
+        }
+    }
 
     @Inject(method = "tickFlying", at = @At("HEAD"))
     private void changede$applyVariantFlySpeed(CallbackInfo ci) {

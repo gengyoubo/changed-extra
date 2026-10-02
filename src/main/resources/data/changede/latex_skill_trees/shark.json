@@ -1,0 +1,149 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_mermaid_shark/male",
+    "changed:form_latex_shark",
+    "changed:form_latex_shark/female",
+    "changed:form_latex_shark/male",
+    "changed:form_latex_shark_feral",
+    "changed:form_latex_tiger_shark",
+    "changed_addon:form_latex_dragon_snow_leopard_shark",
+    "changed_addon:form_latex_kayla_shark",
+    "changed_addon:form_latex_squid_tiger_shark"
+  ],
+  "nodes": [
+    {
+      "id": "changede:shark_core",
+      "title": "skill.changede.shark_core",
+      "description": "skill.changede.shark_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 54,
+      "y": 2,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:shark_strength_1",
+      "title": "skill.changede.shark_strength_1",
+      "description": "skill.changede.shark_strength_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:shark_core"
+      ],
+      "x": 55,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:shark_strength_2",
+      "title": "skill.changede.shark_strength_2",
+      "description": "skill.changede.shark_strength_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:shark_strength_1"
+      ],
+      "x": 54,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:shark_swimming_1",
+      "title": "skill.changede.shark_swimming_1",
+      "description": "skill.changede.shark_swimming_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:shark_core"
+      ],
+      "x": 55,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:shark_swimming_2",
+      "title": "skill.changede.shark_swimming_2",
+      "description": "skill.changede.shark_swimming_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:shark_swimming_1"
+      ],
+      "x": 54,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:shark_health_1",
+      "title": "skill.changede.shark_health_1",
+      "description": "skill.changede.shark_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:shark_core"
+      ],
+      "x": 55,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:shark_health_2",
+      "title": "skill.changede.shark_health_2",
+      "description": "skill.changede.shark_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:shark_health_1"
+      ],
+      "x": 54,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

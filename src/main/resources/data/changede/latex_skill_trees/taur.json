@@ -1,0 +1,142 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_gnoll_taur",
+    "changed:form_white_latex_centaur"
+  ],
+  "nodes": [
+    {
+      "id": "changede:taur_core",
+      "title": "skill.changede.taur_core",
+      "description": "skill.changede.taur_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 39,
+      "y": 2,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:taur_balance_1",
+      "title": "skill.changede.taur_balance_1",
+      "description": "skill.changede.taur_balance_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:taur_core"
+      ],
+      "x": 40,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:taur_balance_2",
+      "title": "skill.changede.taur_balance_2",
+      "description": "skill.changede.taur_balance_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:taur_balance_1"
+      ],
+      "x": 39,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:taur_armor_1",
+      "title": "skill.changede.taur_armor_1",
+      "description": "skill.changede.taur_armor_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:taur_core"
+      ],
+      "x": 40,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:taur_armor_2",
+      "title": "skill.changede.taur_armor_2",
+      "description": "skill.changede.taur_armor_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:taur_armor_1"
+      ],
+      "x": 39,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:taur_health_1",
+      "title": "skill.changede.taur_health_1",
+      "description": "skill.changede.taur_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:taur_core"
+      ],
+      "x": 40,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:taur_health_2",
+      "title": "skill.changede.taur_health_2",
+      "description": "skill.changede.taur_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:taur_health_1"
+      ],
+      "x": 39,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

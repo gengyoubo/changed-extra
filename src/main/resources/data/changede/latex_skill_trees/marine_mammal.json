@@ -1,0 +1,142 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_benign_orca",
+    "changed:form_latex_orca"
+  ],
+  "nodes": [
+    {
+      "id": "changede:marine_mammal_core",
+      "title": "skill.changede.marine_mammal_core",
+      "description": "skill.changede.marine_mammal_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 63,
+      "y": 2,
+      "key": true,
+      "rewards": []
+    },
+    {
+      "id": "changede:marine_mammal_swimming_1",
+      "title": "skill.changede.marine_mammal_swimming_1",
+      "description": "skill.changede.marine_mammal_swimming_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:marine_mammal_core"
+      ],
+      "x": 64,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:marine_mammal_swimming_2",
+      "title": "skill.changede.marine_mammal_swimming_2",
+      "description": "skill.changede.marine_mammal_swimming_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:marine_mammal_swimming_1"
+      ],
+      "x": 63,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changede:marine_mammal_health_1",
+      "title": "skill.changede.marine_mammal_health_1",
+      "description": "skill.changede.marine_mammal_health_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:marine_mammal_core"
+      ],
+      "x": 64,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:marine_mammal_health_2",
+      "title": "skill.changede.marine_mammal_health_2",
+      "description": "skill.changede.marine_mammal_health_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:marine_mammal_health_1"
+      ],
+      "x": 63,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:marine_mammal_energy_1",
+      "title": "skill.changede.marine_mammal_energy_1",
+      "description": "skill.changede.marine_mammal_energy_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:marine_mammal_core"
+      ],
+      "x": 64,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:exhaustion_reduction",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:marine_mammal_energy_2",
+      "title": "skill.changede.marine_mammal_energy_2",
+      "description": "skill.changede.marine_mammal_energy_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:marine_mammal_energy_1"
+      ],
+      "x": 63,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:exhaustion_reduction",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

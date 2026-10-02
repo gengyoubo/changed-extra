@@ -1,0 +1,69 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_bee",
+    "changed:form_latex_moth",
+    "changed:form_latex_stiger"
+  ],
+  "nodes": [
+    {
+      "id": "changede:arthropod_core",
+      "title": "skill.changede.arthropod_core",
+      "description": "skill.changede.arthropod_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 24,
+      "y": 2,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "arthropod",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:arthropod_shell_1",
+      "title": "skill.changede.arthropod_shell_1",
+      "description": "skill.changede.arthropod_shell_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:arthropod_core"
+      ],
+      "x": 25,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changede:arthropod_shell_2",
+      "title": "skill.changede.arthropod_shell_2",
+      "description": "skill.changede.arthropod_shell_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:arthropod_shell_1"
+      ],
+      "x": 24,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

@@ -29,6 +29,7 @@ public final class LatexSkillScreen extends Screen {
     private int refreshTicks;
     private String viewedType = "any";
     private Button layerButton;
+    private boolean previewAll;
 
     public LatexSkillScreen(Screen parent) {
         super(Component.translatable("screen.changede.skills.title"));
@@ -54,7 +55,7 @@ public final class LatexSkillScreen extends Screen {
     }
 
     private List<CompoundTag> nodes() {
-        return allNodes().stream().filter(n -> SkillCanvasLayer.visible(n.getString("latex_type"), viewedType)).toList();
+        return allNodes().stream().filter(n -> SkillCanvasLayer.visibleApplicable(n.getBoolean("applicable"),n.getString("scope").equals("global"),previewAll)).toList();
     }
 
     private Set<String> layers() {
@@ -75,20 +76,19 @@ public final class LatexSkillScreen extends Screen {
 
     private void updateLayerButton() {
         if (layerButton == null) return;
-        layerButton.visible = !layers().isEmpty();
-        layerButton.active = layers().size() > 1;
-        layerButton.setMessage(Component.translatable("screen.changede.skills.layer",
-                Component.translatable("screen.changede.skills.type." + viewedType)));
+        layerButton.visible = true;
+        layerButton.active = true;
+        layerButton.setMessage(Component.translatable(previewAll ? "screen.changede.skills.preview_all" : "screen.changede.skills.preview_matching"));
     }
 
     private void nextLayer() {
-        List<String> choices = new ArrayList<>(layers());
-        if (!choices.isEmpty()) changeLayer(choices.get((choices.indexOf(viewedType) + 1) % choices.size()));
+        previewAll = !previewAll;
+        updateLayerButton();
     }
 
     private void centerRoot() {
         List<CompoundTag> nodes = nodes();
-        CompoundTag root = nodes.isEmpty() ? new CompoundTag() : nodes.get(0);
+        CompoundTag root = nodes.stream().filter(n -> n.getList("parents", Tag.TAG_STRING).isEmpty()).findFirst().orElse(new CompoundTag());
         zoom = 0.85;
         panX = width / 2.0 - root.getInt("x") * COLUMN * zoom;
         panY = TOP + 30 - root.getInt("y") * ROW * zoom;
@@ -99,6 +99,18 @@ public final class LatexSkillScreen extends Screen {
     protected void init() {
         layerButton = addRenderableWidget(Button.builder(Component.empty(), b -> nextLayer()).bounds(6, 6, 98, 20).build());
         updateLayerButton();
+        addRenderableWidget(Button.builder(Component.translatable("screen.changede.skills.next_branch"), b -> {
+            var keys=nodes().stream().filter(n->n.getBoolean("key")).toList();
+            if(keys.isEmpty())return;
+            int nearest=0; double distance=Double.MAX_VALUE;
+            for(int i=0;i<keys.size();i++){
+                double d=Math.abs(keys.get(i).getInt("x")*COLUMN*zoom+panX-width/2.0);
+                if(d<distance){distance=d;nearest=i;}
+            }
+            var key=keys.get((nearest+1)%keys.size());
+            panX=width/2.0-key.getInt("x")*COLUMN*zoom;
+            panY=TOP+50-key.getInt("y")*ROW*zoom;
+        }).bounds(108,6,70,20).build());
         addRenderableWidget(Button.builder(Component.translatable("screen.changede.skills.center"), b -> centerRoot())
                 .bounds(width - 64, 6, 58, 20).build());
         centerRoot();
@@ -262,7 +274,7 @@ public final class LatexSkillScreen extends Screen {
             String key = id == null ? subject : "skill_tag." + id.getNamespace() + "." + id.getPath().replace('/', '.');
             detail = Component.translatable("screen.changede.skills.reason.form", Component.translatableWithFallback(key, subject));
         } else if (type.equals("changede:form")) {
-            detail = Component.translatable("screen.changede.skills.reason.form", subject);
+            detail = Component.translatable("screen.changede.skills.reason.form", Component.translatableWithFallback("skill_branch." + subject.replace(':','.'),subject));
         } else if (type.equals("changede:latex_form") || type.equals("changede:player_state")) {
             detail = Component.translatable("screen.changede.skills.reason." + type.substring(type.indexOf(':') + 1));
         } else detail = Component.translatable("screen.changede.skills.reason.other", type, subject);
@@ -271,6 +283,8 @@ public final class LatexSkillScreen extends Screen {
     }
 
     private Component reward(CompoundTag tag) {
+        if (tag.getString("type").equals("changede:mechanic"))
+            return Component.translatable("skill.changede.mechanic." + tag.getString("effect"), tag.getDouble("value")).withStyle(ChatFormatting.AQUA);
         ResourceLocation id = ResourceLocation.tryParse(tag.getString("attribute"));
         var attribute = id == null ? null : ForgeRegistries.ATTRIBUTES.getValue(id);
         Component label = attribute == null ? Component.literal(tag.getString("attribute")) : Component.translatable(attribute.getDescriptionId());
@@ -393,11 +407,13 @@ public final class LatexSkillScreen extends Screen {
             for (Tag tag : hovered.getList("requirements", Tag.TAG_COMPOUND)) tooltip.add(requirement((CompoundTag) tag, byId));
             tooltip.add(Component.translatable("screen.changede.skills.effects").withStyle(ChatFormatting.GRAY));
             boolean effect = false;
-            for (Tag tag : hovered.getList("rewards", Tag.TAG_COMPOUND)) if (((CompoundTag) tag).getString("type").equals("changede:attribute")) {
+            for (Tag tag : hovered.getList("rewards", Tag.TAG_COMPOUND)) if (!((CompoundTag) tag).getString("type").equals("changede:none")) {
                 tooltip.add(reward((CompoundTag) tag));
                 effect = true;
             }
             if (!effect) tooltip.add(Component.translatable("screen.changede.skills.reward.none"));
+            if (hovered.getString("id").equals("changede:feline_nine_lives"))
+                tooltip.add(Component.translatable("screen.changede.skills.lives", data.getInt("lives")));
             graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
         }
     }

@@ -1,0 +1,248 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_dark_dragon",
+    "changed:form_dark_latex_double_yufeng",
+    "changed:form_dark_latex_yufeng",
+    "changed:form_latex_crow",
+    "changed:form_latex_golden_dragon",
+    "changed:form_latex_pink_yuin_dragon",
+    "changed:form_latex_red_dragon",
+    "changed:special/form_8922cbbc-0c40-4262-b0b8-a153ec94ecdc",
+    "changed_addon:form_avali",
+    "changed_addon:form_avali_zergodmaster",
+    "changed_addon:form_dark_latex_yufeng_queen",
+    "changed_addon:form_latex_dragon_snow_leopard_shark",
+    "changed_addon:form_luminara_flower_beast"
+  ],
+  "nodes": [
+    {
+      "id": "changede:air_core",
+      "title": "skill.changede.air_core",
+      "description": "skill.changede.air_core.description",
+      "cost": 25,
+      "parents": [
+        "changede:latex_mastery"
+      ],
+      "x": 12,
+      "y": 2,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "air_core",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:air_endurance_1",
+      "title": "skill.changede.air_endurance_1",
+      "description": "skill.changede.air_endurance_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:air_core"
+      ],
+      "x": 11,
+      "y": 3,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "air_endurance",
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "id": "changede:air_endurance_2",
+      "title": "skill.changede.air_endurance_2",
+      "description": "skill.changede.air_endurance_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:air_endurance_1"
+      ],
+      "x": 11,
+      "y": 4,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "air_endurance",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "changede:air_load_adaptation_1",
+      "title": "skill.changede.air_load_adaptation_1",
+      "description": "skill.changede.air_load_adaptation_1.description",
+      "cost": 25,
+      "parents": [
+        "changede:air_core"
+      ],
+      "x": 13,
+      "y": 5,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "air_load",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "changede:air_load_adaptation_2",
+      "title": "skill.changede.air_load_adaptation_2",
+      "description": "skill.changede.air_load_adaptation_2.description",
+      "cost": 50,
+      "parents": [
+        "changede:air_load_adaptation_1"
+      ],
+      "x": 13,
+      "y": 6,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "air_load",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changede:flight_technique",
+      "title": "skill.changede.flight_technique",
+      "description": "skill.changede.flight_technique.description",
+      "cost": 25,
+      "parents": [
+        "changede:air_core"
+      ],
+      "x": 13,
+      "y": 7,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:flight_control",
+          "amount": 0.15
+        }
+      ]
+    },
+    {
+      "id": "changede:yufeng_body_growth",
+      "title": "skill.changede.yufeng_body_growth",
+      "description": "skill.changede.yufeng_body_growth.description",
+      "cost": 25,
+      "parents": [
+        "changede:air_core"
+      ],
+      "x": 12,
+      "y": 8,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "changede:aerobatics",
+      "title": "skill.changede.aerobatics",
+      "description": "skill.changede.aerobatics.description",
+      "cost": 40,
+      "parents": [
+        "changede:flight_technique"
+      ],
+      "x": 13,
+      "y": 9,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:flight_control",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changede:yufeng_endurance",
+      "title": "skill.changede.yufeng_endurance",
+      "description": "skill.changede.yufeng_endurance.description",
+      "cost": 50,
+      "parents": [
+        "changede:yufeng_body_growth"
+      ],
+      "x": 12,
+      "y": 10,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "changede:flight_mastery",
+      "title": "skill.changede.flight_mastery",
+      "description": "skill.changede.flight_mastery.description",
+      "cost": 50,
+      "parents": [
+        "changede:aerobatics"
+      ],
+      "x": 13,
+      "y": 11,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:flight_control",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changede:safe_landing",
+      "title": "skill.changede.safe_landing",
+      "description": "skill.changede.safe_landing.description",
+      "cost": 25,
+      "parents": [
+        "changede:aerobatics"
+      ],
+      "x": 12,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:landing_resistance",
+          "amount": 0.25
+        }
+      ]
+    },
+    {
+      "id": "changede:soft_landing",
+      "title": "skill.changede.soft_landing",
+      "description": "skill.changede.soft_landing.description",
+      "cost": 40,
+      "parents": [
+        "changede:safe_landing"
+      ],
+      "x": 13,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changede:attribute",
+          "attribute": "changede:landing_resistance",
+          "amount": 0.25
+        }
+      ]
+    }
+  ]
+}

@@ -8587,7 +8587,7 @@
     }
   ],
   "audit_date": "2026-10-02",
-  "status": "design_catalog_not_loaded_by_game",
+  "status": "source_catalog_selectors_shipped_in_skill_trees",
   "sources": [
     {
       "namespace": "changed",
