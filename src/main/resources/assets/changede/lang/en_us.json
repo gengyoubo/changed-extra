@@ -917,5 +917,12 @@
   "tooltip.changede.morphic_crystal.alloy": "Four alloys and one painite ingot form a morphic crystal core.",
   "tooltip.changede.morphic_crystal.core": "Used to start latex skill research. Consumed once; resuming needs no additional cores.",
   "block.changede.wlp_pipe": "Basic WLP Pipe",
-  "block.changede.dlp_pipe": "Basic DLP Pipe"
+  "block.changede.dlp_pipe": "Basic DLP Pipe",
+  "block.changede.ingot_filler": "Ingot Filler",
+  "item.changede.white_latex_ingot": "White Latex Ingot",
+  "item.changede.dark_latex_ingot": "Dark Latex Ingot",
+  "gui.changede.ingot_filler.fluid": "Latex",
+  "gui.changede.ingot_filler.clear": "Clear",
+  "gui.changede.ingot_filler.clear_hint": "Discard stored latex and cancel this batch. The input ingot stays; consumed fluid and LP are not refunded.",
+  "gui.changede.ingot_filler.recipe_errors": "Skipped invalid recipes:\n%s\nFix the data pack, reload and reopen this screen."
 }

@@ -12,6 +12,7 @@ public class CEMenus {
             REGISTRY.register("latex_skill_research",()->IForgeMenuType.create(github.com.gengyoubo.CE.skill.LatexSkillResearchMenu::new));
     public static final RegistryObject<MenuType<MachineStatusMenu>> MACHINE_STATUS = REGISTRY.register("machine_status", () -> IForgeMenuType.create(MachineStatusMenu::new));
     public static final RegistryObject<MenuType<BasicAlloyFurnaceMenu>> BASIC_ALLOY_FURNACE = REGISTRY.register("basic_alloy_furnace", () -> IForgeMenuType.create(BasicAlloyFurnaceMenu::new));
+    public static final RegistryObject<MenuType<IngotFillerMenu>> INGOT_FILLER = REGISTRY.register("ingot_filler",()->IForgeMenuType.create(IngotFillerMenu::new));
     public static final RegistryObject<MenuType<BasicGeneratorBlockEntityMenu>> BASIC_GENERATOR_BLOCK_ENTITY = REGISTRY.register("basic_generator_block_entity", () -> IForgeMenuType.create(BasicGeneratorBlockEntityMenu::new));
     public static final RegistryObject<MenuType<ElectricFurnaceMenu>> ELECTRIC_FURNACE = REGISTRY.register("electric_furnace", () -> IForgeMenuType.create(ElectricFurnaceMenu::new));
     public static final RegistryObject<MenuType<BasicLatexPurifierMenu>> BASIC_LATEX_PURIFIER = REGISTRY.register("basic_latex_purifier", () -> IForgeMenuType.create(BasicLatexPurifierMenu::new));

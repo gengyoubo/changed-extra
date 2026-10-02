@@ -34,4 +34,10 @@ public final class CELPRecipes {
             DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, MOD_ID);
     public static final RegistryObject<RecipeType<AlloyFurnaceRecipe>> ALLOY_FURNACE_TYPE_REGISTRY =
             RECIPE_TYPES.register("alloy_furnace", () -> ALLOY_FURNACE_TYPE);
+    public static final RecipeType<IngotFillingRecipe> INGOT_FILLING_TYPE =
+            RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MOD_ID,"ingot_filling"));
+    public static final RegistryObject<RecipeSerializer<IngotFillingRecipe>> INGOT_FILLING_SERIALIZER =
+            RECIPE_SERIALIZERS.register("ingot_filling",IngotFillingRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<IngotFillingRecipe>> INGOT_FILLING_TYPE_REGISTRY =
+            RECIPE_TYPES.register("ingot_filling",()->INGOT_FILLING_TYPE);
 }

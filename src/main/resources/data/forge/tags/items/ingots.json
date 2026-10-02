@@ -2,7 +2,9 @@
   "replace": false,
   "values": [
     "#forge:ingots/iridium",
-    "changede:morphic_crystal_alloy"
+    "changede:morphic_crystal_alloy",
+    "changede:white_latex_ingot",
+    "changede:dark_latex_ingot"
   ],
   "remove": [
     "changed_addon:iridium"

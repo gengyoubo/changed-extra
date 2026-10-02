@@ -61,6 +61,8 @@ public class CEItem {
             ITEMS.register("chain_ingot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> IRIDIUM_INGOT = simpleItem("iridium_ingot");
     public static final RegistryObject<Item> PAINITE_INGOT = simpleItem("painite_ingot");
+    public static final RegistryObject<Item> WHITE_LATEX_INGOT = simpleItem("white_latex_ingot");
+    public static final RegistryObject<Item> DARK_LATEX_INGOT = simpleItem("dark_latex_ingot");
     public static final RegistryObject<Item> PAINITE_WORKBENCH_CORE = simpleItem("painite_workbench_core");
     public static final RegistryObject<Item> MORPHIC_CRYSTAL=ITEMS.register("morphic_crystal",()->new MorphicCrystalItem("crystal"));
     public static final RegistryObject<Item> MORPHIC_CRYSTAL_ALLOY=ITEMS.register("morphic_crystal_alloy",()->new MorphicCrystalItem("alloy"));

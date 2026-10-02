@@ -42,6 +42,7 @@ public class CEScreen {
             MenuScreens.register(CEMenus.MACHINE_STATUS.get(), MachineStatusScreen::new);
             MenuScreens.register(CEMenus.ELECTRIC_FURNACE.get(), ElectricFurnaceScreen::new);
             MenuScreens.register(CEMenus.BASIC_ALLOY_FURNACE.get(), BasicAlloyFurnaceScreen::new);
+            MenuScreens.register(CEMenus.INGOT_FILLER.get(),IngotFillerScreen::new);
             MenuScreens.register(CEMenus.BASIC_LATEX_PURIFIER.get(), BasicLatexPurifierScreen::new);
             MenuScreens.register(CEMenus.LATEX_CREATIVE_EXTRANALBODY_CRAFT_TABLE.get(), LatexCreativeExtranalbodyCraftTableScreen::new);
             MenuScreens.register(CEMenus.SPACE_TOWER.get(), SpaceTowerScreen::new);

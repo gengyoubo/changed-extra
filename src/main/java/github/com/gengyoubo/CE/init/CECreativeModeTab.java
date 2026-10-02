@@ -27,6 +27,8 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.INACTIVE_WHITE_LATEX.get());
                                             output.accept(CEItem.LATEX_GRAY.get());
                                             output.accept(CEItem.LATEX_INGOT.get());
+                                            output.accept(CEItem.WHITE_LATEX_INGOT.get());
+                                            output.accept(CEItem.DARK_LATEX_INGOT.get());
                                             output.accept(CEItem.LATEX_SPEAR.get());
                                             output.accept(CEItem.IRIDIUM_INGOT.get());
                                             output.accept(CEItem.PAINITE_INGOT.get());
@@ -60,6 +62,7 @@ public class CECreativeModeTab {
                                         .icon(() -> new ItemStack(CELPItem.ELECTRIC_FURNACE_ITEM.get()))
                                         .displayItems((parameters, output) -> {
                                             output.accept(CELPItem.BASIC_WIRE_ITEM.get());
+                                            output.accept(CELPItem.INGOT_FILLER_ITEM.get());
                                             output.accept(CELPItem.WLP_PIPE_ITEM.get());
                                             output.accept(CELPItem.DLP_PIPE_ITEM.get());
                                             output.accept(CEItem.PAINITE_WORKBENCH_CORE.get());
