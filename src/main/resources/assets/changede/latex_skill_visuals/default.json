@@ -49,263 +49,211 @@
   "regions": [
     {
       "id": "changede:dark_branch",
-      "x": -4.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 18,
       "theme": "changede:dark_latex",
       "feather": 0.8,
-      "priority": 10
+      "priority": 10,
+      "branch": "dark",
+      "padding": 0.75
     },
     {
       "id": "changede:white_branch",
-      "x": 2.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 17,
       "theme": "changede:white_latex",
       "feather": 0.8,
-      "priority": 10
+      "priority": 10,
+      "branch": "white",
+      "padding": 0.75
     },
     {
       "id": "changede:sea_branch",
-      "x": 13.25,
-      "y": 10,
-      "width": 3.5,
-      "height": 13,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "sea",
+      "padding": 0.75
     },
     {
       "id": "changede:land_branch",
-      "x": -20.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "land",
+      "padding": 0.75
     },
     {
       "id": "changede:air_branch",
-      "x": 17.25,
-      "y": 10,
-      "width": 3.5,
-      "height": 16,
       "theme": "changede:yufeng",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "air",
+      "padding": 0.75
     },
     {
       "id": "changede:feline_branch",
-      "x": -24.75,
-      "y": 10,
-      "width": 3.5,
-      "height": 13,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "feline",
+      "padding": 0.75
     },
     {
       "id": "changede:reptile_branch",
-      "x": 26.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "reptile",
+      "padding": 0.75
     },
     {
       "id": "changede:dragon_branch",
-      "x": -28.75,
-      "y": 10,
-      "width": 3.5,
-      "height": 13,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "dragon",
+      "padding": 0.75
     },
     {
       "id": "changede:arthropod_branch",
-      "x": -36.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 7,
       "theme": "changede:dark_latex",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "arthropod",
+      "padding": 0.75
     },
     {
       "id": "changede:insect_branch",
-      "x": -33.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:dark_latex",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "insect",
+      "padding": 0.75
     },
     {
       "id": "changede:arachnid_branch",
-      "x": -39.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:dark_latex",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "arachnid",
+      "padding": 0.75
     },
     {
       "id": "changede:biped_branch",
-      "x": -8.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "biped",
+      "padding": 0.75
     },
     {
       "id": "changede:feral_branch",
-      "x": 6.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "feral",
+      "padding": 0.75
     },
     {
       "id": "changede:taur_branch",
-      "x": -12.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "taur",
+      "padding": 0.75
     },
     {
       "id": "changede:snake_branch",
-      "x": 10.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "snake",
+      "padding": 0.75
     },
     {
       "id": "changede:mer_branch",
-      "x": -16.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "mer",
+      "padding": 0.75
     },
     {
       "id": "changede:canine_branch",
-      "x": 22.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "canine",
+      "padding": 0.75
     },
     {
       "id": "changede:bird_branch",
-      "x": 34.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "bird",
+      "padding": 0.75
     },
     {
       "id": "changede:shark_branch",
-      "x": -44.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "shark",
+      "padding": 0.75
     },
     {
       "id": "changede:ray_branch",
-      "x": 42.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "ray",
+      "padding": 0.75
     },
     {
       "id": "changede:fish_branch",
-      "x": -48.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "fish",
+      "padding": 0.75
     },
     {
       "id": "changede:marine_mammal_branch",
-      "x": 46.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "marine_mammal",
+      "padding": 0.75
     },
     {
       "id": "changede:cephalopod_branch",
-      "x": -52.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "cephalopod",
+      "padding": 0.75
     },
     {
       "id": "changede:plant_branch",
-      "x": 50.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "plant",
+      "padding": 0.75
     },
     {
       "id": "changede:other_mammal_branch",
-      "x": -56.75,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "other_mammal",
+      "padding": 0.75
     },
     {
       "id": "changede:humanoid_branch",
-      "x": 54.25,
-      "y": 10,
-      "width": 2.5,
-      "height": 11,
       "theme": "changede:laboratory",
       "feather": 0.6,
-      "priority": 10
+      "priority": 10,
+      "branch": "humanoid",
+      "padding": 0.75
     }
   ]
 }

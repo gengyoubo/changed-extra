@@ -30,6 +30,10 @@ public final class LatexSkillScreen extends Screen {
     private String viewedType = "any";
     private Button layerButton;
     private boolean previewAll;
+    private boolean layoutDirty = true;
+    private int visualRevision = -1;
+    private List<CompoundTag> layoutNodes = List.of();
+    private List<SkillRegion> layoutRegions = List.of();
 
     public LatexSkillScreen(Screen parent) {
         super(Component.translatable("screen.changede.skills.title"));
@@ -39,7 +43,10 @@ public final class LatexSkillScreen extends Screen {
     public static void receive(CompoundTag data) {
         if (Minecraft.getInstance().screen instanceof LatexSkillScreen screen) {
             String previousActual = screen.data.getString("latex_type");
+            boolean changedForm = !screen.data.getString("form").equals(data.getString("form"));
             screen.data = data;
+            screen.layoutDirty = true;
+            if (changedForm) screen.cancelPress();
             String nextType = SkillCanvasLayer.select(previousActual, data.getString("latex_type"), screen.viewedType, screen.layers());
             if (!nextType.equals(screen.viewedType)) screen.changeLayer(nextType);
             screen.updateLayerButton();
@@ -55,8 +62,25 @@ public final class LatexSkillScreen extends Screen {
     }
 
     private List<CompoundTag> nodes() {
-        return allNodes().stream().filter(n -> SkillCanvasLayer.visibleApplicable(n.getBoolean("applicable"),n.getString("scope").equals("global"),previewAll)).toList();
+        if (layoutDirty || visualRevision != SkillVisuals.revision()) {
+            var visible=allNodes().stream().filter(n -> SkillCanvasLayer.visibleApplicable(n.getBoolean("applicable"),
+                    n.getString("scope").equals("global"),previewAll)).toList();
+            var layout=SkillBranchLayout.arrange(visible.stream().map(n->new SkillBranchLayout.Node(
+                    n.getString("id"),n.getString("tree"),n.getDouble("x"),n.getDouble("y"),
+                    n.getString("scope").equals("global"))).toList(),SkillVisuals.branchPadding());
+            layoutNodes=visible.stream().map(n->{
+                CompoundTag positioned=n.copy();
+                positioned.putDouble("x",layout.nodes().get(n.getString("id")).x());
+                return positioned;
+            }).toList();
+            layoutRegions=SkillVisuals.resolveRegions(layout);
+            visualRevision=SkillVisuals.revision();
+            layoutDirty=false;
+        }
+        return layoutNodes;
     }
+
+    private void cancelPress() { dragging=false; pressedNode=null; }
 
     private Set<String> layers() {
         Set<String> result = new TreeSet<>();
@@ -83,6 +107,8 @@ public final class LatexSkillScreen extends Screen {
 
     private void nextLayer() {
         previewAll = !previewAll;
+        layoutDirty = true;
+        cancelPress();
         updateLayerButton();
     }
 
@@ -90,7 +116,7 @@ public final class LatexSkillScreen extends Screen {
         List<CompoundTag> nodes = nodes();
         CompoundTag root = nodes.stream().filter(n -> n.getList("parents", Tag.TAG_STRING).isEmpty()).findFirst().orElse(new CompoundTag());
         zoom = 0.85;
-        panX = width / 2.0 - root.getInt("x") * COLUMN * zoom;
+        panX = width / 2.0 - root.getDouble("x") * COLUMN * zoom;
         panY = TOP + 30 - root.getInt("y") * ROW * zoom;
         positioned = !nodes.isEmpty();
     }
@@ -104,11 +130,12 @@ public final class LatexSkillScreen extends Screen {
             if(keys.isEmpty())return;
             int nearest=0; double distance=Double.MAX_VALUE;
             for(int i=0;i<keys.size();i++){
-                double d=Math.abs(keys.get(i).getInt("x")*COLUMN*zoom+panX-width/2.0);
+                double d=Math.hypot(keys.get(i).getDouble("x")*COLUMN*zoom+panX-width/2.0,
+                        keys.get(i).getInt("y")*ROW*zoom+panY-(TOP+50));
                 if(d<distance){distance=d;nearest=i;}
             }
             var key=keys.get((nearest+1)%keys.size());
-            panX=width/2.0-key.getInt("x")*COLUMN*zoom;
+            panX=width/2.0-key.getDouble("x")*COLUMN*zoom;
             panY=TOP+50-key.getInt("y")*ROW*zoom;
         }).bounds(108,6,70,20).build());
         addRenderableWidget(Button.builder(Component.translatable("screen.changede.skills.center"), b -> centerRoot())
@@ -122,7 +149,7 @@ public final class LatexSkillScreen extends Screen {
         if (!inCanvas(mouseX, mouseY)) return null;
         double x = (mouseX - panX) / zoom, y = (mouseY - panY) / zoom;
         for (CompoundTag node : nodes()) {
-            double dx = x - node.getInt("x") * COLUMN, dy = y - node.getInt("y") * ROW;
+            double dx = x - node.getDouble("x") * COLUMN, dy = y - node.getInt("y") * ROW;
             if (node.getBoolean("key") ? Math.abs(dx) <= 62 && Math.abs(dy) <= 16 : dx * dx + dy * dy <= 14 * 14)
                 return node;
         }
@@ -215,7 +242,7 @@ public final class LatexSkillScreen extends Screen {
             double t = steps == 0 ? 0 : (double) i / steps;
             int x = (int) Math.round(x1 + (x2 - x1) * t), y = (int) Math.round(y1 + (y2 - y1) * t);
             if (i % 16 == 0) {
-                var weights = SkillVisuals.weights(x / (double) COLUMN, y / (double) ROW, viewedType);
+                var weights = SkillVisuals.weights(layoutRegions, x / (double) COLUMN, y / (double) ROW, viewedType);
                 color = stateColor(weights, state);
                 motif = SkillVisuals.theme(SkillVisuals.dominant(weights)).motif();
             }
@@ -319,12 +346,12 @@ public final class LatexSkillScreen extends Screen {
         graphics.pose().translate(panX, panY, 0);
         graphics.pose().scale((float) zoom, (float) zoom, 1);
         LatexSkillBackground.render(graphics, panX, panY, zoom,
-                4, TOP, width - 4, height - 32, COLUMN, ROW, viewedType);
+                4, TOP, width - 4, height - 32, COLUMN, ROW, viewedType, layoutRegions);
         for (CompoundTag node : nodes) for (Tag parentId : node.getList("parents", Tag.TAG_STRING)) {
             CompoundTag prerequisite = byId.get(parentId.getAsString());
             if (prerequisite == null) continue;
-            int x1 = prerequisite.getInt("x") * COLUMN, y1 = prerequisite.getInt("y") * ROW;
-            int x2 = node.getInt("x") * COLUMN, y2 = node.getInt("y") * ROW;
+            int x1 = (int)Math.round(prerequisite.getDouble("x") * COLUMN), y1 = prerequisite.getInt("y") * ROW;
+            int x2 = (int)Math.round(node.getDouble("x") * COLUMN), y2 = node.getInt("y") * ROW;
             // Cull distant edges before rasterizing; very deep datapacks must remain cheap to pan.
             if (Math.max(y1, y2) * zoom + panY < TOP || Math.min(y1, y2) * zoom + panY > height - 32
                     || Math.max(x1, x2) * zoom + panX < 4 || Math.min(x1, x2) * zoom + panX > width - 4) continue;
@@ -341,10 +368,10 @@ public final class LatexSkillScreen extends Screen {
                     (int) (x1 + delta[0] * end), (int) (y1 + delta[1] * end), state(node));
         }
         for (CompoundTag node : nodes) {
-            int x = node.getInt("x") * COLUMN, y = node.getInt("y") * ROW;
+            int x = (int)Math.round(node.getDouble("x") * COLUMN), y = node.getInt("y") * ROW;
             if (x * zoom + panX < -100 || x * zoom + panX > width + 100
                     || y * zoom + panY < TOP - 50 || y * zoom + panY > height + 50) continue;
-            var weights = SkillVisuals.weights(node.getInt("x"), node.getInt("y"), viewedType);
+            var weights = SkillVisuals.weights(layoutRegions, node.getDouble("x"), node.getInt("y"), viewedType);
             String state = state(node), motif = SkillVisuals.theme(SkillVisuals.dominant(weights)).motif();
             int color = stateColor(weights, state), surface = SkillVisuals.color(weights, SkillVisuals.Theme::surface);
             Component label = Component.translatable(node.getString("title"));

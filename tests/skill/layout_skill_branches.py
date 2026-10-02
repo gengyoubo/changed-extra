@@ -53,6 +53,8 @@ def arrange():
         name = region['id'].removeprefix('changede:').removesuffix('_branch')
         if name not in centers:
             continue
+        if 'branch' in region:
+            continue  # Runtime regions follow the branch bounds, not design coordinates.
         xs = [node['x'] for node in trees[name]['nodes']]
         region['x'] = min(xs) - .75
         region['width'] = max(xs) - min(xs) + 1.5

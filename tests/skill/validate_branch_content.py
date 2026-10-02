@@ -63,15 +63,12 @@ arthropod_x=nodes['changede:arthropod_core']['x']
 assert nodes['changede:arachnid_core']['x']<arthropod_x<nodes['changede:insect_core']['x']<0
 v=read(RES/'assets/changede/latex_skill_visuals/default.json');themes={t['id'] for t in v['themes']}
 assert len({r['id'] for r in v['regions']})==len(v['regions'])
-assert all(r['theme'] in themes and r['width']>0 and r['height']>0 for r in v['regions'])
+assert all(r['theme'] in themes and 0<r['padding']<=10 for r in v['regions'])
+assert not any(k in r for r in v['regions'] for k in ['x','y','width','height'])
 for branch,tree in trees.items():
     if branch in {'trunk','yufeng'}:continue
     region=next(r for r in v['regions'] if r['id']=='changede:'+branch+'_branch')
-    assert region['x']>0 or region['x']+region['width']<0,('Region crosses common trunk',branch)
-    for n in tree['nodes']:assert region['x']<n['x']<region['x']+region['width'] and region['y']<n['y']<region['y']+region['height'],n['id']
-for i,a in enumerate(v['regions']):
-    for b in v['regions'][i+1:]:
-        assert a['x']+a['width']<=b['x'] or b['x']+b['width']<=a['x'],('Overlapping branch regions',a['id'],b['id'])
+    assert region['branch']==branch
 # Run visibility/activation simulations for each audited Form, including mixed species.
 def eligible(form):
     result=set()
