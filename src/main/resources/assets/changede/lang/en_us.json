@@ -906,5 +906,14 @@
   "screen.changede.research.tier.advanced": "Tier: advanced ability",
   "screen.changede.research.tier.rare": "Tier: rare species",
   "screen.changede.research.tier.core": "Tier: special core",
-  "screen.changede.research.current": "Current project: %s · %s%%"
+  "screen.changede.research.current": "Current project: %s · %s%%",
+  "block.changede.dark_latex_morphic_crystal_ore": "Dark Latex Morphic Crystal Ore",
+  "block.changede.white_latex_morphic_crystal_ore": "White Latex Morphic Crystal Ore",
+  "item.changede.morphic_crystal": "Morphic Crystal",
+  "item.changede.morphic_crystal_alloy": "Morphic Crystal Alloy",
+  "item.changede.morphic_crystal_core": "Morphic Crystal Core",
+  "tooltip.changede.morphic_crystal.ore": "Found underground in Latex Space. Requires an iron pickaxe or better; Silk Touch preserves the ore.",
+  "tooltip.changede.morphic_crystal.crystal": "Combine with a latex ingot in an alloy furnace to make morphic crystal alloy.",
+  "tooltip.changede.morphic_crystal.alloy": "Four alloys and one painite ingot form a morphic crystal core.",
+  "tooltip.changede.morphic_crystal.core": "Used to start latex skill research. Consumed once; resuming needs no additional cores."
 }

@@ -1,5 +1,10 @@
 {
   "replace": false,
-  "values": ["#forge:ingots/iridium"],
-  "remove": ["changed_addon:iridium"]
+  "values": [
+    "#forge:ingots/iridium",
+    "changede:morphic_crystal_alloy"
+  ],
+  "remove": [
+    "changed_addon:iridium"
+  ]
 }

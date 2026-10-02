@@ -1,8 +1,8 @@
 # 技能树设计与后续扩展
 
-当前新增胶兽学技能研究台，26 个分类关键入口及九条命核心在台上使用原 XP 与前置研发。配方与当前行为见 [SKILL_TREES.md](SKILL_TREES.md)；文中的材料消耗、多级节点、主动 Power 和洗点仍属于后续设计。
+当前胶兽学技能研究台支持 26 个分类入口及九条命核心的异步研究：启动扣材料、按秒持续消耗 WLP、完成后永久获得学习资格，技能学习仍使用原 XP 与前置。黑白胶入口完全免费。配方、存档规则与初始成本见 [SKILL_TREES.md](SKILL_TREES.md)；文中的多级节点、主动 Power 和洗点仍属于后续设计。
 
-依据 [issue #8](https://github.com/gengyoubo/changed-extra/issues/8) 及 2026-10-02 本次聊天更新。下一版采用从原黑白胶分叉点（第 10 个通用成长节点后）展开的胶体、身体形态、运动、族群四类并行分支；九条命按本次确认的死亡规则设计。本文保留 WLP 及后续系统设计；当前自然成长阶段已实现独立 Region/Theme、rewards[]（Attribute/None/Mechanic）、原版 XP points、Unlocked/Active/Purchasable 和条件原因。四维分类、并行入口、被动正负效果与九条命已实装；多级单节点、物品/科技、主动 Power、互斥和洗点仍为待实现设计；以 [SKILL_TREES.md](SKILL_TREES.md) 为当前行为的依据。
+依据 [issue #8](https://github.com/gengyoubo/changed-extra/issues/8) 及 2026-10-02 本次聊天更新。下一版采用从原黑白胶分叉点（第 10 个通用成长节点后）展开的胶体、身体形态、运动、族群四类并行分支；九条命按本次确认的死亡规则设计。本文保留 WLP 及后续系统设计；当前自然成长阶段已实现独立 Region/Theme、rewards[]（Attribute/None/Mechanic）、原版 XP points、Unlocked/Active/Purchasable 和条件原因。四维分类、并行入口、被动正负效果与九条命已实装；形质晶科技材料和持续 WLP 研究已接入；多级单节点、主动 Power、互斥和洗点仍为待实现设计；以 [SKILL_TREES.md](SKILL_TREES.md) 为当前行为的依据。
 
 本次已完成 [Form 归属表](FORM_AFFILIATIONS.md) 与 [机器可读清单](FORM_AFFILIATIONS.json)，覆盖当前 Changed/Addon 的 149 个固定 Form ID 和 1 个本地特殊 profile。无法可靠判定的维度统一无归属。分支机制按用户授权采用推荐初版规则；节肢动物先设父关键节点，再分昆虫／蛛形，节肢杀手统一放在父节点。完整节点、数值、触发条件与叠加方式见 [分类分支机制规格](SKILL_BRANCH_MECHANICS.md)。归属清单已转换为游戏技能树的 forms 选择器，完整内容见 [已实装技能清单](SKILL_CONTENT.md)。
 

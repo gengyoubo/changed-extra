@@ -4,11 +4,13 @@ gradle.beforeProject { project ->
         def probeDir=project.file('build/research-integration-source')
         project.copy {
             from project.file('tests/skill/ResearchIntegrationProbe.java')
+            from project.file('tests/skill/MorphicCrystalIntegrationProbe.java')
             into probeDir
         }
         project.sourceSets.main.java.srcDir(probeDir)
-        project.minecraft.runs.server.workingDirectory project.file('build/research-integration-run')
-        project.minecraft.runs.server.jvmArgs '-Xmx3G'
+        project.minecraft.runs.server.workingDirectory project.file('build/morphic-integration-run')
+        project.minecraft.runs.server.jvmArgs '-Xmx4G'
         project.minecraft.runs.server.property 'forge.logging.console.level','info'
+        project.minecraft.runs.server.property 'changede.integrationProbe','true'
     }
 }

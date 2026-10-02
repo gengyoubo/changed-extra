@@ -4,16 +4,8 @@
   "tier": "rare",
   "startup_materials": [
     {
-      "item": "minecraft:book",
-      "count": 1
-    },
-    {
-      "item": "changede:latex_ingot",
-      "count": 16
-    },
-    {
-      "item": "changede:painite_workbench_core",
-      "count": 2
+      "item": "changede:morphic_crystal_core",
+      "count": 8
     }
   ]
 }

@@ -91,6 +91,7 @@ public class changede {
         CEEnchantment.ENCHANTMENTS.register(bus);
         CECreativeModeTab.CREATIVE_MODE_TABS.register(bus);
         CEBlock.BLOCKS.register(bus);
+        github.com.gengyoubo.CE.init.CEFeatures.FEATURES.register(bus);
         CEBlockEntity.BLOCK_ENTITIES.register(bus);
         CEEntity.ENTITY_TYPES.register(bus);
         CEItem.ITEMS.register(bus);

@@ -1018,5 +1018,14 @@
   "screen.changede.research.tier.advanced": "等级：高级能力",
   "screen.changede.research.tier.rare": "等级：稀有族群",
   "screen.changede.research.tier.core": "等级：特殊核心",
-  "screen.changede.research.current": "当前项目：%s · %s%%"
+  "screen.changede.research.current": "当前项目：%s · %s%%",
+  "block.changede.dark_latex_morphic_crystal_ore": "黑胶石形质晶矿",
+  "block.changede.white_latex_morphic_crystal_ore": "白胶石形质晶矿",
+  "item.changede.morphic_crystal": "形质晶体",
+  "item.changede.morphic_crystal_alloy": "形质晶合金",
+  "item.changede.morphic_crystal_core": "形质晶核心",
+  "tooltip.changede.morphic_crystal.ore": "产于胶空间地下，需要铁镐及以上；精准采集保留矿石。",
+  "tooltip.changede.morphic_crystal.crystal": "与胶锭在合金炉中加工成形质晶合金。",
+  "tooltip.changede.morphic_crystal.alloy": "四个合金与一个硅硼钙铝锭可制成形质晶核心。",
+  "tooltip.changede.morphic_crystal.core": "用于胶兽学研究。只在开始研究时消耗；继续研究无需再次投入。"
 }

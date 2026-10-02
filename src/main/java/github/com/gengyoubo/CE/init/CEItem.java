@@ -62,6 +62,13 @@ public class CEItem {
     public static final RegistryObject<Item> IRIDIUM_INGOT = simpleItem("iridium_ingot");
     public static final RegistryObject<Item> PAINITE_INGOT = simpleItem("painite_ingot");
     public static final RegistryObject<Item> PAINITE_WORKBENCH_CORE = simpleItem("painite_workbench_core");
+    public static final RegistryObject<Item> MORPHIC_CRYSTAL=ITEMS.register("morphic_crystal",()->new MorphicCrystalItem("crystal"));
+    public static final RegistryObject<Item> MORPHIC_CRYSTAL_ALLOY=ITEMS.register("morphic_crystal_alloy",()->new MorphicCrystalItem("alloy"));
+    public static final RegistryObject<Item> MORPHIC_CRYSTAL_CORE=ITEMS.register("morphic_crystal_core",()->new MorphicCrystalItem("core"));
+    public static final RegistryObject<Item> DARK_LATEX_MORPHIC_CRYSTAL_ORE=ITEMS.register("dark_latex_morphic_crystal_ore",
+            ()->MorphicCrystalItem.ore(CEBlock.DARK_LATEX_MORPHIC_CRYSTAL_ORE.get()));
+    public static final RegistryObject<Item> WHITE_LATEX_MORPHIC_CRYSTAL_ORE=ITEMS.register("white_latex_morphic_crystal_ore",
+            ()->MorphicCrystalItem.ore(CEBlock.WHITE_LATEX_MORPHIC_CRYSTAL_ORE.get()));
     public static final RegistryObject<Item> LATEX_SKILL_RESEARCH_TABLE = ITEMS.register("latex_skill_research_table",
             () -> new BlockItem(CEBlock.LATEX_SKILL_RESEARCH_TABLE.get(),new Item.Properties()));
     public static final RegistryObject<Item> PLATE =

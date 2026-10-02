@@ -4,12 +4,8 @@
   "tier": "intermediate",
   "startup_materials": [
     {
-      "item": "minecraft:book",
-      "count": 1
-    },
-    {
-      "item": "changede:latex_ingot",
-      "count": 4
+      "item": "changede:morphic_crystal_core",
+      "count": 3
     }
   ]
 }

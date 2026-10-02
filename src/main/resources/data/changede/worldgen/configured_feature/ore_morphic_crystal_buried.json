@@ -1,0 +1,27 @@
+{
+  "type": "changede:morphic_crystal_ore",
+  "config": {
+    "discard_chance_on_air_exposure": 1.0,
+    "size": 8,
+    "targets": [
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "changede:dark_latex_stone"
+        },
+        "state": {
+          "Name": "changede:dark_latex_morphic_crystal_ore"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "changede:white_latex_stone"
+        },
+        "state": {
+          "Name": "changede:white_latex_morphic_crystal_ore"
+        }
+      }
+    ]
+  }
+}

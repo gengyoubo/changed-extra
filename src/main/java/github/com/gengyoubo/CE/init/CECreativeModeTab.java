@@ -30,6 +30,10 @@ public class CECreativeModeTab {
                                             output.accept(CEItem.LATEX_SPEAR.get());
                                             output.accept(CEItem.IRIDIUM_INGOT.get());
                                             output.accept(CEItem.PAINITE_INGOT.get());
+                                            output.accept(CEItem.DARK_LATEX_MORPHIC_CRYSTAL_ORE.get());
+                                            output.accept(CEItem.WHITE_LATEX_MORPHIC_CRYSTAL_ORE.get());
+                                            output.accept(CEItem.MORPHIC_CRYSTAL.get());
+                                            output.accept(CEItem.MORPHIC_CRYSTAL_ALLOY.get());
                                             output.accept(CEItem.UNBAKED_LATEX_INGOT.get());
                                             output.accept(CEItem.DARK_LATEX_LOG.get());
                                             output.accept(CEItem.DARK_LATEX_PLANKS.get());
@@ -57,6 +61,7 @@ public class CECreativeModeTab {
                                         .displayItems((parameters, output) -> {
                                             output.accept(CELPItem.BASIC_WIRE_ITEM.get());
                                             output.accept(CEItem.PAINITE_WORKBENCH_CORE.get());
+                                            output.accept(CEItem.MORPHIC_CRYSTAL_CORE.get());
                                             output.accept(CEItem.LATEX_SKILL_RESEARCH_TABLE.get());
                                             output.accept(CELPItem.BASIC_ITEM_PIPE_ITEM.get());
                                             output.accept(CELPItem.BASIC_FLUID_PIPE_ITEM.get());

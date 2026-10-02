@@ -4,6 +4,8 @@ import github.com.gengyoubo.CE.Block.LatexPaintingPortalBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrassBlock;
+import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -16,6 +18,10 @@ public class CEBlock {
             DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
     public static final RegistryObject<Block> LATEX_SKILL_RESEARCH_TABLE = BLOCKS.register("latex_skill_research_table",
             github.com.gengyoubo.CE.Block.LatexSkillResearchTableBlock::new);
+    public static final RegistryObject<Block> DARK_LATEX_MORPHIC_CRYSTAL_ORE=BLOCKS.register("dark_latex_morphic_crystal_ore",
+            ()->new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.DIAMOND_ORE).strength(3.0F,3.0F),UniformInt.of(3,7)));
+    public static final RegistryObject<Block> WHITE_LATEX_MORPHIC_CRYSTAL_ORE=BLOCKS.register("white_latex_morphic_crystal_ore",
+            ()->new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.DIAMOND_ORE).strength(3.0F,3.0F),UniformInt.of(3,7)));
 
     public static final RegistryObject<Block> DARK_LATEX_LOG = BLOCKS.register("dark_latex_log",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
