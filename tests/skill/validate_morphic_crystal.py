@@ -1,5 +1,5 @@
 """Validate the agreed ore, worldgen, alloy/core recipes, models and research material chain."""
-import argparse,json,os
+import argparse,json,os,struct
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -38,14 +38,15 @@ with ZipFile(args.vanilla_jar) as vanilla:
         assert read(f'data/changede/worldgen/placed_feature/ore_morphic_crystal{suffix}.json')==expected
     for name in [*['block/'+ore for ore in ores],*['item/'+n for n in ['morphic_crystal','morphic_crystal_alloy','morphic_crystal_core']]]:
         model=read('assets/changede/models/'+name+'.json')
-        assert model['elements']
+        is_block=name.startswith('block/')
+        assert model=={'parent':'minecraft:block/cube_all' if is_block else 'minecraft:item/generated',
+                       'textures':{'all' if is_block else 'layer0':'changede:'+name}}
         for texture in model['textures'].values():
             namespace,path=texture.split(':',1)
-            if namespace=='changede':assert (res/f'assets/changede/textures/{path}.png').exists()
-            else:assert f'assets/{namespace}/textures/{path}.png' in vanilla.namelist(),texture
-        for element in model['elements']:
-            assert all(-16<=a<b<=32 for a,b in zip(element['from'],element['to']))
-            assert all(face['texture'].lstrip('#') in model['textures'] for face in element['faces'].values())
+            png=(res/f'assets/{namespace}/textures/{path}.png').read_bytes()
+            assert png[:8]==b'\x89PNG\r\n\x1a\n' and png[12:16]==b'IHDR',texture
+            assert struct.unpack('>II',png[16:24])==(16,16),texture
+            assert png[24]==8 and png[25] in ([2,6] if is_block else [6]),texture
 
 biomes=read('data/changede/dimension/latex_space.json')['generator']['biome_source']['biomes']
 assert set(read('data/changede/tags/worldgen/biome/latex_space.json')['values'])=={b['biome'] for b in biomes}

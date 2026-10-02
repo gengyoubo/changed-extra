@@ -20,17 +20,20 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 import net.minecraftforge.network.NetworkHooks;
 
+@SuppressWarnings("deprecation")
 public final class LatexSkillResearchTableBlock extends HorizontalDirectionalBlock implements EntityBlock {
-    private static final VoxelShape SHAPE=Shapes.or(box(0,10,0,16,14,16),box(1,0,1,4,10,4),
-            box(12,0,1,15,10,4),box(1,0,12,4,10,15),box(12,0,12,15,10,15),box(4,14,4,12,16,12));
+    private static final VoxelShape SHAPE=Shapes.or(box(0,0,0,16,2,16),
+            box(1,2,1,15,10,15),box(0,10,0,16,12,16));
     public LatexSkillResearchTableBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.CRAFTING_TABLE).strength(3.5F).sound(SoundType.METAL).noOcclusion());
         registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH));
     }
     @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state) { return new LatexSkillResearchBlockEntity(pos,state); }
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type) {
-        return !level.isClientSide && type==CEBlockEntity.LATEX_SKILL_RESEARCH.get()
-                ? (world,pos,block,entity)->((LatexSkillResearchBlockEntity)entity).tick() : null;
+        if(type!=CEBlockEntity.LATEX_SKILL_RESEARCH.get())return null;
+        return level.isClientSide
+                ? (world,pos,block,entity)->((LatexSkillResearchBlockEntity)entity).tickBook()
+                : (world,pos,block,entity)->((LatexSkillResearchBlockEntity)entity).tick();
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder) { builder.add(FACING); }
     @Override public BlockState getStateForPlacement(BlockPlaceContext context) {

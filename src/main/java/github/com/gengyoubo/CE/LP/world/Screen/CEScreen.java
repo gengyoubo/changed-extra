@@ -5,6 +5,7 @@ import github.com.gengyoubo.CE.LP.init.CELPBlock;
 import github.com.gengyoubo.CE.LP.world.Menu.CEMenus;
 import github.com.gengyoubo.CE.client.renderer.LatexPaintingPortalEntityRenderer;
 import github.com.gengyoubo.CE.client.renderer.LatexPaintingPortalRenderer;
+import github.com.gengyoubo.CE.client.renderer.LatexSkillResearchTableRenderer;
 import github.com.gengyoubo.CE.client.renderer.LatexPortalRenderManager;
 import github.com.gengyoubo.CE.init.CEBlock;
 import github.com.gengyoubo.CE.init.CEBlockEntity;
@@ -27,6 +28,7 @@ import java.lang.reflect.Method;
 public class CEScreen {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(CEBlockEntity.LATEX_SKILL_RESEARCH.get(), LatexSkillResearchTableRenderer::new);
         event.registerBlockEntityRenderer(CEBlockEntity.LATEX_PAINTING_PORTAL.get(), LatexPaintingPortalRenderer::new);
         event.registerEntityRenderer(CEEntity.LATEX_PAINTING_PORTAL.get(), LatexPaintingPortalEntityRenderer::new);
     }

@@ -1,0 +1,53 @@
+{
+  "mode": "Built-in image_gen",
+  "integration": "Nearest-neighbor conversion to 16x16 game sprites; opaque alpha edges; item silhouettes fitted within transparent margins.",
+  "assets": [
+    {
+      "name": "dark_latex_morphic_crystal_ore",
+      "prompt": "Asset: one Minecraft vanilla-style ore block texture, flat square tile. Reference 1 is vanilla diamond ore style; reference 2 is the dark latex stone substrate. Make a restrained morphic crystal ore: ordinary grey mottled stone with only a few small muted lavender mineral pixels distributed exactly like vanilla diamond ore flecks. 16 by 16 logical pixels, every pixel a uniform square, nearest-neighbor pixel art; use at most 8 colors, stone fills entire canvas edge to edge. Output native 16x16 PNG if supported, otherwise exact integer-enlarged 16x16 pixel grid filling the canvas. No frame, perspective, rendered cube, glow, bloom, sparkles, text, large crystals or decorative pattern. This is the actual texture atlas tile, not a preview.",
+      "references": [
+        "diamond_ore.png",
+        "dark_latex_stone.png"
+      ],
+      "generatedFile": "exec-91fc988e-b0f6-47a6-8101-2cc4f48d520d.png",
+      "savedPath": "src/main/resources/assets/changede/textures/block/dark_latex_morphic_crystal_ore.png"
+    },
+    {
+      "name": "white_latex_morphic_crystal_ore",
+      "prompt": "Asset: one Minecraft vanilla-style ore block texture, flat square tile. Reference 1 is vanilla diamond ore style; reference 2 is the white latex stone substrate. Make a restrained morphic crystal ore: ordinary light grey mottled stone matching reference 2 with only a few small muted lavender mineral pixels like vanilla diamond ore flecks. 16 by 16 logical pixels, every pixel a uniform square, nearest-neighbor pixel art; use at most 8 colors, stone fills entire canvas edge to edge. Output native 16x16 PNG if supported, otherwise exact integer-enlarged 16x16 pixel grid filling the canvas. No frame, perspective, rendered cube, glow, bloom, sparkles, text, large crystals or decorative pattern. This is the actual texture atlas tile, not a preview.",
+      "references": [
+        "diamond_ore.png",
+        "white_latex_stone.png"
+      ],
+      "generatedFile": "exec-c1f6be73-2e2e-4945-8298-ac812edb0d05.png",
+      "savedPath": "src/main/resources/assets/changede/textures/block/white_latex_morphic_crystal_ore.png"
+    },
+    {
+      "name": "morphic_crystal",
+      "prompt": "Create one flat Minecraft inventory item sprite based closely on this vanilla amethyst shard reference. A single modest morphic crystal shard, same small diagonal silhouette and scale, four subdued lavender tones with a dark purple pixel outline. Real transparent background. 16x16 logical pixel canvas, uniform square pixels, crisp nearest-neighbor pixel art, no antialiasing. Output native 16x16 PNG if supported, otherwise exact integer-enlarged 16x16 grid. Occupy 12x13 logical pixels centered with transparent margin. Preserve vanilla simplicity. No halo, sparkles, particles, stand, frame, 3D rendering, rainbow, words or watermark.",
+      "references": [
+        "amethyst_shard.png"
+      ],
+      "generatedFile": "exec-26421b13-890b-4868-9219-fb679dc16220.png",
+      "savedPath": "src/main/resources/assets/changede/textures/item/morphic_crystal.png"
+    },
+    {
+      "name": "morphic_crystal_alloy",
+      "prompt": "Create one flat Minecraft inventory item sprite based closely on this vanilla iron ingot reference. Same recognizable plain ingot silhouette, same size and orientation. Morphic alloy ingot in muted grey with a slight lavender tint, 5 flat grey-lavender shades total and dark outline. Real transparent background. 16x16 logical pixel canvas, uniform square pixels, crisp nearest-neighbor pixel art, no antialiasing. Output native 16x16 PNG if supported, otherwise exact integer-enlarged 16x16 grid. Transparent margin like original iron ingot. No embedded gems, glow, sparkles, rainbow, ornate markings, 3D rendering, frame, words or watermark.",
+      "references": [
+        "iron_ingot.png"
+      ],
+      "generatedFile": "exec-db1bb534-8dfd-4b24-9446-51fae7095ab1.png",
+      "savedPath": "src/main/resources/assets/changede/textures/item/morphic_crystal_alloy.png"
+    },
+    {
+      "name": "morphic_crystal_core",
+      "prompt": "Create one simple flat Minecraft inventory item sprite based on this vanilla heart of the sea reference. Morphic crystal core is a small round muted lavender crystal bead surrounded by a thin plain dark grey rim, approximately 10x10 logical pixels centered in 16x16 transparent canvas. Only 6 flat colors, a few blocky highlights like vanilla heart of the sea, dark pixel outline. Real transparent background. Uniform square pixels, crisp nearest-neighbor pixel art with no antialiasing. Output native 16x16 PNG if supported, otherwise exact integer-enlarged 16x16 grid. No ornate petals, metal frame, wings, rings outside the bead, glow, sparks, gradients, 3D rendering, text or watermark. Keep extremely plain and vanilla.",
+      "references": [
+        "heart_of_the_sea.png"
+      ],
+      "generatedFile": "exec-346c805b-65bf-4872-95c6-93c2a326bf23.png",
+      "savedPath": "src/main/resources/assets/changede/textures/item/morphic_crystal_core.png"
+    }
+  ]
+}

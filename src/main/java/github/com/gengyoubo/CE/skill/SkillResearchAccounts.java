@@ -13,6 +13,7 @@ import java.util.*;
 
 /** Player-owned, persistent work. A station binding grants one machine permission to advance it. */
 @Mod.EventBusSubscriber(modid="changede")
+@SuppressWarnings("deprecation")
 public final class SkillResearchAccounts {
     private static final String TAG="changede_skill_research";
     private SkillResearchAccounts() { }

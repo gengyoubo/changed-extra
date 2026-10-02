@@ -57,7 +57,10 @@ assert loot['pools'][0]['entries']==[{'type':'minecraft:item','name':'changede:l
 assert loot['pools'][0]['conditions']==[{'condition':'minecraft:survives_explosion'}]
 for tool in ['axe','pickaxe']:
     assert 'changede:latex_skill_research_table' in read(f'data/minecraft/tags/blocks/mineable/{tool}.json')['values']
-for path in ['assets/changede/models/block/latex_skill_research_table.json','assets/changede/models/item/painite_workbench_core.json']:
+assert read('assets/changede/models/item/latex_skill_research_table.json')['parent']=='changede:block/latex_skill_research_table_inventory'
+for path in ['assets/changede/models/block/latex_skill_research_table.json',
+             'assets/changede/models/block/latex_skill_research_table_inventory.json',
+             'assets/changede/models/item/painite_workbench_core.json']:
     model=read(path)
     for texture in model['textures'].values():
         if texture.startswith('changede:'):assert (res/('assets/changede/textures/'+texture.split(':',1)[1]+'.png')).is_file(),texture
