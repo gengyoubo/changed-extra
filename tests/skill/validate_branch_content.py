@@ -37,13 +37,19 @@ while len(completed)<len(nodes):
     ready={id for id,n in nodes.items() if id not in completed and set(n['parents'])<=completed}
     assert ready,'Missing prerequisites or cycle'
     completed|=ready
-assert nodes['changede:arthropod_core']['parents']==['changede:latex_mastery']
+assert all(nodes[parent]['y']<n['y'] for n in nodes.values() for parent in n['parents']),'All edges must progress downward'
+fork='changede:common_strength_2'
+assert nodes['changede:arthropod_core']['parents']==[fork]
 for child in ['insect','arachnid']:assert nodes['changede:'+child+'_core']['parents']==['changede:arthropod_core']
 assert all(r.get('effect')!='arthropod' for n in trees['insect']['nodes'] for r in n['rewards'])
 assert not any(r.get('effect') in {'insect_core','insect_recovery'} for n in trees['arachnid']['nodes'] for r in n['rewards'])
 assert trees['yufeng']['nodes']==[]
 assert nodes['changede:flight_technique']['parents']==['changede:air_core']
-for branch in ['dark','white']:assert trees[branch]['nodes'][0]['parents']==['changede:latex_mastery']
+for branch,tree in trees.items():
+    if branch in {'trunk','yufeng','insect','arachnid'}:continue
+    assert tree['nodes'][0]['parents']==[fork],branch
+    assert tree['nodes'][0]['y']==nodes[fork]['y']+1,branch
+assert nodes['changede:common_vitality_3']['parents']==[fork]
 v=read(RES/'assets/changede/latex_skill_visuals/default.json');themes={t['id'] for t in v['themes']}
 assert len({r['id'] for r in v['regions']})==len(v['regions'])
 assert all(r['theme'] in themes and r['width']>0 and r['height']>0 for r in v['regions'])
@@ -69,4 +75,20 @@ assert {'changede:feline_core','changede:arthropod_core','changede:arachnid_core
 assert 'changede:insect_core' not in eligible(stiger)
 hybrid=next(f for f in catalog if f['form']=='changed_addon:form_latex_dragon_snow_leopard_shark')
 assert {'changede:sea_core','changede:air_core','changede:feline_core','changede:dragon_core','changede:shark_core'}<=eligible(hybrid)
+def enabled(learned,form):
+    active=set();available=eligible(form)
+    while True:
+        ready={id for id in learned & available if set(nodes[id]['parents'])<=active}
+        if ready<=active:return active
+        active|=ready
+# Retained branch learning cannot skip the old ten-node common prerequisite path.
+common_path=set();current=fork
+while current!='changede:latex_mastery':
+    common_path.add(current);current=nodes[current]['parents'][0]
+assert len(common_path)==10
+learned=eligible(hybrid)-common_path
+assert 'changede:feline_core' not in enabled(learned,hybrid)
+assert 'changede:air_core' not in enabled(learned,hybrid)
+assert 'changede:common_vitality_3' not in enabled(learned,hybrid)
+assert enabled(learned|common_path,hybrid)==eligible(hybrid)
 print(f'PASS: {len(nodes)} nodes, {sum(bool(t["nodes"]) for t in trees.values())} branches, 150 Form combinations, <=30 nodes/branch, unique coordinates, DAG, selectors, localization and regions.')

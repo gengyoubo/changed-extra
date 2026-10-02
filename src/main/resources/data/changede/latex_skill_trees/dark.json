@@ -8,10 +8,10 @@
       "description": "skill.changede.dark_shell.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": -4,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": [
         {
@@ -28,7 +28,7 @@
         "changede:dark_shell"
       ],
       "x": -3,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -47,7 +47,7 @@
         "changede:dark_white_nemesis_1"
       ],
       "x": -4,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -66,7 +66,7 @@
         "changede:dark_white_resistance_1"
       ],
       "x": -3,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -85,7 +85,7 @@
         "changede:dark_white_fog_resistance_1"
       ],
       "x": -4,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -104,7 +104,7 @@
         "changede:dark_armor_adaptation_1"
       ],
       "x": -3,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -123,7 +123,7 @@
         "changede:dark_weapon_adaptation_1"
       ],
       "x": -4,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {
@@ -142,7 +142,7 @@
         "changede:dark_latex_weapon_adaptation_1"
       ],
       "x": -3,
-      "y": 9,
+      "y": 18,
       "key": false,
       "rewards": [
         {
@@ -161,7 +161,7 @@
         "changede:dark_weapon_adaptation_2"
       ],
       "x": -4,
-      "y": 10,
+      "y": 19,
       "key": false,
       "rewards": [
         {
@@ -180,7 +180,7 @@
         "changede:dark_white_resistance_2"
       ],
       "x": -3,
-      "y": 11,
+      "y": 20,
       "key": false,
       "rewards": [
         {
@@ -199,7 +199,7 @@
         "changede:dark_white_nemesis_2"
       ],
       "x": -4,
-      "y": 12,
+      "y": 21,
       "key": false,
       "rewards": [
         {
@@ -218,7 +218,7 @@
         "changede:dark_weapon_adaptation_3"
       ],
       "x": -3,
-      "y": 13,
+      "y": 22,
       "key": false,
       "rewards": [
         {
@@ -237,7 +237,7 @@
         "changede:dark_latex_weapon_adaptation_2"
       ],
       "x": -4,
-      "y": 14,
+      "y": 23,
       "key": false,
       "rewards": [
         {
@@ -256,7 +256,7 @@
         "changede:dark_armor_adaptation_2"
       ],
       "x": -3,
-      "y": 15,
+      "y": 24,
       "key": false,
       "rewards": [
         {
@@ -275,7 +275,7 @@
         "changede:dark_latex_weapon_adaptation_3"
       ],
       "x": -4,
-      "y": 16,
+      "y": 25,
       "key": false,
       "rewards": [
         {
@@ -294,7 +294,7 @@
         "changede:dark_latex_weapon_adaptation_4"
       ],
       "x": -3,
-      "y": 17,
+      "y": 26,
       "key": false,
       "rewards": [
         {

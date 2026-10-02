@@ -18,10 +18,10 @@
       "description": "skill.changede.shark_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 54,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": []
     },
@@ -34,7 +34,7 @@
         "changede:shark_core"
       ],
       "x": 55,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -54,7 +54,7 @@
         "changede:shark_strength_1"
       ],
       "x": 54,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -74,7 +74,7 @@
         "changede:shark_core"
       ],
       "x": 55,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -94,7 +94,7 @@
         "changede:shark_swimming_1"
       ],
       "x": 54,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -114,7 +114,7 @@
         "changede:shark_core"
       ],
       "x": 55,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -134,7 +134,7 @@
         "changede:shark_health_1"
       ],
       "x": 54,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {

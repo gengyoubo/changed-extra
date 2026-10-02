@@ -7,6 +7,10 @@ public class SkillCanvasLayerTest {
     static void check(boolean condition) { if (!condition) throw new AssertionError(); }
     static void near(double actual, double expected) { check(Math.abs(actual - expected) < 1e-6); }
     public static void main(String[] args) {
+        check(SkillCanvasLayer.visibleApplicable(true,false,false));
+        check(SkillCanvasLayer.visibleApplicable(false,true,false));
+        check(!SkillCanvasLayer.visibleApplicable(false,false,false));
+        check(SkillCanvasLayer.visibleApplicable(false,false,true));
         Set<String> choices = Set.of("dark", "white");
         check(SkillCanvasLayer.select("", "white", "any", choices).equals("white"));
         check(SkillCanvasLayer.select("dark", "dark", "white", choices).equals("white")); // Keep preview across snapshots.

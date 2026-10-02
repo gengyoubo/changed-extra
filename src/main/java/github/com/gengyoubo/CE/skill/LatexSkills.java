@@ -35,7 +35,7 @@ public final class LatexSkills {
         for (String tree : root.getAllKeys())
             for (String node : root.getCompound(tree).getAllKeys())
                 if (root.getCompound(tree).getBoolean(node) && ResourceLocation.tryParse(node) != null)
-                    result.add(new ResourceLocation(node));
+                    result.add(ResourceLocation.parse(node));
         return result;
     }
     public static List<SkillNode> active(Player player) {

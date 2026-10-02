@@ -17,10 +17,10 @@
       "description": "skill.changede.dragon_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 21,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": []
     },
@@ -33,7 +33,7 @@
         "changede:dragon_core"
       ],
       "x": 20,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -52,7 +52,7 @@
         "changede:dragon_core"
       ],
       "x": 22,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -71,7 +71,7 @@
         "changede:dragon_fortune_1"
       ],
       "x": 20,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -90,7 +90,7 @@
         "changede:dragon_looting_1"
       ],
       "x": 22,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -109,7 +109,7 @@
         "changede:dragon_core"
       ],
       "x": 22,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -129,7 +129,7 @@
         "changede:dragon_scales_1"
       ],
       "x": 21,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {
@@ -149,7 +149,7 @@
         "changede:dragon_core"
       ],
       "x": 22,
-      "y": 9,
+      "y": 18,
       "key": false,
       "rewards": [
         {
@@ -169,7 +169,7 @@
         "changede:dragon_health_1"
       ],
       "x": 21,
-      "y": 10,
+      "y": 19,
       "key": false,
       "rewards": [
         {

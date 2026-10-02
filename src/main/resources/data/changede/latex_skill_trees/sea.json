@@ -28,10 +28,10 @@
       "description": "skill.changede.sea_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 6,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": [
         {
@@ -50,7 +50,7 @@
         "changede:sea_core"
       ],
       "x": 6,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -69,7 +69,7 @@
         "changede:sea_work_1"
       ],
       "x": 6,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -88,7 +88,7 @@
         "changede:sea_core"
       ],
       "x": 7,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -107,7 +107,7 @@
         "changede:sea_core"
       ],
       "x": 5,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -126,7 +126,7 @@
         "changede:sea_core"
       ],
       "x": 7,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -146,7 +146,7 @@
         "changede:sea_swimming_1"
       ],
       "x": 6,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {
@@ -166,7 +166,7 @@
         "changede:sea_core"
       ],
       "x": 7,
-      "y": 9,
+      "y": 18,
       "key": false,
       "rewards": [
         {
@@ -186,7 +186,7 @@
         "changede:sea_health_1"
       ],
       "x": 6,
-      "y": 10,
+      "y": 19,
       "key": false,
       "rewards": [
         {

@@ -56,7 +56,7 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
         return trees.stream().filter(t -> t.id().equals(node.tree())).anyMatch(t -> t.matches(player));
     }
     public static boolean hasForm(String branch, ResourceLocation form) {
-        return trees.stream().filter(t -> t.id().equals(new ResourceLocation("changede",branch))).anyMatch(t -> t.forms().contains(form));
+        return trees.stream().filter(t -> t.id().equals(ResourceLocation.fromNamespaceAndPath("changede",branch))).anyMatch(t -> t.forms().contains(form));
     }
 
     public static List<SkillBlockReason> formRequirements(Player player, SkillNode node) {

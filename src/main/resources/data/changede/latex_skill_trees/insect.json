@@ -14,7 +14,7 @@
         "changede:arthropod_core"
       ],
       "x": 27,
-      "y": 4,
+      "y": 13,
       "key": true,
       "rewards": [
         {
@@ -33,7 +33,7 @@
         "changede:insect_core"
       ],
       "x": 27,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -52,7 +52,7 @@
         "changede:insect_recovery_1"
       ],
       "x": 27,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -71,7 +71,7 @@
         "changede:insect_core"
       ],
       "x": 28,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -91,7 +91,7 @@
         "changede:insect_health_1"
       ],
       "x": 27,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {
@@ -111,7 +111,7 @@
         "changede:insect_core"
       ],
       "x": 28,
-      "y": 9,
+      "y": 18,
       "key": false,
       "rewards": [
         {
@@ -131,7 +131,7 @@
         "changede:insect_energy_1"
       ],
       "x": 27,
-      "y": 10,
+      "y": 19,
       "key": false,
       "rewards": [
         {

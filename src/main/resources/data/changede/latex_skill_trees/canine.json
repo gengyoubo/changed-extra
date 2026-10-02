@@ -48,10 +48,10 @@
       "description": "skill.changede.canine_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 48,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": []
     },
@@ -64,7 +64,7 @@
         "changede:canine_core"
       ],
       "x": 49,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -84,7 +84,7 @@
         "changede:canine_strength_1"
       ],
       "x": 48,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -104,7 +104,7 @@
         "changede:canine_core"
       ],
       "x": 49,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -124,7 +124,7 @@
         "changede:canine_stride_1"
       ],
       "x": 48,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -144,7 +144,7 @@
         "changede:canine_core"
       ],
       "x": 49,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -164,7 +164,7 @@
         "changede:canine_health_1"
       ],
       "x": 48,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {

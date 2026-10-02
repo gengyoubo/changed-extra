@@ -4,13 +4,13 @@
 
 ## 入口与共同规则
 
-复用 `data/changede/latex_skill_trees/trunk.json` 已有的 **`changede:latex_mastery`**，不新建或重编号通用入口。胶体、身体、运动、族群的顶层入口关键节点直接以它为父节点；族群内部可以先设大类关键节点，再分细类。节肢动物入口连接通用节点，昆虫／蛛形入口连接节肢动物关键节点；节点清单插入现有图。
+复用 `data/changede/latex_skill_trees/trunk.json` 原黑白胶分叉点 **`changede:common_strength_2`**（第 10 个通用成长节点，坐标 0,10），根节点 `changede:latex_mastery` 保持不变。胶体、身体、运动、族群的顶层入口关键节点直接以它为父节点；族群内部可以先设大类关键节点，再分细类。节肢动物入口连接通用节点，昆虫／蛛形入口连接节肢动物关键节点；节点清单插入现有图。
 
 ```json
-{ "parents": ["changede:latex_mastery"] }
+{ "parents": ["changede:common_strength_2"] }
 ```
 
-通用生命等原有节点继续沿原路径成长，不要求玩家先学某一分类。黑白胶已有入口迁移到此根时保留节点 ID 和培养记录；现有 Yufeng 内容迁入共享空分支，需按奖励对应关系迁移已学习记录，不能简单删除或重复发放。实际运行数据已迁移，旧节点 ID 与培养记录保留。
+通用生命等原有节点继续沿原路径成长，不要求玩家先学某一分类。黑白胶与新增分类入口接回这一分叉点时保留节点 ID 和培养记录；现有 Yufeng 内容迁入共享空分支，需按奖励对应关系迁移已学习记录，不能简单删除或重复发放。实际运行数据已迁移，旧节点 ID 与培养记录保留。
 
 当前 Form 命中几条分支就同时显示几条；未命中的默认隐藏，培养记录保留。分类未知时只进入已能确定的分支，全部未知仍保留通用成长。某分支的收益、代价属于同一个能力组合，必须一起启停；后续补偿节点依赖原能力。没有学习分类能力时不自动施加其代价。
 
@@ -22,7 +22,7 @@
 
 | 节点 | 父节点 | 初版效果 |
 | --- | --- | --- |
-| `changede:sea_core`（关键） | `changede:latex_mastery` | 在水中受到普通伤害降低 20%；火焰伤害提高 25%；下界受到普通伤害提高 15% |
+| `changede:sea_core`（关键） | `changede:common_strength_2` | 在水中受到普通伤害降低 20%；火焰伤害提高 25%；下界受到普通伤害提高 15% |
 | `changede:sea_work_1` | `changede:sea_core` | 消除没有水下速掘时的水下挖掘速度惩罚；不叠加第二份水下速掘效果，也不取消悬浮挖掘惩罚 |
 | `changede:sea_work_2` | `changede:sea_work_1` | 水下实际挖掘速度再提高 25% |
 | `changede:sea_guard_1` | `changede:sea_core` | 水中普通伤害减免从 20% 提升至 30% |
@@ -38,7 +38,7 @@
 
 | 节点 | 父节点 | 初版效果 |
 | --- | --- | --- |
-| `changede:air_core`（关键） | `changede:latex_mastery` | 启用／接入原有滑翔；飞行相关饥饿消耗额外提高 50%；每个穿戴护甲槽产生 5% 的速度及推进方向响应惩罚，上限 20% |
+| `changede:air_core`（关键） | `changede:common_strength_2` | 启用／接入原有滑翔；飞行相关饥饿消耗额外提高 50%；每个穿戴护甲槽产生 5% 的速度及推进方向响应惩罚，上限 20% |
 | `changede:air_endurance_1` | `changede:air_core` | 飞行消耗的额外增幅从 50% 降到 25% |
 | `changede:air_endurance_2` | `changede:air_endurance_1` | 取消本分支额外增加的消耗，原有消耗继续存在 |
 | `changede:air_load_adaptation_1` | `changede:air_core` | 本分支护甲惩罚减半：每槽 2.5%，上限 10% |
@@ -52,7 +52,7 @@
 
 | 节点 | 父节点 | 初版效果 |
 | --- | --- | --- |
-| `changede:feline_core`（关键） | `changede:latex_mastery` | 8 格内的苦力怕和幻翼尝试远离当前猫系使用者；使用者直接攻击及可归因投射物伤害提高 10% |
+| `changede:feline_core`（关键） | `changede:common_strength_2` | 8 格内的苦力怕和幻翼尝试远离当前猫系使用者；使用者直接攻击及可归因投射物伤害提高 10% |
 | `changede:feline_presence_1` | `changede:feline_core` | 威慑半径增加到 12 格 |
 | `changede:feline_claws_1` | `changede:feline_core` | 攻击增幅提高到 15% |
 | `changede:feline_claws_2` | `changede:feline_claws_1` | 攻击增幅提高到 20% |
@@ -78,7 +78,7 @@
 
 | 节点 | 父节点 | 初版效果 |
 | --- | --- | --- |
-| `changede:reptile_core`（关键） | `changede:latex_mastery` | 爆炸伤害降低 30%；对猫系目标造成的伤害降低 20% |
+| `changede:reptile_core`（关键） | `changede:common_strength_2` | 爆炸伤害降低 30%；对猫系目标造成的伤害降低 20% |
 | `changede:reptile_blast_guard_1` | `changede:reptile_core` | 爆炸伤害减免提高至 40% |
 | `changede:reptile_blast_guard_2` | `changede:reptile_blast_guard_1` | 爆炸伤害减免提高至 50% |
 
@@ -90,7 +90,7 @@
 
 | 节点 | 父节点 | 初版效果 |
 | --- | --- | --- |
-| `changede:dragon_core`（关键） | `changede:latex_mastery` | 开启采集与狩猎路线，入口不直接改写工具附魔 |
+| `changede:dragon_core`（关键） | `changede:common_strength_2` | 开启采集与狩猎路线，入口不直接改写工具附魔 |
 | `changede:dragon_fortune_1` | `changede:dragon_core` | 有效采集时额外视为 1 级时运，普通上限 III；已有 III 或更高附魔不被降低，也不继续提升 |
 | `changede:dragon_looting_1` | `changede:dragon_core` | 有效击杀时额外视为 1 级抢夺，同样以上述 III 规则为界 |
 | `changede:dragon_ore_cache` | `changede:dragon_fortune_1` | 有效矿石采集有 5% 概率追加 1 个对应基础产物 |
@@ -110,7 +110,7 @@
 
 | 节点 | 父节点 | 初版效果 |
 | --- | --- | --- |
-| `changede:arthropod_core`（关键） | `changede:latex_mastery` | 开启适用的节肢细类路线；当前能力生效时作为节肢目标接受原版节肢杀手影响 |
+| `changede:arthropod_core`（关键） | `changede:common_strength_2` | 开启适用的节肢细类路线；当前能力生效时作为节肢目标接受原版节肢杀手影响 |
 | `changede:arachnid_core`（细类关键） | `changede:arthropod_core` | 仅蛛形归属可学习，作为后续蛛形技能的入口；首版不追加机制奖励 |
 
 节肢动物父关键节点已学习且当前适用时，即使尚未学习细类节点，节肢杀手判定也已生效；仅有归属但未学习该节点，不新增这一技能代价。沿用当前游戏版本附魔的额外伤害与减速规则，原版已经把目标判为节肢动物时不再次追加。多个节肢细类或混合族群共享同一份判定。
@@ -133,6 +133,6 @@
 
 ## 多分支验收
 
-必须覆盖同一 Form 的海/陆/空与多个族群同时显示、顶层分支接入现有根、节肢动物先于细类解锁、换 Form 后收益与代价一起启停、未知归属只有通用或已有确定分支，以及无胶体 Form 不被通用入口排除。
+必须覆盖同一 Form 的海/陆/空与多个族群同时显示、顶层分支接入原黑白胶分叉点、节肢动物先于细类解锁、换 Form 后收益与代价一起启停、未知归属只有通用或已有确定分支，以及无胶体 Form 不被通用入口排除。
 
 重点组合为：节肢父节点生效但未学细类时已有节肢杀手影响、蛛形不承受昆虫专属代价、原版或多个节肢来源不重复结算节肢杀手、海的火焰与下界倍率取最大、海与爬行类减免乘算并受技能上限约束、昆虫最大生命减半与猫九条命回血上限相容、飞行补偿只移除自身代价、图腾不消耗或恢复猫次数、额外掉落不重复触发。上述被动机制已接入游戏；完整实机操作和平衡仍需游戏测试，文档与数值检查不等于已完成实机验收。

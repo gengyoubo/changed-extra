@@ -12,10 +12,10 @@
       "description": "skill.changede.arthropod_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 24,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": [
         {
@@ -34,7 +34,7 @@
         "changede:arthropod_core"
       ],
       "x": 25,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -54,7 +54,7 @@
         "changede:arthropod_shell_1"
       ],
       "x": 24,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {

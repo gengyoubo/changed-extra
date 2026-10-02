@@ -22,10 +22,10 @@
       "description": "skill.changede.air_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 12,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": [
         {
@@ -44,7 +44,7 @@
         "changede:air_core"
       ],
       "x": 11,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -63,7 +63,7 @@
         "changede:air_endurance_1"
       ],
       "x": 11,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -82,7 +82,7 @@
         "changede:air_core"
       ],
       "x": 13,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -101,7 +101,7 @@
         "changede:air_load_adaptation_1"
       ],
       "x": 13,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -120,7 +120,7 @@
         "changede:air_core"
       ],
       "x": 13,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -139,7 +139,7 @@
         "changede:air_core"
       ],
       "x": 12,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {
@@ -158,7 +158,7 @@
         "changede:flight_technique"
       ],
       "x": 13,
-      "y": 9,
+      "y": 18,
       "key": false,
       "rewards": [
         {
@@ -177,7 +177,7 @@
         "changede:yufeng_body_growth"
       ],
       "x": 12,
-      "y": 10,
+      "y": 19,
       "key": false,
       "rewards": [
         {
@@ -196,7 +196,7 @@
         "changede:aerobatics"
       ],
       "x": 13,
-      "y": 11,
+      "y": 20,
       "key": false,
       "rewards": [
         {
@@ -215,7 +215,7 @@
         "changede:aerobatics"
       ],
       "x": 12,
-      "y": 12,
+      "y": 21,
       "key": false,
       "rewards": [
         {
@@ -234,7 +234,7 @@
         "changede:safe_landing"
       ],
       "x": 13,
-      "y": 13,
+      "y": 22,
       "key": false,
       "rewards": [
         {

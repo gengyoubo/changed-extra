@@ -30,6 +30,7 @@ import java.util.*;
 
 /** Passive mechanics are granted per reward source; removing one source preserves the others. */
 @Mod.EventBusSubscriber(modid="changede")
+@SuppressWarnings("deprecation")
 public final class SkillMechanics {
     private record Grant(String effect, double value) { }
     private static final Map<Player, Map<String, Grant>> GRANTS = new WeakHashMap<>();
@@ -77,7 +78,7 @@ public final class SkillMechanics {
         if(!half && attribute.getModifier(HEALTH)!=null)attribute.removeModifier(HEALTH);
         if(player.getHealth()>player.getMaxHealth())player.setHealth(player.getMaxHealth());
     }
-    public static int lives(Player player) { return player.getPersistentData().contains(LIVES) ? player.getPersistentData().getInt(LIVES) : 9; }
+    public static int lives(Player player) { return player.getPersistentData().contains(LIVES) ? Math.max(0,Math.min(9,player.getPersistentData().getInt(LIVES))) : 9; }
     public static void migrate(ServerPlayer player) {
         CompoundTag data=player.getPersistentData();
         if (!data.getBoolean("changede_skill_branches_v2")) {

@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.*;
 
 @Mod.EventBusSubscriber(modid="changede")
+@SuppressWarnings("deprecation")
 public final class SkillDragonLoot {
     private record Harvest(ServerLevel level,BlockPos pos,BlockState state,long time,boolean natural) { }
     private static final Map<ServerPlayer,Harvest> HARVESTS=new WeakHashMap<>();

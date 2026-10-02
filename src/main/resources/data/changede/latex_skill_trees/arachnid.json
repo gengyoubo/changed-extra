@@ -13,7 +13,7 @@
         "changede:arthropod_core"
       ],
       "x": 30,
-      "y": 4,
+      "y": 13,
       "key": true,
       "rewards": []
     },
@@ -26,7 +26,7 @@
         "changede:arachnid_core"
       ],
       "x": 31,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -46,7 +46,7 @@
         "changede:arachnid_balance_1"
       ],
       "x": 30,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -66,7 +66,7 @@
         "changede:arachnid_core"
       ],
       "x": 31,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -86,7 +86,7 @@
         "changede:arachnid_strength_1"
       ],
       "x": 30,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {
@@ -106,7 +106,7 @@
         "changede:arachnid_core"
       ],
       "x": 31,
-      "y": 9,
+      "y": 18,
       "key": false,
       "rewards": [
         {
@@ -126,7 +126,7 @@
         "changede:arachnid_health_1"
       ],
       "x": 30,
-      "y": 10,
+      "y": 19,
       "key": false,
       "rewards": [
         {

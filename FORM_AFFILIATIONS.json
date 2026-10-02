@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "branch_parent": "changede:latex_mastery",
+  "branch_parent": "changede:common_strength_2",
   "versions": {
     "changed": "0.15.7",
     "changed_addon": "2.9.2"
@@ -8619,7 +8619,7 @@
   },
   "branch_parents": {
     "changede:arthropod_core": [
-      "changede:latex_mastery"
+      "changede:common_strength_2"
     ],
     "changede:insect_core": [
       "changede:arthropod_core"

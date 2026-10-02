@@ -11,6 +11,7 @@ import java.util.*;
 
 /** Only ores observed in a newly generated chunk qualify. Existing worlds remain conservative. */
 @Mod.EventBusSubscriber(modid="changede")
+@SuppressWarnings("deprecation")
 public final class SkillOreProvenance extends SavedData {
     private final Map<Long,String> ores=new HashMap<>();
     public static SkillOreProvenance get(ServerLevel level) {

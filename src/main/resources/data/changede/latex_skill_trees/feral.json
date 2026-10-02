@@ -15,10 +15,10 @@
       "description": "skill.changede.feral_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 36,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": []
     },
@@ -31,7 +31,7 @@
         "changede:feral_core"
       ],
       "x": 37,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -51,7 +51,7 @@
         "changede:feral_stride_1"
       ],
       "x": 36,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -71,7 +71,7 @@
         "changede:feral_core"
       ],
       "x": 37,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -91,7 +91,7 @@
         "changede:feral_strength_1"
       ],
       "x": 36,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -111,7 +111,7 @@
         "changede:feral_core"
       ],
       "x": 37,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -131,7 +131,7 @@
         "changede:feral_landing_1"
       ],
       "x": 36,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {

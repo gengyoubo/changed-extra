@@ -12,10 +12,10 @@
       "description": "skill.changede.cephalopod_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 66,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": []
     },
@@ -28,7 +28,7 @@
         "changede:cephalopod_core"
       ],
       "x": 67,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -48,7 +48,7 @@
         "changede:cephalopod_strength_1"
       ],
       "x": 66,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -68,7 +68,7 @@
         "changede:cephalopod_core"
       ],
       "x": 67,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -88,7 +88,7 @@
         "changede:cephalopod_swimming_1"
       ],
       "x": 66,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -108,7 +108,7 @@
         "changede:cephalopod_core"
       ],
       "x": 67,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -128,7 +128,7 @@
         "changede:cephalopod_balance_1"
       ],
       "x": 66,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {

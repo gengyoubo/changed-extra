@@ -154,10 +154,10 @@
       "description": "skill.changede.land_core.description",
       "cost": 25,
       "parents": [
-        "changede:latex_mastery"
+        "changede:common_strength_2"
       ],
       "x": 9,
-      "y": 2,
+      "y": 11,
       "key": true,
       "rewards": []
     },
@@ -170,7 +170,7 @@
         "changede:land_core"
       ],
       "x": 10,
-      "y": 3,
+      "y": 12,
       "key": false,
       "rewards": [
         {
@@ -190,7 +190,7 @@
         "changede:land_stride_1"
       ],
       "x": 9,
-      "y": 4,
+      "y": 13,
       "key": false,
       "rewards": [
         {
@@ -210,7 +210,7 @@
         "changede:land_core"
       ],
       "x": 10,
-      "y": 5,
+      "y": 14,
       "key": false,
       "rewards": [
         {
@@ -230,7 +230,7 @@
         "changede:land_endurance_1"
       ],
       "x": 9,
-      "y": 6,
+      "y": 15,
       "key": false,
       "rewards": [
         {
@@ -250,7 +250,7 @@
         "changede:land_core"
       ],
       "x": 10,
-      "y": 7,
+      "y": 16,
       "key": false,
       "rewards": [
         {
@@ -270,7 +270,7 @@
         "changede:land_balance_1"
       ],
       "x": 9,
-      "y": 8,
+      "y": 17,
       "key": false,
       "rewards": [
         {

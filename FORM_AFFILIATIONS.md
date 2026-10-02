@@ -1,6 +1,6 @@
 # Form 归属表
 
-本表作为已实装技能树 forms 选择器的来源；游戏读取各分支 JSON，不直接加载这份 Markdown。入口复用现有 `changede:latex_mastery`，顶层分类入口直接依赖它；节肢动物先设关键节点，再分昆虫／蛛形等详细节点，不新建通用入口。机器可读清单见 [FORM_AFFILIATIONS.json](FORM_AFFILIATIONS.json)，机制设计见 [SKILL_TREE_DESIGN.md](SKILL_TREE_DESIGN.md)。
+本表作为已实装技能树 forms 选择器的来源；游戏读取各分支 JSON，不直接加载这份 Markdown。入口复用原黑白胶分叉点 `changede:common_strength_2`（前 10 个通用成长之后），顶层分类入口直接依赖它；节肢动物先设关键节点，再分昆虫／蛛形等详细节点，不新建通用入口。机器可读清单见 [FORM_AFFILIATIONS.json](FORM_AFFILIATIONS.json)，机制设计见 [SKILL_TREE_DESIGN.md](SKILL_TREE_DESIGN.md)。
 
 ## 核对范围与证据
 
@@ -192,7 +192,7 @@
 
 ## 分支接入约束
 
-顶层分类入口的 `parents` 为 `["changede:latex_mastery"]`；`changede:arthropod_core` 属于顶层，`changede:insect_core` 和 `changede:arachnid_core` 的父节点均为 `changede:arthropod_core`，不得绕过它直连通用入口。现有通用节点 ID、坐标、培养记录保持稳定；分类后代再各自安排技能与补偿节点。某个 Form 没有任何可靠分类时仍保留通用成长。
+顶层分类入口的 `parents` 为 `["changede:common_strength_2"]`；`changede:arthropod_core` 属于顶层，`changede:insect_core` 和 `changede:arachnid_core` 的父节点均为 `changede:arthropod_core`，不得绕过它直连通用入口。现有通用节点 ID、坐标、培养记录保持稳定；分类后代再各自安排技能与补偿节点。某个 Form 没有任何可靠分类时仍保留通用成长。
 
 命中昆虫或蛛形时显示节肢动物入口及对应后代；学习节肢动物关键节点后才能学习细分节点。蜘蛛虎同时显示猫系，以及节肢动物→蛛形路线，不获得昆虫路线。多个节肢子类命中时共享同一个父关键节点，节肢杀手不重复计算。
 
