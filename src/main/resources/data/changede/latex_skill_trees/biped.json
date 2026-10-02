@@ -148,7 +148,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 33,
+      "x": -7,
       "y": 11,
       "key": true,
       "rewards": []
@@ -161,7 +161,7 @@
       "parents": [
         "changede:biped_core"
       ],
-      "x": 34,
+      "x": -8,
       "y": 12,
       "key": false,
       "rewards": [
@@ -181,7 +181,7 @@
       "parents": [
         "changede:biped_dexterity_1"
       ],
-      "x": 33,
+      "x": -7,
       "y": 13,
       "key": false,
       "rewards": [
@@ -201,7 +201,7 @@
       "parents": [
         "changede:biped_core"
       ],
-      "x": 34,
+      "x": -8,
       "y": 14,
       "key": false,
       "rewards": [
@@ -221,7 +221,7 @@
       "parents": [
         "changede:biped_strength_1"
       ],
-      "x": 33,
+      "x": -7,
       "y": 15,
       "key": false,
       "rewards": [
@@ -241,7 +241,7 @@
       "parents": [
         "changede:biped_core"
       ],
-      "x": 34,
+      "x": -8,
       "y": 16,
       "key": false,
       "rewards": [
@@ -261,7 +261,7 @@
       "parents": [
         "changede:biped_health_1"
       ],
-      "x": 33,
+      "x": -7,
       "y": 17,
       "key": false,
       "rewards": [

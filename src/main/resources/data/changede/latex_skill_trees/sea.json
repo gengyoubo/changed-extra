@@ -30,7 +30,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 6,
+      "x": 15,
       "y": 11,
       "key": true,
       "rewards": [
@@ -49,7 +49,7 @@
       "parents": [
         "changede:sea_core"
       ],
-      "x": 6,
+      "x": 15,
       "y": 12,
       "key": false,
       "rewards": [
@@ -68,7 +68,7 @@
       "parents": [
         "changede:sea_work_1"
       ],
-      "x": 6,
+      "x": 15,
       "y": 13,
       "key": false,
       "rewards": [
@@ -87,7 +87,7 @@
       "parents": [
         "changede:sea_core"
       ],
-      "x": 7,
+      "x": 16,
       "y": 14,
       "key": false,
       "rewards": [
@@ -106,7 +106,7 @@
       "parents": [
         "changede:sea_core"
       ],
-      "x": 5,
+      "x": 14,
       "y": 15,
       "key": false,
       "rewards": [
@@ -125,7 +125,7 @@
       "parents": [
         "changede:sea_core"
       ],
-      "x": 7,
+      "x": 16,
       "y": 16,
       "key": false,
       "rewards": [
@@ -145,7 +145,7 @@
       "parents": [
         "changede:sea_swimming_1"
       ],
-      "x": 6,
+      "x": 15,
       "y": 17,
       "key": false,
       "rewards": [
@@ -165,7 +165,7 @@
       "parents": [
         "changede:sea_core"
       ],
-      "x": 7,
+      "x": 16,
       "y": 18,
       "key": false,
       "rewards": [
@@ -185,7 +185,7 @@
       "parents": [
         "changede:sea_health_1"
       ],
-      "x": 6,
+      "x": 15,
       "y": 19,
       "key": false,
       "rewards": [

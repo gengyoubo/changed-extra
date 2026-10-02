@@ -156,7 +156,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 9,
+      "x": -19,
       "y": 11,
       "key": true,
       "rewards": []
@@ -169,7 +169,7 @@
       "parents": [
         "changede:land_core"
       ],
-      "x": 10,
+      "x": -20,
       "y": 12,
       "key": false,
       "rewards": [
@@ -189,7 +189,7 @@
       "parents": [
         "changede:land_stride_1"
       ],
-      "x": 9,
+      "x": -19,
       "y": 13,
       "key": false,
       "rewards": [
@@ -209,7 +209,7 @@
       "parents": [
         "changede:land_core"
       ],
-      "x": 10,
+      "x": -20,
       "y": 14,
       "key": false,
       "rewards": [
@@ -229,7 +229,7 @@
       "parents": [
         "changede:land_endurance_1"
       ],
-      "x": 9,
+      "x": -19,
       "y": 15,
       "key": false,
       "rewards": [
@@ -249,7 +249,7 @@
       "parents": [
         "changede:land_core"
       ],
-      "x": 10,
+      "x": -20,
       "y": 16,
       "key": false,
       "rewards": [
@@ -269,7 +269,7 @@
       "parents": [
         "changede:land_balance_1"
       ],
-      "x": 9,
+      "x": -19,
       "y": 17,
       "key": false,
       "rewards": [

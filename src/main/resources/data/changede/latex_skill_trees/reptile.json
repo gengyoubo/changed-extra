@@ -16,7 +16,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 18,
+      "x": 27,
       "y": 11,
       "key": true,
       "rewards": [
@@ -40,7 +40,7 @@
       "parents": [
         "changede:reptile_core"
       ],
-      "x": 18,
+      "x": 27,
       "y": 12,
       "key": false,
       "rewards": [
@@ -59,7 +59,7 @@
       "parents": [
         "changede:reptile_blast_guard_1"
       ],
-      "x": 18,
+      "x": 27,
       "y": 13,
       "key": false,
       "rewards": [
@@ -78,7 +78,7 @@
       "parents": [
         "changede:reptile_core"
       ],
-      "x": 19,
+      "x": 28,
       "y": 14,
       "key": false,
       "rewards": [
@@ -98,7 +98,7 @@
       "parents": [
         "changede:reptile_scales_1"
       ],
-      "x": 18,
+      "x": 27,
       "y": 15,
       "key": false,
       "rewards": [
@@ -118,7 +118,7 @@
       "parents": [
         "changede:reptile_core"
       ],
-      "x": 19,
+      "x": 28,
       "y": 16,
       "key": false,
       "rewards": [
@@ -138,7 +138,7 @@
       "parents": [
         "changede:reptile_balance_1"
       ],
-      "x": 18,
+      "x": 27,
       "y": 17,
       "key": false,
       "rewards": [

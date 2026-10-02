@@ -10,7 +10,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": -8,
+      "x": 3,
       "y": 11,
       "key": true,
       "rewards": [
@@ -27,7 +27,7 @@
       "parents": [
         "changede:white_vitality"
       ],
-      "x": -7,
+      "x": 4,
       "y": 12,
       "key": false,
       "rewards": [
@@ -46,7 +46,7 @@
       "parents": [
         "changede:white_endurance"
       ],
-      "x": -8,
+      "x": 3,
       "y": 13,
       "key": false,
       "rewards": [
@@ -65,7 +65,7 @@
       "parents": [
         "changede:white_continuation"
       ],
-      "x": -7,
+      "x": 4,
       "y": 14,
       "key": false,
       "rewards": [
@@ -84,7 +84,7 @@
       "parents": [
         "changede:white_strength"
       ],
-      "x": -8,
+      "x": 3,
       "y": 15,
       "key": false,
       "rewards": [
@@ -103,7 +103,7 @@
       "parents": [
         "changede:white_regeneration_1"
       ],
-      "x": -7,
+      "x": 4,
       "y": 16,
       "key": false,
       "rewards": [
@@ -122,7 +122,7 @@
       "parents": [
         "changede:white_hunger_x_1"
       ],
-      "x": -8,
+      "x": 3,
       "y": 17,
       "key": false,
       "rewards": [
@@ -141,7 +141,7 @@
       "parents": [
         "changede:white_hunger_y_1"
       ],
-      "x": -7,
+      "x": 4,
       "y": 18,
       "key": false,
       "rewards": [
@@ -160,7 +160,7 @@
       "parents": [
         "changede:white_hunger_z_1"
       ],
-      "x": -8,
+      "x": 3,
       "y": 19,
       "key": false,
       "rewards": [
@@ -179,7 +179,7 @@
       "parents": [
         "changede:white_persistence"
       ],
-      "x": -7,
+      "x": 4,
       "y": 20,
       "key": false,
       "rewards": [
@@ -198,7 +198,7 @@
       "parents": [
         "changede:white_constitution"
       ],
-      "x": -8,
+      "x": 3,
       "y": 21,
       "key": false,
       "rewards": [
@@ -217,7 +217,7 @@
       "parents": [
         "changede:white_strength_2"
       ],
-      "x": -7,
+      "x": 4,
       "y": 22,
       "key": false,
       "rewards": [
@@ -236,7 +236,7 @@
       "parents": [
         "changede:white_regeneration_2"
       ],
-      "x": -8,
+      "x": 3,
       "y": 23,
       "key": false,
       "rewards": [
@@ -255,7 +255,7 @@
       "parents": [
         "changede:white_hunger_x_2"
       ],
-      "x": -7,
+      "x": 4,
       "y": 24,
       "key": false,
       "rewards": [
@@ -274,7 +274,7 @@
       "parents": [
         "changede:white_hunger_y_2"
       ],
-      "x": -8,
+      "x": 3,
       "y": 25,
       "key": false,
       "rewards": [

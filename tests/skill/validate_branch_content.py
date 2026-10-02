@@ -50,13 +50,28 @@ for branch,tree in trees.items():
     assert tree['nodes'][0]['parents']==[fork],branch
     assert tree['nodes'][0]['y']==nodes[fork]['y']+1,branch
 assert nodes['changede:common_vitality_3']['parents']==[fork]
+# Keep both the original common path and its continuation centered.
+assert all(n['x']==0 for n in trees['trunk']['nodes'])
+top_branches={b:t for b,t in trees.items() if b not in {'trunk','yufeng','insect','arachnid'}}
+left={b for b,t in top_branches.items() if t['nodes'][0]['x']<0}
+right=set(top_branches)-left
+assert len(left)==len(right)==12,(left,right)
+assert sorted(-top_branches[b]['nodes'][0]['x'] for b in left)==sorted(top_branches[b]['nodes'][0]['x'] for b in right)
+for b,t in top_branches.items():
+    assert all(n['x']*t['nodes'][0]['x']>0 for n in t['nodes']),b
+arthropod_x=nodes['changede:arthropod_core']['x']
+assert nodes['changede:arachnid_core']['x']<arthropod_x<nodes['changede:insect_core']['x']<0
 v=read(RES/'assets/changede/latex_skill_visuals/default.json');themes={t['id'] for t in v['themes']}
 assert len({r['id'] for r in v['regions']})==len(v['regions'])
 assert all(r['theme'] in themes and r['width']>0 and r['height']>0 for r in v['regions'])
 for branch,tree in trees.items():
     if branch in {'trunk','yufeng'}:continue
     region=next(r for r in v['regions'] if r['id']=='changede:'+branch+'_branch')
+    assert region['x']>0 or region['x']+region['width']<0,('Region crosses common trunk',branch)
     for n in tree['nodes']:assert region['x']<n['x']<region['x']+region['width'] and region['y']<n['y']<region['y']+region['height'],n['id']
+for i,a in enumerate(v['regions']):
+    for b in v['regions'][i+1:]:
+        assert a['x']+a['width']<=b['x'] or b['x']+b['width']<=a['x'],('Overlapping branch regions',a['id'],b['id'])
 # Run visibility/activation simulations for each audited Form, including mixed species.
 def eligible(form):
     result=set()

@@ -14,7 +14,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 69,
+      "x": 51,
       "y": 11,
       "key": true,
       "rewards": []
@@ -27,7 +27,7 @@
       "parents": [
         "changede:plant_core"
       ],
-      "x": 70,
+      "x": 52,
       "y": 12,
       "key": false,
       "rewards": [
@@ -47,7 +47,7 @@
       "parents": [
         "changede:plant_armor_1"
       ],
-      "x": 69,
+      "x": 51,
       "y": 13,
       "key": false,
       "rewards": [
@@ -67,7 +67,7 @@
       "parents": [
         "changede:plant_core"
       ],
-      "x": 70,
+      "x": 52,
       "y": 14,
       "key": false,
       "rewards": [
@@ -87,7 +87,7 @@
       "parents": [
         "changede:plant_health_1"
       ],
-      "x": 69,
+      "x": 51,
       "y": 15,
       "key": false,
       "rewards": [
@@ -107,7 +107,7 @@
       "parents": [
         "changede:plant_core"
       ],
-      "x": 70,
+      "x": 52,
       "y": 16,
       "key": false,
       "rewards": [
@@ -127,7 +127,7 @@
       "parents": [
         "changede:plant_recovery_1"
       ],
-      "x": 69,
+      "x": 51,
       "y": 17,
       "key": false,
       "rewards": [

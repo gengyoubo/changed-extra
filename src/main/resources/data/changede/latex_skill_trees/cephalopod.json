@@ -14,7 +14,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 66,
+      "x": -51,
       "y": 11,
       "key": true,
       "rewards": []
@@ -27,7 +27,7 @@
       "parents": [
         "changede:cephalopod_core"
       ],
-      "x": 67,
+      "x": -52,
       "y": 12,
       "key": false,
       "rewards": [
@@ -47,7 +47,7 @@
       "parents": [
         "changede:cephalopod_strength_1"
       ],
-      "x": 66,
+      "x": -51,
       "y": 13,
       "key": false,
       "rewards": [
@@ -67,7 +67,7 @@
       "parents": [
         "changede:cephalopod_core"
       ],
-      "x": 67,
+      "x": -52,
       "y": 14,
       "key": false,
       "rewards": [
@@ -87,7 +87,7 @@
       "parents": [
         "changede:cephalopod_swimming_1"
       ],
-      "x": 66,
+      "x": -51,
       "y": 15,
       "key": false,
       "rewards": [
@@ -107,7 +107,7 @@
       "parents": [
         "changede:cephalopod_core"
       ],
-      "x": 67,
+      "x": -52,
       "y": 16,
       "key": false,
       "rewards": [
@@ -127,7 +127,7 @@
       "parents": [
         "changede:cephalopod_balance_1"
       ],
-      "x": 66,
+      "x": -51,
       "y": 17,
       "key": false,
       "rewards": [

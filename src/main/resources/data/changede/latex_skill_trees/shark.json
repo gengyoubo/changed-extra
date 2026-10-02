@@ -20,7 +20,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 54,
+      "x": -43,
       "y": 11,
       "key": true,
       "rewards": []
@@ -33,7 +33,7 @@
       "parents": [
         "changede:shark_core"
       ],
-      "x": 55,
+      "x": -44,
       "y": 12,
       "key": false,
       "rewards": [
@@ -53,7 +53,7 @@
       "parents": [
         "changede:shark_strength_1"
       ],
-      "x": 54,
+      "x": -43,
       "y": 13,
       "key": false,
       "rewards": [
@@ -73,7 +73,7 @@
       "parents": [
         "changede:shark_core"
       ],
-      "x": 55,
+      "x": -44,
       "y": 14,
       "key": false,
       "rewards": [
@@ -93,7 +93,7 @@
       "parents": [
         "changede:shark_swimming_1"
       ],
-      "x": 54,
+      "x": -43,
       "y": 15,
       "key": false,
       "rewards": [
@@ -113,7 +113,7 @@
       "parents": [
         "changede:shark_core"
       ],
-      "x": 55,
+      "x": -44,
       "y": 16,
       "key": false,
       "rewards": [
@@ -133,7 +133,7 @@
       "parents": [
         "changede:shark_health_1"
       ],
-      "x": 54,
+      "x": -43,
       "y": 17,
       "key": false,
       "rewards": [

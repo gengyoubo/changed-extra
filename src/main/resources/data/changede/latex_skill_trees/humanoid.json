@@ -12,7 +12,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 75,
+      "x": 55,
       "y": 11,
       "key": true,
       "rewards": []
@@ -25,7 +25,7 @@
       "parents": [
         "changede:humanoid_core"
       ],
-      "x": 76,
+      "x": 56,
       "y": 12,
       "key": false,
       "rewards": [
@@ -45,7 +45,7 @@
       "parents": [
         "changede:humanoid_strength_1"
       ],
-      "x": 75,
+      "x": 55,
       "y": 13,
       "key": false,
       "rewards": [
@@ -65,7 +65,7 @@
       "parents": [
         "changede:humanoid_core"
       ],
-      "x": 76,
+      "x": 56,
       "y": 14,
       "key": false,
       "rewards": [
@@ -85,7 +85,7 @@
       "parents": [
         "changede:humanoid_health_1"
       ],
-      "x": 75,
+      "x": 55,
       "y": 15,
       "key": false,
       "rewards": [
@@ -105,7 +105,7 @@
       "parents": [
         "changede:humanoid_core"
       ],
-      "x": 76,
+      "x": 56,
       "y": 16,
       "key": false,
       "rewards": [
@@ -125,7 +125,7 @@
       "parents": [
         "changede:humanoid_energy_1"
       ],
-      "x": 75,
+      "x": 55,
       "y": 17,
       "key": false,
       "rewards": [

@@ -17,7 +17,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 36,
+      "x": 7,
       "y": 11,
       "key": true,
       "rewards": []
@@ -30,7 +30,7 @@
       "parents": [
         "changede:feral_core"
       ],
-      "x": 37,
+      "x": 8,
       "y": 12,
       "key": false,
       "rewards": [
@@ -50,7 +50,7 @@
       "parents": [
         "changede:feral_stride_1"
       ],
-      "x": 36,
+      "x": 7,
       "y": 13,
       "key": false,
       "rewards": [
@@ -70,7 +70,7 @@
       "parents": [
         "changede:feral_core"
       ],
-      "x": 37,
+      "x": 8,
       "y": 14,
       "key": false,
       "rewards": [
@@ -90,7 +90,7 @@
       "parents": [
         "changede:feral_strength_1"
       ],
-      "x": 36,
+      "x": 7,
       "y": 15,
       "key": false,
       "rewards": [
@@ -110,7 +110,7 @@
       "parents": [
         "changede:feral_core"
       ],
-      "x": 37,
+      "x": 8,
       "y": 16,
       "key": false,
       "rewards": [
@@ -130,7 +130,7 @@
       "parents": [
         "changede:feral_landing_1"
       ],
-      "x": 36,
+      "x": 7,
       "y": 17,
       "key": false,
       "rewards": [

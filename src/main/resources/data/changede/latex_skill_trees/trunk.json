@@ -214,7 +214,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 1,
+      "x": 0,
       "y": 11,
       "key": false,
       "rewards": [
@@ -233,7 +233,7 @@
       "parents": [
         "changede:common_vitality_3"
       ],
-      "x": 1,
+      "x": 0,
       "y": 12,
       "key": false,
       "rewards": [
@@ -252,7 +252,7 @@
       "parents": [
         "changede:common_armor_3"
       ],
-      "x": 1,
+      "x": 0,
       "y": 13,
       "key": false,
       "rewards": [
@@ -271,7 +271,7 @@
       "parents": [
         "changede:common_strength_3"
       ],
-      "x": 1,
+      "x": 0,
       "y": 14,
       "key": false,
       "rewards": [
@@ -290,7 +290,7 @@
       "parents": [
         "changede:common_regeneration_2"
       ],
-      "x": 1,
+      "x": 0,
       "y": 15,
       "key": false,
       "rewards": [
@@ -309,7 +309,7 @@
       "parents": [
         "changede:common_hunger_x_2"
       ],
-      "x": 1,
+      "x": 0,
       "y": 16,
       "key": false,
       "rewards": [
@@ -328,7 +328,7 @@
       "parents": [
         "changede:common_hunger_y_2"
       ],
-      "x": 1,
+      "x": 0,
       "y": 17,
       "key": false,
       "rewards": [
@@ -347,7 +347,7 @@
       "parents": [
         "changede:common_hunger_z_2"
       ],
-      "x": 1,
+      "x": 0,
       "y": 18,
       "key": false,
       "rewards": [
@@ -366,7 +366,7 @@
       "parents": [
         "changede:common_vitality_4"
       ],
-      "x": 1,
+      "x": 0,
       "y": 19,
       "key": false,
       "rewards": [
@@ -385,7 +385,7 @@
       "parents": [
         "changede:common_armor_4"
       ],
-      "x": 1,
+      "x": 0,
       "y": 20,
       "key": false,
       "rewards": [
@@ -404,7 +404,7 @@
       "parents": [
         "changede:common_strength_4"
       ],
-      "x": 1,
+      "x": 0,
       "y": 21,
       "key": false,
       "rewards": [
@@ -423,7 +423,7 @@
       "parents": [
         "changede:common_regeneration_3"
       ],
-      "x": 1,
+      "x": 0,
       "y": 22,
       "key": false,
       "rewards": [
@@ -442,7 +442,7 @@
       "parents": [
         "changede:common_hunger_x_3"
       ],
-      "x": 1,
+      "x": 0,
       "y": 23,
       "key": false,
       "rewards": [
@@ -461,7 +461,7 @@
       "parents": [
         "changede:common_hunger_y_3"
       ],
-      "x": 1,
+      "x": 0,
       "y": 24,
       "key": false,
       "rewards": [

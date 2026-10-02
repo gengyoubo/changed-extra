@@ -41,7 +41,7 @@
       "parents": [
         "changede:common_strength_2"
       ],
-      "x": 15,
+      "x": -23,
       "y": 11,
       "key": true,
       "rewards": [
@@ -65,7 +65,7 @@
       "parents": [
         "changede:feline_core"
       ],
-      "x": 14,
+      "x": -22,
       "y": 12,
       "key": false,
       "rewards": [
@@ -84,7 +84,7 @@
       "parents": [
         "changede:feline_core"
       ],
-      "x": 16,
+      "x": -24,
       "y": 13,
       "key": false,
       "rewards": [
@@ -103,7 +103,7 @@
       "parents": [
         "changede:feline_claws_1"
       ],
-      "x": 16,
+      "x": -24,
       "y": 14,
       "key": false,
       "rewards": [
@@ -122,7 +122,7 @@
       "parents": [
         "changede:feline_core"
       ],
-      "x": 16,
+      "x": -24,
       "y": 15,
       "key": false,
       "rewards": [
@@ -142,7 +142,7 @@
       "parents": [
         "changede:feline_balance_1"
       ],
-      "x": 15,
+      "x": -23,
       "y": 16,
       "key": false,
       "rewards": [
@@ -162,7 +162,7 @@
       "parents": [
         "changede:feline_core"
       ],
-      "x": 16,
+      "x": -24,
       "y": 17,
       "key": false,
       "rewards": [
@@ -182,7 +182,7 @@
       "parents": [
         "changede:feline_health_1"
       ],
-      "x": 15,
+      "x": -23,
       "y": 18,
       "key": false,
       "rewards": [
@@ -203,7 +203,7 @@
         "changede:feline_presence_1",
         "changede:feline_claws_2"
       ],
-      "x": 15,
+      "x": -23,
       "y": 19,
       "key": true,
       "rewards": [
