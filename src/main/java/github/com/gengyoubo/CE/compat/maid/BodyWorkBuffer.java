@@ -61,7 +61,7 @@ final class BodyWorkBuffer extends ItemStackHandler {
         return present.copyWithCount(extracted);
     }
 
-    /** Return interrupted work items once. Unloaded bodies keep their own NBT until reloaded. */
+    /** Move ownership before retiring the old body's worker during a species replacement. */
     static void transfer(ChangedEntity previous, ChangedEntity replacement) {
         CompoundTag buffers = previous.getPersistentData().getCompound(DATA_KEY);
         if (buffers.isEmpty()) return;

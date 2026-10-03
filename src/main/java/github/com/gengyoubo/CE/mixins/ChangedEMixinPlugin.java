@@ -57,7 +57,10 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
                 || "github.com.gengyoubo.CE.mixins.CreatureMorphInventoryBackupMixin".equals(mixinClassName)) {
             return isModLoaded("changed_synergy");
         }
-        if ("github.com.gengyoubo.CE.mixins.CreatureMorphWorkStateMixin".equals(mixinClassName)) {
+        if ("github.com.gengyoubo.CE.mixins.CreatureMorphWorkStateMixin".equals(mixinClassName)
+                || "github.com.gengyoubo.CE.mixins.MaidWorkEntityIdentityMixin".equals(mixinClassName)
+                || "github.com.gengyoubo.CE.mixins.MaidWorkVariantIdentityMixin".equals(mixinClassName)
+                || "github.com.gengyoubo.CE.mixins.MaidWorkProcessIdentityMixin".equals(mixinClassName)) {
             return isModLoaded("changed_synergy") && isModLoaded("touhou_little_maid");
         }
         if ("github.com.gengyoubo.CE.mixins.BondedLatexWorkSlotMixin".equals(mixinClassName)) {

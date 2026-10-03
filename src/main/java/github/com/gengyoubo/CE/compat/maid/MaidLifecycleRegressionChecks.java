@@ -251,6 +251,7 @@ public final class MaidLifecycleRegressionChecks {
             regular.getMaidInv().setStackInSlot(0, new ItemStack(Items.EMERALD, 2));
             regular.hurt(regular.damageSources().genericKill(), Float.MAX_VALUE);
             check(realMaidTombstones.get() == 1, "Ordinary TLM maids retain their normal tombstone behavior");
+            MaidEnvironmentRegressionChecks.verify(level, player);
             changede.LOGGER.info("MAID LIFECYCLE REGRESSION CHECKS PASSED");
         } catch (ReflectiveOperationException exception) {
             throw new AssertionError("Could not inspect the work proxy cache", exception);

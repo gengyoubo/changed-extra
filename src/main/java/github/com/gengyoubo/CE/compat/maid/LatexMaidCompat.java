@@ -11,6 +11,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -315,7 +322,7 @@ public final class LatexMaidCompat {
     }
 
     /** Latex = the sole real entity and state owner; this adapter only borrows TLM work AI. */
-    static final class SyntheticMaid extends EntityMaid {
+    static final class SyntheticMaid extends EntityMaid implements MaidWorkBody {
         private ServerPlayer workOwner;
         private final ChangedEntity body;
         private Container workInventory;
@@ -327,6 +334,7 @@ public final class LatexMaidCompat {
             super(level);
             this.workOwner = owner;
             this.body = body;
+            refreshDimensions();
             BodyWorkBuffer.release(body);
             borrowedHide = new BodyWorkBuffer(body, "hand", 1, this::canWork);
             borrowedTask = new BodyWorkBuffer(body, "task", 9, this::canWork);
@@ -345,6 +353,7 @@ public final class LatexMaidCompat {
             setPos(source.getX(), source.getY(), source.getZ());
             setYRot(source.getYRot());
             setXRot(source.getXRot());
+            setPose(source.getPose());
             mirrorHealth();
         }
         void syncFrom(ChangedEntity source, Container inventory) {
@@ -358,6 +367,88 @@ public final class LatexMaidCompat {
             inventory.setChanged();
         }
         @Override public LivingEntity getOwner() { return workOwner; }
+        @Override public ChangedEntity workBody() { return body; }
+
+        // Traits are borrowed live, rather than treating this AI adapter as a human maid.
+        @Override public EntityDimensions getDimensions(Pose pose) {
+            return body == null ? super.getDimensions(pose) : body.getDimensions(pose);
+        }
+        @Override public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+            return body == null ? super.getStandingEyeHeight(pose, dimensions) : body.getEyeHeight(pose);
+        }
+        @Override public double getAttributeValue(Attribute attribute) {
+            return body != null && body.getAttribute(attribute) != null ? body.getAttributeValue(attribute) : super.getAttributeValue(attribute);
+        }
+        @Override public double getAttributeBaseValue(Attribute attribute) {
+            return body != null && body.getAttribute(attribute) != null ? body.getAttributeBaseValue(attribute) : super.getAttributeBaseValue(attribute);
+        }
+        @Override public float maxUpStep() { return body == null ? super.maxUpStep() : body.maxUpStep(); }
+        @Override public boolean fireImmune() { return body == null ? super.fireImmune() : body.fireImmune(); }
+        @Override public boolean isInvulnerableTo(DamageSource source) {
+            return body == null ? super.isInvulnerableTo(source) : body.isInvulnerableTo(source);
+        }
+        @Override public boolean canBreatheUnderwater() {
+            return body == null ? super.canBreatheUnderwater() : body.canBreatheUnderwater();
+        }
+        @Override public boolean isSensitiveToWater() {
+            return body == null ? super.isSensitiveToWater() : body.isSensitiveToWater();
+        }
+        @Override public boolean canStandOnFluid(FluidState state) {
+            return body == null ? super.canStandOnFluid(state) : body.canStandOnFluid(state);
+        }
+        @Override public boolean isPushedByFluid() {
+            return body == null ? super.isPushedByFluid() : body.isPushedByFluid();
+        }
+        @Override public boolean isPushedByFluid(FluidType type) {
+            return body == null ? super.isPushedByFluid(type) : body.isPushedByFluid(type);
+        }
+        @Override public boolean canSwimInFluidType(FluidType type) {
+            return body == null ? super.canSwimInFluidType(type) : body.canSwimInFluidType(type);
+        }
+        @Override public boolean canDrownInFluidType(FluidType type) {
+            return body == null ? super.canDrownInFluidType(type) : body.canDrownInFluidType(type);
+        }
+        @Override public boolean canFluidExtinguish(FluidType type) {
+            return body == null ? super.canFluidExtinguish(type) : body.canFluidExtinguish(type);
+        }
+        @Override public boolean canHydrateInFluidType(FluidType type) {
+            return body == null ? super.canHydrateInFluidType(type) : body.canHydrateInFluidType(type);
+        }
+        @Override public boolean canBeAffected(MobEffectInstance effect) {
+            return body == null ? super.canBeAffected(effect) : body.canBeAffected(effect);
+        }
+        @Override public boolean hasEffect(MobEffect effect) {
+            return body == null ? super.hasEffect(effect) : body.hasEffect(effect);
+        }
+        @Override public MobEffectInstance getEffect(MobEffect effect) {
+            return body == null ? super.getEffect(effect) : body.getEffect(effect);
+        }
+        @Override public java.util.Collection<MobEffectInstance> getActiveEffects() {
+            return body == null ? super.getActiveEffects() : body.getActiveEffects();
+        }
+        @Override public Map<MobEffect, MobEffectInstance> getActiveEffectsMap() {
+            return body == null ? super.getActiveEffectsMap() : body.getActiveEffectsMap();
+        }
+        @Override public boolean addEffect(MobEffectInstance effect, Entity source) {
+            return body == null ? super.addEffect(effect, source) : canWork() && body.addEffect(effect, source);
+        }
+        @Override public void forceAddEffect(MobEffectInstance effect, Entity source) {
+            if (body == null) super.forceAddEffect(effect, source);
+            else if (canWork()) body.forceAddEffect(effect, source);
+        }
+        @Override public boolean removeEffect(MobEffect effect) {
+            return body == null ? super.removeEffect(effect) : canWork() && body.removeEffect(effect);
+        }
+        @Override public MobEffectInstance removeEffectNoUpdate(MobEffect effect) {
+            return body == null ? super.removeEffectNoUpdate(effect) : canWork() ? body.removeEffectNoUpdate(effect) : null;
+        }
+        @Override public boolean removeAllEffects() {
+            return body == null ? super.removeAllEffects() : canWork() && body.removeAllEffects();
+        }
+        @Override protected void tickEffects() {
+            // The real body's tick alone advances effect durations and applies their damage/healing.
+            if (body == null) super.tickEffects();
+        }
 
         @Override public ItemStackHandler getMaidInv() {
             return body == null ? super.getMaidInv() : borrowedInventory;
