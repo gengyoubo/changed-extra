@@ -3,23 +3,21 @@ package github.com.gengyoubo.CE.compat.synergy;
 import github.com.gengyoubo.CE.init.CEItem;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.parkabird.changedsynergy.ai.LatexSocialMemory;
 import net.parkabird.changedsynergy.ai.RelationshipFavorService;
-import net.parkabird.changedsynergy.world.inventory.BondedCreatureInventory;
-
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Makes bonded Synergy latex creatures eat from their own inventory to stay alive.
+ * Makes bonded Synergy companions eat from their visible inventory and recover out of combat.
  *
  * <p>Food tiers (from {@code RelationshipFavorService} in Changed: Synergy):
  * <ul>
@@ -31,13 +29,20 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class ChangedSynergyAutoEat {
     private static final long EAT_COOLDOWN_TICKS = 20L;
-    private static final Map<UUID, Long> LAST_EAT = new ConcurrentHashMap<>();
+    private static final long RECOVERY_INTERVAL_TICKS = 100L;
+    private static final String NEXT_EAT = "changede_next_auto_eat";
+    private static final String NEXT_RECOVERY = "changede_next_companion_recovery";
 
     private ChangedSynergyAutoEat() {}
 
     public static void initialize() {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false,
                 LivingEvent.LivingTickEvent.class, ChangedSynergyAutoEat::onLivingTick);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false,
+                LivingDamageEvent.class, ChangedSynergyAutoEat::onDamage);
+        if (Boolean.getBoolean("changede.verifyCompanionRecovery")) {
+            MinecraftForge.EVENT_BUS.addListener(CompanionRecoveryRegressionChecks::verify);
+        }
     }
 
     private static void onLivingTick(LivingEvent.LivingTickEvent event) {
@@ -46,28 +51,41 @@ public final class ChangedSynergyAutoEat {
                 || !(creature.level() instanceof ServerLevel)) {
             return;
         }
-        if (!creature.isAlive() || creature.isRemoved()) {
-            LAST_EAT.remove(creature.getUUID());
-            return;
-        }
-        if (!LatexSocialMemory.hasActiveBond(creature)) {
-            LAST_EAT.remove(creature.getUUID());
-            return;
-        }
+        tickCompanion(creature, creature.level().getGameTime());
+    }
 
-        long now = creature.level().getGameTime();
-        Long lastEat = LAST_EAT.get(creature.getUUID());
-        if (lastEat != null && now - lastEat < EAT_COOLDOWN_TICKS) {
-            return;
-        }
-
-        BondedCreatureInventory inventory = new BondedCreatureInventory(creature);
-        if (tryAutoEat(creature, inventory, now)) {
-            LAST_EAT.put(creature.getUUID(), now);
+    private static void onDamage(LivingDamageEvent event) {
+        if (event.getAmount() > 0 && event.getEntity() instanceof ChangedEntity creature
+                && !creature.level().isClientSide()) {
+            creature.getPersistentData().putLong(NEXT_RECOVERY,
+                    creature.level().getGameTime() + RECOVERY_INTERVAL_TICKS);
         }
     }
 
-    private static boolean tryAutoEat(ChangedEntity creature, BondedCreatureInventory inventory, long now) {
+    static void tickCompanion(ChangedEntity creature, long now) {
+        if (!creature.isAlive() || creature.isRemoved() || creature.level().isClientSide()
+                || !(LatexSocialMemory.hasActiveBond(creature)
+                || LatexSocialMemory.petOwnerUuid(creature).isPresent())) return;
+        var data = creature.getPersistentData();
+        if (now >= data.getLong(NEXT_EAT) && creature.getHealth() < creature.getMaxHealth()) {
+            data.putLong(NEXT_EAT, now + EAT_COOLDOWN_TICKS);
+            tryAutoEat(creature, CreatureInventoryAccess.resolve(creature));
+        }
+        if (creature.getHealth() >= creature.getMaxHealth() || creature.getTarget() != null
+                || creature.hurtTime > 0
+                || !creature.level().getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION)) {
+            data.putLong(NEXT_RECOVERY, now + RECOVERY_INTERVAL_TICKS);
+            return;
+        }
+        if (!data.contains(NEXT_RECOVERY)) {
+            data.putLong(NEXT_RECOVERY, now + RECOVERY_INTERVAL_TICKS);
+        } else if (now >= data.getLong(NEXT_RECOVERY)) {
+            creature.heal(1.0F);
+            data.putLong(NEXT_RECOVERY, now + RECOVERY_INTERVAL_TICKS);
+        }
+    }
+
+    private static boolean tryAutoEat(ChangedEntity creature, Container inventory) {
         float maxHealth = creature.getMaxHealth();
         if (maxHealth <= 0.0F) {
             return false;
@@ -91,15 +109,14 @@ public final class ChangedSynergyAutoEat {
         for (FoodTier candidate : tier.fallbacks()) {
             int slot = findFoodSlot(creature, inventory, candidate);
             if (slot >= 0) {
-                eat(creature, inventory, slot, candidate);
-                return true;
+                return eat(creature, inventory, slot, candidate);
             }
         }
         return false;
     }
 
-    private static int findFoodSlot(ChangedEntity creature, BondedCreatureInventory inventory, FoodTier tier) {
-        for (int slot = 0; slot < 24; slot++) {
+    private static int findFoodSlot(ChangedEntity creature, Container inventory, FoodTier tier) {
+        for (int slot = 0; slot < Math.min(24, inventory.getContainerSize()); slot++) {
             ItemStack stack = inventory.getItem(slot);
             if (!stack.isEmpty() && classify(creature, stack) == tier) {
                 return slot;
@@ -121,17 +138,21 @@ public final class ChangedSynergyAutoEat {
         if (stack.is(Items.SWEET_BERRIES)) {
             return FoodTier.ORDINARY;
         }
+        if (RelationshipFavorService.isOrange(stack) && RelationshipFavorService.acceptsOrange(creature)) {
+            return FoodTier.ORDINARY;
+        }
         return null;
     }
 
-    private static void eat(ChangedEntity creature, BondedCreatureInventory inventory, int slot, FoodTier tier) {
-        ItemStack stack = inventory.getItem(slot);
+    private static boolean eat(ChangedEntity creature, Container inventory, int slot, FoodTier tier) {
+        ItemStack stack = inventory.removeItem(slot, 1);
         if (stack.isEmpty()) {
-            return;
+            return false;
         }
+        inventory.setChanged();
 
         switch (tier) {
-            case ORDINARY -> creature.heal(2.0F);
+            case ORDINARY -> creature.heal(RelationshipFavorService.isOrange(stack) ? 4.0F : 2.0F);
             case DIET -> creature.heal(6.0F);
             case GOLDEN -> {
                 creature.heal(4.0F);
@@ -146,7 +167,7 @@ public final class ChangedSynergyAutoEat {
                 creature.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 0));
             }
         }
-        inventory.consumeOne(slot);
+        return true;
     }
 
     private enum FoodTier {

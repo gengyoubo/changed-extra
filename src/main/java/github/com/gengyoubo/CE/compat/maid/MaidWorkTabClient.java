@@ -25,7 +25,7 @@ public final class MaidWorkTabClient {
 
         Button workTab = Button.builder(Component.translatable("screen.changede.maid_work.tab"), ignored ->
                 CENetwork.sendToServer(new MaidWorkSwitchPacket(creature.getId(), true)))
-                .bounds(screen.getGuiLeft() + 158, screen.getGuiTop() + 7, 48, 16)
+                .bounds(screen.getGuiLeft() + 158, screen.getGuiTop() - 20, 48, 16)
                 .build();
         event.addListener(workTab);
     }

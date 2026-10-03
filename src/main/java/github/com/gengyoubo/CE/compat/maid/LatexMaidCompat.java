@@ -1,6 +1,8 @@
 package github.com.gengyoubo.CE.compat.maid;
 
 import github.com.gengyoubo.CE.compat.synergy.ChangedSynergyFeedApi;
+import github.com.gengyoubo.CE.compat.synergy.CreatureInventoryAccess;
+import net.minecraft.world.Container;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.process.TransfurEvents;
@@ -8,6 +10,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.network.chat.Component;
@@ -15,6 +20,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -25,13 +34,20 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.wrapper.EntityArmorInvWrapper;
+import com.github.tartaricacid.touhoulittlemaid.inventory.handler.MaidInvWrapper;
 import com.github.tartaricacid.touhoulittlemaid.api.task.IMaidTask;
 import com.github.tartaricacid.touhoulittlemaid.entity.ai.brain.MaidSchedule;
 import com.github.tartaricacid.touhoulittlemaid.entity.backpack.MiddleBackpack;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.entity.task.TaskManager;
 import net.parkabird.changedsynergy.world.inventory.BondedCreatureInventoryMenu;
-import net.parkabird.changedsynergy.world.inventory.BondedCreatureInventory;
 import net.parkabird.changedsynergy.world.inventory.BondedInventoryService;
 import net.parkabird.changedsynergy.world.inventory.BondedLatexMenu;
 import net.parkabird.changedsynergy.event.LatexSocialEvents;
@@ -61,7 +77,8 @@ public final class LatexMaidCompat {
         if (source.hasUUID(WORK_OWNER_TAG)) {
             destination.putUUID(WORK_OWNER_TAG, source.getUUID(WORK_OWNER_TAG));
         }
-        WORKERS.remove(previous.getUUID());
+        BodyWorkBuffer.transfer(previous, replacement);
+        releaseWorker(previous);
         FAILED_WORKERS.remove(previous.getUUID());
     }
 
@@ -71,6 +88,27 @@ public final class LatexMaidCompat {
         MENUS.register(modBus);
         modBus.addListener(LatexMaidCompat::clientSetup);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, LivingEvent.LivingTickEvent.class, LatexMaidCompat::onLivingTick);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, LivingDeathEvent.class, event -> {
+            if (event.getEntity() instanceof ChangedEntity creature && !creature.level().isClientSide()) {
+                releaseWorker(creature);
+                BodyWorkBuffer.release(creature);
+            }
+        });
+        MinecraftForge.EVENT_BUS.addListener((EntityLeaveLevelEvent event) -> {
+            if (event.getEntity() instanceof ChangedEntity creature && !creature.level().isClientSide()) releaseWorker(creature);
+        });
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, false, EntityJoinLevelEvent.class, event -> {
+            // A task adapter must never become a second physical/saved entity.
+            if (event.getEntity() instanceof SyntheticMaid) event.setCanceled(true);
+        });
+        MinecraftForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> {
+            WORKERS.values().forEach(SyntheticMaid::retire);
+            WORKERS.clear();
+            FAILED_WORKERS.clear();
+        });
+        if (Boolean.getBoolean("changede.verifyMaidLifecycle")) {
+            MinecraftForge.EVENT_BUS.addListener(MaidLifecycleRegressionChecks::verify);
+        }
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false,
                 TransfurEvents.ChangedEntityFusionWithMobEvent.class,
                 event -> transferAfterFusion(event.getSourceEntity(), event.getFusionEntity().getEntity()));
@@ -141,20 +179,20 @@ public final class LatexMaidCompat {
         if (!(event.getEntity() instanceof ChangedEntity creature) || creature.level().isClientSide()
                 || !(creature.level() instanceof ServerLevel level)) return;
         if (!creature.isAlive() || creature.isRemoved()) {
-            WORKERS.remove(creature.getUUID());
+            releaseWorker(creature);
             FAILED_WORKERS.remove(creature.getUUID());
             return;
         }
         String taskId = creature.getPersistentData().getString(TASK_TAG);
         if (taskId.isEmpty()) {
-            WORKERS.remove(creature.getUUID());
+            releaseWorker(creature);
             FAILED_WORKERS.remove(creature.getUUID());
             restoreNativeAi(creature);
             return;
         }
 
         if (!creature.getPersistentData().hasUUID(WORK_OWNER_TAG)) {
-            WORKERS.remove(creature.getUUID());
+            releaseWorker(creature);
             FAILED_WORKERS.remove(creature.getUUID());
             restoreNativeAi(creature);
             return;
@@ -162,6 +200,7 @@ public final class LatexMaidCompat {
         UUID ownerId = creature.getPersistentData().getUUID(WORK_OWNER_TAG);
         ServerPlayer owner = level.getServer().getPlayerList().getPlayer(ownerId);
         if (owner == null) {
+            releaseWorker(creature);
             restoreNativeAi(creature);
             return;
         }
@@ -170,7 +209,7 @@ public final class LatexMaidCompat {
         IMaidTask task = id == null ? null : TaskManager.getTaskMap().get(id);
         if (task == null) {
             creature.getPersistentData().remove(TASK_TAG);
-            WORKERS.remove(creature.getUUID());
+            releaseWorker(creature);
             FAILED_WORKERS.remove(creature.getUUID());
             restoreNativeAi(creature);
             return;
@@ -182,7 +221,9 @@ public final class LatexMaidCompat {
         suppressNativeAi(creature);
 
         SyntheticMaid maid = WORKERS.compute(creature.getUUID(), (uuid, current) -> {
-            if (current == null || current.level() != level || current.getTask() != task) {
+            if (current == null || current.isRemoved() || !current.isAlive()
+                    || current.body != creature || current.level() != level || current.getTask() != task) {
+                if (current != null) current.retire();
                 try {
                     current = new SyntheticMaid(level, creature, owner);
                     current.setTask(task);
@@ -204,13 +245,21 @@ public final class LatexMaidCompat {
         // The maid's full entity tick runs its Brain, navigation, movement control,
         // and task actions. Ticking only Brain and navigation leaves it stationary.
         try {
-            BondedCreatureInventory inventory = new BondedCreatureInventory(creature);
+            Container inventory = CreatureInventoryAccess.resolve(creature);
             maid.syncFrom(creature, inventory);
             VecPosition before = VecPosition.of(maid);
             try {
                 maid.tick();
             } finally {
-                maid.syncInventoryTo(creature, inventory);
+                try {
+                    maid.syncInventoryTo(creature, inventory);
+                } finally {
+                    maid.workInventory = null;
+                }
+            }
+            if (!creature.isAlive() || creature.isRemoved() || maid.isRemoved()) {
+                releaseWorker(creature);
+                return;
             }
             VecPosition after = VecPosition.of(maid);
             if (before.distanceSquared(after) > 1.0E-5) {
@@ -218,12 +267,17 @@ public final class LatexMaidCompat {
             }
             FAILED_WORKERS.remove(creature.getUUID());
         } catch (RuntimeException | LinkageError exception) {
-            WORKERS.remove(creature.getUUID());
+            releaseWorker(creature);
             restoreNativeAi(creature);
             if (FAILED_WORKERS.add(creature.getUUID())) {
                 github.com.gengyoubo.CE.changede.LOGGER.warn("Latex maid task {} failed for {}", taskId, creature.getType(), exception);
             }
         }
+    }
+
+    private static void releaseWorker(ChangedEntity creature) {
+        SyntheticMaid worker = WORKERS.get(creature.getUUID());
+        if (worker != null && worker.body == creature && WORKERS.remove(creature.getUUID(), worker)) worker.retire();
     }
 
     /** While a maid task is bound, the latex body must not run its own goal AI. */
@@ -260,14 +314,22 @@ public final class LatexMaidCompat {
         }
     }
 
-    private static final class SyntheticMaid extends EntityMaid {
+    /** Latex = the sole real entity and state owner; this adapter only borrows TLM work AI. */
+    static final class SyntheticMaid extends EntityMaid {
         private ServerPlayer workOwner;
         private final ChangedEntity body;
+        private Container workInventory;
+        private final ItemStackHandler borrowedInventory = new BorrowedInventory();
+        private final ItemStackHandler borrowedHide;
+        private final ItemStackHandler borrowedTask;
 
         SyntheticMaid(ServerLevel level, ChangedEntity body, ServerPlayer owner) {
             super(level);
             this.workOwner = owner;
             this.body = body;
+            BodyWorkBuffer.release(body);
+            borrowedHide = new BodyWorkBuffer(body, "hand", 1, this::canWork);
+            borrowedTask = new BodyWorkBuffer(body, "task", 9, this::canWork);
             syncFrom(body);
             setTame(true);
             setOwnerUUID(owner.getUUID());
@@ -283,44 +345,182 @@ public final class LatexMaidCompat {
             setPos(source.getX(), source.getY(), source.getZ());
             setYRot(source.getYRot());
             setXRot(source.getXRot());
+            mirrorHealth();
         }
-        void syncFrom(ChangedEntity source, BondedCreatureInventory inventory) {
+        void syncFrom(ChangedEntity source, Container inventory) {
+            if (!canWork()) return;
+            workInventory = inventory;
             syncFrom(source);
-            for (int slot = 0; slot < 24; slot++) {
-                ItemStack stack = inventory.getItem(slot);
-                if (!ItemStack.matches(getMaidInv().getStackInSlot(slot), stack)) {
-                    getMaidInv().setStackInSlot(slot, stack.copy());
-                }
-            }
-            if (!ItemStack.matches(getMainHandItem(), source.getMainHandItem())) {
-                setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, source.getMainHandItem().copy());
-            }
-            if (!ItemStack.matches(getOffhandItem(), source.getOffhandItem())) {
-                setItemSlot(net.minecraft.world.entity.EquipmentSlot.OFFHAND, source.getOffhandItem().copy());
-            }
         }
-        void syncInventoryTo(ChangedEntity target, BondedCreatureInventory inventory) {
-            for (int slot = 0; slot < 24; slot++) {
-                ItemStack stack = getMaidInv().getStackInSlot(slot);
-                if (!ItemStack.matches(inventory.getItem(slot), stack)) {
-                    inventory.setItem(slot, stack.copy());
-                }
-            }
-            for (int slot = 24; slot < getMaidInv().getSlots(); slot++) {
-                ItemStack stack = getMaidInv().getStackInSlot(slot);
-                if (stack.isEmpty()) continue;
-                ItemStack remainder = inventory.insert(stack.copy());
-                getMaidInv().setStackInSlot(slot, ItemStack.EMPTY);
-                if (!remainder.isEmpty()) target.spawnAtLocation(remainder);
-            }
-            if (!ItemStack.matches(target.getMainHandItem(), getMainHandItem())) {
-                target.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, getMainHandItem().copy());
-            }
-            if (!ItemStack.matches(target.getOffhandItem(), getOffhandItem())) {
-                target.setItemSlot(net.minecraft.world.entity.EquipmentSlot.OFFHAND, getOffhandItem().copy());
-            }
+        void syncInventoryTo(ChangedEntity target, Container inventory) {
+            // Work mutates the real storage directly. Only flush in-place item/NBT changes.
+            if (target != body || !canWork()) return;
+            inventory.setChanged();
         }
         @Override public LivingEntity getOwner() { return workOwner; }
+
+        @Override public ItemStackHandler getMaidInv() {
+            return body == null ? super.getMaidInv() : borrowedInventory;
+        }
+        @Override public ItemStackHandler getHideInv() { return body == null ? super.getHideInv() : borrowedHide; }
+        @Override public ItemStackHandler getTaskInv() { return body == null ? super.getTaskInv() : borrowedTask; }
+
+        @Override public CombinedInvWrapper getAvailableInv(boolean handsFirst) {
+            return handsFirst ? new MaidInvWrapper(this, getHandsInvWrapper(), getMaidInv())
+                    : new MaidInvWrapper(this, getMaidInv(), getHandsInvWrapper());
+        }
+
+        @Override public CombinedInvWrapper getAvailableBackpackInv() {
+            return new MaidInvWrapper(this, getMaidInv());
+        }
+
+        @Override public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
+            if (body == null || capability != ForgeCapabilities.ITEM_HANDLER) return super.getCapability(capability, facing);
+            if (!canWork()) return LazyOptional.empty();
+            // TLM's default implementation uses its private inventory instead of getMaidInv().
+            if (facing == null) return LazyOptional.of(() -> new CombinedInvWrapper(
+                    new EntityArmorInvWrapper(this), getHandsInvWrapper(), getMaidInv())).cast();
+            if (facing.getAxis().isVertical()) return LazyOptional.of(this::getHandsInvWrapper).cast();
+            return LazyOptional.of(() -> new EntityArmorInvWrapper(this)).cast();
+        }
+
+        @Override public ItemStack getItemBySlot(EquipmentSlot slot) {
+            if (body == null) return super.getItemBySlot(slot);
+            return canWork() ? body.getItemBySlot(slot) : ItemStack.EMPTY;
+        }
+
+        @Override public ItemStack getMainHandItem() { return getItemBySlot(EquipmentSlot.MAINHAND); }
+        @Override public ItemStack getOffhandItem() { return getItemBySlot(EquipmentSlot.OFFHAND); }
+        @Override public Iterable<ItemStack> getArmorSlots() {
+            return canWork() ? body.getArmorSlots() : super.getArmorSlots();
+        }
+        @Override public Iterable<ItemStack> getHandSlots() {
+            return canWork() ? body.getHandSlots() : super.getHandSlots();
+        }
+
+        @Override public void setItemSlot(EquipmentSlot slot, ItemStack stack) {
+            if (body == null) super.setItemSlot(slot, stack);
+            else if (canWork()) body.setItemSlot(slot, stack);
+        }
+
+        @Override public float getHealth() {
+            if (body == null) return super.getHealth();
+            return isRemoved() ? 0 : getMaxHealth() * body.getHealth() / Math.max(1.0F, body.getMaxHealth());
+        }
+
+        @Override public void setHealth(float health) {
+            // Constructor initialization is allowed; TLM cannot independently change live health.
+            if (body == null) super.setHealth(health);
+        }
+
+        private Container borrowedStorage() {
+            return !canWork() ? null : workInventory != null ? workInventory : CreatureInventoryAccess.resolve(body);
+        }
+
+        /** A view, never a second bag. Retained task/capability handles stop working on retirement. */
+        private final class BorrowedInventory extends ItemStackHandler {
+            BorrowedInventory() { super(24); }
+
+            @Override public ItemStack getStackInSlot(int slot) {
+                validateSlotIndex(slot);
+                Container inventory = borrowedStorage();
+                return inventory == null ? ItemStack.EMPTY : inventory.getItem(slot);
+            }
+
+            @Override public void setStackInSlot(int slot, ItemStack stack) {
+                validateSlotIndex(slot);
+                Container inventory = borrowedStorage();
+                if (inventory != null) inventory.setItem(slot, stack);
+            }
+
+            @Override public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+                validateSlotIndex(slot);
+                Container inventory = borrowedStorage();
+                if (inventory == null || stack.isEmpty()) return stack;
+                ItemStack present = inventory.getItem(slot);
+                if (!present.isEmpty() && !ItemStack.isSameItemSameTags(present, stack)) return stack;
+                int moved = Math.min(stack.getCount(), Math.min(inventory.getMaxStackSize(), stack.getMaxStackSize()) - present.getCount());
+                if (moved <= 0) return stack;
+                if (!simulate) {
+                    ItemStack inserted = stack.copy();
+                    inserted.setCount(present.getCount() + moved);
+                    inventory.setItem(slot, inserted);
+                }
+                return moved == stack.getCount() ? ItemStack.EMPTY : stack.copyWithCount(stack.getCount() - moved);
+            }
+
+            @Override public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                validateSlotIndex(slot);
+                Container inventory = borrowedStorage();
+                if (inventory == null || amount <= 0) return ItemStack.EMPTY;
+                ItemStack present = inventory.getItem(slot);
+                int extracted = Math.min(amount, present.getCount());
+                return simulate ? present.copyWithCount(extracted) : inventory.removeItem(slot, extracted);
+            }
+        }
+
+        private boolean canWork() {
+            return body != null && body.isAlive() && !body.isRemoved() && !isRemoved();
+        }
+
+        private void mirrorHealth() {
+            if (body != null && !isRemoved()) {
+                super.setHealth(getMaxHealth() * body.getHealth() / Math.max(1.0F, body.getMaxHealth()));
+            }
+        }
+
+        @Override
+        public void tick() {
+            if (!canWork()) {
+                retire();
+                return;
+            }
+            super.tick();
+            mirrorHealth();
+        }
+
+        @Override
+        public boolean hurt(DamageSource source, float amount) {
+            if (!canWork()) return false;
+            // Flush real storage before its only owner handles damage and death loot.
+            if (workInventory != null) syncInventoryTo(body, workInventory);
+            boolean hurt = body.hurt(source, amount);
+            if (!body.isAlive() || body.isRemoved()) retire();
+            else mirrorHealth();
+            return hurt;
+        }
+
+        @Override
+        public void die(DamageSource source) {
+            // Never call EntityMaid.die: it creates a tombstone and a revivable maid film.
+            if (canWork()) hurt(source, Float.MAX_VALUE);
+        }
+
+        @Override public void heal(float amount) { /* Recovery belongs to the latex body. */ }
+        @Override protected void dropAllDeathLoot(DamageSource source) { }
+        @Override protected void dropEquipment() { }
+        @Override protected void dropExperience() { }
+        @Override public boolean shouldBeSaved() { return false; }
+        @Override public boolean save(CompoundTag tag) { return false; }
+        @Override public boolean saveAsPassenger(CompoundTag tag) { return false; }
+
+        void retire() {
+            remove(RemovalReason.DISCARDED);
+        }
+
+        @Override
+        public void remove(RemovalReason reason) {
+            if (!isRemoved()) BodyWorkBuffer.release(body);
+            workInventory = null;
+            workOwner = null;
+            // Clear only TLM's unused private buffers, never the borrowed body's storage.
+            for (int slot = 0; slot < super.getMaidInv().getSlots(); slot++) super.getMaidInv().setStackInSlot(slot, ItemStack.EMPTY);
+            for (int slot = 0; slot < getMaidBauble().getSlots(); slot++) getMaidBauble().setStackInSlot(slot, ItemStack.EMPTY);
+            for (int slot = 0; slot < super.getHideInv().getSlots(); slot++) super.getHideInv().setStackInSlot(slot, ItemStack.EMPTY);
+            for (int slot = 0; slot < super.getTaskInv().getSlots(); slot++) super.getTaskInv().setStackInSlot(slot, ItemStack.EMPTY);
+            for (EquipmentSlot slot : EquipmentSlot.values()) super.setItemSlot(slot, ItemStack.EMPTY);
+            super.remove(reason);
+        }
 
         @Override
         public boolean canAttack(LivingEntity target) {

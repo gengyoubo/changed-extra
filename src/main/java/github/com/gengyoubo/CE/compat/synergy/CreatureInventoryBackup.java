@@ -148,7 +148,7 @@ public final class CreatureInventoryBackup {
         return state;
     }
 
-    private static Container nativeInventory(ChangedEntity creature) {
+    static Container nativeInventory(ChangedEntity creature) {
         Optional<Method> getter = NATIVE_INVENTORY.get(creature.getClass());
         if (getter.isEmpty()) return null;
         try {
