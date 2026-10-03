@@ -32,7 +32,10 @@ final class CampResidentWork {
     private BlockPos crop;
     private CreatureSettlementService.FishingSite fish;
     private CampKitchen.Plan plan;
-    private int actionTicks;
+    private int actionTicks, fetchIndex;
+    private BlockPos approachPos;
+    private Vec3 approachVec;
+    private long approachUntil;
     CampResidentWork(ChangedEntity mob) { this.mob = mob; }
     static void cancel(ChangedEntity mob) { cancel(mob, CreatureInventoryAccess.resolve(mob)); }
     static void cancel(ChangedEntity mob, Container inventory) {
@@ -42,10 +45,16 @@ final class CampResidentWork {
         CampWorkBuffer.restoreTool(mob, inventory); CampWorkBuffer.cancelKitchen(mob); CampWorkSites.release(mob.getUUID());
     }
     void reset() {
-        role = null; crop = null; fish = null; plan = null; destination = null; actionTicks = 0; walkingSince = 0; nextSearch = 0;
+        role = null; crop = null; fish = null; plan = null; destination = null; actionTicks = 0; fetchIndex = 0;
+        walkingSince = 0; nextSearch = 0; approachPos = null; approachVec = null;
     }
     void tick(ServerLevel level, Settlement camp, Resident resident) {
-        if (role != resident.role) { cancel(mob); role = resident.role; }
+        if (role != resident.role) {
+            if (role != null) cancel(mob);
+            role = resident.role;
+            if (role != CampRole.COOK) CampWorkBuffer.cancelKitchen(mob);
+            if (role != CampRole.FISHER) CampWorkBuffer.restoreTool(mob, CreatureInventoryAccess.resolve(mob));
+        }
         if (CampWorkBuffer.hasCargo(mob)) { deliver(level, camp, resident); return; }
         if (role == CampRole.NONE || role == CampRole.GUARD) return;
         switch (role) {
@@ -60,10 +69,19 @@ final class CampResidentWork {
         nextSearch = level.getGameTime() + 80 + Math.floorMod(mob.getId(), 20); return true;
     }
     private void status(Resident resident, WorkState state, BlockPos target) { resident.workState = state; resident.workTarget = target; }
+    private Vec3 approach(ServerLevel level, BlockPos pos) {
+        if (!pos.equals(approachPos) || level.getGameTime() >= approachUntil || approachVec != null
+                && !level.noCollision(mob, mob.getBoundingBox().move(approachVec.subtract(mob.position())))) {
+            approachPos = pos; approachUntil = level.getGameTime() + 60; approachVec = CampWorkSites.approach(mob, pos);
+        }
+        return approachVec;
+    }
     private boolean walk(ServerLevel level, Vec3 target, Resident resident, WorkState moving) {
-        if (target == null) return false;
+        if (target == null) {
+            cancel(mob); status(resident, WorkState.SEARCHING, null); nextSearch = level.getGameTime() + 100; return false;
+        }
         if (!target.equals(destination)) { destination = target; walkingSince = level.getGameTime(); }
-        if (level.getGameTime() - walkingSince > 600 || !level.hasChunkAt(BlockPos.containing(target))) {
+        if (mob.distanceToSqr(target) > 2.25 && level.getGameTime() - walkingSince > 600 || !level.hasChunkAt(BlockPos.containing(target))) {
             cancel(mob); status(resident, WorkState.SEARCHING, null); nextSearch = level.getGameTime() + 100; return false;
         }
         if (mob.distanceToSqr(target) > 2.25) {
@@ -71,7 +89,7 @@ final class CampResidentWork {
             if (mob.tickCount % 20 == 0 || mob.getNavigation().isDone()) mob.getNavigation().moveTo(target.x, target.y, target.z, 1);
             return false;
         }
-        mob.getNavigation().stop(); return true;
+        walkingSince = level.getGameTime(); mob.getNavigation().stop(); return true;
     }
     private void deliver(ServerLevel level, Settlement camp, Resident resident) {
         BlockPos storage = camp.storages.stream().filter(pos -> CampWarehouse.inventory(level, pos) != null)
@@ -80,7 +98,7 @@ final class CampResidentWork {
             camp.pending.addAll(CampWorkBuffer.takeCargo(mob)); status(resident, WorkState.WAITING_STORAGE, null);
             LatexSettlementData.get(level.getServer()).setDirty(); return;
         }
-        Vec3 approach = CampWorkSites.approach(mob, storage);
+        Vec3 approach = approach(level, storage);
         if (approach == null) { status(resident, WorkState.WAITING_STORAGE, storage); return; }
         if (!walk(level, approach, resident, WorkState.DELIVERING)) return;
         camp.pending.addAll(CampWorkBuffer.takeCargo(mob)); CampWarehouse.deposit(level, camp);
@@ -95,16 +113,14 @@ final class CampResidentWork {
         if (fish == null) {
             if (!searchReady(level)) return;
             status(resident, WorkState.SEARCHING, null);
-            fish = CreatureSettlementService.findCompanionFishingSite(mob, 32, 6)
-                    .filter(site -> CampWorkSites.inside(camp, site.water()) && CampWorkSites.inside(camp, site.stand())
-                            && level.hasChunkAt(site.water()) && level.getBlockState(site.water()).is(Blocks.WATER)
-                            && CampWorkSites.available(level, site.water(), mob.getUUID())).orElse(null);
+            fish = CampWorkSites.fishing(mob, camp);
             if (fish == null || !CampWorkSites.claim(level, fish.water(), mob.getUUID())) {
                 fish = null; CampWorkBuffer.restoreTool(mob, inventory); status(resident, WorkState.WAITING_WATER, null); return;
             }
             actionTicks = 0;
         }
-        if (!level.hasChunkAt(fish.water()) || !level.getBlockState(fish.water()).is(Blocks.WATER)) { cancel(mob); return; }
+        if (!level.hasChunkAt(fish.water()) || !level.getBlockState(fish.water()).is(Blocks.WATER)
+                || !level.getFluidState(fish.water().above()).isEmpty()) { cancel(mob); return; }
         CampWorkSites.claim(level, fish.water(), mob.getUUID());
         if (!walk(level, CreatureSettlementService.fishingApproach(mob, fish), resident, WorkState.WALKING)) return;
         mob.getLookControl().setLookAt(Vec3.atCenterOf(fish.water())); status(resident, WorkState.FISHING, fish.water());
@@ -138,7 +154,7 @@ final class CampResidentWork {
             if (crop == null) { status(resident, WorkState.WAITING_FIELD, null); return; }
         }
         if (!legalCrop(level, crop)) { cancel(mob); return; }
-        CampWorkSites.claim(level, crop, mob.getUUID()); Vec3 approach = CampWorkSites.approach(mob, crop);
+        CampWorkSites.claim(level, crop, mob.getUUID()); Vec3 approach = approach(level, crop);
         if (!walk(level, approach, resident, WorkState.WALKING)) return;
         status(resident, WorkState.HARVESTING, crop); mob.getLookControl().setLookAt(Vec3.atCenterOf(crop));
         if (actionTicks++ % 10 == 0) mob.swing(InteractionHand.MAIN_HAND);
@@ -153,7 +169,11 @@ final class CampResidentWork {
         if (!reserved) for (CampKitchen.Source source : CampKitchen.sources(level, camp)) {
             if (!ItemStack.isSameItemSameTags(seed, source.prototype())) continue;
             var handler = CampWarehouse.inventory(level, source.pos()); if (handler == null) continue;
-            warehouseSeed = handler.extractItem(source.slot(), 1, false); if (!warehouseSeed.isEmpty()) break;
+            warehouseSeed = handler.extractItem(source.slot(), 1, false);
+            if (!warehouseSeed.isEmpty() && (!ItemStack.isSameItemSameTags(warehouseSeed, seed) || warehouseSeed.getCount() != 1)) {
+                CampWorkBuffer.addCargo(mob, List.of(warehouseSeed)); cancel(mob); return;
+            }
+            if (!warehouseSeed.isEmpty()) break;
         }
         if (seed.isEmpty() || !reserved && warehouseSeed.isEmpty()) {
             cancel(mob); status(resident, WorkState.WAITING_SEEDS, crop); return;
@@ -175,20 +195,25 @@ final class CampResidentWork {
         if (batch.isEmpty()) {
             if (plan == null) {
                 if (!searchReady(level)) return;
-                status(resident, WorkState.SEARCHING, null); plan = CampKitchen.find(level, camp, mob);
-                if (plan == null) { status(resident, CampWorkSites.kitchens(level, camp).isEmpty() ? WorkState.WAITING_STATION : WorkState.WAITING_MATERIALS, null); return; }
+                status(resident, WorkState.SEARCHING, null);
+                var search = CampKitchen.find(level, camp, mob); plan = search.plan(); fetchIndex = 0;
+                if (plan == null) { status(resident, search.waiting(), null); return; }
                 if (!CampWorkSites.claim(level, plan.station(), mob.getUUID())) { plan = null; return; }
             }
             if (!level.hasChunkAt(plan.station()) || !CampWorkSites.claim(level, plan.station(), mob.getUUID())) { cancel(mob); return; }
-            Vec3 source = CampWorkSites.approach(mob, plan.choices().get(0).source().pos());
+            List<BlockPos> sources = new ArrayList<>();
+            plan.choices().forEach(choice -> { if (!sources.contains(choice.source().pos())) sources.add(choice.source().pos()); });
+            if (plan.fuel() != null && !sources.contains(plan.fuel().source().pos())) sources.add(plan.fuel().source().pos());
+            Vec3 source = approach(level, sources.get(fetchIndex));
             if (!walk(level, source, resident, WorkState.FETCHING)) return;
+            if (++fetchIndex < sources.size()) { destination = null; return; }
             batch = CampKitchen.withdraw(level, camp, mob, plan); plan = null; destination = null;
             if (batch == null) { cancel(mob); status(resident, WorkState.WAITING_MATERIALS, null); return; }
         }
         BlockPos station = BlockPos.of(batch.getLong("Station"));
         if (!batch.getString("Dimension").equals(level.dimension().location().toString()) || !CampWorkSites.inside(camp, station)
                 || !level.hasChunkAt(station) || !CampWorkSites.claim(level, station, mob.getUUID())) { cancel(mob); return; }
-        Vec3 approach = CampWorkSites.approach(mob, station);
+        Vec3 approach = approach(level, station);
         if (!walk(level, approach, resident, WorkState.WALKING)) return;
         status(resident, WorkState.COOKING, station); mob.getLookControl().setLookAt(Vec3.atCenterOf(station));
         ResourceLocation id = ResourceLocation.tryParse(batch.getString("Recipe"));
@@ -202,7 +227,9 @@ final class CampResidentWork {
         if (ticks < batch.getInt("Duration")) return;
         ItemStack result = crafting.assemble(grid, level.registryAccess());
         // stock includes this paid batch's reservation; remove it for the final capacity check.
-        if (CampKitchen.score(result, mob) < 0 || CampKitchen.stock(level, camp, result) > CampKitchen.FOOD_LIMIT) { cancel(mob); return; }
+        int reserved = batch.getString("ResultItem").equals(net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(result.getItem()).toString())
+                ? batch.getInt("ResultCount") : 0;
+        if (CampKitchen.score(result, mob) < 0 || CampKitchen.stock(level, camp, result) - reserved + result.getCount() > CampKitchen.FOOD_LIMIT) { cancel(mob); return; }
         List<ItemStack> products = new ArrayList<>(crafting.getRemainingItems(grid)); products.add(result);
         CampWorkBuffer.clearKitchen(mob); CampWorkBuffer.addCargo(mob, products); camp.prosperity++;
         cancel(mob); status(resident, WorkState.DELIVERING, null); LatexSettlementData.get(level.getServer()).setDirty();

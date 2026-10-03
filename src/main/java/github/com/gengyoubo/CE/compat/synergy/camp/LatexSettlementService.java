@@ -26,6 +26,7 @@ import java.util.*;
 import static github.com.gengyoubo.CE.compat.synergy.camp.LatexSettlementData.*;
 
 public final class LatexSettlementService {
+    @SubscribeEvent public static void stopped(net.minecraftforge.event.server.ServerStoppedEvent event) { CampWorkSites.clear(); }
     static final String MEMBER = "changede_camp_resident", VISITOR = "changede_camp_visitor", RAIDER = "changede_camp_raider";
     static final String FROZEN = "changede_camp_expedition_flags";
     private LatexSettlementService() {}
@@ -186,7 +187,13 @@ public final class LatexSettlementService {
             ensureGoal(mob);
             Resident resident = camp.residents.get(mob.getUUID());
             cancelLegacy(level, camp, resident); thaw(mob);
-        } else { mob.getPersistentData().remove(MEMBER); thaw(mob); }
+            if (!resident.workEnabled || resident.role == CampRole.NONE || resident.role == CampRole.GUARD) cancelWork(mob, camp);
+        } else {
+            mob.getPersistentData().remove(MEMBER); thaw(mob);
+            CampResidentWork.cancel(mob);
+            for (ItemStack stack : CampWorkBuffer.takeCargo(mob))
+                if (mob.spawnAtLocation(stack) == null) CampWorkBuffer.addCargo(mob, List.of(stack));
+        }
         for (String key : List.of(VISITOR, RAIDER)) if (mob.getPersistentData().hasUUID(key)) {
             Settlement owner = data.settlements.get(mob.getPersistentData().getUUID(key));
             boolean valid = owner != null && owner.active && (key.equals(VISITOR)
@@ -213,7 +220,9 @@ public final class LatexSettlementService {
             if (owner.visitor != null && owner.visitor.id.equals(mob.getUUID())) owner.visitor = null;
         }
         CampResidentWork.cancel(mob, null);
-        for (ItemStack stack : CampWorkBuffer.takeCargo(mob)) mob.spawnAtLocation(stack);
+        for (ItemStack stack : CampWorkBuffer.takeCargo(mob)) {
+            if (mob.spawnAtLocation(stack) == null && camp != null) camp.pending.add(stack);
+        }
         mob.getPersistentData().remove(MEMBER); data.setDirty();
     }
     @SubscribeEvent(priority = EventPriority.HIGHEST) public static void interact(PlayerInteractEvent.EntityInteract event) {
@@ -441,6 +450,10 @@ public final class LatexSettlementService {
             thaw(replacement);
         }
         CampWorkBuffer.transfer(previous, replacement);
+        for (var goal : previous.goalSelector.getAvailableGoals()) if (goal.getGoal() instanceof LatexCampGoal oldGoal) oldGoal.resetWork();
+        FishingVisualEffects.cancel(level, previous); FishingVisualEffects.setRodCastModel(previous, false);
+        CampWorkSites.release(previous.getUUID());
+        for (String key : List.of(MEMBER, VISITOR, RAIDER, FROZEN)) previous.getPersistentData().remove(key);
         data.setDirty();
     }
     public static boolean isAreaClaimed(ServerLevel level, BlockPos pos, double radius) {

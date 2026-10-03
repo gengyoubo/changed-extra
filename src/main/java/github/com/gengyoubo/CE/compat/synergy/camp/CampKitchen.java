@@ -24,6 +24,7 @@ public final class CampKitchen {
     record Choice(int gridSlot, Source source, int count) {}
     record Plan(ResourceLocation recipe, StationKind kind, BlockPos station, List<Choice> choices,
                 Choice fuel, ItemStack result, int duration) {}
+    record Search(Plan plan, LatexSettlementData.WorkState waiting) {}
     private record Ranked(Recipe<?> recipe, float score) {}
     private CampKitchen() {}
     static float score(ItemStack food, ChangedEntity mob) {
@@ -58,19 +59,25 @@ public final class CampKitchen {
         }
         return result;
     }
-    static Plan find(ServerLevel level, LatexSettlementData.Settlement camp, ChangedEntity mob) {
-        List<Source> sources = sources(level, camp); if (sources.isEmpty()) return null;
+    static Search find(ServerLevel level, LatexSettlementData.Settlement camp, ChangedEntity mob) {
+        if (CampWarehouse.inventories(level, camp).isEmpty()) return new Search(null, LatexSettlementData.WorkState.WAITING_STORAGE);
+        Set<BlockPos> reachable = new HashSet<>();
+        for (BlockPos pos : camp.storages) if (level.hasChunkAt(pos) && CampWorkSites.approach(mob, pos) != null)
+            reachable.add(CampWarehouse.canonical(level, pos));
+        List<Source> sources = sources(level, camp).stream().filter(source -> reachable.contains(source.pos)).toList();
+        if (sources.isEmpty()) return new Search(null, LatexSettlementData.WorkState.WAITING_MATERIALS);
         List<BlockPos> stations = CampWorkSites.kitchens(level, camp).stream()
                 .filter(pos -> level.hasChunkAt(pos) && CampWorkSites.available(level, pos, mob.getUUID()))
                 .sorted(Comparator.comparingDouble(pos -> pos.distSqr(mob.blockPosition()))).toList();
-        if (stations.isEmpty()) return null;
+        if (stations.isEmpty()) return new Search(null, LatexSettlementData.WorkState.WAITING_STATION);
         List<Ranked> recipes = new ArrayList<>();
         for (Recipe<?> recipe : level.getRecipeManager().getRecipes()) {
             if (!(recipe instanceof CraftingRecipe) && recipe.getType() != RecipeType.SMELTING && recipe.getType() != RecipeType.SMOKING) continue;
             ItemStack result = recipe.getResultItem(level.registryAccess()); float score = score(result, mob);
-            if (score >= 0 && !recipe.getIngredients().isEmpty() && stock(level, camp, result) + result.getCount() <= FOOD_LIMIT) recipes.add(new Ranked(recipe, score));
+            if (score >= 0 && !recipe.getIngredients().isEmpty()) recipes.add(new Ranked(recipe, score));
         }
         recipes.sort(Comparator.comparingDouble(Ranked::score).reversed().thenComparing(entry -> entry.recipe.getId().toString()));
+        Plan best = null; float bestScore = -1; boolean enoughFood = false;
         for (Ranked ranked : recipes) {
             Recipe<?> recipe = ranked.recipe;
             List<Choice> choices = allocate(recipe, sources); if (choices == null) continue;
@@ -84,28 +91,36 @@ public final class CampKitchen {
                 if (!cooking.matches(input, level)) continue;
                 assembled = cooking.assemble(input, level.registryAccess());
             }
-            if (score(assembled, mob) < 0 || stock(level, camp, assembled) + assembled.getCount() > FOOD_LIMIT) continue;
-            for (BlockPos pos : stations) {
-                var state = level.getBlockState(pos);
-                if (CampWorkSites.approach(mob, pos) == null) continue;
-                if (recipe instanceof CraftingRecipe && state.is(CampWorkSites.CRAFTING))
-                    return new Plan(recipe.getId(), StationKind.CRAFTING, pos, choices, null, assembled, 60);
-                boolean smoker = recipe.getType() == RecipeType.SMOKING;
-                if (!(recipe instanceof AbstractCookingRecipe cooking) || !(state.is(smoker ? Blocks.SMOKER : Blocks.FURNACE))
-                        || !(level.getBlockEntity(pos) instanceof AbstractFurnaceBlockEntity furnace)
-                        || !furnace.getItem(0).isEmpty() || !furnace.getItem(2).isEmpty()) continue;
-                ItemStack storedFuel = furnace.getItem(1);
-                int required = cooking.getCookingTime();
-                if (ForgeHooks.getBurnTime(storedFuel, cooking.getType()) * storedFuel.getCount() >= required)
-                    return new Plan(recipe.getId(), StationKind.SMELTING, pos, choices, null, assembled, required);
-                if (!storedFuel.isEmpty()) continue;
-                for (Source fuel : sources) {
-                    int burn = ForgeHooks.getBurnTime(fuel.prototype, cooking.getType()); if (burn <= 0) continue;
-                    int needed = Math.max(1, (required + burn - 1) / burn);
-                    int used = choices.stream().filter(choice -> choice.source == fuel).mapToInt(Choice::count).sum();
-                    if (fuel.available - used >= needed) return new Plan(recipe.getId(), StationKind.SMELTING, pos, choices,
-                            new Choice(-1, fuel, needed), assembled, required);
-                }
+            float actualScore = score(assembled, mob);
+            if (actualScore < 0 || actualScore <= bestScore) continue;
+            Plan candidate = atStation(level, mob, recipe, assembled, choices, sources, stations);
+            if (candidate != null && stock(level, camp, assembled) + assembled.getCount() > FOOD_LIMIT) { enoughFood = true; continue; }
+            if (candidate != null) { best = candidate; bestScore = actualScore; }
+        }
+        return new Search(best, enoughFood ? LatexSettlementData.WorkState.WAITING_STOCK : LatexSettlementData.WorkState.WAITING_MATERIALS);
+    }
+    private static Plan atStation(ServerLevel level, ChangedEntity mob, Recipe<?> recipe, ItemStack assembled,
+                                  List<Choice> choices, List<Source> sources, List<BlockPos> stations) {
+        for (BlockPos pos : stations) {
+            var state = level.getBlockState(pos);
+            if (CampWorkSites.approach(mob, pos) == null) continue;
+            if (recipe instanceof CraftingRecipe && state.is(CampWorkSites.CRAFTING))
+                return new Plan(recipe.getId(), StationKind.CRAFTING, pos, choices, null, assembled, 60);
+            boolean smoker = recipe.getType() == RecipeType.SMOKING;
+            if (!(recipe instanceof AbstractCookingRecipe cooking) || !state.is(smoker ? Blocks.SMOKER : Blocks.FURNACE)
+                    || !(level.getBlockEntity(pos) instanceof AbstractFurnaceBlockEntity furnace)
+                    || !furnace.getItem(0).isEmpty() || !furnace.getItem(2).isEmpty()) continue;
+            ItemStack storedFuel = furnace.getItem(1);
+            int required = cooking.getCookingTime();
+            if (ForgeHooks.getBurnTime(storedFuel, cooking.getType()) * storedFuel.getCount() >= required)
+                return new Plan(recipe.getId(), StationKind.SMELTING, pos, choices, null, assembled, required);
+            if (!storedFuel.isEmpty()) continue;
+            for (Source fuel : sources) {
+                int burn = ForgeHooks.getBurnTime(fuel.prototype, cooking.getType()); if (burn <= 0) continue;
+                int needed = Math.max(1, (required + burn - 1) / burn);
+                int used = choices.stream().filter(choice -> choice.source == fuel).mapToInt(Choice::count).sum();
+                if (fuel.available - used >= needed) return new Plan(recipe.getId(), StationKind.SMELTING, pos, choices,
+                        new Choice(-1, fuel, needed), assembled, required);
             }
         }
         return null;

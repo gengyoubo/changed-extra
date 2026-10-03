@@ -78,12 +78,6 @@ final class CampWarehouse {
             else camp.pending.set(index, stack);
         }
     }
-    static ItemStack takeFood(ServerLevel level, LatexSettlementData.Settlement camp) {
-        for (IItemHandler handler : inventories(level, camp)) for (int slot = 0; slot < handler.getSlots(); slot++) {
-            if (handler.getStackInSlot(slot).isEdible()) return handler.extractItem(slot, 1, false);
-        }
-        return ItemStack.EMPTY;
-    }
     static ListTag summary(ServerLevel level, LatexSettlementData.Settlement camp) {
         Map<String, CompoundTag> counts = new LinkedHashMap<>();
         for (IItemHandler handler : inventories(level, camp)) for (int slot = 0; slot < handler.getSlots(); slot++) {

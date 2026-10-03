@@ -26,7 +26,8 @@ final class CampCombat {
             if (owner != null && PlayerOutpostService.authorized(other, owner)) return false;
             hostile |= LatexCreatureCombatRules.areRivals(mob, other);
         }
-        if (target instanceof Mob enemy && enemy.getTarget() instanceof LivingEntity victim) {
+        if (target instanceof Mob enemy && enemy.getTarget() != null) {
+            LivingEntity victim = enemy.getTarget();
             boolean attackingCamp = camp.residents.containsKey(victim.getUUID()) || victim.getUUID().equals(camp.owner);
             if (enemy instanceof ChangedEntity changed && victim instanceof ServerPlayer player)
                 attackingCamp &= NpcDispositionEvents.hasHostileDisposition(changed, player);

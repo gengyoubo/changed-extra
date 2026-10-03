@@ -16,10 +16,13 @@ final class CampWorkBuffer {
     private CampWorkBuffer() {}
     private static CompoundTag root(ChangedEntity mob) {
         if (!mob.getPersistentData().contains(ROOT, Tag.TAG_COMPOUND)) mob.getPersistentData().put(ROOT, new CompoundTag());
-        return mob.getPersistentData().getCompound(ROOT);
+        CompoundTag root = mob.getPersistentData().getCompound(ROOT);
+        if (!root.hasUUID("OwnerToken")) root.putUUID("OwnerToken", UUID.randomUUID());
+        return root;
     }
     static boolean hasCargo(ChangedEntity mob) { return !mob.getPersistentData().getCompound(ROOT).getList("Cargo", Tag.TAG_COMPOUND).isEmpty(); }
     static List<ItemStack> takeCargo(ChangedEntity mob) {
+        if (!hasCargo(mob)) return new ArrayList<>();
         ListTag saved = root(mob).getList("Cargo", Tag.TAG_COMPOUND);
         root(mob).remove("Cargo"); // Relinquish the serialized owner before handing out real items.
         List<ItemStack> items = new ArrayList<>();
@@ -55,6 +58,7 @@ final class CampWorkBuffer {
     static void clearKitchen(ChangedEntity mob) { root(mob).remove("Kitchen"); }
     static void cancelKitchen(ChangedEntity mob) {
         CompoundTag state = kitchen(mob);
+        if (state.isEmpty()) return;
         clearKitchen(mob);
         List<ItemStack> items = new ArrayList<>(ingredients(state));
         ItemStack fuel = ItemStack.of(state.getCompound("Fuel")); if (!fuel.isEmpty()) items.add(fuel);
@@ -76,7 +80,7 @@ final class CampWorkBuffer {
         return null;
     }
     static void restoreTool(ChangedEntity mob, Container inventory) {
-        CompoundTag lease = root(mob).getCompound("Lease");
+        CompoundTag lease = mob.getPersistentData().getCompound(ROOT).getCompound("Lease");
         if (lease.isEmpty()) return;
         root(mob).remove("Lease");
         ItemStack original = ItemStack.of(lease.getCompound("Original"));
@@ -105,7 +109,12 @@ final class CampWorkBuffer {
         if (mob.spawnAtLocation(stack) == null) addCargo(mob, List.of(stack));
     }
     static void transfer(ChangedEntity previous, ChangedEntity replacement) {
-        if (previous == replacement) return;
+        if (previous == replacement || !previous.getPersistentData().contains(ROOT, Tag.TAG_COMPOUND)) return;
+        CompoundTag source = previous.getPersistentData().getCompound(ROOT);
+        CompoundTag destination = replacement.getPersistentData().getCompound(ROOT);
+        boolean cloned = source.hasUUID("OwnerToken") && destination.hasUUID("OwnerToken")
+                && source.getUUID("OwnerToken").equals(destination.getUUID("OwnerToken"));
+        if (cloned || !source.hasUUID("OwnerToken") && source.equals(destination)) replacement.getPersistentData().remove(ROOT);
         cancelKitchen(previous);
         List<ItemStack> incoming = takeCargo(previous);
         CompoundTag lease = root(previous).getCompound("Lease");

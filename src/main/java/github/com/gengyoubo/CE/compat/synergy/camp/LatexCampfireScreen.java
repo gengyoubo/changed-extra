@@ -14,8 +14,8 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import java.util.UUID;
 
 public final class LatexCampfireScreen extends AbstractContainerScreen<LatexCampfireMenu> {
-    private static final String[] TABS = {"overview", "residents", "tasks", "defense", "visitors", "warehouse"};
-    private int tab, page, selectedTask;
+    private static final String[] TABS = {"overview", "residents", "jobs", "defense", "visitors", "warehouse"};
+    private int tab, page, selectedRole;
     private boolean nearby;
     private UUID selected;
     private float uiScale = 1;
@@ -72,10 +72,10 @@ public final class LatexCampfireScreen extends AbstractContainerScreen<LatexCamp
                     if (nearby) send("invite", id, 0); else { selected = id; refresh(); }
                 }, owner() && (!nearby || residents().size() < 16));
             }
-            CompoundTag r = selectedResident(); boolean ready = owner() && !r.isEmpty() && !r.contains("Task");
+            CompoundTag r = selectedResident(); boolean ready = owner() && !r.isEmpty();
             button(8, 217, 106, tr("cycle_role"), () -> {
-                int role = LatexSettlementData.enumValue(LatexSettlementData.Role.class, r.getString("Role"), LatexSettlementData.Role.RESIDENT).ordinal();
-                send("role", selected, (role + 1) % 3);
+                int role = LatexSettlementData.enumValue(LatexSettlementData.CampRole.class, r.getString("Role"), LatexSettlementData.CampRole.NONE).ordinal();
+                send("role", selected, (role + 1) % LatexSettlementData.CampRole.values().length);
             }, ready);
             button(118, 217, 88, tr("release"), () -> send("release", selected, 0), ready);
             paging(list.size(), 6);
@@ -87,21 +87,20 @@ public final class LatexCampfireScreen extends AbstractContainerScreen<LatexCamp
                 CompoundTag r = residents().getCompound(index); UUID id = r.getUUID("Id");
                 button(326, 92 + row * 22, 64, tr("select"), () -> { selected = id; refresh(); }, owner());
             }
-            CompoundTag r = selectedResident(); boolean ready = owner() && !r.isEmpty() && !r.contains("Task");
+            CompoundTag r = selectedResident(); boolean ready = owner() && !r.isEmpty();
             if (tab == 2) {
-                LatexSettlementData.Task task = LatexSettlementData.Task.values()[selectedTask];
-                button(8, 213, 130, tr("task." + task.name().toLowerCase(java.util.Locale.ROOT)), () -> {
-                    selectedTask = (selectedTask + 1) % LatexSettlementData.Task.values().length; refresh();
-                }, owner()).setTooltip(Tooltip.create(tr("task_info", task.duration / 1200, (int) (task.risk * 100), tr("reward." + task.name().toLowerCase(java.util.Locale.ROOT)))));
-                button(142, 213, 80, tr("dispatch"), () -> send("dispatch", selected, selectedTask), ready && r.getBoolean("Loaded")
-                        && r.getBoolean("InCamp") && r.getFloat("Health") >= r.getFloat("MaxHealth") / 2
-                        && !view().getString("Raid").equals("ACTIVE") && !view().getString("Raid").equals("PREPARING"));
-                button(226, 213, 80, tr("recall"), () -> send("recall", selected, 0), owner() && r.contains("Task"));
+                var role = LatexSettlementData.CampRole.values()[selectedRole + 1];
+                button(8, 213, 104, tr("role." + role.name().toLowerCase(java.util.Locale.ROOT)), () -> {
+                    selectedRole = (selectedRole + 1) % 4; refresh();
+                }, owner()).setTooltip(Tooltip.create(tr("job_info." + role.name().toLowerCase(java.util.Locale.ROOT))));
+                button(116, 213, 84, tr("assign_job"), () -> send("role", selected, role.ordinal()), ready);
+                button(204, 213, 88, tr(r.getBoolean("WorkEnabled") ? "pause_work" : "resume_work"),
+                        () -> send(r.getBoolean("WorkEnabled") ? "pause" : "resume", selected, 0), ready);
             } else {
-                button(8, 213, 110, tr("assign_guard"), () -> send("role", selected, 1), ready);
-                button(122, 213, 110, tr("assign_resident"), () -> send("role", selected, 0), ready);
-                button(236, 213, 110, tr("assign_supply"), () -> send("role", selected, 2), ready)
-                        .setTooltip(Tooltip.create(tr("supply_info")));
+                button(8, 213, 110, tr("assign_guard"), () -> send("role", selected, LatexSettlementData.CampRole.GUARD.ordinal()), ready);
+                button(122, 213, 110, tr("assign_resident"), () -> send("role", selected, LatexSettlementData.CampRole.NONE.ordinal()), ready);
+                button(236, 213, 110, tr("pause_work"), () -> send("pause", selected, 0), ready && r.getBoolean("WorkEnabled"))
+                        .setTooltip(Tooltip.create(tr("guard_info")));
             }
             paging(residents().size(), 5);
         } else if (tab == 4 && view().contains("Visitor")) {
@@ -147,10 +146,11 @@ public final class LatexCampfireScreen extends AbstractContainerScreen<LatexCamp
     }
     private void line(GuiGraphics graphics, int x, int y, Component text) { graphics.drawString(font, text, x, y, 0x252D2F, false); }
     private Component status(CompoundTag r) {
-        if (r.contains("Task")) return r.getBoolean("Returning") ? tr("returning") : tr("expedition", tr("task." + r.getString("Task").toLowerCase(java.util.Locale.ROOT)), r.getLong("Remaining") / 20);
         if (r.getBoolean("OtherDimension")) return tr("other_dimension");
         if (!r.getBoolean("Loaded")) return tr("unloaded");
-        return tr(r.getBoolean("InCamp") ? "in_camp" : "outside");
+        if (!r.getBoolean("WorkEnabled")) return tr("work.paused");
+        if (!r.getBoolean("InCamp")) return tr("outside");
+        return tr("work." + r.getString("WorkState").toLowerCase(java.util.Locale.ROOT));
     }
     private String name(CompoundTag entry) {
         if (!entry.getString("DisplayName").isEmpty()) {
@@ -193,9 +193,9 @@ public final class LatexCampfireScreen extends AbstractContainerScreen<LatexCamp
             }
         } else if (tab == 2 || tab == 3) {
             if (tab == 2) {
-                var task = LatexSettlementData.Task.values()[selectedTask];
-                line(graphics, 12, 59, tr("task_info", task.duration / 1200, (int) (task.risk * 100), tr("reward." + task.name().toLowerCase(java.util.Locale.ROOT))));
-                line(graphics, 12, 77, tr("task_help"));
+                var role = LatexSettlementData.CampRole.values()[selectedRole + 1];
+                line(graphics, 12, 59, tr("job_info." + role.name().toLowerCase(java.util.Locale.ROOT)));
+                line(graphics, 12, 77, tr("job_help"));
             } else {
                 line(graphics, 12, 59, tr("security", (int) view().getFloat("Threat"), tr("raid." + view().getString("Raid").toLowerCase(java.util.Locale.ROOT))));
                 line(graphics, 12, 77, tr("defense_info", view().getLong("RaidRemaining") / 20, view().getInt("Wave"), view().getInt("Raiders")));
