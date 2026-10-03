@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/campfire",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "changede:block/white_latex_log_side",
+    "log": "changede:block/white_latex_log_side"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=north,lit=true": {
+      "model": "changede:block/latex_campfire",
+      "y": 0
+    },
+    "facing=north,lit=false": {
+      "model": "changede:block/latex_campfire_off",
+      "y": 0
+    },
+    "facing=east,lit=true": {
+      "model": "changede:block/latex_campfire",
+      "y": 90
+    },
+    "facing=east,lit=false": {
+      "model": "changede:block/latex_campfire_off",
+      "y": 90
+    },
+    "facing=south,lit=true": {
+      "model": "changede:block/latex_campfire",
+      "y": 180
+    },
+    "facing=south,lit=false": {
+      "model": "changede:block/latex_campfire_off",
+      "y": 180
+    },
+    "facing=west,lit=true": {
+      "model": "changede:block/latex_campfire",
+      "y": 270
+    },
+    "facing=west,lit=false": {
+      "model": "changede:block/latex_campfire_off",
+      "y": 270
+    }
+  }
+}

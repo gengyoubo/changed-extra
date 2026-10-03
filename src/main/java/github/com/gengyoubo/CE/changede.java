@@ -102,6 +102,7 @@ public class changede {
         CEChangedSounds.REGISTRY.register(bus);
         CEMenus.REGISTRY.register(bus);
         if (CHANGED_SYNERGY) {
+            github.com.gengyoubo.CE.compat.synergy.camp.LatexCampfireCompat.initialize(bus);
             github.com.gengyoubo.CE.compat.synergy.CreatureInventoryBackup.initialize();
             try {
                 Class<?> morphCompat = Class.forName("github.com.gengyoubo.CE.compat.synergy.ChangedSynergyMorphCompat");
@@ -124,6 +125,7 @@ public class changede {
                 LOGGER.error("Failed to initialize Touhou Little Maid work compatibility", exception);
             }
         }
+        if (!CHANGED_SYNERGY) github.com.gengyoubo.CE.compat.synergy.camp.CampDependencyRecovery.initialize();
         CELPRecipes.RECIPE_SERIALIZERS.register(bus);
         CELPRecipes.RECIPE_TYPES.register(bus);
         PatreonBenefitsFix.REGISTRY.register(bus);

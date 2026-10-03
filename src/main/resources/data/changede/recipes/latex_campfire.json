@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "changed_synergy"
+    }
+  ],
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "GCG",
+    "LLL"
+  ],
+  "key": {
+    "G": {
+      "item": "changede:latex_ingot"
+    },
+    "C": {
+      "item": "minecraft:campfire"
+    },
+    "L": {
+      "tag": "changede:latex_planks"
+    }
+  },
+  "result": {
+    "item": "changede:latex_campfire"
+  }
+}

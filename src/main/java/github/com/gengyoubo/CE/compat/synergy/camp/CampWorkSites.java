@@ -1,0 +1,61 @@
+package github.com.gengyoubo.CE.compat.synergy.camp;
+
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.*;
+
+final class CampWorkSites {
+    static final TagKey<Block> FARMLAND = TagKey.create(Registries.BLOCK, ResourceLocation.parse("changede:camp_farmland"));
+    static final TagKey<Block> CRAFTING = TagKey.create(Registries.BLOCK, ResourceLocation.parse("changede:camp_crafting_workstations"));
+    private record Key(String dimension, BlockPos pos) {}
+    private record Claim(UUID worker, long until) {}
+    private record Sites(ServerLevel level, long scanned, List<BlockPos> crops, List<BlockPos> kitchens) {}
+    private static final Map<UUID, Sites> CACHE = new HashMap<>();
+    private static final Map<Key, Claim> CLAIMS = new HashMap<>();
+    static void clear() { CACHE.clear(); CLAIMS.clear(); }
+    static boolean inside(LatexSettlementData.Settlement camp, BlockPos pos) { return camp.core.distSqr(pos) <= 32 * 32; }
+    static Sites sites(ServerLevel level, LatexSettlementData.Settlement camp) {
+        long time = level.getGameTime(); Sites cache = CACHE.get(camp.id);
+        if (cache != null && cache.level == level && time >= cache.scanned && time - cache.scanned < 300) return cache;
+        List<BlockPos> crops = new ArrayList<>(), kitchens = new ArrayList<>();
+        for (BlockPos pos : BlockPos.betweenClosed(camp.core.offset(-32, -6, -32), camp.core.offset(32, 6, 32))) {
+            if (!inside(camp, pos) || !level.hasChunkAt(pos)) continue;
+            var state = level.getBlockState(pos);
+            if (state.getBlock() instanceof CropBlock && level.getBlockState(pos.below()).is(FARMLAND)) crops.add(pos.immutable());
+            if (state.is(CRAFTING) || state.is(Blocks.FURNACE) || state.is(Blocks.SMOKER)) kitchens.add(pos.immutable());
+        }
+        cache = new Sites(level, time, crops, kitchens); CACHE.put(camp.id, cache); return cache;
+    }
+    static List<BlockPos> crops(ServerLevel level, LatexSettlementData.Settlement camp) { return sites(level, camp).crops; }
+    static List<BlockPos> kitchens(ServerLevel level, LatexSettlementData.Settlement camp) { return sites(level, camp).kitchens; }
+    static boolean claim(ServerLevel level, BlockPos pos, UUID worker) {
+        Key key = new Key(level.dimension().location().toString(), pos.immutable()); Claim old = CLAIMS.get(key);
+        if (old != null && old.until > level.getGameTime() && !old.worker.equals(worker)) return false;
+        CLAIMS.put(key, new Claim(worker, level.getGameTime() + 1200)); return true;
+    }
+    static boolean available(ServerLevel level, BlockPos pos, UUID worker) {
+        Claim claim = CLAIMS.get(new Key(level.dimension().location().toString(), pos));
+        return claim == null || claim.until <= level.getGameTime() || claim.worker.equals(worker);
+    }
+    static void release(UUID worker) { CLAIMS.values().removeIf(claim -> claim.worker.equals(worker)); }
+    static Vec3 approach(ChangedEntity mob, BlockPos target) {
+        ServerLevel level = (ServerLevel) mob.level();
+        for (var direction : net.minecraft.core.Direction.Plane.HORIZONTAL) for (int y : new int[]{0, -1, 1}) {
+            BlockPos stand = target.relative(direction).offset(0, y, 0);
+            if (!level.hasChunkAt(stand) || !level.getBlockState(stand).getCollisionShape(level, stand).isEmpty()
+                    || level.getBlockState(stand.below()).getCollisionShape(level, stand.below()).isEmpty()) continue;
+            Vec3 dest = Vec3.atBottomCenterOf(stand);
+            if (!level.noCollision(mob, mob.getBoundingBox().move(dest.subtract(mob.position())))) continue;
+            var path = mob.getNavigation().createPath(stand, 0);
+            if (path != null && path.canReach()) return dest;
+        }
+        return null;
+    }
+}

@@ -87,6 +87,11 @@ public final class MaidWorkMenu extends AbstractContainerMenu {
             selectedTask.set(-1);
             return true;
         }
+        if (creature.getPersistentData().hasUUID("changede_camp_resident")
+                && !github.com.gengyoubo.CE.compat.synergy.camp.LatexSettlementService.prepareMaidWork(creature, serverPlayer)) {
+            serverPlayer.displayClientMessage(net.minecraft.network.chat.Component.translatable("camp.changede.release_before_work"), true);
+            return false;
+        }
         ResourceLocation taskId = available.get(buttonId).getUid();
         creature.getPersistentData().putString(LatexMaidCompat.taskTag(), taskId.toString());
         creature.getPersistentData().putUUID(LatexMaidCompat.workOwnerTag(), serverPlayer.getUUID());
