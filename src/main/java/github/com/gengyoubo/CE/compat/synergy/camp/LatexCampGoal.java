@@ -11,6 +11,7 @@ import java.util.EnumSet;
 import static github.com.gengyoubo.CE.compat.synergy.camp.LatexSettlementData.*;
 
 /** The resident's body owns every action, item and biological state. */
+@SuppressWarnings("deprecation")
 final class LatexCampGoal extends Goal {
     private final ChangedEntity mob;
     private final CampResidentWork work;

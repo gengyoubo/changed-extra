@@ -15,6 +15,7 @@ import net.parkabird.changedsynergy.ai.PlayerOutpostData;
 
 import java.util.*;
 
+@SuppressWarnings("deprecation")
 final class CampWarehouse {
     private CampWarehouse() {}
     static BlockPos canonical(ServerLevel level, BlockPos pos) {

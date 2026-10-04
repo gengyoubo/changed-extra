@@ -5,7 +5,7 @@ public final class SkillNutrition {
     private SkillNutrition() { }
     public record Meal(int nutrition, float saturationModifier) { }
     /** Scale the saturation gain, which vanilla computes as nutrition * modifier * 2. */
-    public static Meal fishMeal(int nutrition, float modifier) {
+    public static Meal dietMeal(int nutrition, float modifier) {
         int scaled = (int) Math.min(Integer.MAX_VALUE, Math.round(Math.max(0, nutrition) * 1.5));
         float saturation = scaled == 0 ? modifier : (float) (modifier * (double) nutrition * 1.5 / scaled);
         return new Meal(scaled, saturation);

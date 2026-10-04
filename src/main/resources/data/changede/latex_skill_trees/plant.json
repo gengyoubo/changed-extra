@@ -17,7 +17,13 @@
       "x": 51,
       "y": 11,
       "key": true,
-      "rewards": [],
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "vegetarian_diet",
+          "value": 1
+        }
+      ],
       "research": "race"
     },
     {

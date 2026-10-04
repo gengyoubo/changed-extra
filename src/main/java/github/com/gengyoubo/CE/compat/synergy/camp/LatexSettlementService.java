@@ -25,6 +25,7 @@ import java.util.*;
 
 import static github.com.gengyoubo.CE.compat.synergy.camp.LatexSettlementData.*;
 
+@SuppressWarnings("deprecation")
 public final class LatexSettlementService {
     @SubscribeEvent public static void stopped(net.minecraftforge.event.server.ServerStoppedEvent event) { CampWorkSites.clear(); }
     static final String MEMBER = "changede_camp_resident", VISITOR = "changede_camp_visitor", RAIDER = "changede_camp_raider";

@@ -1,18 +1,6 @@
 {
   "replace": false,
   "values": [
-    "minecraft:paper",
-    "minecraft:bowl",
-    "minecraft:glass_bottle",
-    "minecraft:bucket",
-    "minecraft:water_bucket",
-    {
-      "id": "#forge:dyes",
-      "required": false
-    },
-    {
-      "id": "#farmersdelight:serving_containers",
-      "required": false
-    }
+    "#changede:skill_diet_exclusions"
   ]
 }

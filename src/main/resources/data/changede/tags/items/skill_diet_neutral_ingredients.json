@@ -1,0 +1,49 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:bowl",
+    "minecraft:glass_bottle",
+    "minecraft:bucket",
+    "minecraft:water_bucket",
+    {
+      "id": "#forge:tools/knives",
+      "required": false
+    },
+    {
+      "id": "#farmersdelight:tools/knives",
+      "required": false
+    },
+    {
+      "id": "#forge:salt",
+      "required": false
+    },
+    {
+      "id": "#forge:salts",
+      "required": false
+    },
+    {
+      "id": "#c:salt",
+      "required": false
+    },
+    {
+      "id": "#c:salts",
+      "required": false
+    },
+    {
+      "id": "#c:water_buckets",
+      "required": false
+    },
+    {
+      "id": "#forge:buckets/water",
+      "required": false
+    },
+    {
+      "id": "#farmersdelight:serving_containers",
+      "required": false
+    },
+    {
+      "id": "#farmersdelight:knives",
+      "required": false
+    }
+  ]
+}

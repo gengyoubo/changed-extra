@@ -23,6 +23,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
 /** Exercises Changed's actual fluid callbacks using white, dark and aquatic bodies. */
+@SuppressWarnings("deprecation")
 final class MaidEnvironmentRegressionChecks {
     private MaidEnvironmentRegressionChecks() {}
 

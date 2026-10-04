@@ -42,6 +42,8 @@ public class LatexDrinkItem extends Item {
     @Override
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
         if (!level.isClientSide) {
+            if (livingEntity instanceof Player player)
+                player.getFoodData().eat(this, stack, player);
             if (iced) {
                 livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, ICE_EFFECT_DURATION, 1));
                 livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, ICE_EFFECT_DURATION, 0));

@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "changed:dark_latex_goo",
+    "changed:mug_with_dark_latex",
+    "changede:black_latex_coffee_powder",
+    {
+      "id": "#changed:dark_latex_foods",
+      "required": false
+    },
+    {
+      "id": "#forge:dark_latex_foods",
+      "required": false
+    },
+    {
+      "id": "#c:dark_latex_foods",
+      "required": false
+    }
+  ]
+}

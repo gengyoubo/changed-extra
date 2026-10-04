@@ -24,6 +24,7 @@ import java.util.*;
 import static github.com.gengyoubo.CE.compat.synergy.camp.LatexSettlementData.*;
 
 /** A single real action under a resident's persistent occupation. No abstract rewards. */
+@SuppressWarnings("deprecation")
 final class CampResidentWork {
     private final ChangedEntity mob;
     private CampRole role;

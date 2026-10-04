@@ -17,6 +17,7 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.*;
 
 /** Recipe selection and actual withdrawal. Workstation categories are the compatibility boundary. */
+@SuppressWarnings("deprecation")
 public final class CampKitchen {
     public enum StationKind { CRAFTING, SMELTING, COOKING_POT, CUTTING }
     static final int FOOD_LIMIT = 64;

@@ -1,0 +1,579 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#shape-shifter-curse:fruit",
+      "required": false
+    },
+    "minecraft:mushroom_stew",
+    "minecraft:bread",
+    "minecraft:golden_apple",
+    "minecraft:enchanted_golden_apple",
+    "minecraft:cookie",
+    "minecraft:dried_kelp",
+    "minecraft:carrot",
+    "minecraft:potato",
+    "minecraft:baked_potato",
+    "minecraft:poisonous_potato",
+    "minecraft:golden_carrot",
+    "minecraft:pumpkin_pie",
+    "minecraft:beetroot",
+    "minecraft:beetroot_soup",
+    "minecraft:suspicious_stew",
+    "minecraft:honey_bottle",
+    {
+      "id": "farmersdelight:cabbage",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:onion",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:mixed_salad",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:fried_egg",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:egg_sandwich",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:hot_cocoa",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:milk_bottle",
+      "required": false
+    },
+    "minecraft:apple",
+    "minecraft:melon_slice",
+    "minecraft:sweet_berries",
+    "minecraft:glow_berries",
+    "changede:peach",
+    "#changede:skill_orange_foods",
+    {
+      "id": "#shape-shifter-curse:diet_vegetarian",
+      "required": false
+    },
+    {
+      "id": "#createaddition:plant_foods",
+      "required": false
+    },
+    {
+      "id": "#forge:fruits",
+      "required": false
+    },
+    {
+      "id": "#forge:vegetables",
+      "required": false
+    },
+    {
+      "id": "#forge:crops",
+      "required": false
+    },
+    {
+      "id": "#forge:grain",
+      "required": false
+    },
+    {
+      "id": "#forge:grains",
+      "required": false
+    },
+    {
+      "id": "#forge:flour",
+      "required": false
+    },
+    {
+      "id": "#forge:dough",
+      "required": false
+    },
+    {
+      "id": "#forge:mushrooms",
+      "required": false
+    },
+    {
+      "id": "#forge:nuts",
+      "required": false
+    },
+    {
+      "id": "#forge:seeds",
+      "required": false
+    },
+    {
+      "id": "#forge:eggs",
+      "required": false
+    },
+    {
+      "id": "#forge:milk",
+      "required": false
+    },
+    {
+      "id": "#forge:cheese",
+      "required": false
+    },
+    {
+      "id": "#forge:chocolate",
+      "required": false
+    },
+    {
+      "id": "#forge:sugar",
+      "required": false
+    },
+    {
+      "id": "#forge:honey",
+      "required": false
+    },
+    {
+      "id": "#forge:berries",
+      "required": false
+    },
+    {
+      "id": "#forge:herbs",
+      "required": false
+    },
+    {
+      "id": "#forge:spices",
+      "required": false
+    },
+    {
+      "id": "#forge:tea_leaves",
+      "required": false
+    },
+    {
+      "id": "#forge:coffee_beans",
+      "required": false
+    },
+    {
+      "id": "#forge:cocoa_beans",
+      "required": false
+    },
+    {
+      "id": "#forge:basil",
+      "required": false
+    },
+    {
+      "id": "#forge:gingers",
+      "required": false
+    },
+    {
+      "id": "#forge:mustard",
+      "required": false
+    },
+    {
+      "id": "#forge:nutmegs",
+      "required": false
+    },
+    {
+      "id": "#forge:vanilla",
+      "required": false
+    },
+    {
+      "id": "#forge:pepper",
+      "required": false
+    },
+    {
+      "id": "#forge:rice",
+      "required": false
+    },
+    {
+      "id": "#forge:corn",
+      "required": false
+    },
+    {
+      "id": "#forge:beans",
+      "required": false
+    },
+    {
+      "id": "#forge:legumes",
+      "required": false
+    },
+    {
+      "id": "#forge:soybeans",
+      "required": false
+    },
+    {
+      "id": "#forge:blackbeans",
+      "required": false
+    },
+    {
+      "id": "#forge:greenbeans",
+      "required": false
+    },
+    {
+      "id": "#forge:bread",
+      "required": false
+    },
+    {
+      "id": "#forge:breads",
+      "required": false
+    },
+    {
+      "id": "#forge:pasta",
+      "required": false
+    },
+    {
+      "id": "#forge:noodles",
+      "required": false
+    },
+    {
+      "id": "#forge:vegetable_oil",
+      "required": false
+    },
+    {
+      "id": "#forge:vegetable_oils",
+      "required": false
+    },
+    {
+      "id": "#forge:olive_oil",
+      "required": false
+    },
+    {
+      "id": "#forge:olive_oils",
+      "required": false
+    },
+    {
+      "id": "#forge:vinegar",
+      "required": false
+    },
+    {
+      "id": "#forge:vinegars",
+      "required": false
+    },
+    {
+      "id": "#forge:soy_sauce",
+      "required": false
+    },
+    {
+      "id": "#forge:soy_sauces",
+      "required": false
+    },
+    {
+      "id": "#forge:butter",
+      "required": false
+    },
+    {
+      "id": "#forge:butters",
+      "required": false
+    },
+    {
+      "id": "#forge:cheeses",
+      "required": false
+    },
+    {
+      "id": "#forge:cream",
+      "required": false
+    },
+    {
+      "id": "#forge:creams",
+      "required": false
+    },
+    {
+      "id": "#forge:yogurt",
+      "required": false
+    },
+    {
+      "id": "#forge:yogurts",
+      "required": false
+    },
+    {
+      "id": "#forge:soy_milks",
+      "required": false
+    },
+    {
+      "id": "#forge:cooked_eggs",
+      "required": false
+    },
+    {
+      "id": "#forge:jam",
+      "required": false
+    },
+    {
+      "id": "#forge:jams",
+      "required": false
+    },
+    {
+      "id": "#forge:syrup",
+      "required": false
+    },
+    {
+      "id": "#forge:syrups",
+      "required": false
+    },
+    {
+      "id": "#forge:molasses",
+      "required": false
+    },
+    {
+      "id": "#c:fruits",
+      "required": false
+    },
+    {
+      "id": "#c:vegetables",
+      "required": false
+    },
+    {
+      "id": "#c:grains",
+      "required": false
+    },
+    {
+      "id": "#c:flours",
+      "required": false
+    },
+    {
+      "id": "#c:doughs",
+      "required": false
+    },
+    {
+      "id": "#c:mushrooms",
+      "required": false
+    },
+    {
+      "id": "#c:nuts",
+      "required": false
+    },
+    {
+      "id": "#c:seeds",
+      "required": false
+    },
+    {
+      "id": "#c:eggs",
+      "required": false
+    },
+    {
+      "id": "#c:milks",
+      "required": false
+    },
+    {
+      "id": "#c:cheeses",
+      "required": false
+    },
+    {
+      "id": "#c:chocolates",
+      "required": false
+    },
+    {
+      "id": "#c:sugars",
+      "required": false
+    },
+    {
+      "id": "#c:honey_bottles",
+      "required": false
+    },
+    {
+      "id": "#c:crops",
+      "required": false
+    },
+    {
+      "id": "#c:grain",
+      "required": false
+    },
+    {
+      "id": "#c:flour",
+      "required": false
+    },
+    {
+      "id": "#c:dough",
+      "required": false
+    },
+    {
+      "id": "#c:milk",
+      "required": false
+    },
+    {
+      "id": "#c:berries",
+      "required": false
+    },
+    {
+      "id": "#c:herbs",
+      "required": false
+    },
+    {
+      "id": "#c:spices",
+      "required": false
+    },
+    {
+      "id": "#c:tea_leaves",
+      "required": false
+    },
+    {
+      "id": "#c:coffee_beans",
+      "required": false
+    },
+    {
+      "id": "#c:cocoa_beans",
+      "required": false
+    },
+    {
+      "id": "#c:cacao_butter",
+      "required": false
+    },
+    {
+      "id": "#c:rice",
+      "required": false
+    },
+    {
+      "id": "#c:corn",
+      "required": false
+    },
+    {
+      "id": "#c:beans",
+      "required": false
+    },
+    {
+      "id": "#c:legumes",
+      "required": false
+    },
+    {
+      "id": "#c:soybeans",
+      "required": false
+    },
+    {
+      "id": "#c:bread",
+      "required": false
+    },
+    {
+      "id": "#c:breads",
+      "required": false
+    },
+    {
+      "id": "#c:pasta",
+      "required": false
+    },
+    {
+      "id": "#c:noodles",
+      "required": false
+    },
+    {
+      "id": "#c:vegetable_oil",
+      "required": false
+    },
+    {
+      "id": "#c:vegetable_oils",
+      "required": false
+    },
+    {
+      "id": "#c:olive_oil",
+      "required": false
+    },
+    {
+      "id": "#c:olive_oils",
+      "required": false
+    },
+    {
+      "id": "#c:vinegar",
+      "required": false
+    },
+    {
+      "id": "#c:vinegars",
+      "required": false
+    },
+    {
+      "id": "#c:soy_sauce",
+      "required": false
+    },
+    {
+      "id": "#c:soy_sauces",
+      "required": false
+    },
+    {
+      "id": "#c:butter",
+      "required": false
+    },
+    {
+      "id": "#c:butters",
+      "required": false
+    },
+    {
+      "id": "#c:cheese",
+      "required": false
+    },
+    {
+      "id": "#c:cream",
+      "required": false
+    },
+    {
+      "id": "#c:creams",
+      "required": false
+    },
+    {
+      "id": "#c:yogurt",
+      "required": false
+    },
+    {
+      "id": "#c:yogurts",
+      "required": false
+    },
+    {
+      "id": "#c:soy_milks",
+      "required": false
+    },
+    {
+      "id": "#c:jam",
+      "required": false
+    },
+    {
+      "id": "#c:jams",
+      "required": false
+    },
+    {
+      "id": "#c:syrup",
+      "required": false
+    },
+    {
+      "id": "#c:syrups",
+      "required": false
+    },
+    {
+      "id": "#c:molasses",
+      "required": false
+    },
+    {
+      "id": "minecraft:wheat",
+      "required": false
+    },
+    {
+      "id": "minecraft:sugar",
+      "required": false
+    },
+    {
+      "id": "minecraft:cocoa_beans",
+      "required": false
+    },
+    {
+      "id": "minecraft:brown_mushroom",
+      "required": false
+    },
+    {
+      "id": "minecraft:red_mushroom",
+      "required": false
+    },
+    {
+      "id": "minecraft:kelp",
+      "required": false
+    },
+    {
+      "id": "minecraft:pumpkin",
+      "required": false
+    },
+    {
+      "id": "minecraft:melon",
+      "required": false
+    },
+    {
+      "id": "minecraft:egg",
+      "required": false
+    },
+    {
+      "id": "minecraft:milk_bucket",
+      "required": false
+    },
+    {
+      "id": "minecraft:honeycomb",
+      "required": false
+    }
+  ]
+}

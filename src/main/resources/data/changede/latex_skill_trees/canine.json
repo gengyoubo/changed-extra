@@ -53,7 +53,13 @@
       "x": 23,
       "y": 11,
       "key": true,
-      "rewards": [],
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "meat_diet",
+          "value": 1
+        }
+      ],
       "research": "race"
     },
     {

@@ -35,6 +35,7 @@
     "PatreonBenefitsMixin",
     "ServerPlayerSpecialVariantMixin",
     "SkillFoodDataMixin",
+    "SkillGooFoodMixin",
     "SkillFoodOwnerMixin",
     "SyncTransfurPacketListingAccessor",
     "SyncTransfurPacketMixin",

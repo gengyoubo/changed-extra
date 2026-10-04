@@ -44,7 +44,8 @@ public final class SkillMechanics {
     private static CompoundTag clientEffects=new CompoundTag();
     private static final Set<String> EFFECTS = Set.of("sea_core", "sea_guard", "sea_work", "sea_mining", "sea_thermal", "air_core",
             "air_endurance", "air_load", "feline_fear", "feline_damage", "nine_lives", "reptile_core", "blast_guard", "dragon_fortune",
-            "dragon_looting", "dragon_ore", "dragon_hunt", "arthropod", "insect_core", "insect_recovery", "fish_diet");
+            "dragon_looting", "dragon_ore", "dragon_hunt", "arthropod", "insect_core", "insect_recovery", "fish_diet",
+            "dark_latex_diet", "white_latex_diet", "orange_diet", "meat_diet", "vegetarian_diet");
     private SkillMechanics() { }
     public static void validate(String effect, double value) {
         double maximum = effect.equals("feline_fear") ? 16 : effect.equals("insect_recovery") ? 4 : 1;

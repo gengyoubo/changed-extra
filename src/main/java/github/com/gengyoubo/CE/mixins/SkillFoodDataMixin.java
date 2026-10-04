@@ -14,7 +14,6 @@ import net.minecraft.world.level.GameRules;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 /** Changes natural metabolism while retaining vanilla healing eligibility, food and starvation. */
 @Mixin(FoodData.class)
@@ -35,15 +34,17 @@ public abstract class SkillFoodDataMixin implements SkillFoodData {
     private float changede$slowExhaustion(float amount) {
         return SkillNutrition.exhaustion(amount, changede$attribute(SkillAttributes.EXHAUSTION_REDUCTION.get(), 0));
     }
-    @ModifyArgs(method = "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V",
+    @Redirect(method = "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;eat(IF)V"))
-    private void changede$fishDiet(Args args, Item item, ItemStack stack, LivingEntity entity) {
-        if (!(entity instanceof ServerPlayer player) || SkillMechanics.value(player, "fish_diet") <= 0
-                || !SkillFishDiet.matches(stack)) return;
+    private void changede$diet(FoodData data, int nutrition, float saturation,
+                                  Item item, ItemStack stack, LivingEntity entity) {
+        if (!(entity instanceof ServerPlayer player) || !SkillDiets.matches(player, stack)) {
+            data.eat(nutrition, saturation);
+            return;
+        }
         changede$setOwner(player);
-        var meal = SkillNutrition.fishMeal(args.get(0), args.get(1));
-        args.set(0, meal.nutrition());
-        args.set(1, meal.saturationModifier());
+        var meal = SkillNutrition.dietMeal(nutrition, saturation);
+        data.eat(meal.nutrition(), meal.saturationModifier());
         player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0));
     }
     @ModifyVariable(method = "eat(IF)V", at = @At("HEAD"), argsOnly = true)

@@ -115,7 +115,8 @@ public final class LatexSkillTrees extends SimpleJsonResourceReloadListener {
                         rewards.add(SkillRewards.parse(reward.getAsJsonObject()));
                     int x = GsonHelper.getAsInt(node, "x"), y = GsonHelper.getAsInt(node, "y");
                     if (cost < 0 || cost > 1000000 || rewards.size() > 16
-                            || (scope.equals("global") && rewards.stream().anyMatch(r -> r instanceof SkillRewards.MechanicReward || r instanceof SkillRewards.AttributeReward a
+                            || (scope.equals("global") && rewards.stream().anyMatch(r -> r instanceof SkillRewards.MechanicReward m
+                                && !(id.equals(ResourceLocation.fromNamespaceAndPath("changede", "latex_mastery")) && m.effect().equals("orange_diet")) || r instanceof SkillRewards.AttributeReward a
                                 && !a.attribute().getNamespace().equals("minecraft") && !SkillAttributes.isUniversalGrowth(a.attribute())))
                             || Math.abs((long) x) > 10000 || Math.abs((long) y) > 10000
                             || nodes.stream().anyMatch(n -> n.id().equals(id) || (n.x() == x && n.y() == y)))

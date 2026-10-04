@@ -21,6 +21,11 @@
           "type": "changede:mechanic",
           "effect": "insect_core",
           "value": 1
+        },
+        {
+          "type": "changede:mechanic",
+          "effect": "vegetarian_diet",
+          "value": 1
         }
       ],
       "research": "race"

@@ -13,6 +13,7 @@ import net.parkabird.changedsynergy.ai.CreatureSettlementService;
 
 import java.util.*;
 
+@SuppressWarnings("deprecation")
 final class CampWorkSites {
     static final TagKey<Block> FARMLAND = TagKey.create(Registries.BLOCK, ResourceLocation.parse("changede:camp_farmland"));
     static final TagKey<Block> CRAFTING = TagKey.create(Registries.BLOCK, ResourceLocation.parse("changede:camp_crafting_workstations"));

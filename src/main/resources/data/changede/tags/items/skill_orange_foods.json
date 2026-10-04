@@ -1,0 +1,35 @@
+{
+  "replace": false,
+  "values": [
+    "changed:orange",
+    "changede:enchanted_golden_orange",
+    {
+      "id": "changed_addon:golden_orange",
+      "required": false
+    },
+    {
+      "id": "changed_addon:orange_juice",
+      "required": false
+    },
+    {
+      "id": "changed_additions:golden_orange",
+      "required": false
+    },
+    {
+      "id": "#forge:fruits/orange",
+      "required": false
+    },
+    {
+      "id": "#forge:fruits/oranges",
+      "required": false
+    },
+    {
+      "id": "#c:fruits/orange",
+      "required": false
+    },
+    {
+      "id": "#c:fruits/oranges",
+      "required": false
+    }
+  ]
+}

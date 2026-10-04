@@ -12,7 +12,9 @@
       "key": true,
       "rewards": [
         {
-          "type": "changede:none"
+          "type": "changede:mechanic",
+          "effect": "orange_diet",
+          "value": 1
         }
       ]
     },

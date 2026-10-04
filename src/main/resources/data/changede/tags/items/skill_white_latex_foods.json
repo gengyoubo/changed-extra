@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "changed:white_latex_goo",
+    "changed:mug_with_white_latex",
+    "changede:white_latex_milk",
+    {
+      "id": "#changed:white_latex_foods",
+      "required": false
+    },
+    {
+      "id": "#forge:white_latex_foods",
+      "required": false
+    },
+    {
+      "id": "#c:white_latex_foods",
+      "required": false
+    }
+  ]
+}

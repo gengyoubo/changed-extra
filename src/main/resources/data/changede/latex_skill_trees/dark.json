@@ -15,7 +15,9 @@
       "key": true,
       "rewards": [
         {
-          "type": "changede:none"
+          "type": "changede:mechanic",
+          "effect": "white_latex_diet",
+          "value": 1
         }
       ],
       "research": "race"

@@ -65,6 +65,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /** Optional TLM bridge. This class is only loaded when both companion mods are present. */
+@SuppressWarnings("deprecation")
 public final class LatexMaidCompat {
     private static final String TASK_TAG = "changede_maid_work_task";
     private static final String WORK_OWNER_TAG = "changede_maid_work_owner";
