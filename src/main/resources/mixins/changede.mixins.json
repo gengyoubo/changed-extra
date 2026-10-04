@@ -36,6 +36,7 @@
     "ServerPlayerSpecialVariantMixin",
     "SkillFoodDataMixin",
     "SkillGooFoodMixin",
+    "SkillGooConsumptionMixin",
     "SkillFoodOwnerMixin",
     "SyncTransfurPacketListingAccessor",
     "SyncTransfurPacketMixin",

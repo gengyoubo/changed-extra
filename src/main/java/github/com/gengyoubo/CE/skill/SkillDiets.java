@@ -31,7 +31,8 @@ public final class SkillDiets {
     private static final Set<ResourceLocation> RECIPE_TYPES = Set.of(
             ResourceLocation.parse("minecraft:crafting"), ResourceLocation.parse("minecraft:smelting"),
             ResourceLocation.parse("minecraft:smoking"), ResourceLocation.parse("minecraft:campfire_cooking"),
-            ResourceLocation.parse("farmersdelight:cooking"), ResourceLocation.parse("farmersdelight:cutting"));
+            ResourceLocation.parse("farmersdelight:cooking"), ResourceLocation.parse("farmersdelight:cutting"),
+            ResourceLocation.parse("bakeries:coffee"));
     private static volatile Map<Diet, Set<Item>> foods = Map.of();
     private static MinecraftServer owner;
     private SkillDiets() { }
