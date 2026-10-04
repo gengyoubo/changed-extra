@@ -46,7 +46,7 @@
       "id": "changede:canine_core",
       "title": "skill.changede.canine_core",
       "description": "skill.changede.canine_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -60,7 +60,7 @@
       "id": "changede:canine_strength_1",
       "title": "skill.changede.canine_strength_1",
       "description": "skill.changede.canine_strength_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:canine_core"
       ],
@@ -80,7 +80,7 @@
       "id": "changede:canine_strength_2",
       "title": "skill.changede.canine_strength_2",
       "description": "skill.changede.canine_strength_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:canine_strength_1"
       ],
@@ -100,7 +100,7 @@
       "id": "changede:canine_stride_1",
       "title": "skill.changede.canine_stride_1",
       "description": "skill.changede.canine_stride_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:canine_core"
       ],
@@ -120,7 +120,7 @@
       "id": "changede:canine_stride_2",
       "title": "skill.changede.canine_stride_2",
       "description": "skill.changede.canine_stride_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:canine_stride_1"
       ],
@@ -140,7 +140,7 @@
       "id": "changede:canine_health_1",
       "title": "skill.changede.canine_health_1",
       "description": "skill.changede.canine_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:canine_core"
       ],
@@ -160,7 +160,7 @@
       "id": "changede:canine_health_2",
       "title": "skill.changede.canine_health_2",
       "description": "skill.changede.canine_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:canine_health_1"
       ],

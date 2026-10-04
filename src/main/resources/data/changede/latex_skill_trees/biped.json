@@ -144,7 +144,7 @@
       "id": "changede:biped_core",
       "title": "skill.changede.biped_core",
       "description": "skill.changede.biped_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -158,7 +158,7 @@
       "id": "changede:biped_dexterity_1",
       "title": "skill.changede.biped_dexterity_1",
       "description": "skill.changede.biped_dexterity_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:biped_core"
       ],
@@ -178,7 +178,7 @@
       "id": "changede:biped_dexterity_2",
       "title": "skill.changede.biped_dexterity_2",
       "description": "skill.changede.biped_dexterity_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:biped_dexterity_1"
       ],
@@ -198,7 +198,7 @@
       "id": "changede:biped_strength_1",
       "title": "skill.changede.biped_strength_1",
       "description": "skill.changede.biped_strength_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:biped_core"
       ],
@@ -218,7 +218,7 @@
       "id": "changede:biped_strength_2",
       "title": "skill.changede.biped_strength_2",
       "description": "skill.changede.biped_strength_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:biped_strength_1"
       ],
@@ -238,7 +238,7 @@
       "id": "changede:biped_health_1",
       "title": "skill.changede.biped_health_1",
       "description": "skill.changede.biped_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:biped_core"
       ],
@@ -258,7 +258,7 @@
       "id": "changede:biped_health_2",
       "title": "skill.changede.biped_health_2",
       "description": "skill.changede.biped_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:biped_health_1"
       ],

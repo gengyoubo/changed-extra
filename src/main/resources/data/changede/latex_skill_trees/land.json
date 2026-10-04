@@ -152,7 +152,7 @@
       "id": "changede:land_core",
       "title": "skill.changede.land_core",
       "description": "skill.changede.land_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -166,7 +166,7 @@
       "id": "changede:land_stride_1",
       "title": "skill.changede.land_stride_1",
       "description": "skill.changede.land_stride_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:land_core"
       ],
@@ -186,7 +186,7 @@
       "id": "changede:land_stride_2",
       "title": "skill.changede.land_stride_2",
       "description": "skill.changede.land_stride_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:land_stride_1"
       ],
@@ -206,7 +206,7 @@
       "id": "changede:land_endurance_1",
       "title": "skill.changede.land_endurance_1",
       "description": "skill.changede.land_endurance_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:land_core"
       ],
@@ -226,7 +226,7 @@
       "id": "changede:land_endurance_2",
       "title": "skill.changede.land_endurance_2",
       "description": "skill.changede.land_endurance_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:land_endurance_1"
       ],
@@ -246,7 +246,7 @@
       "id": "changede:land_balance_1",
       "title": "skill.changede.land_balance_1",
       "description": "skill.changede.land_balance_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:land_core"
       ],
@@ -266,7 +266,7 @@
       "id": "changede:land_balance_2",
       "title": "skill.changede.land_balance_2",
       "description": "skill.changede.land_balance_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:land_balance_1"
       ],

@@ -13,7 +13,7 @@
       "id": "changede:feral_core",
       "title": "skill.changede.feral_core",
       "description": "skill.changede.feral_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -27,7 +27,7 @@
       "id": "changede:feral_stride_1",
       "title": "skill.changede.feral_stride_1",
       "description": "skill.changede.feral_stride_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:feral_core"
       ],
@@ -47,7 +47,7 @@
       "id": "changede:feral_stride_2",
       "title": "skill.changede.feral_stride_2",
       "description": "skill.changede.feral_stride_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:feral_stride_1"
       ],
@@ -67,7 +67,7 @@
       "id": "changede:feral_strength_1",
       "title": "skill.changede.feral_strength_1",
       "description": "skill.changede.feral_strength_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:feral_core"
       ],
@@ -87,7 +87,7 @@
       "id": "changede:feral_strength_2",
       "title": "skill.changede.feral_strength_2",
       "description": "skill.changede.feral_strength_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:feral_strength_1"
       ],
@@ -107,7 +107,7 @@
       "id": "changede:feral_landing_1",
       "title": "skill.changede.feral_landing_1",
       "description": "skill.changede.feral_landing_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:feral_core"
       ],
@@ -127,7 +127,7 @@
       "id": "changede:feral_landing_2",
       "title": "skill.changede.feral_landing_2",
       "description": "skill.changede.feral_landing_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:feral_landing_1"
       ],

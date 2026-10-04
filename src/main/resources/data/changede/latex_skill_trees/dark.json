@@ -24,7 +24,7 @@
       "id": "changede:dark_white_nemesis_1",
       "title": "skill.changede.dark.white_nemesis.1",
       "description": "skill.changede.dark.white_nemesis.description",
-      "cost": 25,
+      "cost": 75,
       "parents": [
         "changede:dark_shell"
       ],
@@ -43,7 +43,7 @@
       "id": "changede:dark_white_resistance_1",
       "title": "skill.changede.dark.white_resistance.1",
       "description": "skill.changede.dark.white_resistance.description",
-      "cost": 25,
+      "cost": 75,
       "parents": [
         "changede:dark_white_nemesis_1"
       ],
@@ -62,7 +62,7 @@
       "id": "changede:dark_white_fog_resistance_1",
       "title": "skill.changede.dark.white_fog_resistance.1",
       "description": "skill.changede.dark.white_fog_resistance.description",
-      "cost": 25,
+      "cost": 75,
       "parents": [
         "changede:dark_white_resistance_1"
       ],
@@ -81,7 +81,7 @@
       "id": "changede:dark_armor_adaptation_1",
       "title": "skill.changede.dark.armor_adaptation.1",
       "description": "skill.changede.dark.armor_adaptation.description",
-      "cost": 25,
+      "cost": 75,
       "parents": [
         "changede:dark_white_fog_resistance_1"
       ],
@@ -100,7 +100,7 @@
       "id": "changede:dark_weapon_adaptation_1",
       "title": "skill.changede.dark.weapon_adaptation.1",
       "description": "skill.changede.dark.weapon_adaptation.description",
-      "cost": 25,
+      "cost": 75,
       "parents": [
         "changede:dark_armor_adaptation_1"
       ],
@@ -119,7 +119,7 @@
       "id": "changede:dark_latex_weapon_adaptation_1",
       "title": "skill.changede.dark.latex_weapon_adaptation.1",
       "description": "skill.changede.dark.latex_weapon_adaptation.description",
-      "cost": 25,
+      "cost": 75,
       "parents": [
         "changede:dark_weapon_adaptation_1"
       ],
@@ -138,7 +138,7 @@
       "id": "changede:dark_weapon_adaptation_2",
       "title": "skill.changede.dark.weapon_adaptation.2",
       "description": "skill.changede.dark.weapon_adaptation.description",
-      "cost": 25,
+      "cost": 125,
       "parents": [
         "changede:dark_latex_weapon_adaptation_1"
       ],
@@ -157,7 +157,7 @@
       "id": "changede:dark_white_resistance_2",
       "title": "skill.changede.dark.white_resistance.2",
       "description": "skill.changede.dark.white_resistance.description",
-      "cost": 25,
+      "cost": 125,
       "parents": [
         "changede:dark_weapon_adaptation_2"
       ],
@@ -176,7 +176,7 @@
       "id": "changede:dark_white_nemesis_2",
       "title": "skill.changede.dark.white_nemesis.2",
       "description": "skill.changede.dark.white_nemesis.description",
-      "cost": 25,
+      "cost": 125,
       "parents": [
         "changede:dark_white_resistance_2"
       ],
@@ -195,7 +195,7 @@
       "id": "changede:dark_weapon_adaptation_3",
       "title": "skill.changede.dark.weapon_adaptation.3",
       "description": "skill.changede.dark.weapon_adaptation.description",
-      "cost": 25,
+      "cost": 175,
       "parents": [
         "changede:dark_white_nemesis_2"
       ],
@@ -214,7 +214,7 @@
       "id": "changede:dark_latex_weapon_adaptation_2",
       "title": "skill.changede.dark.latex_weapon_adaptation.2",
       "description": "skill.changede.dark.latex_weapon_adaptation.description",
-      "cost": 25,
+      "cost": 125,
       "parents": [
         "changede:dark_weapon_adaptation_3"
       ],
@@ -233,7 +233,7 @@
       "id": "changede:dark_armor_adaptation_2",
       "title": "skill.changede.dark.armor_adaptation.2",
       "description": "skill.changede.dark.armor_adaptation.description",
-      "cost": 25,
+      "cost": 125,
       "parents": [
         "changede:dark_latex_weapon_adaptation_2"
       ],
@@ -252,7 +252,7 @@
       "id": "changede:dark_latex_weapon_adaptation_3",
       "title": "skill.changede.dark.latex_weapon_adaptation.3",
       "description": "skill.changede.dark.latex_weapon_adaptation.description",
-      "cost": 25,
+      "cost": 175,
       "parents": [
         "changede:dark_armor_adaptation_2"
       ],
@@ -271,7 +271,7 @@
       "id": "changede:dark_latex_weapon_adaptation_4",
       "title": "skill.changede.dark.latex_weapon_adaptation.4",
       "description": "skill.changede.dark.latex_weapon_adaptation.description",
-      "cost": 25,
+      "cost": 225,
       "parents": [
         "changede:dark_latex_weapon_adaptation_3"
       ],
@@ -290,7 +290,7 @@
       "id": "changede:dark_white_nemesis_3",
       "title": "skill.changede.dark.white_nemesis.3",
       "description": "skill.changede.dark.white_nemesis.description",
-      "cost": 25,
+      "cost": 175,
       "parents": [
         "changede:dark_latex_weapon_adaptation_4"
       ],

@@ -9,7 +9,7 @@
       "id": "changede:insect_core",
       "title": "skill.changede.insect_core",
       "description": "skill.changede.insect_core.description",
-      "cost": 25,
+      "cost": 150,
       "parents": [
         "changede:arthropod_core"
       ],
@@ -29,7 +29,7 @@
       "id": "changede:insect_recovery_1",
       "title": "skill.changede.insect_recovery_1",
       "description": "skill.changede.insect_recovery_1.description",
-      "cost": 25,
+      "cost": 150,
       "parents": [
         "changede:insect_core"
       ],
@@ -48,7 +48,7 @@
       "id": "changede:insect_recovery_2",
       "title": "skill.changede.insect_recovery_2",
       "description": "skill.changede.insect_recovery_2.description",
-      "cost": 50,
+      "cost": 250,
       "parents": [
         "changede:insect_recovery_1"
       ],
@@ -67,7 +67,7 @@
       "id": "changede:insect_health_1",
       "title": "skill.changede.insect_health_1",
       "description": "skill.changede.insect_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:insect_core"
       ],
@@ -87,7 +87,7 @@
       "id": "changede:insect_health_2",
       "title": "skill.changede.insect_health_2",
       "description": "skill.changede.insect_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:insect_health_1"
       ],
@@ -107,7 +107,7 @@
       "id": "changede:insect_energy_1",
       "title": "skill.changede.insect_energy_1",
       "description": "skill.changede.insect_energy_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:insect_core"
       ],
@@ -127,7 +127,7 @@
       "id": "changede:insect_energy_2",
       "title": "skill.changede.insect_energy_2",
       "description": "skill.changede.insect_energy_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:insect_energy_1"
       ],

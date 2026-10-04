@@ -12,7 +12,7 @@
       "id": "changede:reptile_core",
       "title": "skill.changede.reptile_core",
       "description": "skill.changede.reptile_core.description",
-      "cost": 25,
+      "cost": 200,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -37,7 +37,7 @@
       "id": "changede:reptile_blast_guard_1",
       "title": "skill.changede.reptile_blast_guard_1",
       "description": "skill.changede.reptile_blast_guard_1.description",
-      "cost": 25,
+      "cost": 150,
       "parents": [
         "changede:reptile_core"
       ],
@@ -56,7 +56,7 @@
       "id": "changede:reptile_blast_guard_2",
       "title": "skill.changede.reptile_blast_guard_2",
       "description": "skill.changede.reptile_blast_guard_2.description",
-      "cost": 50,
+      "cost": 250,
       "parents": [
         "changede:reptile_blast_guard_1"
       ],
@@ -75,7 +75,7 @@
       "id": "changede:reptile_scales_1",
       "title": "skill.changede.reptile_scales_1",
       "description": "skill.changede.reptile_scales_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:reptile_core"
       ],
@@ -95,7 +95,7 @@
       "id": "changede:reptile_scales_2",
       "title": "skill.changede.reptile_scales_2",
       "description": "skill.changede.reptile_scales_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:reptile_scales_1"
       ],
@@ -115,7 +115,7 @@
       "id": "changede:reptile_balance_1",
       "title": "skill.changede.reptile_balance_1",
       "description": "skill.changede.reptile_balance_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:reptile_core"
       ],
@@ -135,7 +135,7 @@
       "id": "changede:reptile_balance_2",
       "title": "skill.changede.reptile_balance_2",
       "description": "skill.changede.reptile_balance_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:reptile_balance_1"
       ],

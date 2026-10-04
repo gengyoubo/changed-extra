@@ -9,7 +9,7 @@
       "id": "changede:taur_core",
       "title": "skill.changede.taur_core",
       "description": "skill.changede.taur_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -23,7 +23,7 @@
       "id": "changede:taur_balance_1",
       "title": "skill.changede.taur_balance_1",
       "description": "skill.changede.taur_balance_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:taur_core"
       ],
@@ -43,7 +43,7 @@
       "id": "changede:taur_balance_2",
       "title": "skill.changede.taur_balance_2",
       "description": "skill.changede.taur_balance_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:taur_balance_1"
       ],
@@ -63,7 +63,7 @@
       "id": "changede:taur_armor_1",
       "title": "skill.changede.taur_armor_1",
       "description": "skill.changede.taur_armor_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:taur_core"
       ],
@@ -83,7 +83,7 @@
       "id": "changede:taur_armor_2",
       "title": "skill.changede.taur_armor_2",
       "description": "skill.changede.taur_armor_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:taur_armor_1"
       ],
@@ -103,7 +103,7 @@
       "id": "changede:taur_health_1",
       "title": "skill.changede.taur_health_1",
       "description": "skill.changede.taur_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:taur_core"
       ],
@@ -123,7 +123,7 @@
       "id": "changede:taur_health_2",
       "title": "skill.changede.taur_health_2",
       "description": "skill.changede.taur_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:taur_health_1"
       ],

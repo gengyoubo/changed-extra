@@ -10,7 +10,7 @@
       "id": "changede:arthropod_core",
       "title": "skill.changede.arthropod_core",
       "description": "skill.changede.arthropod_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -30,7 +30,7 @@
       "id": "changede:arthropod_shell_1",
       "title": "skill.changede.arthropod_shell_1",
       "description": "skill.changede.arthropod_shell_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:arthropod_core"
       ],
@@ -50,7 +50,7 @@
       "id": "changede:arthropod_shell_2",
       "title": "skill.changede.arthropod_shell_2",
       "description": "skill.changede.arthropod_shell_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:arthropod_shell_1"
       ],

@@ -9,21 +9,27 @@
       "id": "changede:ray_core",
       "title": "skill.changede.ray_core",
       "description": "skill.changede.ray_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
       "x": 43,
       "y": 11,
       "key": true,
-      "rewards": [],
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "fish_diet",
+          "value": 1
+        }
+      ],
       "research": "race"
     },
     {
       "id": "changede:ray_swimming_1",
       "title": "skill.changede.ray_swimming_1",
       "description": "skill.changede.ray_swimming_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:ray_core"
       ],
@@ -43,7 +49,7 @@
       "id": "changede:ray_swimming_2",
       "title": "skill.changede.ray_swimming_2",
       "description": "skill.changede.ray_swimming_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:ray_swimming_1"
       ],
@@ -63,7 +69,7 @@
       "id": "changede:ray_balance_1",
       "title": "skill.changede.ray_balance_1",
       "description": "skill.changede.ray_balance_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:ray_core"
       ],
@@ -83,7 +89,7 @@
       "id": "changede:ray_balance_2",
       "title": "skill.changede.ray_balance_2",
       "description": "skill.changede.ray_balance_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:ray_balance_1"
       ],
@@ -103,7 +109,7 @@
       "id": "changede:ray_energy_1",
       "title": "skill.changede.ray_energy_1",
       "description": "skill.changede.ray_energy_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:ray_core"
       ],
@@ -123,7 +129,7 @@
       "id": "changede:ray_energy_2",
       "title": "skill.changede.ray_energy_2",
       "description": "skill.changede.ray_energy_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:ray_energy_1"
       ],

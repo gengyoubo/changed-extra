@@ -26,7 +26,7 @@
       "id": "changede:sea_core",
       "title": "skill.changede.sea_core",
       "description": "skill.changede.sea_core.description",
-      "cost": 25,
+      "cost": 200,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -38,6 +38,11 @@
           "type": "changede:mechanic",
           "effect": "sea_core",
           "value": 1
+        },
+        {
+          "type": "changede:mechanic",
+          "effect": "fish_diet",
+          "value": 1
         }
       ],
       "research": "race"
@@ -46,7 +51,7 @@
       "id": "changede:sea_work_1",
       "title": "skill.changede.sea_work_1",
       "description": "skill.changede.sea_work_1.description",
-      "cost": 25,
+      "cost": 200,
       "parents": [
         "changede:sea_core"
       ],
@@ -65,7 +70,7 @@
       "id": "changede:sea_work_2",
       "title": "skill.changede.sea_work_2",
       "description": "skill.changede.sea_work_2.description",
-      "cost": 50,
+      "cost": 250,
       "parents": [
         "changede:sea_work_1"
       ],
@@ -84,7 +89,7 @@
       "id": "changede:sea_guard_1",
       "title": "skill.changede.sea_guard_1",
       "description": "skill.changede.sea_guard_1.description",
-      "cost": 25,
+      "cost": 200,
       "parents": [
         "changede:sea_core"
       ],
@@ -103,7 +108,7 @@
       "id": "changede:sea_thermal_adaptation",
       "title": "skill.changede.sea_thermal_adaptation",
       "description": "skill.changede.sea_thermal_adaptation.description",
-      "cost": 50,
+      "cost": 250,
       "parents": [
         "changede:sea_core"
       ],
@@ -122,7 +127,7 @@
       "id": "changede:sea_swimming_1",
       "title": "skill.changede.sea_swimming_1",
       "description": "skill.changede.sea_swimming_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:sea_core"
       ],
@@ -142,7 +147,7 @@
       "id": "changede:sea_swimming_2",
       "title": "skill.changede.sea_swimming_2",
       "description": "skill.changede.sea_swimming_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:sea_swimming_1"
       ],
@@ -162,7 +167,7 @@
       "id": "changede:sea_health_1",
       "title": "skill.changede.sea_health_1",
       "description": "skill.changede.sea_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:sea_core"
       ],
@@ -182,7 +187,7 @@
       "id": "changede:sea_health_2",
       "title": "skill.changede.sea_health_2",
       "description": "skill.changede.sea_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:sea_health_1"
       ],

@@ -10,21 +10,27 @@
       "id": "changede:mer_core",
       "title": "skill.changede.mer_core",
       "description": "skill.changede.mer_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
       "x": -15,
       "y": 11,
       "key": true,
-      "rewards": [],
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "fish_diet",
+          "value": 1
+        }
+      ],
       "research": "race"
     },
     {
       "id": "changede:mer_swimming_1",
       "title": "skill.changede.mer_swimming_1",
       "description": "skill.changede.mer_swimming_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:mer_core"
       ],
@@ -44,7 +50,7 @@
       "id": "changede:mer_swimming_2",
       "title": "skill.changede.mer_swimming_2",
       "description": "skill.changede.mer_swimming_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:mer_swimming_1"
       ],
@@ -64,7 +70,7 @@
       "id": "changede:mer_health_1",
       "title": "skill.changede.mer_health_1",
       "description": "skill.changede.mer_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:mer_core"
       ],
@@ -84,7 +90,7 @@
       "id": "changede:mer_health_2",
       "title": "skill.changede.mer_health_2",
       "description": "skill.changede.mer_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:mer_health_1"
       ],
@@ -104,7 +110,7 @@
       "id": "changede:mer_energy_1",
       "title": "skill.changede.mer_energy_1",
       "description": "skill.changede.mer_energy_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:mer_core"
       ],
@@ -124,7 +130,7 @@
       "id": "changede:mer_energy_2",
       "title": "skill.changede.mer_energy_2",
       "description": "skill.changede.mer_energy_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:mer_energy_1"
       ],

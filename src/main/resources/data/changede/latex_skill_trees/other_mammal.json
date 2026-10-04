@@ -20,7 +20,7 @@
       "id": "changede:other_mammal_core",
       "title": "skill.changede.other_mammal_core",
       "description": "skill.changede.other_mammal_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -34,7 +34,7 @@
       "id": "changede:other_mammal_health_1",
       "title": "skill.changede.other_mammal_health_1",
       "description": "skill.changede.other_mammal_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:other_mammal_core"
       ],
@@ -54,7 +54,7 @@
       "id": "changede:other_mammal_health_2",
       "title": "skill.changede.other_mammal_health_2",
       "description": "skill.changede.other_mammal_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:other_mammal_health_1"
       ],
@@ -74,7 +74,7 @@
       "id": "changede:other_mammal_stride_1",
       "title": "skill.changede.other_mammal_stride_1",
       "description": "skill.changede.other_mammal_stride_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:other_mammal_core"
       ],
@@ -94,7 +94,7 @@
       "id": "changede:other_mammal_stride_2",
       "title": "skill.changede.other_mammal_stride_2",
       "description": "skill.changede.other_mammal_stride_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:other_mammal_stride_1"
       ],
@@ -114,7 +114,7 @@
       "id": "changede:other_mammal_energy_1",
       "title": "skill.changede.other_mammal_energy_1",
       "description": "skill.changede.other_mammal_energy_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:other_mammal_core"
       ],
@@ -134,7 +134,7 @@
       "id": "changede:other_mammal_energy_2",
       "title": "skill.changede.other_mammal_energy_2",
       "description": "skill.changede.other_mammal_energy_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:other_mammal_energy_1"
       ],

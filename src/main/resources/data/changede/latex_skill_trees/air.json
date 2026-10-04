@@ -20,7 +20,7 @@
       "id": "changede:air_core",
       "title": "skill.changede.air_core",
       "description": "skill.changede.air_core.description",
-      "cost": 25,
+      "cost": 200,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -40,7 +40,7 @@
       "id": "changede:air_endurance_1",
       "title": "skill.changede.air_endurance_1",
       "description": "skill.changede.air_endurance_1.description",
-      "cost": 25,
+      "cost": 150,
       "parents": [
         "changede:air_core"
       ],
@@ -59,7 +59,7 @@
       "id": "changede:air_endurance_2",
       "title": "skill.changede.air_endurance_2",
       "description": "skill.changede.air_endurance_2.description",
-      "cost": 50,
+      "cost": 300,
       "parents": [
         "changede:air_endurance_1"
       ],
@@ -78,7 +78,7 @@
       "id": "changede:air_load_adaptation_1",
       "title": "skill.changede.air_load_adaptation_1",
       "description": "skill.changede.air_load_adaptation_1.description",
-      "cost": 25,
+      "cost": 150,
       "parents": [
         "changede:air_core"
       ],
@@ -97,7 +97,7 @@
       "id": "changede:air_load_adaptation_2",
       "title": "skill.changede.air_load_adaptation_2",
       "description": "skill.changede.air_load_adaptation_2.description",
-      "cost": 50,
+      "cost": 300,
       "parents": [
         "changede:air_load_adaptation_1"
       ],
@@ -116,7 +116,7 @@
       "id": "changede:flight_technique",
       "title": "skill.changede.flight_technique",
       "description": "skill.changede.flight_technique.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:air_core"
       ],
@@ -135,7 +135,7 @@
       "id": "changede:yufeng_body_growth",
       "title": "skill.changede.yufeng_body_growth",
       "description": "skill.changede.yufeng_body_growth.description",
-      "cost": 25,
+      "cost": 75,
       "parents": [
         "changede:air_core"
       ],
@@ -154,7 +154,7 @@
       "id": "changede:aerobatics",
       "title": "skill.changede.aerobatics",
       "description": "skill.changede.aerobatics.description",
-      "cost": 40,
+      "cost": 150,
       "parents": [
         "changede:flight_technique"
       ],
@@ -173,7 +173,7 @@
       "id": "changede:yufeng_endurance",
       "title": "skill.changede.yufeng_endurance",
       "description": "skill.changede.yufeng_endurance.description",
-      "cost": 50,
+      "cost": 125,
       "parents": [
         "changede:yufeng_body_growth"
       ],
@@ -192,7 +192,7 @@
       "id": "changede:flight_mastery",
       "title": "skill.changede.flight_mastery",
       "description": "skill.changede.flight_mastery.description",
-      "cost": 50,
+      "cost": 250,
       "parents": [
         "changede:aerobatics"
       ],
@@ -211,7 +211,7 @@
       "id": "changede:safe_landing",
       "title": "skill.changede.safe_landing",
       "description": "skill.changede.safe_landing.description",
-      "cost": 25,
+      "cost": 75,
       "parents": [
         "changede:aerobatics"
       ],
@@ -230,7 +230,7 @@
       "id": "changede:soft_landing",
       "title": "skill.changede.soft_landing",
       "description": "skill.changede.soft_landing.description",
-      "cost": 40,
+      "cost": 125,
       "parents": [
         "changede:safe_landing"
       ],

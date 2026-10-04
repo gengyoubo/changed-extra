@@ -14,6 +14,14 @@ public class SkillNutritionTest {
         near(SkillNutrition.foodSaturation(0.6F, 1), 0.6);
         near(SkillNutrition.foodSaturation(0.6F, 2), 1.2);
         near(SkillNutrition.foodSaturation(0.6F, 4), 2.4);
+        // Scaling both vanilla arguments by 1.5 would incorrectly give 2.25x saturation.
+        for (int nutrition : new int[] {0, 1, 2, 3, 5, 7, 12}) {
+            var meal = SkillNutrition.fishMeal(nutrition, 0.6F);
+            near(meal.nutrition(), Math.round(nutrition * 1.5));
+            near(meal.nutrition() * meal.saturationModifier() * 2, nutrition * 0.6 * 2 * 1.5);
+            near(meal.nutrition() * SkillNutrition.foodSaturation(meal.saturationModifier(), 2) * 2,
+                    nutrition * 0.6 * 2 * 1.5 * 2);
+        }
         near(SkillNutrition.saturationCap(20, 1), 21);
         near(SkillNutrition.saturationCap(12, 3), 15);
         near(SkillNutrition.saturationCap(20, 0), 20);

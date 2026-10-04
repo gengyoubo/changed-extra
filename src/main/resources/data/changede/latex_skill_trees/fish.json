@@ -8,21 +8,27 @@
       "id": "changede:fish_core",
       "title": "skill.changede.fish_core",
       "description": "skill.changede.fish_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
       "x": -47,
       "y": 11,
       "key": true,
-      "rewards": [],
+      "rewards": [
+        {
+          "type": "changede:mechanic",
+          "effect": "fish_diet",
+          "value": 1
+        }
+      ],
       "research": "race"
     },
     {
       "id": "changede:fish_swimming_1",
       "title": "skill.changede.fish_swimming_1",
       "description": "skill.changede.fish_swimming_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:fish_core"
       ],
@@ -42,7 +48,7 @@
       "id": "changede:fish_swimming_2",
       "title": "skill.changede.fish_swimming_2",
       "description": "skill.changede.fish_swimming_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:fish_swimming_1"
       ],
@@ -62,7 +68,7 @@
       "id": "changede:fish_health_1",
       "title": "skill.changede.fish_health_1",
       "description": "skill.changede.fish_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:fish_core"
       ],
@@ -82,7 +88,7 @@
       "id": "changede:fish_health_2",
       "title": "skill.changede.fish_health_2",
       "description": "skill.changede.fish_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:fish_health_1"
       ],
@@ -102,7 +108,7 @@
       "id": "changede:fish_energy_1",
       "title": "skill.changede.fish_energy_1",
       "description": "skill.changede.fish_energy_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:fish_core"
       ],
@@ -122,7 +128,7 @@
       "id": "changede:fish_energy_2",
       "title": "skill.changede.fish_energy_2",
       "description": "skill.changede.fish_energy_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:fish_energy_1"
       ],

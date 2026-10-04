@@ -2,12 +2,19 @@ package github.com.gengyoubo.CE.mixins;
 
 import github.com.gengyoubo.CE.skill.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 /** Changes natural metabolism while retaining vanilla healing eligibility, food and starvation. */
 @Mixin(FoodData.class)
@@ -27,6 +34,17 @@ public abstract class SkillFoodDataMixin implements SkillFoodData {
     @ModifyVariable(method = "addExhaustion", at = @At("HEAD"), argsOnly = true)
     private float changede$slowExhaustion(float amount) {
         return SkillNutrition.exhaustion(amount, changede$attribute(SkillAttributes.EXHAUSTION_REDUCTION.get(), 0));
+    }
+    @ModifyArgs(method = "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;eat(IF)V"))
+    private void changede$fishDiet(Args args, Item item, ItemStack stack, LivingEntity entity) {
+        if (!(entity instanceof ServerPlayer player) || SkillMechanics.value(player, "fish_diet") <= 0
+                || !SkillFishDiet.matches(stack)) return;
+        changede$setOwner(player);
+        var meal = SkillNutrition.fishMeal(args.get(0), args.get(1));
+        args.set(0, meal.nutrition());
+        args.set(1, meal.saturationModifier());
+        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0));
     }
     @ModifyVariable(method = "eat(IF)V", at = @At("HEAD"), argsOnly = true)
     private float changede$mealSaturation(float modifier) {

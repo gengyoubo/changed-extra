@@ -8,7 +8,7 @@
       "id": "changede:bird_core",
       "title": "skill.changede.bird_core",
       "description": "skill.changede.bird_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -22,7 +22,7 @@
       "id": "changede:bird_landing_1",
       "title": "skill.changede.bird_landing_1",
       "description": "skill.changede.bird_landing_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:bird_core"
       ],
@@ -42,7 +42,7 @@
       "id": "changede:bird_landing_2",
       "title": "skill.changede.bird_landing_2",
       "description": "skill.changede.bird_landing_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:bird_landing_1"
       ],
@@ -62,7 +62,7 @@
       "id": "changede:bird_stride_1",
       "title": "skill.changede.bird_stride_1",
       "description": "skill.changede.bird_stride_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:bird_core"
       ],
@@ -82,7 +82,7 @@
       "id": "changede:bird_stride_2",
       "title": "skill.changede.bird_stride_2",
       "description": "skill.changede.bird_stride_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:bird_stride_1"
       ],
@@ -102,7 +102,7 @@
       "id": "changede:bird_energy_1",
       "title": "skill.changede.bird_energy_1",
       "description": "skill.changede.bird_energy_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:bird_core"
       ],
@@ -122,7 +122,7 @@
       "id": "changede:bird_energy_2",
       "title": "skill.changede.bird_energy_2",
       "description": "skill.changede.bird_energy_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:bird_energy_1"
       ],

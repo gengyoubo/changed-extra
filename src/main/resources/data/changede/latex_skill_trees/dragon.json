@@ -15,7 +15,7 @@
       "id": "changede:dragon_core",
       "title": "skill.changede.dragon_core",
       "description": "skill.changede.dragon_core.description",
-      "cost": 25,
+      "cost": 100,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -29,7 +29,7 @@
       "id": "changede:dragon_fortune_1",
       "title": "skill.changede.dragon_fortune_1",
       "description": "skill.changede.dragon_fortune_1.description",
-      "cost": 25,
+      "cost": 200,
       "parents": [
         "changede:dragon_core"
       ],
@@ -48,7 +48,7 @@
       "id": "changede:dragon_looting_1",
       "title": "skill.changede.dragon_looting_1",
       "description": "skill.changede.dragon_looting_1.description",
-      "cost": 25,
+      "cost": 200,
       "parents": [
         "changede:dragon_core"
       ],
@@ -67,7 +67,7 @@
       "id": "changede:dragon_ore_cache",
       "title": "skill.changede.dragon_ore_cache",
       "description": "skill.changede.dragon_ore_cache.description",
-      "cost": 50,
+      "cost": 300,
       "parents": [
         "changede:dragon_fortune_1"
       ],
@@ -86,7 +86,7 @@
       "id": "changede:dragon_hunt_cache",
       "title": "skill.changede.dragon_hunt_cache",
       "description": "skill.changede.dragon_hunt_cache.description",
-      "cost": 50,
+      "cost": 250,
       "parents": [
         "changede:dragon_looting_1"
       ],
@@ -105,7 +105,7 @@
       "id": "changede:dragon_scales_1",
       "title": "skill.changede.dragon_scales_1",
       "description": "skill.changede.dragon_scales_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:dragon_core"
       ],
@@ -125,7 +125,7 @@
       "id": "changede:dragon_scales_2",
       "title": "skill.changede.dragon_scales_2",
       "description": "skill.changede.dragon_scales_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:dragon_scales_1"
       ],
@@ -145,7 +145,7 @@
       "id": "changede:dragon_health_1",
       "title": "skill.changede.dragon_health_1",
       "description": "skill.changede.dragon_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:dragon_core"
       ],
@@ -165,7 +165,7 @@
       "id": "changede:dragon_health_2",
       "title": "skill.changede.dragon_health_2",
       "description": "skill.changede.dragon_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:dragon_health_1"
       ],

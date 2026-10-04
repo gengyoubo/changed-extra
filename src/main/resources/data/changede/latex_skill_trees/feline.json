@@ -37,7 +37,7 @@
       "id": "changede:feline_core",
       "title": "skill.changede.feline_core",
       "description": "skill.changede.feline_core.description",
-      "cost": 25,
+      "cost": 200,
       "parents": [
         "changede:common_strength_2"
       ],
@@ -54,6 +54,11 @@
           "type": "changede:mechanic",
           "effect": "feline_damage",
           "value": 0.1
+        },
+        {
+          "type": "changede:mechanic",
+          "effect": "fish_diet",
+          "value": 1
         }
       ],
       "research": "race"
@@ -62,7 +67,7 @@
       "id": "changede:feline_presence_1",
       "title": "skill.changede.feline_presence_1",
       "description": "skill.changede.feline_presence_1.description",
-      "cost": 25,
+      "cost": 150,
       "parents": [
         "changede:feline_core"
       ],
@@ -81,7 +86,7 @@
       "id": "changede:feline_claws_1",
       "title": "skill.changede.feline_claws_1",
       "description": "skill.changede.feline_claws_1.description",
-      "cost": 25,
+      "cost": 150,
       "parents": [
         "changede:feline_core"
       ],
@@ -100,7 +105,7 @@
       "id": "changede:feline_claws_2",
       "title": "skill.changede.feline_claws_2",
       "description": "skill.changede.feline_claws_2.description",
-      "cost": 50,
+      "cost": 250,
       "parents": [
         "changede:feline_claws_1"
       ],
@@ -119,7 +124,7 @@
       "id": "changede:feline_balance_1",
       "title": "skill.changede.feline_balance_1",
       "description": "skill.changede.feline_balance_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:feline_core"
       ],
@@ -139,7 +144,7 @@
       "id": "changede:feline_balance_2",
       "title": "skill.changede.feline_balance_2",
       "description": "skill.changede.feline_balance_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:feline_balance_1"
       ],
@@ -159,7 +164,7 @@
       "id": "changede:feline_health_1",
       "title": "skill.changede.feline_health_1",
       "description": "skill.changede.feline_health_1.description",
-      "cost": 25,
+      "cost": 50,
       "parents": [
         "changede:feline_core"
       ],
@@ -179,7 +184,7 @@
       "id": "changede:feline_health_2",
       "title": "skill.changede.feline_health_2",
       "description": "skill.changede.feline_health_2.description",
-      "cost": 50,
+      "cost": 100,
       "parents": [
         "changede:feline_health_1"
       ],
@@ -199,7 +204,7 @@
       "id": "changede:feline_nine_lives",
       "title": "skill.changede.feline_nine_lives",
       "description": "skill.changede.feline_nine_lives.description",
-      "cost": 150,
+      "cost": 500,
       "parents": [
         "changede:feline_presence_1",
         "changede:feline_claws_2"

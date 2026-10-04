@@ -1,32 +1,33 @@
 ## Changed Extra
-Changed Extra（以下称为CE）分为三大部分，汉化、通用和扩展。  
-汉化：使用了 Mixin 对 Changed 与 Changed Addon Plus 的部分 硬编码 内容做出 汉化 的同时，对某些物品汉化进行优化；  
-通用：对 Changed 与 Changed Addon Plus 进行扩展，也是本模组的核心；  
-扩展：扩展：在通用的基础上添加科技元素；  
-## CE扩展项
-CE:基本
-CE:科技
-CE:维度
-CE:扩展
-## 版本号
-changed-extra-X.X.X-（分支）
-第一个X为大版本更新次数
-第二个X为小版本更新次数
-第三个X为测试版本更新次数
-偶尔会有分支
-主分支版本：一般是添加新的游戏功能，不会注重修复bug
-副分支版本：一般是上一个版本出现严重的bug时会开启，偶尔会更新游戏功能（一般情况不会和主分支发布同样的游戏功能）
-（分支版本省略时，默认为主分支版本）
-## Q&A
-Q：为什么会要分主分支版本和副分支版本？
-A：因为作者在制作模组的时候要突然修复上个版本的问题，而且还是在制作新版内容的时候。而且这个时候无法立即发布修复版本，只能在旧版本去修复问题。当然，会有版本同样但是内容不一样的时候。一般会在正式版的时候合并。
-## 汉化召集处
-如果对本模组的汉化不满意的可以投稿至 gengyoubo@gmail.com 或者在issue评论。
-## 开发运行
 
-`runClient`、`runClientFast`、`runClientCoverage`、`runClientJfr` 和 `runServer` 启动前会将编译后的类、资源和 Mixin refmap 合并复制到独立的 `.gradle/changede-runtime/<随机 ID>/main`。运行中的游戏使用这份快照，后续编译不会改写它，避免物品等延迟加载时出现 `ClassNotFoundException`。源码更新后重新启动开发客户端才能使用新代码；`verifyDevRunSnapshot` 可在不启动游戏的情况下校验快照。
+Changed Extra (CE) is an expansion mod for Changed, focused on expanding its world, creatures, resources, and technology into more complete gameplay systems. Rather than simply adding more items or machines, CE explores a different question: What if the materials, creatures, and phenomena of Changed could be studied and developed into their own technology?
 
-IDEA 的 `runClient`／`runServer` 配置通过对应 Gradle 任务启动，而不是直接读取变化中的类目录。`configureStableIdeRuns` 可更新这两个配置；`genIntellijRuns` 重新生成配置后也会自动应用。IDE 直接运行 BootstrapLauncher 的旧配置不会使用快照保护。
+CE expands existing concepts from Changed while also introducing new systems built around them.
+
+## Technology
+
+CE introduces its own technology system based on LP (Latex Power). Latex is no longer just something found in the environment. It can become a resource for power generation, processing, transportation, manufacturing, and research. Current technology includes power generators, energy/item/fluid pipes, pumps, electric processing machines, latex processing, alloy production, and other Changed-related machinery. As development continues, CE technology will increasingly focus on the unique properties of latex, transformation, crystals, biological materials, and other Changed phenomena instead of simply reproducing conventional technology.
+
+## Latex Space
+
+CE greatly expands Latex Space into an explorable dimension with its own environments and ecological rules. Different regions behave differently:
+
+*   Dark latex regions are affected by dark latex rain.
+*   White latex regions are covered by dangerous white fog that can enter exposed spaces.
+*   Luminara regions are unaffected by these weather hazards and act as natural safe areas within the dimension. Weather can affect both players and latex creatures depending on their form and compatibility with the local environment. Latex Space is also an important source of latex and other resources, giving players a reason to explore the dimension despite its environmental dangers.
+
+## Changed Expansion
+
+CE expands mechanics and content from Changed and compatible Changed addons instead of treating them only as dependencies. Existing materials, fluids, crystals, creatures, transformation mechanics, and other less-developed concepts may become parts of larger CE systems. Some features are also designed with compatibility and future integration in mind. Localization CE uses Mixins where necessary to improve or localize hard-coded content from Changed and supported addons. Translation fixes remain part of the project, but localization is no longer the primary purpose of Changed Extra.
+
+## Development
+
+Changed Extra is under active development. Some systems may be redesigned as the mod grows, especially technology and Latex Space content. New versions may introduce new mechanics, compatibility features, balance changes, and fixes. Bug reports and suggestions are welcome on the project's issue tracker.
+
+## Translation
+
+If you are dissatisfied with the translation of this mod, please submit your work to [gengyoubo@gmail.com](mailto:gengyoubo@gmail.com) or leave a comment in the issues.
 
 ## License
+
 This project is licensed under the MIT License.
