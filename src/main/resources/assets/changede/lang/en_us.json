@@ -258,6 +258,9 @@
   "screen.changede.space_tower.energy.rf": "RF",
   "screen.changede.space_tower.energy.j": "J",
   "screen.changede.space_tower.energy.ce": "CE",
+  "screen.changede.space_tower.joule_remainder": "Remainder: %s J",
+  "screen.changede.space_tower.tooltip.rf": "Forge Energy uses RF: 40 FE = 1 LP.",
+  "screen.changede.space_tower.tooltip.j": "Controls typed joule transfers. Forge Energy follows the RF mode.",
   "screen.changede.space_tower.mode.input": "Input",
   "screen.changede.space_tower.mode.output": "Output",
   "screen.changede.space_tower.mode.none": "None",
@@ -1141,5 +1144,6 @@
   "skill.changede.mechanic.white_latex_diet": "White latex diet",
   "skill.changede.mechanic.orange_diet": "Orange diet",
   "skill.changede.mechanic.meat_diet": "Meat diet",
-  "skill.changede.mechanic.vegetarian_diet": "Vegetarian diet"
+  "skill.changede.mechanic.vegetarian_diet": "Vegetarian diet",
+  "ability.changede.switch_transfur_mode.mindless_notice": "Note: Under the current rules, mindless mobs such as zombies and skeletons are still absorbed in assimilation mode, except when a mod supplies a dedicated transfur form."
 }

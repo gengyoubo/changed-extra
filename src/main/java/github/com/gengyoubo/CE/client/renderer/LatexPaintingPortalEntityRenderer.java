@@ -5,7 +5,6 @@ import github.com.gengyoubo.CE.Block.LatexPaintingPortalBlock;
 import github.com.gengyoubo.CE.LP.network.CENetwork;
 import github.com.gengyoubo.CE.LP.network.packet.RequestLatexPaintingPortalPreviewPacket;
 import github.com.gengyoubo.CE.client.LatexPaintingPortalPreviewCache;
-import github.com.gengyoubo.CE.changede;
 import github.com.gengyoubo.CE.entity.LatexPaintingPortalEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -18,7 +17,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaintingPortalEntity> {
-    private static long lastDebugLogTick;
 
     public LatexPaintingPortalEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -32,9 +30,6 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
     @Override
     public void render(@NotNull LatexPaintingPortalEntity entity, float entityYaw, float partialTick,
                        @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
-        if (LatexPaintingPortalFramebufferRenderer.isRenderingPortalFrame()) {
-            return;
-        }
         if (!isViewingFront(entity)) {
             poseStack.pushPose();
             LatexPaintingPortalProjectionRenderer.renderBackCentered(poseStack, entity.getFacing());
@@ -50,17 +45,10 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
 
         LatexPaintingPortalPreviewCache.Snapshot snapshot =
                 LatexPaintingPortalPreviewCache.get(dimension, entity.blockPosition());
-        logPortalRenderCoordinates(entity, snapshot);
         boolean reversed = shouldReversePortalView(entity);
 
         poseStack.pushPose();
-        if (snapshot != null && !snapshot.blocks().isEmpty()) {
-            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, reversed);
-        } else if (LatexPortalRenderManager.getTarget(entity) == null) {
-            LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, reversed);
-        } else {
-            LatexPaintingPortalFramebufferRenderer.renderCentered(poseStack, entity.getFacing(), entity, partialTick, snapshot, reversed);
-        }
+        LatexPaintingPortalProjectionRenderer.renderCentered(poseStack, bufferSource, entity.getFacing(), snapshot, reversed);
         poseStack.popPose();
 
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
@@ -86,47 +74,4 @@ public class LatexPaintingPortalEntityRenderer extends EntityRenderer<LatexPaint
         return TextureAtlas.LOCATION_BLOCKS;
     }
 
-    private static void logPortalRenderCoordinates(LatexPaintingPortalEntity entity, LatexPaintingPortalPreviewCache.Snapshot snapshot) {
-        Level level = entity.level();
-        long gameTime = level.getGameTime();
-        if (gameTime - lastDebugLogTick < 100L) {
-            return;
-        }
-
-        lastDebugLogTick = gameTime;
-        int minX = 0;
-        int maxX = 0;
-        int minZ = 0;
-        int maxZ = 0;
-        int minY = 0;
-        int maxY = 0;
-        int blocks = snapshot == null ? -1 : snapshot.blocks().size();
-        if (snapshot != null && !snapshot.blocks().isEmpty()) {
-            minX = snapshot.blocks().stream().mapToInt(LatexPaintingPortalPreviewCache.PreviewBlock::dx).min().orElse(0);
-            maxX = snapshot.blocks().stream().mapToInt(LatexPaintingPortalPreviewCache.PreviewBlock::dx).max().orElse(0);
-            minY = snapshot.blocks().stream().mapToInt(LatexPaintingPortalPreviewCache.PreviewBlock::dy).min().orElse(0);
-            maxY = snapshot.blocks().stream().mapToInt(LatexPaintingPortalPreviewCache.PreviewBlock::dy).max().orElse(0);
-            minZ = snapshot.blocks().stream().mapToInt(LatexPaintingPortalPreviewCache.PreviewBlock::dz).min().orElse(0);
-            maxZ = snapshot.blocks().stream().mapToInt(LatexPaintingPortalPreviewCache.PreviewBlock::dz).max().orElse(0);
-        }
-
-        changede.LOGGER.warn(
-                "Latex painting portal render coords: dimension={}, portalPos={}, facing={}, targetDimension={}, targetPos={}, targetFacing={}, reversed={}, effectiveReversed={}, localX={}..{}, localY={}..{}, localZ={}..{}, blocks={}",
-                level.dimension().location(),
-                entity.blockPosition(),
-                entity.getFacing(),
-                entity.getTargetDimension().location(),
-                entity.getTargetPos(),
-                entity.getTargetFacing(),
-                entity.isRenderReversed(),
-                shouldReversePortalView(entity),
-                minX,
-                maxX,
-                minY,
-                maxY,
-                minZ,
-                maxZ,
-                blocks
-        );
-    }
 }

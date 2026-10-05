@@ -9,6 +9,7 @@ import github.com.gengyoubo.CE.LP.world.Menu.SpaceTowerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -58,6 +59,8 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
             rowY += 18;
         }
 
+        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.joule_remainder", menu.getJouleBuffer()), 16, rowY + 2, 0x303030, false);
+
         guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_settings"), 118, 43, 0x303030, false);
         guiGraphics.drawString(font, Component.literal("RPM:"), 118, 60, 0x303030, false);
         guiGraphics.drawString(font, Component.literal("SU:"), 118, 82, 0x303030, false);
@@ -76,6 +79,9 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
                     .bounds(leftPos + 48, rowY, 58, 16)
                     .build();
             modeButtons.put(type, button);
+            if (type == SpaceTowerEnergyType.RF || type == SpaceTowerEnergyType.J) {
+                button.setTooltip(Tooltip.create(Component.translatable("screen.changede.space_tower.tooltip." + type.name().toLowerCase())));
+            }
             addRenderableWidget(button);
             rowY += 18;
         }

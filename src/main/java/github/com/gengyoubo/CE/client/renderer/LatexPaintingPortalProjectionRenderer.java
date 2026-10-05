@@ -9,9 +9,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import github.com.gengyoubo.CE.client.LatexPaintingPortalPreviewCache;
-import github.com.gengyoubo.CE.changede;
 import github.com.gengyoubo.CE.entity.LatexPaintingPortalEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.Direction;
@@ -22,6 +20,8 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public class LatexPaintingPortalProjectionRenderer {
     private static final int GRID_SIZE = 129;
@@ -32,7 +32,8 @@ public class LatexPaintingPortalProjectionRenderer {
     private static final double PORTAL_HALF_HEIGHT = 1.5D;
     private static final double HORIZONTAL_VIEW_SPREAD = 0.95D;
     private static final double VERTICAL_VIEW_SPREAD = 0.68D;
-    private static long lastDebugLogTick;
+    private static final Cell[] EMPTY_PROJECTION = new Cell[GRID_SIZE * GRID_SIZE];
+    private static final Map<LatexPaintingPortalPreviewCache.Snapshot, Cell[]> PROJECTIONS = new WeakHashMap<>();
 
     private LatexPaintingPortalProjectionRenderer() {
     }
@@ -51,7 +52,6 @@ public class LatexPaintingPortalProjectionRenderer {
         if (reversed) {
             poseStack.scale(-1.0F, 1.0F, 1.0F);
         }
-        logSnapshotSize(snapshot);
 
         ProjectionBuffer projection = beginProjectionRender(poseStack);
         Matrix4f matrix = projection.matrix();
@@ -60,7 +60,7 @@ public class LatexPaintingPortalProjectionRenderer {
         int background = skyColorFor(snapshot, 0, 0);
         drawQuad(matrix, bufferBuilder, -0.48F, -0.48F, 0.48F, 0.48F, 0.000F, red(background), green(background), blue(background));
 
-        Cell[] projected = flatten(snapshot);
+        Cell[] projected = snapshot == null ? EMPTY_PROJECTION : PROJECTIONS.computeIfAbsent(snapshot, LatexPaintingPortalProjectionRenderer::flatten);
         for (int z = 0; z < GRID_SIZE; z++) {
             for (int x = 0; x < GRID_SIZE; x++) {
                 Cell cell = projected[z * GRID_SIZE + x];
@@ -131,19 +131,8 @@ public class LatexPaintingPortalProjectionRenderer {
         );
     }
 
-    private static void logSnapshotSize(LatexPaintingPortalPreviewCache.Snapshot snapshot) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null) {
-            return;
-        }
-
-        long gameTime = minecraft.level.getGameTime();
-        if (gameTime - lastDebugLogTick < 100L) {
-            return;
-        }
-
-        lastDebugLogTick = gameTime;
-        changede.LOGGER.warn("Rendering latex painting portal projection, blocks={}", snapshot == null ? -1 : snapshot.blocks().size());
+    public static void clearCache() {
+        PROJECTIONS.clear();
     }
 
     private static Cell[] flatten(LatexPaintingPortalPreviewCache.Snapshot snapshot) {

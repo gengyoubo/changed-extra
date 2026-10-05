@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class ForgeChangedLoadingErrorMixin {
     // Match call sites rather than compiler-generated lambda numbers, including row sizing.
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/ModLoadingException;formatToString()Ljava/lang/String;"), require = 0)
-    private static String changede$displayDiagnostics(ModLoadingException error) { return changede$message(error); }
+    private String changede$displayDiagnostics(ModLoadingException error) { return changede$message(error); }
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/ModLoadingException;getMessage()Ljava/lang/String;"), require = 0)
     private static String changede$sizeDiagnostics(ModLoadingException error) { return changede$message(error); }

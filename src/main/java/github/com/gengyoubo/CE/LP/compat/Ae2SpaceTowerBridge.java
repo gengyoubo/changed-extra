@@ -89,14 +89,8 @@ public class Ae2SpaceTowerBridge {
     }
 
     private void pullAeFromNetwork(IEnergyService energy) {
-        int freeLp = Math.max(0, tower.getMaxEnergyStored() - tower.getEnergyStored());
-        if (freeLp == 0) {
-            return;
-        }
-
-        double maxAeForStorage = freeLp * SpaceTowerEnergyType.LP.joulesPerUnit() / SpaceTowerEnergyType.AE.joulesPerUnit();
-        double requestedAe = Math.min(AE_TRANSFER_PER_TICK, maxAeForStorage);
-        if (requestedAe < 1.0D) {
+        double requestedAe = tower.receiveEnergyAsType(SpaceTowerEnergyType.AE, AE_TRANSFER_PER_TICK, true);
+        if (requestedAe <= 0.0D) {
             return;
         }
 

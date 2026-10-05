@@ -1,9 +1,6 @@
 package github.com.gengyoubo.CE.BlockEntity;
 
 import github.com.gengyoubo.CE.Block.LatexPaintingPortalBlock;
-import github.com.gengyoubo.CE.LP.network.CENetwork;
-import github.com.gengyoubo.CE.LP.network.packet.RequestLatexPaintingPortalPreviewPacket;
-import github.com.gengyoubo.CE.changede;
 import github.com.gengyoubo.CE.init.CEBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -15,11 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class LatexPaintingPortalBlockEntity extends BlockEntity {
-    private static final int CLIENT_REQUEST_INTERVAL_TICKS = 80;
 
     private ResourceKey<Level> previewDimension = LatexPaintingPortalBlock.LATEX_SPACE;
     private BlockPos previewOrigin = BlockPos.ZERO;
-    private int clientRequestCooldown;
 
     public LatexPaintingPortalBlockEntity(BlockPos pos, BlockState state) {
         super(CEBlockEntity.LATEX_PAINTING_PORTAL.get(), pos, state);
@@ -31,21 +26,6 @@ public class LatexPaintingPortalBlockEntity extends BlockEntity {
 
     public BlockPos getPreviewOrigin() {
         return previewOrigin;
-    }
-
-    public void clientTick() {
-        if (level == null || !level.isClientSide) {
-            return;
-        }
-
-        if (clientRequestCooldown > 0) {
-            clientRequestCooldown--;
-            return;
-        }
-
-        clientRequestCooldown = CLIENT_REQUEST_INTERVAL_TICKS;
-        changede.LOGGER.warn("Client tick requesting latex painting portal preview at {}", worldPosition);
-        CENetwork.sendToServer(new RequestLatexPaintingPortalPreviewPacket(worldPosition));
     }
 
     @Override

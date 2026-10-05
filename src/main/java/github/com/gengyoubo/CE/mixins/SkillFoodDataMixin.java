@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
@@ -34,18 +35,22 @@ public abstract class SkillFoodDataMixin implements SkillFoodData {
     private float changede$slowExhaustion(float amount) {
         return SkillNutrition.exhaustion(amount, changede$attribute(SkillAttributes.EXHAUSTION_REDUCTION.get(), 0));
     }
-    @Redirect(method = "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;eat(IF)V"))
-    private void changede$diet(FoodData data, int nutrition, float saturation,
-                                  Item item, ItemStack stack, LivingEntity entity) {
-        if (!(entity instanceof ServerPlayer player) || !SkillDiets.matches(player, stack)) {
-            data.eat(nutrition, saturation);
-            return;
-        }
+    // Keep the eat(IF) invocation intact for SSC/Apoli redirects. FoodData only reads
+    // nutrition and saturation from this local; normal eating effects still come from the item.
+    // This three-argument overload is added by Forge and has no vanilla obfuscation mapping.
+    @ModifyVariable(method = "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V",
+            at = @At("STORE"), ordinal = 0, remap = false)
+    private FoodProperties changede$diet(FoodProperties original, Item item, ItemStack stack, LivingEntity entity) {
+        if (original == null || !(entity instanceof ServerPlayer player) || !SkillDiets.matches(player, stack))
+            return original;
         changede$setOwner(player);
-        var meal = SkillNutrition.dietMeal(nutrition, saturation);
-        data.eat(meal.nutrition(), meal.saturationModifier());
+        var meal = SkillNutrition.dietMeal(original.getNutrition(), original.getSaturationModifier());
+        var builder = new FoodProperties.Builder().nutrition(meal.nutrition()).saturationMod(meal.saturationModifier());
+        if (original.isMeat()) builder.meat();
+        if (original.canAlwaysEat()) builder.alwaysEat();
+        if (original.isFastFood()) builder.fast();
         player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0));
+        return builder.build();
     }
     @ModifyVariable(method = "eat(IF)V", at = @At("HEAD"), argsOnly = true)
     private float changede$mealSaturation(float modifier) {

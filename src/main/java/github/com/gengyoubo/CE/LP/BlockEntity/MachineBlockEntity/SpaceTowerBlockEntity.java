@@ -3,6 +3,7 @@ package github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity;
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
 import github.com.gengyoubo.CE.LP.IOType;
 import github.com.gengyoubo.CE.LP.SpaceTowerEnergyType;
+import github.com.gengyoubo.CE.LP.energy.SpaceTowerEnergyConversion;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerForgeEnergyPusher;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerForgeEnergyStorage;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
@@ -118,42 +119,59 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
     }
 
     @Override
-    public void receiveEnergyAsType(SpaceTowerEnergyType type, double amount) {
-        if (amount <= 0.0D || getMode(type) != IOType.INPUT) {
-            return;
-        }
-
-        if (type == SpaceTowerEnergyType.CE) {
-            double before = ceStoredLp;
-            ceStoredLp = Math.min(getMaxCeStoredLp(), ceStoredLp + amount);
-            sync();
-            return;
-        }
-
-        jouleBuffer = SpaceTowerCommon.receiveAsLpBuffer(jouleBuffer, type, amount, this::receiveLpIgnoringMode, this::sync);
+    public double getStoredJoules() {
+        return lpEnergy * SpaceTowerEnergyType.LP.joulesPerUnit() + jouleBuffer;
     }
 
     @Override
-    public double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount) {
-        if (requestedAmount <= 0.0D || getMode(type) != IOType.OUTPUT) {
+    public double receiveEnergyAsType(SpaceTowerEnergyType type, double amount, boolean simulate) {
+        if (!Double.isFinite(amount) || amount <= 0.0D || getMode(type) != IOType.INPUT) {
             return 0.0D;
         }
+        if (type == SpaceTowerEnergyType.CE) {
+            double accepted = Math.min(amount, Math.max(0.0D, getMaxCeStoredLp() - ceStoredLp));
+            if (!simulate && accepted > 0) {
+                ceStoredLp += accepted;
+                sync();
+            }
+            return accepted;
+        }
+        var transfer = SpaceTowerEnergyConversion.receive(lpEnergy, jouleBuffer, getMaxEnergyStored(), type, amount);
+        if (!simulate && transfer.amount() > 0) {
+            applyEnergyTransfer(transfer);
+        }
+        return transfer.amount();
+    }
 
+    @Override
+    public double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount, boolean simulate) {
+        if (!Double.isFinite(requestedAmount) || requestedAmount <= 0.0D || getMode(type) != IOType.OUTPUT) {
+            return 0.0D;
+        }
         if (type == SpaceTowerEnergyType.CE) {
             double extracted = Math.min(ceStoredLp, requestedAmount);
-            ceStoredLp -= extracted;
-            if (extracted > 0.0D) {
+            if (!simulate && extracted > 0) {
+                ceStoredLp -= extracted;
                 sync();
             }
             return extracted;
         }
+        var transfer = SpaceTowerEnergyConversion.extract(lpEnergy, jouleBuffer, getMaxEnergyStored(), type, requestedAmount);
+        if (!simulate && transfer.amount() > 0) {
+            applyEnergyTransfer(transfer);
+        }
+        return transfer.amount();
+    }
 
-        return SpaceTowerCommon.extractFromLp(type, requestedAmount, this::extractLpIgnoringMode, this::sync);
+    private void applyEnergyTransfer(SpaceTowerEnergyConversion.Transfer transfer) {
+        lpEnergy = transfer.lp();
+        jouleBuffer = transfer.remainder();
+        sync();
     }
 
     @Override
     public void refundEnergyAsType(SpaceTowerEnergyType type, double amount) {
-        if (amount <= 0.0D) {
+        if (!Double.isFinite(amount) || amount <= 0.0D) {
             return;
         }
 
@@ -163,10 +181,9 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
             return;
         }
 
-        double joules = amount * type.joulesPerUnit();
-        int lp = (int)Math.floor(joules / SpaceTowerEnergyType.LP.joulesPerUnit());
-        if (receiveLpIgnoringMode(lp) > 0) {
-            sync();
+        var transfer = SpaceTowerEnergyConversion.receive(lpEnergy, jouleBuffer, getMaxEnergyStored(), type, amount);
+        if (transfer.amount() > 0) {
+            applyEnergyTransfer(transfer);
         }
     }
 
@@ -223,7 +240,7 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
     }
 
     protected int receiveLpIgnoringMode(int amount) {
-        int accepted = Math.min(LP_CAPACITY - lpEnergy, Math.max(0, amount));
+        int accepted = Math.min((int)Math.floor((LP_CAPACITY * 100.0D - getStoredJoules()) / 100.0D), Math.max(0, amount));
         lpEnergy += accepted;
         if (accepted > 0) {
             setChanged();
@@ -241,7 +258,7 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
     }
 
     private void clampCeStorage() {
-        ceStoredLp = Math.min(ceStoredLp, getMaxCeStoredLp());
+        ceStoredLp = Double.isFinite(ceStoredLp) ? Math.max(0, Math.min(ceStoredLp, getMaxCeStoredLp())) : 0;
     }
 
     private void rescaleCeStorage(int oldCostPerMinute) {
@@ -276,7 +293,9 @@ public class SpaceTowerBlockEntity extends BlockEntity implements ILatexEnergyHa
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         lpEnergy = Mth.clamp(tag.getInt("LpEnergy"), 0, LP_CAPACITY);
-        jouleBuffer = tag.getDouble("JouleBuffer");
+        var stored = SpaceTowerEnergyConversion.normalize(lpEnergy, tag.getDouble("JouleBuffer"), getMaxEnergyStored());
+        lpEnergy = stored.lp();
+        jouleBuffer = stored.remainder();
         ceStoredLp = tag.getDouble("CeStoredLp");
         ceRpm = tag.contains("CeRpm") ? tag.getInt("CeRpm") : DEFAULT_CE_RPM;
         ceSu = tag.contains("CeSu") ? tag.getInt("CeSu") : DEFAULT_CE_SU;

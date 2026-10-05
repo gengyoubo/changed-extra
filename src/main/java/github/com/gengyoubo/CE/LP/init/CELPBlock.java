@@ -75,7 +75,8 @@ public class CELPBlock {
         LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK = BLOCKS.register("latexcreative_extranalbody_craft_table_block",
                 () -> new LatexCreativeExtranalbodyCraftTableBlock(BlockBehaviour.Properties.of()));
         SPACE_TOWER = BLOCKS.register("space_tower",
-                () -> SpaceTowerCompat.createBlock(BlockBehaviour.Properties.of()));
+                () -> SpaceTowerCompat.createBlock(BlockBehaviour.Properties.of()
+                        .sound(net.minecraft.world.level.block.SoundType.METAL).strength(3.0F, 12.0F).noOcclusion()));
         WHITE_LATEX_POWER_CONVERTER = BLOCKS.register("white_latex_power_converter",
                 () -> new LatexEnergyConverterBlock(BlockBehaviour.Properties.of(), true));
         DARK_LATEX_POWER_CONVERTER = BLOCKS.register("dark_latex_power_converter",

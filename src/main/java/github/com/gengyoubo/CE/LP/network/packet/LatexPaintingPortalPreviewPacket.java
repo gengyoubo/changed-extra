@@ -1,6 +1,5 @@
 package github.com.gengyoubo.CE.LP.network.packet;
 
-import github.com.gengyoubo.CE.changede;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class LatexPaintingPortalPreviewPacket {
-    private static final int MAX_BLOCKS = 60000;
+    private static final int MAX_BLOCKS = 4096;
 
     private final ResourceLocation sourceDimension;
     private final BlockPos portalPos;
@@ -49,13 +48,13 @@ public class LatexPaintingPortalPreviewPacket {
         BlockPos portalPos = buffer.readBlockPos();
         int skyColor = buffer.readVarInt();
         int encodedSize = buffer.readVarInt();
-        int storedSize = Math.min(encodedSize, MAX_BLOCKS);
-        List<Entry> entries = new ArrayList<>(storedSize);
+        if (encodedSize < 0 || encodedSize > MAX_BLOCKS) {
+            throw new IllegalArgumentException("Invalid portal preview size: " + encodedSize);
+        }
+        List<Entry> entries = new ArrayList<>(encodedSize);
         for (int i = 0; i < encodedSize; i++) {
             Entry entry = new Entry(buffer.readShort(), buffer.readShort(), buffer.readShort(), buffer.readVarInt());
-            if (i < MAX_BLOCKS) {
-                entries.add(entry);
-            }
+            entries.add(entry);
         }
         return new LatexPaintingPortalPreviewPacket(sourceDimension, portalPos, skyColor, entries);
     }
@@ -68,7 +67,6 @@ public class LatexPaintingPortalPreviewPacket {
 
     private static void handleClient(LatexPaintingPortalPreviewPacket packet) {
         try {
-            changede.LOGGER.warn("Received latex painting portal preview for {} at {}, blocks={}", packet.sourceDimension, packet.portalPos, packet.entries.size());
             Class<?> cache = Class.forName("github.com.gengyoubo.CE.client.LatexPaintingPortalPreviewCache");
             cache.getMethod("update", ResourceLocation.class, BlockPos.class, int.class, List.class)
                     .invoke(null, packet.sourceDimension, packet.portalPos, packet.skyColor, packet.entries);

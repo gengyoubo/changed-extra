@@ -285,6 +285,9 @@
   "screen.changede.space_tower.energy.rf": "RF",
   "screen.changede.space_tower.energy.j": "J",
   "screen.changede.space_tower.energy.ce": "CE",
+  "screen.changede.space_tower.joule_remainder": "余量: %s J",
+  "screen.changede.space_tower.tooltip.rf": "Forge Energy 使用 RF 换算：40 FE = 1 LP。",
+  "screen.changede.space_tower.tooltip.j": "控制按焦耳传输的能量；Forge Energy 使用 RF 模式。",
   "screen.changede.space_tower.mode.input": "输入",
   "screen.changede.space_tower.mode.output": "输出",
   "screen.changede.space_tower.mode.none": "无",
@@ -1141,5 +1144,6 @@
   "skill.changede.mechanic.white_latex_diet": "白胶食谱",
   "skill.changede.mechanic.orange_diet": "橘子食谱",
   "skill.changede.mechanic.meat_diet": "肉食谱",
-  "skill.changede.mechanic.vegetarian_diet": "素食谱"
+  "skill.changede.mechanic.vegetarian_diet": "素食谱",
+  "ability.changede.switch_transfur_mode.mindless_notice": "提示：当前规则下，即使选择同化模式，僵尸、骷髅等无意识生物仍会被吞噬；模组提供专用兽化形态的目标除外。"
 }

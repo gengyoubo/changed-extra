@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.IntConsumer;
-import java.util.function.IntUnaryOperator;
 
 final class SpaceTowerCommon {
     private SpaceTowerCommon() {
@@ -44,29 +43,6 @@ final class SpaceTowerCommon {
                 }
             }
         }
-    }
-
-    static double receiveAsLpBuffer(double jouleBuffer, SpaceTowerEnergyType type, double amount,
-                                    IntUnaryOperator receiveLp, Runnable sync) {
-        double updatedBuffer = jouleBuffer + amount * type.joulesPerUnit();
-        int lp = (int)Math.floor(updatedBuffer / SpaceTowerEnergyType.LP.joulesPerUnit());
-        int received = receiveLp.applyAsInt(lp);
-        updatedBuffer -= received * SpaceTowerEnergyType.LP.joulesPerUnit();
-        if (received > 0) {
-            sync.run();
-        }
-        return updatedBuffer;
-    }
-
-    static double extractFromLp(SpaceTowerEnergyType type, double requestedAmount,
-                                IntUnaryOperator extractLp, Runnable sync) {
-        double requestedJoules = requestedAmount * type.joulesPerUnit();
-        int requestedLp = (int)Math.ceil(requestedJoules / SpaceTowerEnergyType.LP.joulesPerUnit());
-        int extractedLp = extractLp.applyAsInt(requestedLp);
-        if (extractedLp > 0) {
-            sync.run();
-        }
-        return extractedLp * SpaceTowerEnergyType.LP.joulesPerUnit() / type.joulesPerUnit();
     }
 
     static int getCeCostPerMinute(int rpm, int stressUnits) {

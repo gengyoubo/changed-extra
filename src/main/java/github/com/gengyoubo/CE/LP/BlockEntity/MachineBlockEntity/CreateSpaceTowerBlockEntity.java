@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
 import github.com.gengyoubo.CE.LP.IOType;
 import github.com.gengyoubo.CE.LP.SpaceTowerEnergyType;
+import github.com.gengyoubo.CE.LP.energy.SpaceTowerEnergyConversion;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerForgeEnergyPusher;
 import github.com.gengyoubo.CE.LP.compat.SpaceTowerForgeEnergyStorage;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
@@ -129,46 +130,65 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     }
 
     @Override
-    public void receiveEnergyAsType(SpaceTowerEnergyType type, double amount) {
-        if (amount <= 0.0D || getMode(type) != IOType.INPUT) {
-            return;
-        }
-
-        if (type == SpaceTowerEnergyType.CE) {
-            boolean wasPowered = canGenerateCeOutput();
-            double before = ceStoredLp;
-            ceStoredLp = Math.min(getMaxCeStoredLp(), ceStoredLp + amount);
-            updateCeOutputPoweredState(wasPowered);
-            sync();
-            return;
-        }
-
-        jouleBuffer = SpaceTowerCommon.receiveAsLpBuffer(jouleBuffer, type, amount, this::receiveLpIgnoringMode, this::sync);
+    public double getStoredJoules() {
+        return lpEnergy * SpaceTowerEnergyType.LP.joulesPerUnit() + jouleBuffer;
     }
 
     @Override
-    public double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount) {
-        if (requestedAmount <= 0.0D || getMode(type) != IOType.OUTPUT) {
+    public double receiveEnergyAsType(SpaceTowerEnergyType type, double amount, boolean simulate) {
+        if (!Double.isFinite(amount) || amount <= 0.0D || getMode(type) != IOType.INPUT) {
             return 0.0D;
         }
+        if (type == SpaceTowerEnergyType.CE) {
+            boolean wasPowered = canGenerateCeOutput();
+            double accepted = Math.min(amount, Math.max(0.0D, getMaxCeStoredLp() - ceStoredLp));
+            if (!simulate && accepted > 0) {
+                ceStoredLp += accepted;
+                updateCeOutputPoweredState(wasPowered);
+                sync();
+            }
+            return accepted;
+        }
+        var transfer = SpaceTowerEnergyConversion.receive(lpEnergy, jouleBuffer, getMaxEnergyStored(), type, amount);
+        if (!simulate && transfer.amount() > 0) {
+            applyEnergyTransfer(transfer);
+        }
+        return transfer.amount();
+    }
 
+    @Override
+    public double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount, boolean simulate) {
+        if (!Double.isFinite(requestedAmount) || requestedAmount <= 0.0D || getMode(type) != IOType.OUTPUT) {
+            return 0.0D;
+        }
         if (type == SpaceTowerEnergyType.CE) {
             boolean wasPowered = canGenerateCeOutput();
             double extracted = Math.min(ceStoredLp, requestedAmount);
-            ceStoredLp -= extracted;
-            if (extracted > 0.0D) {
+            if (!simulate && extracted > 0) {
+                ceStoredLp -= extracted;
                 updateCeOutputPoweredState(wasPowered);
                 sync();
             }
             return extracted;
         }
+        var transfer = SpaceTowerEnergyConversion.extract(lpEnergy, jouleBuffer, getMaxEnergyStored(), type, requestedAmount);
+        if (!simulate && transfer.amount() > 0) {
+            applyEnergyTransfer(transfer);
+        }
+        return transfer.amount();
+    }
 
-        return SpaceTowerCommon.extractFromLp(type, requestedAmount, this::extractLpIgnoringMode, this::sync);
+    private void applyEnergyTransfer(SpaceTowerEnergyConversion.Transfer transfer) {
+        boolean wasPowered = canGenerateCeOutput();
+        lpEnergy = transfer.lp();
+        jouleBuffer = transfer.remainder();
+        updateCeOutputPoweredState(wasPowered);
+        sync();
     }
 
     @Override
     public void refundEnergyAsType(SpaceTowerEnergyType type, double amount) {
-        if (amount <= 0.0D) {
+        if (!Double.isFinite(amount) || amount <= 0.0D) {
             return;
         }
 
@@ -180,10 +200,9 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
             return;
         }
 
-        double joules = amount * type.joulesPerUnit();
-        int lp = (int)Math.floor(joules / SpaceTowerEnergyType.LP.joulesPerUnit());
-        if (receiveLpIgnoringMode(lp) > 0) {
-            sync();
+        var transfer = SpaceTowerEnergyConversion.receive(lpEnergy, jouleBuffer, getMaxEnergyStored(), type, amount);
+        if (transfer.amount() > 0) {
+            applyEnergyTransfer(transfer);
         }
     }
 
@@ -389,7 +408,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
 
     protected int receiveLpIgnoringMode(int amount) {
         boolean wasPowered = canGenerateCeOutput();
-        int accepted = Math.min(SpaceTowerBlockEntity.LP_CAPACITY - lpEnergy, Math.max(0, amount));
+        int accepted = Math.min((int)Math.floor((getMaxEnergyStored() * 100.0D - getStoredJoules()) / 100.0D), Math.max(0, amount));
         lpEnergy += accepted;
         if (accepted > 0) {
             setChanged();
@@ -410,7 +429,7 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     }
 
     private void clampCeStorage() {
-        ceStoredLp = Math.min(ceStoredLp, getMaxCeStoredLp());
+        ceStoredLp = Double.isFinite(ceStoredLp) ? Math.max(0, Math.min(ceStoredLp, getMaxCeStoredLp())) : 0;
     }
 
     private void rescaleCeStorage(int oldCostPerMinute) {
@@ -496,7 +515,9 @@ public class CreateSpaceTowerBlockEntity extends GeneratingKineticBlockEntity im
     protected void read(CompoundTag tag, boolean clientPacket) {
         super.read(tag, clientPacket);
         lpEnergy = Mth.clamp(tag.getInt("LpEnergy"), 0, SpaceTowerBlockEntity.LP_CAPACITY);
-        jouleBuffer = tag.getDouble("JouleBuffer");
+        var stored = SpaceTowerEnergyConversion.normalize(lpEnergy, tag.getDouble("JouleBuffer"), getMaxEnergyStored());
+        lpEnergy = stored.lp();
+        jouleBuffer = stored.remainder();
         ceStoredLp = tag.getDouble("CeStoredLp");
         ceOutputDebt = tag.getDouble("CeOutputDebt");
         ceInputAccumulator = tag.getDouble("CeInputAccumulator");

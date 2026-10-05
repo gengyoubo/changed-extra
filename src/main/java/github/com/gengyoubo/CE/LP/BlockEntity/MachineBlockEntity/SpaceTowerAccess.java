@@ -10,9 +10,19 @@ public interface SpaceTowerAccess {
 
     void setMode(SpaceTowerEnergyType type, IOType mode);
 
-    void receiveEnergyAsType(SpaceTowerEnergyType type, double amount);
+    default double receiveEnergyAsType(SpaceTowerEnergyType type, double amount) {
+        return receiveEnergyAsType(type, amount, false);
+    }
 
-    double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount);
+    double receiveEnergyAsType(SpaceTowerEnergyType type, double amount, boolean simulate);
+
+    default double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount) {
+        return extractEnergyAsType(type, requestedAmount, false);
+    }
+
+    double extractEnergyAsType(SpaceTowerEnergyType type, double requestedAmount, boolean simulate);
+
+    double getStoredJoules();
 
     void refundEnergyAsType(SpaceTowerEnergyType type, double amount);
 

@@ -12,11 +12,9 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,7 +27,7 @@ public class SpaceTowerBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public SpaceTowerBlock(Properties properties) {
-        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0F, 12.0F).noOcclusion());
+        super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

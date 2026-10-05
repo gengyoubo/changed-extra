@@ -3,7 +3,6 @@ package github.com.gengyoubo.CE.Block;
 import github.com.gengyoubo.CE.BlockEntity.LatexPaintingPortalBlockEntity;
 import github.com.gengyoubo.CE.entity.LatexPaintingPortalEntity;
 import github.com.gengyoubo.CE.events.AdvancementChainEvents;
-import github.com.gengyoubo.CE.init.CEBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -93,23 +92,6 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new LatexPaintingPortalBlockEntity(pos, state);
-    }
-
-    @Override
-    public <T extends BlockEntity> @Nullable net.minecraft.world.level.block.entity.BlockEntityTicker<T> getTicker(
-            @NotNull Level level,
-            @NotNull BlockState state,
-            @NotNull net.minecraft.world.level.block.entity.BlockEntityType<T> type
-    ) {
-        if (!level.isClientSide || type != CEBlockEntity.LATEX_PAINTING_PORTAL.get()) {
-            return null;
-        }
-
-        return (tickerLevel, tickerPos, tickerState, blockEntity) -> {
-            if (blockEntity instanceof LatexPaintingPortalBlockEntity portal) {
-                portal.clientTick();
-            }
-        };
     }
 
     @Override

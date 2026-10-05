@@ -12,9 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("deprecation")
 public class CreateSpaceTowerBlock extends DirectionalKineticBlock implements IBE<CreateSpaceTowerBlockEntity> {
     public CreateSpaceTowerBlock(Properties properties) {
-        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0F, 12.0F).noOcclusion());
+        super(properties);
     }
 
     @Override
@@ -32,7 +30,7 @@ public class CreateSpaceTowerBlock extends DirectionalKineticBlock implements IB
 
     @Override
     public boolean hasShaftTowards(LevelReader level, BlockPos pos, BlockState state, Direction face) {
-        return true;
+        return face.getAxis() == getRotationAxis(state);
     }
 
     @Override
