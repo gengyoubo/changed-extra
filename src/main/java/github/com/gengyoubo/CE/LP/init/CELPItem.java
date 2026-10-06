@@ -29,6 +29,7 @@ public class CELPItem {
     public static final RegistryObject<Item> BASIC_LATEX_PURIFIER_ITEM;
     public static final RegistryObject<Item> LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK_ITEM;
     public static final RegistryObject<Item> SPACE_TOWER_ITEM;
+    public static final RegistryObject<Item> DIMENSION_SPACE_TOWER_ITEM;
     public static final RegistryObject<Item> MIMIC_YUFENG_WINGS;
     public static final RegistryObject<Item> WHITE_LATEX_POWER_CONVERTER_ITEM;
     public static final RegistryObject<Item> DARK_LATEX_POWER_CONVERTER_ITEM;
@@ -65,6 +66,8 @@ public class CELPItem {
                 () -> new BlockItem(CELPBlock.LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK.get(), new Item.Properties()));
         SPACE_TOWER_ITEM = ITEMS.register("space_tower",
                 () -> new BlockItem(CELPBlock.SPACE_TOWER.get(), new Item.Properties().rarity(Rarity.RARE)));
+        DIMENSION_SPACE_TOWER_ITEM = ITEMS.register("dimension_space_tower",
+                () -> new BlockItem(CELPBlock.DIMENSION_SPACE_TOWER.get(), new Item.Properties().rarity(Rarity.RARE)));
         WHITE_LATEX_POWER_CONVERTER_ITEM = ITEMS.register("white_latex_power_converter",
                 () -> new BlockItem(CELPBlock.WHITE_LATEX_POWER_CONVERTER.get(), new Item.Properties()));
         DARK_LATEX_POWER_CONVERTER_ITEM = ITEMS.register("dark_latex_power_converter",

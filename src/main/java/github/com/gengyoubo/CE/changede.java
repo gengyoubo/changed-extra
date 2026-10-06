@@ -195,6 +195,8 @@ public class changede {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         PatreonBenefitsFix.logRepositoryMode();
+        event.enqueueWork(() -> net.minecraftforge.common.world.ForgeChunkManager.setForcedChunkLoadingCallback(MODID,
+                github.com.gengyoubo.CE.LP.energy.DimensionTowerManager::validateTickets));
         event.enqueueWork(this::startPatreonSyncAsync);
     }
 

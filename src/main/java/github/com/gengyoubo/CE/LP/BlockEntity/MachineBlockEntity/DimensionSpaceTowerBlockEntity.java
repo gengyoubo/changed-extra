@@ -151,6 +151,7 @@ public final class DimensionSpaceTowerBlockEntity extends BlockEntity
     }
 
     public int getChannel() { return channel; }
+    public int getStoredEnergy(LatexEnergyType type) { return energy[type.ordinal()]; }
     public boolean isSwitchedOn() { return enabled; }
     public IOType getMode() { return mode; }
     public RedstoneMode getRedstoneMode() { return redstoneMode; }
