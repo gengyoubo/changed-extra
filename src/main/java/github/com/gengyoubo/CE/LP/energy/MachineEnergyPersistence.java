@@ -31,6 +31,7 @@ public final class MachineEnergyPersistence {
         for (String key : ENERGY_KEYS) {
             if (saved.contains(key, Tag.TAG_ANY_NUMERIC)) energy.put(key, saved.get(key).copy());
         }
+        if (ENERGY_KEYS.stream().noneMatch(key -> energy.getDouble(key) != 0.0D)) return new CompoundTag();
         if (!energy.isEmpty()) {
             // CE storage capacity depends on these settings; retaining them avoids clamping away stored energy.
             for (String key : CAPACITY_KEYS) {

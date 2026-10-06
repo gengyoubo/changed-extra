@@ -77,6 +77,6 @@ public class BaseEnergyBlockEntity extends BlockEntity implements ILatexEnergyHa
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-        energy.receiveEnergy(tag.getInt("Energy"), null);
+        energy.setEnergyStored(tag.getInt("Energy"));
     }
 }

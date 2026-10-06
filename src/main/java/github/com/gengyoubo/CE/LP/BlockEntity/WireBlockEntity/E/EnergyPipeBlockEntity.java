@@ -103,7 +103,7 @@ public abstract class EnergyPipeBlockEntity extends BasePipeBlockEntity implemen
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-        energy.receiveEnergy(tag.getInt(ENERGY_TAG), null);
+        energy.setEnergyStored(tag.getInt(ENERGY_TAG));
         if (tag.contains(INPUT_DIRECTION_TAG)) {
             lastInputDirection = Direction.byName(tag.getString(INPUT_DIRECTION_TAG));
         }

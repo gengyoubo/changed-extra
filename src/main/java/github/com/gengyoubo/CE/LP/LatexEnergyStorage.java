@@ -11,6 +11,10 @@ public class LatexEnergyStorage implements ILatexEnergyHandler {
         this.capacity = capacity;
     }
 
+    public void setEnergyStored(int amount) {
+        energy = Math.max(0, Math.min(capacity, amount));
+    }
+
     @Override
     public int receiveEnergy(int amount, Direction from) {
         int accepted = Math.min(Math.max(0, capacity - energy), Math.max(0, amount));

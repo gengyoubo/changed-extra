@@ -27,6 +27,12 @@
 
 `verifyDimensionTower` 检查区块边界及负坐标、跨维度地址、频道/能源隔离、限流、能量守恒、多节点公平分配、停用和重注册清理。
 
-`runDimensionTowerServer` 使用 `build/dimension-tower-server` 内的隔离测试世界，需沿用已接受 EULA 的开发服务器配置。第一次运行验证 19 个科技方块的真实生存挖掘掉落、库存释放、LP/WLP/DLP 跨维度传输、ticket 释放及无人胶空间内跨边界电炉在 430 tick 后继续炼铁，并保存重启样本；第二次用 `-PdimensionTowerRestart=true` 验证自动恢复 ticket、继续炼铁和拆除后释放。测试仅在对应 JVM 属性启用时运行，正常游戏不触发。
+`runDimensionTowerServer` 使用 `build/dimension-tower-server` 内的隔离测试世界，需沿用已接受 EULA 的开发服务器配置。第一次运行验证 19 个 CE 科技方块、研究台、Changed 的 Infuser/Purifier 和 Addon 的普通/高级 Unifuser/Catalyzer 的真实生存挖掘掉落、库存释放及电量保留，验证 LP/WLP/DLP 跨维度传输、ticket 释放及无人胶空间内跨边界电炉在 430 tick 后继续炼铁，并保存重启样本；第二次用 `-PdimensionTowerRestart=true` 验证自动恢复 ticket、继续炼铁和拆除后释放。测试仅在对应 JVM 属性启用时运行，正常游戏不触发。
+
+## 拆除时保留电量
+
+机器掉落由 Forge 全局掉落修饰器补充 `BlockEntityTag`，重放通过原版放置流程恢复能源。仅复制已知数值储能字段，覆盖 CE 的 LP/WLP/DLP、本地管道、桥接空间塔焦耳余量与 CE 缓存，以及 Changed/Addon 经 CE 接入的工作台能源。影响范围限定到这三个模组的能源处理器，并仅修改本机的一个原有掉落物。
+
+库存、液体、研究进度、坐标、区块 ticket 和网络注册状态不会被复制；库存仍正常单独掉落，避免重复物品。零电量机器沿用普通掉落。CE 缓存容量依赖 RPM/SU，因此这两个容量参数与其储能一起保留。基础 LP 储能的 NBT 加载改为赋值而非追加，防止重载增加电量。
 
 手动验收：两端分别在主世界和胶空间；把远端塔放在区块角落，六面设备跨边界；离开胶空间且无人在线超过 300 tick，确认机器仍工作。保存并重启后确认持续工作；测试频道 0、开关、停用模式、红石暂停和拆除释放 ticket；同区块放置两塔后拆除一个，另一个的加载应保留。桥接模式不应新增 Forge ticket。
