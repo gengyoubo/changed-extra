@@ -12,7 +12,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class CENetwork {
-    private static final String PROTOCOL_VERSION = "10";
+    private static final String PROTOCOL_VERSION = "11";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             ResourceLocation.fromNamespaceAndPath("changede", "main"),
             () -> PROTOCOL_VERSION,
@@ -72,14 +72,16 @@ public class CENetwork {
                 RequestLatexPaintingPortalPreviewPacket.class,
                 RequestLatexPaintingPortalPreviewPacket::encode,
                 RequestLatexPaintingPortalPreviewPacket::decode,
-                RequestLatexPaintingPortalPreviewPacket::handle
+                RequestLatexPaintingPortalPreviewPacket::handle,
+                java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER)
         );
         INSTANCE.registerMessage(
                 packetId++,
                 LatexPaintingPortalPreviewPacket.class,
                 LatexPaintingPortalPreviewPacket::encode,
                 LatexPaintingPortalPreviewPacket::decode,
-                LatexPaintingPortalPreviewPacket::handle
+                LatexPaintingPortalPreviewPacket::handle,
+                java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT)
         );
         INSTANCE.registerMessage(
                 packetId++,

@@ -51,11 +51,7 @@ public class SpaceTowerForgeEnergyStorage implements IEnergyStorage {
 
     @Override
     public boolean canReceive() {
-        return getReceiveType() != null && getFreeForgeEnergy() > 0;
-    }
-
-    private int getFreeForgeEnergy() {
-        return Math.max(0, getMaxEnergyStored() - getEnergyStored());
+        return receiveEnergy(1, true) == 1;
     }
 
     public static SpaceTowerEnergyType getReceiveType(SpaceTowerAccess tower) {

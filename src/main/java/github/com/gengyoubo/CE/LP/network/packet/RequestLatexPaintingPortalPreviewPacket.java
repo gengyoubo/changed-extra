@@ -5,6 +5,7 @@ import github.com.gengyoubo.CE.BlockEntity.LatexPaintingPortalBlockEntity;
 import github.com.gengyoubo.CE.LP.network.CENetwork;
 import github.com.gengyoubo.CE.entity.LatexPaintingPortalEntity;
 import github.com.gengyoubo.CE.util.BoundedRequestTracker;
+import github.com.gengyoubo.CE.util.BudgetedWorkQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,7 +25,6 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -45,7 +45,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
     private static final double HORIZONTAL_VIEW_SPREAD = 0.95D;
     private static final double VERTICAL_VIEW_SPREAD = 0.68D;
     private static final List<BlockPos> COLUMNS = makeColumns();
-    private static final ArrayDeque<PreviewJob> JOBS = new ArrayDeque<>();
+    private static final BudgetedWorkQueue JOBS = new BudgetedWorkQueue(MAX_PENDING_JOBS, SAMPLES_PER_JOB);
     private static final BoundedRequestTracker<UUID> PLAYER_REQUESTS = new BoundedRequestTracker<>(2, 1024);
     private static final BoundedRequestTracker<RequestKey> PORTAL_REQUESTS = new BoundedRequestTracker<>(200, 4096);
 
@@ -74,7 +74,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-            if (player == null || JOBS.size() >= MAX_PENDING_JOBS) {
+            if (player == null || JOBS.isFull()) {
                 return;
             }
             ServerLevel source = player.serverLevel();
@@ -90,6 +90,9 @@ public class RequestLatexPaintingPortalPreviewPacket {
             }
 
             PortalTarget target = findPortalTarget(source, packet.portalPos, packet.portalEntityId);
+            if (packet.portalEntityId >= 0 && target == null) {
+                return;
+            }
             ServerLevel destination = target == null ? LatexPaintingPortalBlock.getDestinationLevel(source) : target.level();
             if (destination == null) {
                 return;
@@ -108,7 +111,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
             if (facing != null && !facing.getAxis().isHorizontal()) {
                 facing = Direction.NORTH;
             }
-            JOBS.addLast(new PreviewJob(player, source, destination, packet.portalPos, packet.portalEntityId, center, facing, now));
+            JOBS.offer(new PreviewJob(player, source, destination, packet.portalPos, packet.portalEntityId, center, facing, now));
         });
         context.setPacketHandled(true);
     }
@@ -118,20 +121,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
-        int budget = SAMPLES_PER_TICK;
-        // Rotate jobs fairly; the budget is global, independent of players or portal count.
-        while (budget > 0 && !JOBS.isEmpty()) {
-            PreviewJob job = JOBS.removeFirst();
-            if (!job.isValid()) {
-                continue;
-            }
-            budget -= job.step(Math.min(SAMPLES_PER_JOB, budget));
-            if (job.isComplete()) {
-                job.send();
-            } else {
-                JOBS.addLast(job);
-            }
-        }
+        JOBS.tick(SAMPLES_PER_TICK);
     }
 
     @SubscribeEvent
@@ -255,7 +245,7 @@ public class RequestLatexPaintingPortalPreviewPacket {
     }
 
 
-    private static final class PreviewJob {
+    private static final class PreviewJob implements BudgetedWorkQueue.Work {
         private final ServerPlayer player;
         private final ServerLevel source;
         private final ServerLevel destination;
@@ -280,14 +270,16 @@ public class RequestLatexPaintingPortalPreviewPacket {
             this.started = started;
         }
 
-        private boolean isValid() {
+        @Override
+        public boolean isValid() {
             return source.getServer().getPlayerList().getPlayer(player.getUUID()) == player
                     && player.serverLevel() == source
                     && player.blockPosition().closerThan(portalPos, 128.0D)
                     && hasPortalSource(source, portalPos, entityId);
         }
 
-        private int step(int budget) {
+        @Override
+        public int step(int budget) {
             int work = 0;
             int minY = Math.max(destination.getMinBuildHeight(), center.getY() - VERTICAL_BELOW);
             int maxY = Math.min(destination.getMaxBuildHeight() - 1, center.getY() + VERTICAL_ABOVE);
@@ -327,11 +319,13 @@ public class RequestLatexPaintingPortalPreviewPacket {
             return work;
         }
 
-        private boolean isComplete() {
+        @Override
+        public boolean isComplete() {
             return column >= COLUMNS.size() || entries.size() >= MAX_BLOCKS || source.getGameTime() - started >= 200;
         }
 
-        private void send() {
+        @Override
+        public void complete() {
             int sky = destination.getChunkSource().getChunkNow(center.getX() >> 4, center.getZ() >> 4) == null
                     ? 0x9DB7D9 : skyColorFor(destination, center);
             CENetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),

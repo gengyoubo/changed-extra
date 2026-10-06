@@ -27,7 +27,7 @@ public final class SpaceTowerEnergyConversion {
         }
         double total = joules(current);
         double accepted = Math.min(requested, (capacity * JOULES_PER_LP - total) / type.joulesPerUnit());
-        return split(total + accepted * type.joulesPerUnit(), accepted);
+        return split(Math.min(capacity * JOULES_PER_LP, total + accepted * type.joulesPerUnit()), accepted);
     }
 
     public static Transfer extract(int lp, double remainder, int capacity, SpaceTowerEnergyType type, double requested) {
@@ -37,7 +37,7 @@ public final class SpaceTowerEnergyConversion {
         }
         double total = joules(current);
         double extracted = Math.min(requested, total / type.joulesPerUnit());
-        return split(total - extracted * type.joulesPerUnit(), extracted);
+        return split(Math.max(0, total - extracted * type.joulesPerUnit()), extracted);
     }
 
     public static double joules(Transfer storage) {

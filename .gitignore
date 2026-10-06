@@ -9,3 +9,6 @@
 /tests/*
 /tests/skill/SkillGrowthTest.java
 /tests/skill/validate_skill_resources.py
+/src/test/java/github/com/gengyoubo/CE/LP/SpaceTowerEnergyChecks.java
+/src/test/java/github/com/gengyoubo/CE/client/PortalPreviewPolicyChecks.java
+/src/test

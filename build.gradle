@@ -250,6 +250,23 @@ tasks.register('verifyChangedMixinDiagnostics', JavaExec) {
     classpath = sourceSets.test.runtimeClasspath
     mainClass = 'github.com.gengyoubo.CE.diagnostics.ChangedMixinDiagnosticsTest'
 }
+tasks.register('verifySpaceTowerEnergy', JavaExec) {
+    group = 'verification'
+    description = 'Checks bounded space tower energy conversion and Forge Energy contracts.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'github.com.gengyoubo.CE.LP.SpaceTowerEnergyChecks'
+}
+tasks.register('verifyPortalPreviewPolicy', JavaExec) {
+    group = 'verification'
+    description = 'Checks portal request bounds, scan budgets and lifecycle cleanup.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'github.com.gengyoubo.CE.client.PortalPreviewPolicyChecks'
+}
+tasks.named('check') {
+    dependsOn 'verifySpaceTowerEnergy', 'verifyPortalPreviewPolicy'
+}
 tasks.named('processResources', ProcessResources).configure {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     var replaceProperties = [
