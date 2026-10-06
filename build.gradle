@@ -237,6 +237,18 @@ minecraft {
                 }
             }
         }
+        create("dimensionTowerServer") {
+            parent null, "server"
+            taskName "runDimensionTowerServer"
+            workingDirectory project.file('build/dimension-tower-server')
+            args '--nogui'
+            mods {
+                changede { source sourceSets.main }
+            }
+            property 'changede.verifyDimensionTower', 'true'
+            property 'changede.verifyDimensionTowerRestart', providers.gradleProperty('dimensionTowerRestart').getOrElse('false')
+            property 'changede.verifyTechBlockDrops', 'true'
+        }
     }
 }
 tasks.named('test') {
@@ -257,6 +269,14 @@ tasks.register('verifySpaceTowerEnergy', JavaExec) {
     classpath = sourceSets.test.runtimeClasspath
     mainClass = 'github.com.gengyoubo.CE.LP.SpaceTowerEnergyChecks'
 }
+
+tasks.register('verifyDimensionTower', JavaExec) {
+    group = 'verification'
+    description = 'Checks dimension tower channel isolation, conservation, budgets and chunk boundaries.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'github.com.gengyoubo.CE.LP.DimensionTowerChecks'
+}
 tasks.register('verifyPortalPreviewPolicy', JavaExec) {
     group = 'verification'
     description = 'Checks portal request bounds, scan budgets and lifecycle cleanup.'
@@ -265,7 +285,7 @@ tasks.register('verifyPortalPreviewPolicy', JavaExec) {
     mainClass = 'github.com.gengyoubo.CE.client.PortalPreviewPolicyChecks'
 }
 tasks.named('check') {
-    dependsOn 'verifySpaceTowerEnergy', 'verifyPortalPreviewPolicy'
+    dependsOn 'verifySpaceTowerEnergy', 'verifyPortalPreviewPolicy', 'verifyDimensionTower'
 }
 tasks.named('processResources', ProcessResources).configure {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -485,9 +505,17 @@ tasks.register('verifyDevRunSnapshot') {
 }
 
 tasks.configureEach {
-    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer']) {
+    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer']) {
         dependsOn tasks.named('classes')
         doFirst { runTask ->
+            if (runTask.name == 'runDimensionTowerServer') {
+                // Forge merges sibling parents before applying its userdev template.
+                // At execution time the server run has the complete bootstrap settings.
+                def config = runTask.getRunConfig().get()
+                config.setArgs([])
+                config.merge(minecraft.runs.server, false)
+                runTask.mainClass.set(config.getMain())
+            }
             def snapshot = createDevRunSnapshot()
             bindDevRunSnapshot(runTask, snapshot)
             logger.lifecycle('Development mod runtime snapshot: {}', snapshot)

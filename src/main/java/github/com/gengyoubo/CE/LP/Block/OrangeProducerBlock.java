@@ -19,6 +19,18 @@ public class OrangeProducerBlock extends BaseEntityBlock {
         super(BlockBehaviour.Properties.of().strength(2f, 10f));
     }
     @Override public @NotNull RenderShape getRenderShape(@NotNull BlockState state) { return RenderShape.MODEL; }
+    @Override public void onRemove(BlockState state, Level level, BlockPos pos, BlockState replacement, boolean moving) {
+        if (!level.isClientSide && !state.is(replacement.getBlock())
+                && level.getBlockEntity(pos) instanceof OrangeProducerBlockEntity producer) {
+            producer.getCapability(net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER).ifPresent(items -> {
+                for (int slot = 0; slot < items.getSlots(); slot++) {
+                    net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(),
+                            items.extractItem(slot, Integer.MAX_VALUE, false));
+                }
+            });
+        }
+        super.onRemove(state, level, pos, replacement, moving);
+    }
     @SuppressWarnings("deprecation")
     @Override public net.minecraft.world.InteractionResult use(BlockState state, Level level, BlockPos pos,
             net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand,

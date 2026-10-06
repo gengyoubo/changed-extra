@@ -12,6 +12,20 @@
     "changede:wlp_pipe",
     "changede:dlp_pipe",
     "changede:ingot_filler",
-    "changede:space_tower"
+    "changede:space_tower",
+    "changede:dimension_space_tower",
+    "changede:basic_wire",
+    "changede:basic_item_pipe",
+    "changede:basic_fluid_pipe",
+    "changede:basic_pump",
+    "changede:basic_latex_fluid_generator",
+    "changede:basic_generator",
+    "changede:basic_crystal_generator",
+    "changede:electric_furnace",
+    "changede:basic_latex_purifier",
+    "changede:latexcreative_extranalbody_craft_table_block",
+    "changede:white_latex_power_converter",
+    "changede:dark_latex_power_converter",
+    "changede:orange_producer"
   ]
 }

@@ -33,6 +33,16 @@ public class BasicLatexPurifierBlock extends BaseEntityBlock {
     }
 
     @Override public @NotNull RenderShape getRenderShape(@NotNull BlockState state) { return RenderShape.MODEL; }
+    @Override public void onRemove(BlockState state, Level level, BlockPos pos, BlockState replacement, boolean moving) {
+        if (!level.isClientSide && !state.is(replacement.getBlock())
+                && level.getBlockEntity(pos) instanceof BasicLatexPurifierBlockEntity purifier) {
+            for (int slot = 0; slot < purifier.getItemHandler().getSlots(); slot++) {
+                net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(),
+                        purifier.getItemHandler().getStackInSlot(slot));
+            }
+        }
+        super.onRemove(state, level, pos, replacement, moving);
+    }
     @Override public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new BasicLatexPurifierBlockEntity(pos, state);
     }

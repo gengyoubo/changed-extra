@@ -77,6 +77,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mod("changede")
 public class changede {
+    public static final String MODID = "changede";
     public static final boolean PROJECTE = ModList.get().isLoaded("projecte");
     public static final boolean PE = ModList.get().isLoaded("projectextended");
     public static final boolean CHANGED_ADDON = ModList.get().isLoaded("changed_addon");
@@ -98,6 +99,7 @@ public class changede {
         CELPItem.ITEMS.register(bus);
         CELPBlock.WIRE_BLOCKS.register(bus);
         CELPBlockEntity.BLOCK_ENTITIES.register(bus);
+        github.com.gengyoubo.CE.LP.energy.MachineEnergyLootModifier.SERIALIZERS.register(bus);
         ChangedEntitiesFix.REGISTRY.register(bus);
         CEChangedSounds.REGISTRY.register(bus);
         CEMenus.REGISTRY.register(bus);
