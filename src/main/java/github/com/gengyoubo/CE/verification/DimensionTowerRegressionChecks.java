@@ -24,12 +24,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /** Opt-in real server checks. Run only with the disposable runDimensionTowerServer world. */
 @Mod.EventBusSubscriber(modid = "changede")
 public final class DimensionTowerRegressionChecks {
     private static final BlockPos SOURCE = new BlockPos(2048, 160, 2048);
     private static final BlockPos TARGET = new BlockPos(4095, 160, 4095);
     private static final BlockPos MACHINE = TARGET.east();
+    private static final int OBSERVATION_TICKS = 600;
+    private static final Path BASELINE = Path.of("dimension-tower-baseline.txt");
     private static MinecraftServer server;
     private static ServerLevel remote;
     private static int elapsed;
@@ -54,12 +61,18 @@ public final class DimensionTowerRegressionChecks {
         check(server.getPlayerCount() == 0, "Test runs with no players");
         if (restart) {
             // Do not fetch the tower chunk: startup must restore it solely from the Forge ticket.
-            initialOutput = 4;
+            try {
+                initialOutput = Integer.parseInt(Files.readString(BASELINE).trim());
+            } catch (IOException e) {
+                throw new UncheckedIOException("Run the prepare phase first to save the restart baseline", e);
+            }
             return;
         }
+        initialOutput = 0;
         ServerLevel overworld = server.overworld();
         placeTower(overworld, SOURCE, "INPUT", "LP", 40_000);
         placeTower(remote, TARGET, "OUTPUT", "LP", 0);
+        remote.setBlockAndUpdate(MACHINE, Blocks.AIR.defaultBlockState());
         remote.setBlockAndUpdate(MACHINE, CELPBlock.ELECTRIC_FURNACE.get().defaultBlockState());
         furnace().getItemHandler().setStackInSlot(0, new ItemStack(Items.IRON_ORE, 64));
         check(tower(remote, TARGET).getLoadedChunkCount() == 4, "Corner tower owns four ticking tickets");
@@ -112,14 +125,14 @@ public final class DimensionTowerRegressionChecks {
     @SubscribeEvent public static void tick(TickEvent.ServerTickEvent event) {
         if (server == null || event.getServer() != server || event.phase != TickEvent.Phase.END) return;
         elapsed++;
-        if (elapsed < 430) return;
+        if (elapsed < OBSERVATION_TICKS) return;
         try {
             check(server.getPlayerCount() == 0, "No players entered either dimension");
-            check(remote.hasChunkAt(TARGET) && remote.hasChunkAt(MACHINE), "Tower and cross-boundary machine remain loaded after 430 ticks");
+            check(remote.hasChunkAt(TARGET) && remote.hasChunkAt(MACHINE), "Tower and cross-boundary machine remain loaded after " + OBSERVATION_TICKS + " ticks");
             var receiver = tower(remote, TARGET);
             check(receiver.active() && receiver.getPeerCount() == 1, "Cross-dimension network remains live");
             int output = furnace().getItemHandler().getStackInSlot(1).getCount();
-            check(output >= initialOutput + 4, "Remote furnace keeps smelting with nobody in latex space");
+            check(output >= initialOutput + 4, "Remote furnace keeps smelting with nobody in latex space (before=" + initialOutput + ", after=" + output + ")");
             check(ticketCount(remote) == 4, "Runtime owns exactly the expected four tickets");
             if (restart) {
                 remote.setBlockAndUpdate(TARGET, Blocks.AIR.defaultBlockState());
@@ -133,7 +146,11 @@ public final class DimensionTowerRegressionChecks {
                 tag.putInt("LP", 40_000);
                 tower(server.overworld(), SOURCE).load(tag);
                 tower(server.overworld(), SOURCE).setChanged();
-                check(output == 4, "First run fixture produced four ingots");
+                try {
+                    Files.writeString(BASELINE, Integer.toString(output));
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
                 LogManager.getLogger("changede-dimension-check").info("ALL DIMENSION TOWER SERVER CHECKS PASSED; RESTART FIXTURE SAVED");
             }
         } finally {
@@ -145,6 +162,7 @@ public final class DimensionTowerRegressionChecks {
     }
 
     private static DimensionSpaceTowerBlockEntity placeTower(ServerLevel level, BlockPos pos, String mode, String type, int energy) {
+        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         level.setBlockAndUpdate(pos, CELPBlock.DIMENSION_SPACE_TOWER.get().defaultBlockState());
         var tower = tower(level, pos);
         CompoundTag tag = new CompoundTag();

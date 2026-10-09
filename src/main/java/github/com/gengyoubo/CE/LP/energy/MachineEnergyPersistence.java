@@ -48,4 +48,16 @@ public final class MachineEnergyPersistence {
         data.merge(energy);
         stack.getOrCreateTag().put("BlockEntityTag", data);
     }
+
+    public static void preserveDrops(List<ItemStack> loot, BlockEntity blockEntity) {
+        CompoundTag energy = capture(blockEntity);
+        if (energy.isEmpty()) return;
+        var item = blockEntity.getBlockState().getBlock().asItem();
+        for (ItemStack stack : loot) {
+            if (stack.is(item) && stack.getCount() == 1) {
+                attach(stack, energy);
+                break; // Only one original item carries this machine's energy.
+            }
+        }
+    }
 }

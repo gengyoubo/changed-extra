@@ -13,6 +13,8 @@
 
 ## 空间锚定
 
+Jade 提示分别显示 LP、WLP、DLP 三行实际缓存，与当前选择的传输类型无关。空缓存显示 0；不会把 LP 当成 DLP，也不会共用进度条导致文字重叠。服务器验证包含截图中的 50000/0/0 和三种不同缓存值。
+
 选定有效频道、打开开关、传输模式非停用且红石允许运行的塔，为自己申请 Forge **fully ticking** block-owner ticket。无需另一端已有能量或在线，避免两端等待对方造成恢复死锁。
 
 工作范围是塔的 X/Z 坐标各扩展一格形成的最小区块矩形：中央 1 个、贴边 2 个、角落 4 个目标区块（含负坐标）。覆盖塔及六面相邻设备；不会固定申请 3×3 个 ticket。Forge 可能为加载目标区块而加载外围依赖区块，因此界面数量指本塔持有的目标 ticket 数，非维度实际加载区块总数。
@@ -27,9 +29,11 @@
 
 `verifyDimensionTower` 检查区块边界及负坐标、跨维度地址、频道/能源隔离、限流、能量守恒、多节点公平分配、停用和重注册清理。
 
-`runDimensionTowerServer` 使用 `build/dimension-tower-server` 内的隔离测试世界，需沿用已接受 EULA 的开发服务器配置。第一次运行验证 19 个 CE 科技方块、研究台、Changed 的 Infuser/Purifier 和 Addon 的普通/高级 Unifuser/Catalyzer 的真实生存挖掘掉落、库存释放及电量保留，验证 LP/WLP/DLP 跨维度传输、ticket 释放及无人胶空间内跨边界电炉在 430 tick 后继续炼铁，并保存重启样本；第二次用 `-PdimensionTowerRestart=true` 验证自动恢复 ticket、继续炼铁和拆除后释放。测试仅在对应 JVM 属性启用时运行，正常游戏不触发。
+`runDimensionTowerServer` 使用 `build/dimension-tower-server` 内的隔离测试世界，需沿用已接受 EULA 的开发服务器配置。第一次运行验证 19 个 CE 科技方块、研究台、Changed 的 Infuser/Purifier 和 Addon 的普通/高级 Unifuser/Catalyzer 的真实生存挖掘掉落、库存释放及电量保留，验证 LP/WLP/DLP 跨维度传输、ticket 释放及无人胶空间内跨边界电炉在 600 tick 后继续炼铁，并保存重启样本与实际产量；第二次用 `-PdimensionTowerRestart=true` 验证自动恢复 ticket、产量增长和拆除后释放。观察窗口留出区块启动时间，产量必须增长至少 4 个。测试仅在对应 JVM 属性启用时运行，正常游戏不触发。
 
 ## 拆除时保留电量
+
+Changed 的 `ChangedBlock` 与净化器直接返回物品、不经过掉落表，通过 Mixin 在该返回处使用与全局掉落修饰器相同的能源保留逻辑。
 
 机器掉落由 Forge 全局掉落修饰器补充 `BlockEntityTag`，重放通过原版放置流程恢复能源。仅复制已知数值储能字段，覆盖 CE 的 LP/WLP/DLP、本地管道、桥接空间塔焦耳余量与 CE 缓存，以及 Changed/Addon 经 CE 接入的工作台能源。影响范围限定到这三个模组的能源处理器，并仅修改本机的一个原有掉落物。
 

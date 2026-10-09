@@ -23,17 +23,7 @@ public final class MachineEnergyLootModifier extends LootModifier {
     public MachineEnergyLootModifier(LootItemCondition[] conditions) { super(conditions); }
 
     @Override protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> loot, LootContext context) {
-        var blockEntity = context.getParamOrNull(LootContextParams.BLOCK_ENTITY);
-        if (blockEntity == null) return loot;
-        var energy = MachineEnergyPersistence.capture(blockEntity);
-        if (energy.isEmpty()) return loot;
-        var item = blockEntity.getBlockState().getBlock().asItem();
-        for (ItemStack stack : loot) {
-            if (stack.is(item) && stack.getCount() == 1) {
-                MachineEnergyPersistence.attach(stack, energy);
-                break; // Only one original block item can carry the owner's stored energy.
-            }
-        }
+        MachineEnergyPersistence.preserveDrops(loot, context.getParamOrNull(LootContextParams.BLOCK_ENTITY));
         return loot;
     }
 

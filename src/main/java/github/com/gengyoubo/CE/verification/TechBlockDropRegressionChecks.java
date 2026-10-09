@@ -5,6 +5,9 @@ import github.com.gengyoubo.CE.LP.BlockEntity.GeneratorBlockEntity.GeneratorBloc
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicLatexPurifierBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.ElectricFurnaceBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.OrangeProducerBlockEntity;
+import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.DimensionSpaceTowerBlockEntity;
+import github.com.gengyoubo.CE.LP.LatexEnergyType;
+import github.com.gengyoubo.CE.LP.compat.jade.LPEnergyProvider;
 import github.com.gengyoubo.CE.LP.init.CELPBlock;
 import github.com.gengyoubo.CE.LP.energy.MachineEnergyPersistence;
 import net.minecraft.core.BlockPos;
@@ -39,6 +42,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.util.UUID;
 import java.util.ArrayList;
+import java.util.List;
 
 /** Verifies actual survival mining and inventories in an explicitly enabled disposable server. */
 @Mod.EventBusSubscriber(modid = "changede")
@@ -53,6 +57,7 @@ public final class TechBlockDropRegressionChecks {
     @SubscribeEvent public static void started(ServerStartedEvent event) {
         if (!Boolean.getBoolean("changede.verifyTechBlockDrops")) return;
         ServerLevel level = event.getServer().overworld();
+        verifyJadeEnergy();
         var player = FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "TechDropTest"));
         player.setGameMode(GameType.SURVIVAL);
         var grid = new TransientCraftingContainer(player.inventoryMenu, 1, 1);
@@ -126,7 +131,8 @@ public final class TechBlockDropRegressionChecks {
             drops.forEach(ItemEntity::discard);
             if (!expectedEnergy.isEmpty()) {
                 CompoundTag savedEnergy = BlockItem.getBlockEntityData(droppedBlock);
-                check(savedEnergy != null && savedEnergy.equals(expectedEnergy), id + " drops carry only energy and capacity fields");
+                check(savedEnergy != null && savedEnergy.equals(expectedEnergy), id + " drops carry only energy and capacity fields"
+                        + " (expected " + expectedEnergy + ", got " + savedEnergy + ")");
                 player.setItemSlot(EquipmentSlot.MAINHAND, droppedBlock);
                 var hit = new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, false);
                 var context = new BlockPlaceContext(new UseOnContext(player, InteractionHand.MAIN_HAND, hit));
@@ -141,5 +147,33 @@ public final class TechBlockDropRegressionChecks {
             }
         }
         LogManager.getLogger("changede-drop-check").info("ALL MACHINE DROP AND ENERGY CHECKS PASSED ({} blocks)", index);
+    }
+
+    private static void verifyJadeEnergy() {
+        var tower = new DimensionSpaceTowerBlockEntity(BlockPos.ZERO, CELPBlock.DIMENSION_SPACE_TOWER.get().defaultBlockState());
+        CompoundTag buffers = new CompoundTag();
+        buffers.putInt("LP", 50_000);
+        for (LatexEnergyType selected : LatexEnergyType.values()) {
+            buffers.putString("EnergyType", selected.name());
+            tower.load(buffers);
+            CompoundTag data = new CompoundTag();
+            LPEnergyProvider.collectEnergyData(data, tower);
+            check(LPEnergyProvider.energyLines(data).stream().map(component -> component.getString()).toList()
+                            .equals(List.of("LP: 50000 / 50000", "WLP: 0 / 50000", "DLP: 0 / 50000")),
+                    "Jade reports separate actual buffers when " + selected + " is selected");
+        }
+        buffers.putInt("WLP", 456);
+        buffers.putInt("DLP", 789);
+        tower.load(buffers);
+        CompoundTag data = new CompoundTag();
+        LPEnergyProvider.collectEnergyData(data, tower);
+        check(LPEnergyProvider.energyLines(data).stream().map(component -> component.getString()).toList()
+                        .equals(List.of("LP: 50000 / 50000", "WLP: 456 / 50000", "DLP: 789 / 50000")),
+                "Jade keeps unequal LP/WLP/DLP values in independent rows");
+        CompoundTag legacy = new CompoundTag();
+        legacy.putString("TypedEnergyType", "LP");
+        legacy.putInt("StoredTypedEnergy", 50_000);
+        legacy.putInt("CapacityTypedEnergy", 50_000);
+        check(LPEnergyProvider.energyLines(legacy).isEmpty(), "Jade never relabels legacy typed LP data as DLP");
     }
 }
