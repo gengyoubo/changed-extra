@@ -1,0 +1,16 @@
+{
+  "type": "tconstruct:melting_fuel",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "duration": 100,
+  "fluid": {
+    "amount": 50,
+    "fluid": "changed:dark_latex"
+  },
+  "rate": 10,
+  "temperature": 1000
+}

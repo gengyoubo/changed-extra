@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "pattern": [
+    "BBB",
+    "DWD",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "tconstruct:seared_brick"
+    },
+    "D": {
+      "item": "changed:dark_latex_goo"
+    },
+    "W": {
+      "item": "changed:white_latex_goo"
+    }
+  },
+  "result": {
+    "item": "changede:latex_combustion_core"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "pattern": [
+    "BGB",
+    "G G",
+    "BGB"
+  ],
+  "key": {
+    "B": {
+      "item": "tconstruct:seared_brick"
+    },
+    "G": {
+      "tag": "forge:glass/colorless"
+    }
+  },
+  "result": {
+    "item": "changede:latex_fuel_tank"
+  }
+}

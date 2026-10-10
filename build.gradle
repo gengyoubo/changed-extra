@@ -162,7 +162,11 @@ dependencies {
     compileOnly fg.deobf("curse.maven:thermal-dynamics-227443:5372747")
     //匠魂
     implementation fg.deobf("curse.maven:mantle-74924:8809819")
-    implementation fg.deobf("curse.maven:tinkers-construct-74072:8944121")
+    if (providers.gradleProperty('omitTinkersForChecks').getOrElse('false').toBoolean()) {
+        compileOnly fg.deobf("curse.maven:tinkers-construct-74072:8944121")
+    } else {
+        implementation fg.deobf("curse.maven:tinkers-construct-74072:8944121")
+    }
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
     implementation fg.deobf("curse.maven:jei-238222:9058038")
@@ -271,6 +275,29 @@ minecraft {
             args '--nogui'
             mods { changede { source sourceSets.main } }
             property 'changede.verifyLatexBurnerNoCreate', 'true'
+        }
+        create("latexTinkersServer") {
+            parent null, "server"
+            taskName "runLatexTinkersServer"
+            workingDirectory project.file('build/latex-tinkers-server')
+            args '--nogui'
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyLatexTinkers', 'true'
+        }
+        create("latexTinkersClient") {
+            parent null, "client"
+            taskName "runLatexTinkersClient"
+            workingDirectory project.file('build/latex-tinkers-client')
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyLatexTinkersClient', 'true'
+        }
+        create("latexTinkersOptionalServer") {
+            parent null, "server"
+            taskName "runLatexTinkersOptionalServer"
+            workingDirectory project.file('build/latex-tinkers-optional-server')
+            args '--nogui'
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyLatexTinkersOptional', 'true'
         }
     }
 }
@@ -528,10 +555,10 @@ tasks.register('verifyDevRunSnapshot') {
 }
 
 tasks.configureEach {
-    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer']) {
+    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient']) {
         dependsOn tasks.named('classes')
         doFirst { runTask ->
-            if (runTask.name in ['runDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer']) {
+            if (runTask.name in ['runDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer']) {
                 // Forge merges sibling parents before applying its userdev template.
                 // At execution time the server run has the complete bootstrap settings.
                 def config = runTask.getRunConfig().get()

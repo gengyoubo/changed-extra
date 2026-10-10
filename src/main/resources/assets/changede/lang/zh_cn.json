@@ -1192,5 +1192,18 @@
   "changede.ponder.latex_burner.single": "物品胶液或液体胶液可单独维持普通加热，使用漏斗、机械臂或管道自动供料。",
   "changede.ponder.latex_burner.both": "物品和液体两路同时有效时自动超级加热，两路燃料分别消耗。",
   "changede.ponder.latex_burner.speed": "同转速、同配方下，胶兽提供 0.75×、1×、1.5× 或 2× 加工倍率。热量条件和加工倍率独立。",
-  "changede.ponder.latex_burner.empty": "一路燃料耗尽后退回普通加热，两路都耗尽后待机。拆卸会保留胶兽、库存和剩余时间。"
+  "changede.ponder.latex_burner.empty": "一路燃料耗尽后退回普通加热，两路都耗尽后待机。拆卸会保留胶兽、库存和剩余时间。",
+  "modifier.changede.latex_plasticity": "塑形",
+  "modifier.changede.latex_plasticity.flavor": "胶体重塑",
+  "modifier.changede.latex_plasticity.description": "每级每 3 秒恢复 1 点耐久；白胶种玩家每级额外恢复 1 点。最高 5 级，任何玩家均可添加此强化。",
+  "modifier.changede.latex_resilience": "韧性",
+  "modifier.changede.latex_resilience.flavor": "胶体抗损",
+  "modifier.changede.latex_resilience.description": "每级增加 10% 耐久上限；黑胶种玩家额外获得同等级的原版耐久效果。最高 5 级，任何玩家均可添加此强化。",
+  "gui.changede.smeltery.core_ready": "胶液燃烧核心已就绪",
+  "gui.changede.smeltery.requires_core": "需要在炉壁安装胶液燃烧核心",
+  "block.changede.latex_fuel_tank.tooltip": "可储存 8B 黑胶液或白胶液；需要燃烧核心才能用胶液作为炉子燃料。",
+  "gui.changede.smeltery.latex_amounts": "黑胶液：%s mB；白胶液：%s mB",
+  "gui.changede.smeltery.fuel_capacity": "燃料：%s / %s mB",
+  "block.changede.latex_combustion_core": "胶液燃烧核心",
+  "block.changede.latex_fuel_tank": "胶液燃料储罐"
 }

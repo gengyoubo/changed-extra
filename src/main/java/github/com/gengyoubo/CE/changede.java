@@ -137,6 +137,12 @@ public class changede {
         if (ModList.get().isLoaded("create")) {
             github.com.gengyoubo.CE.compat.create.burner.LatexBurnerCompat.initialize(bus);
         }
+        if (ModList.get().isLoaded("tconstruct")) {
+            github.com.gengyoubo.CE.compat.tinkers.LatexTinkersCompat.initialize(bus);
+        }
+        if (Boolean.getBoolean("changede.verifyLatexTinkersOptional")) {
+            MinecraftForge.EVENT_BUS.addListener(github.com.gengyoubo.CE.verification.LatexTinkersOptionalChecks::started);
+        }
         if (Boolean.getBoolean("changede.verifyLatexBurnerNoCreate")) {
             MinecraftForge.EVENT_BUS.addListener(github.com.gengyoubo.CE.verification.LatexBurnerOptionalChecks::started);
         }

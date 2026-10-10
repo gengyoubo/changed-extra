@@ -27,6 +27,8 @@
     "changede:white_latex_power_converter",
     "changede:dark_latex_power_converter",
     "changede:orange_producer",
-    { "id": "changede:latex_burner", "required": false }
+    { "id": "changede:latex_burner", "required": false },
+    { "id": "changede:latex_combustion_core", "required": false },
+    { "id": "changede:latex_fuel_tank", "required": false }
   ]
 }

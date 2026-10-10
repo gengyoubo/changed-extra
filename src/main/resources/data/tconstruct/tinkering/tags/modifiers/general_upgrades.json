@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "changede:latex_plasticity",
+      "required": false
+    },
+    {
+      "id": "changede:latex_resilience",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "tconstruct:block/template/tank",
+  "textures": {
+    "top": "changede:block/white_latex_stone",
+    "side": "tconstruct:block/smeltery/tank/fuel_gauge"
+  }
+}

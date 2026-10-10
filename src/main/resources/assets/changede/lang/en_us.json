@@ -1192,5 +1192,18 @@
   "changede.ponder.latex_burner.single": "Latex goo items or fluid latex each provide ordinary heat. Use hoppers, arms or pipes for automatic supply.",
   "changede.ponder.latex_burner.both": "Active item and fluid fuel together automatically provide superheat. Both fuel lanes are consumed independently.",
   "changede.ponder.latex_burner.speed": "At the same RPM and recipe, creatures provide 0.75×, 1×, 1.5× or 2× processing speed. Speed is separate from heat requirements.",
-  "changede.ponder.latex_burner.empty": "When one lane runs out, heat falls to ordinary. Both lanes empty means idle. Breaking preserves the creature, inventory and remaining time."
+  "changede.ponder.latex_burner.empty": "When one lane runs out, heat falls to ordinary. Both lanes empty means idle. Breaking preserves the creature, inventory and remaining time.",
+  "modifier.changede.latex_plasticity": "Plasticity",
+  "modifier.changede.latex_plasticity.flavor": "Latex reshaping",
+  "modifier.changede.latex_plasticity.description": "Each level repairs 1 durability every 3 seconds. White latex players repair 1 extra per level. Maximum level 5; any player can apply this upgrade.",
+  "modifier.changede.latex_resilience": "Resilience",
+  "modifier.changede.latex_resilience.flavor": "Latex endurance",
+  "modifier.changede.latex_resilience.description": "Each level adds 10% maximum durability. Black latex players also gain vanilla Unbreaking of the same level. Maximum level 5; any player can apply this upgrade.",
+  "gui.changede.smeltery.core_ready": "Latex Combustion Core ready",
+  "gui.changede.smeltery.requires_core": "Requires a Latex Combustion Core in the furnace wall",
+  "block.changede.latex_fuel_tank.tooltip": "Stores 8 B of dark or white latex. Requires a combustion core to use latex as furnace fuel.",
+  "gui.changede.smeltery.latex_amounts": "Dark latex: %s mB; white latex: %s mB",
+  "gui.changede.smeltery.fuel_capacity": "Fuel: %s / %s mB",
+  "block.changede.latex_combustion_core": "Latex Combustion Core",
+  "block.changede.latex_fuel_tank": "Latex Fuel Tank"
 }

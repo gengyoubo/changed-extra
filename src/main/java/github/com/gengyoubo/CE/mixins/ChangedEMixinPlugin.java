@@ -53,6 +53,7 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (mixinClassName.startsWith("github.com.gengyoubo.CE.LP.mixins.TinkersLatex")) return isModLoaded("tconstruct");
         if ("github.com.gengyoubo.CE.LP.mixins.LatexBurnerMixerMixin".equals(mixinClassName)) {
             return isModLoaded("create");
         }
