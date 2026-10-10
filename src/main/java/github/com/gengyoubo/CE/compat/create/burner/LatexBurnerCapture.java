@@ -42,9 +42,15 @@ public final class LatexBurnerCapture {
         ItemStack filled = new ItemStack(LatexBurnerCompat.FILLED.get());
         filled.getOrCreateTag().put("BlockEntityTag", machine);
         // Deliver one complete snapshot, then retire the only world entity. No death loot is fired.
-        if (!player.isCreative()) held.shrink(1);
-        if (held.isEmpty()) player.setItemInHand(hand, filled);
-        else player.getInventory().placeItemBackInInventory(filled);
+        if (!player.isCreative() && held.getCount() == 1) {
+            // Player.interactOn clears this hand if its original stack becomes empty after the
+            // item callback. Replace the stack without emptying that reference, or it erases
+            // the newly captured burner after we return.
+            player.setItemInHand(hand, filled);
+        } else {
+            if (!player.isCreative()) held.shrink(1);
+            player.getInventory().placeItemBackInInventory(filled);
+        }
         target.discard();
         player.level().playSound(null, target.blockPosition(), net.minecraft.sounds.SoundEvents.BUCKET_FILL,
                 net.minecraft.sounds.SoundSource.BLOCKS, .8f, .7f);

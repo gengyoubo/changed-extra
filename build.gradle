@@ -277,6 +277,14 @@ minecraft {
             mods { changede { source sourceSets.main } }
             property 'changede.verifyLatexBurner', 'true'
         }
+        create("addonOreServer") {
+            parent null, "server"
+            taskName "runAddonOreServer"
+            workingDirectory project.file('build/addon-ore-server')
+            args '--nogui'
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyAddonOre', 'true'
+        }
         create("latexBurnerNoCreateServer") {
             parent null, "server"
             taskName "runLatexBurnerNoCreateServer"
@@ -564,10 +572,10 @@ tasks.register('verifyDevRunSnapshot') {
 }
 
 tasks.configureEach {
-    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient']) {
+    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient']) {
         dependsOn tasks.named('classes')
         doFirst { runTask ->
-            if (runTask.name in ['runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer']) {
+            if (runTask.name in ['runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer']) {
                 // Forge merges sibling parents before applying its userdev template.
                 // At execution time the server run has the complete bootstrap settings.
                 def config = runTask.getRunConfig().get()

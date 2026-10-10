@@ -12,15 +12,16 @@ import slimeknights.tconstruct.smeltery.block.entity.module.MultitankFuelModule;
 
 @Mixin(value = MultitankFuelModule.class, remap = false)
 public abstract class TinkersLatexMultitankMixin {
-    @Inject(method = "getCount", at = @At("RETURN"), cancellable = true)
+    // ContainerData overrides use Minecraft's SRG names outside the development runtime.
+    @Inject(method = "getCount()I", at = @At("RETURN"), cancellable = true, remap = true)
     private void changede$extraFuelData(CallbackInfoReturnable<Integer> cir) { cir.setReturnValue(cir.getReturnValue() + 2); }
-    @Inject(method = "get", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "get(I)I", at = @At("HEAD"), cancellable = true, remap = true)
     private void changede$sendFuelData(int index, CallbackInfoReturnable<Integer> cir) {
         LatexFuelAccess access = (LatexFuelAccess) this;
         if (index == 7) cir.setReturnValue(access.changede$coreReady() ? 1 : 0);
         if (index == 8) cir.setReturnValue(access.changede$latexBatch() ? 1 : 0);
     }
-    @Inject(method = "set", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "set(II)V", at = @At("HEAD"), cancellable = true, remap = true)
     private void changede$receiveFuelData(int index, int value, CallbackInfo ci) {
         LatexFuelAccess access = (LatexFuelAccess) this;
         if (index == 7) { access.changede$setCoreReady(value != 0); ci.cancel(); }

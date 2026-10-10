@@ -23,6 +23,7 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
             "github.com.gengyoubo.CE.mixins.TransfurVariantsInfoMixin"
     );
     private static final Set<String> ADDON_COMMON_MIXINS = Set.of(
+            "github.com.gengyoubo.CE.LP.mixins.AddonIridiumHarvestMixin",
             "github.com.gengyoubo.CE.LP.mixins.UnifuserEnergyMixin",
             "github.com.gengyoubo.CE.LP.mixins.CatalyzerEnergyMixin"
     );

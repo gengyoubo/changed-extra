@@ -21,6 +21,13 @@ public final class LatexSmelteryClientChecks {
         checked = true;
         try {
             Class.forName("slimeknights.tconstruct.smeltery.client.screen.module.GuiFuelModule");
+            var data = new slimeknights.tconstruct.smeltery.block.entity.module.MultitankFuelModule(
+                    new LatexSmelteryCompat.CoreBlockEntity(BlockPos.ZERO, LatexSmelteryCompat.CORE.get().defaultBlockState()), java.util.List::of);
+            if (data.getCount() != 9) throw new AssertionError("Missing extended fuel data slots");
+            data.set(8, 1);
+            if (data.get(8) != 1) throw new AssertionError("Fuel data set/get injection failed");
+            data.set(8, 0);
+            if (data.get(8) != 0) throw new AssertionError("Fuel data slot cannot reset");
             for (String name : new String[]{"latex_combustion_core", "latex_fuel_tank"}) {
                 var model = minecraft.getModelManager().getModel(new ModelResourceLocation(ResourceLocation.parse("changede:" + name), "inventory"));
                 if (model == minecraft.getModelManager().getMissingModel()) throw new AssertionError("Missing item model: " + name);
@@ -28,7 +35,7 @@ public final class LatexSmelteryClientChecks {
             }
             if (minecraft.getBlockEntityRenderDispatcher().getRenderer(new LatexFuelTankBlockEntity(BlockPos.ZERO, LatexSmelteryCompat.TANK.get().defaultBlockState())) == null)
                 throw new AssertionError("Tank fluid renderer not registered");
-            Files.writeString(Path.of("latex-smeltery-client-checks.txt"), "PASS: native fuel GUI mixin transforms; both item models bake; translations and tank fluid renderer register\n");
+            Files.writeString(Path.of("latex-smeltery-client-checks.txt"), "PASS: native fuel GUI mixin transforms; ContainerData count/get/set inject; both item models bake; translations and tank fluid renderer register\n");
         } catch (Throwable error) {
             github.com.gengyoubo.CE.changede.LOGGER.error("LATEX SMELTERY CLIENT CHECKS FAILED", error);
             try { Files.writeString(Path.of("latex-smeltery-client-checks.txt"), "FAIL: " + error + "\n"); } catch (Exception ignored) {}

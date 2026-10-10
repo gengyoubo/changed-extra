@@ -52,7 +52,7 @@ public final class LatexBurnerRegressionChecks {
     public static void started(ServerStartedEvent event) {
         try {
             check(event.getServer().getPlayerCount() == 0, "Disposable test server has no players");
-            rules(); captureAndFuel(event.getServer().overworld()); mixers(event.getServer().overworld());
+            rules(); captureAndFuel(event.getServer().overworld()); captureDelivery(event.getServer().overworld()); mixers(event.getServer().overworld());
             Files.writeString(Path.of("latex-burner-checks.txt"), "PASS: " + assertions + " assertions\n");
             github.com.gengyoubo.CE.changede.LOGGER.info("LATEX BURNER CHECKS PASSED: {} assertions", assertions);
         } catch (Throwable error) {
@@ -102,7 +102,8 @@ public final class LatexBurnerRegressionChecks {
     }
     private static void captureAndFuel(ServerLevel level) {
         var fake = FakePlayerFactory.getMinecraft(level);
-        fake.getAbilities().instabuild = false;
+        fake.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+        fake.getInventory().clearContent();
         fake.setPos(POS.getX(), POS.getY(), POS.getZ());
         var type = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.parse("changed:dark_latex_wolf_male"));
         var creature = (net.minecraft.world.entity.LivingEntity) type.create(level);
@@ -112,8 +113,8 @@ public final class LatexBurnerRegressionChecks {
         check(LatexBurnerCapture.capture(fake.getMainHandItem(), fake, creature, InteractionHand.MAIN_HAND) == InteractionResult.FAIL
                 && !creature.isRemoved(), "Working creature rejected without losing entity or cage");
         creature.getPersistentData().remove("changede_maid_work_owner");
-        check(LatexBurnerCapture.capture(fake.getMainHandItem(), fake, creature, InteractionHand.MAIN_HAND) == InteractionResult.SUCCESS
-                && creature.isRemoved() && fake.getMainHandItem().is(LatexBurnerCompat.FILLED.get()), "Capture replaces the real entity with one filled cage");
+        check(fake.interactOn(creature, InteractionHand.MAIN_HAND) == InteractionResult.SUCCESS
+                && creature.isRemoved() && fake.getMainHandItem().is(LatexBurnerCompat.FILLED.get()), "Survival right-click retains the filled cage after vanilla interaction cleanup");
         CompoundTag captured = fake.getMainHandItem().getTagElement("BlockEntityTag").copy();
         check(captured.getCompound("Creature").getUUID("UUID").equals(creature.getUUID()), "Capture preserves creature UUID in server snapshot");
         var empty = place(level, "");
@@ -162,6 +163,49 @@ public final class LatexBurnerRegressionChecks {
                 && retainedFluids.drain(4000, IFluidHandler.FluidAction.EXECUTE).isEmpty(), "Wrench removal invalidates capabilities and retained transfer handles");
     }
     private static Block createBlock(String path) { return ForgeRegistries.BLOCKS.getValue(ResourceLocation.parse("create:" + path)); }
+    private static void captureDelivery(ServerLevel level) {
+        var fake = FakePlayerFactory.getMinecraft(level);
+        var type = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.parse("changed:dark_latex_wolf_male"));
+        for (boolean creative : new boolean[]{false, true}) {
+            for (InteractionHand hand : InteractionHand.values()) {
+                for (int count : new int[]{1, 3}) {
+                    for (boolean full : new boolean[]{false, true}) {
+                        fake.getInventory().clearContent();
+                        fake.setGameMode(creative ? net.minecraft.world.level.GameType.CREATIVE : net.minecraft.world.level.GameType.SURVIVAL);
+                        if (full) for (int slot = 0; slot < fake.getInventory().items.size(); slot++)
+                            fake.getInventory().setItem(slot, new ItemStack(Items.STONE, 64));
+                        fake.setItemInHand(hand, new ItemStack(LatexBurnerCompat.EMPTY.get(), count));
+                        var creature = (net.minecraft.world.entity.LivingEntity) type.create(level);
+                        creature.setPos(POS.getX(), POS.getY(), POS.getZ());
+                        level.addFreshEntity(creature);
+                        String context = (creative ? "Creative" : "Survival") + " " + hand + " x" + count + (full ? " full inventory" : " free inventory");
+                        check(fake.interactOn(creature, hand).consumesAction() && creature.isRemoved(), context + " captures through the real player interaction");
+                        int retained = 0;
+                        for (var stack : fake.getInventory().items) if (capturedCreature(stack, creature.getUUID())) retained += stack.getCount();
+                        if (capturedCreature(fake.getOffhandItem(), creature.getUUID())) retained += fake.getOffhandItem().getCount();
+                        var drops = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+                                new net.minecraft.world.phys.AABB(POS).inflate(4), item -> capturedCreature(item.getItem(), creature.getUUID()));
+                        int dropped = drops.stream().mapToInt(item -> item.getItem().getCount()).sum();
+                        check(retained + dropped == 1, context + " delivers exactly one captured burner without loss or duplication");
+                        if (!creative && count == 1) check(fake.getItemInHand(hand).is(LatexBurnerCompat.FILLED.get()) && dropped == 0,
+                                context + " keeps the single replacement in the clicked hand");
+                        else check(fake.getItemInHand(hand).is(LatexBurnerCompat.EMPTY.get())
+                                        && fake.getItemInHand(hand).getCount() == count - (creative ? 0 : 1),
+                                context + " consumes exactly one empty burner only in survival");
+                        if (full && (creative || count > 1)) check(dropped == 1, context + " drops the filled burner when inventory cannot accept it");
+                        drops.forEach(net.minecraft.world.entity.item.ItemEntity::discard);
+                    }
+                }
+            }
+        }
+        fake.getInventory().clearContent();
+        fake.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+    }
+    private static boolean capturedCreature(ItemStack stack, java.util.UUID id) {
+        if (!stack.is(LatexBurnerCompat.FILLED.get())) return false;
+        CompoundTag data = stack.getTagElement("BlockEntityTag");
+        return data != null && data.getCompound("Creature").hasUUID("UUID") && id.equals(data.getCompound("Creature").getUUID("UUID"));
+    }
     private static void mixers(ServerLevel level) throws Exception {
         var recipeField = BasinOperatingBlockEntity.class.getDeclaredField("currentRecipe"); recipeField.setAccessible(true);
         for (String id : new String[]{"changed:dark_latex_wolf_pup", "changed:dark_latex_wolf_male", "changed:white_latex_knight", "changed:white_latex_knight_fusion"}) {
