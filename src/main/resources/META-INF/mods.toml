@@ -65,6 +65,12 @@ config="mixins/changede-diagnostics.mixins.json"
     ordering="NONE"
     side="BOTH"
 [[dependencies.changede]]
+    modId="create"
+    mandatory=false
+    versionRange="[6.0.7,6.1)"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.changede]]
     modId="changed_synergy"
     mandatory=false
     versionRange="[1.1.3,)"

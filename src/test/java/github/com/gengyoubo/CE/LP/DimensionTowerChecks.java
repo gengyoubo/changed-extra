@@ -74,7 +74,7 @@ public final class DimensionTowerChecks {
         network.register(input);
         check(network.peerCount(input) == 1, "Registration must be idempotent");
         network.tick();
-        check(input.energy == 900 && output.energy == 100, "Same coordinates in different dimensions must transfer");
+        check(input.energy == 0 && output.energy == 1_000, "Same coordinates in different dimensions must transfer all available energy");
 
         var wrongType = new Tower("latex_space", 1, LatexEnergyType.WLP, IOType.OUTPUT, 0);
         var wrongChannel = new Tower("latex_space", 2, LatexEnergyType.LP, IOType.OUTPUT, 0);
@@ -83,10 +83,11 @@ public final class DimensionTowerChecks {
         unassigned.channel = 0;
         var stopped = new Tower("latex_space", 4, LatexEnergyType.LP, IOType.NONE, 0);
         for (var tower : List.of(wrongType, wrongChannel, unassigned, stopped)) network.register(tower);
+        input.energy = 1_000;
+        output.enabled = false;
         network.tick();
         check(wrongType.energy == 0 && wrongChannel.energy == 0 && unassigned.energy == 0 && stopped.energy == 0,
                 "Energy type, channel, unset channel and mode must isolate endpoints");
-        output.enabled = false;
         int before = input.energy;
         network.tick();
         check(input.energy == before, "Inactive/unloaded receiver must not drain a source");
@@ -110,32 +111,38 @@ public final class DimensionTowerChecks {
         check(network.peerCount(input) == 0, "Shutdown must clear server registry");
 
         for (LatexEnergyType type : LatexEnergyType.values()) {
-            var source = new Tower("overworld", type.ordinal(), type, IOType.INPUT, 100);
+            var source = new Tower("overworld", type.ordinal(), type, IOType.INPUT, 50_000);
             var target = new Tower("latex_space", type.ordinal(), type, IOType.OUTPUT, 0);
             network.register(source);
             network.register(target);
             network.tick();
-            check(source.energy == 0 && target.energy == 100, type + " must transfer without conversion");
+            check(source.energy == 0 && target.energy == 50_000, type + " must transfer a full buffer in one tick without conversion");
             network.clear();
         }
     }
 
     private static void distribution() {
         var network = new DimensionTowerChannels();
-        var source = new Tower("overworld", 0, LatexEnergyType.DLP, IOType.INPUT, 10_000);
+        var source = new Tower("overworld", 0, LatexEnergyType.DLP, IOType.INPUT, 50_000);
         var targets = new ArrayList<Tower>();
         network.register(source);
         for (int i = 0; i < 7; i++) {
-            var target = new Tower("latex_space", i, LatexEnergyType.DLP, IOType.OUTPUT, 0);
+            var target = new Tower("latex_space", i, LatexEnergyType.DLP, IOType.OUTPUT, 45_000);
             targets.add(target);
             network.register(target);
         }
-        for (int tick = 0; tick < 70; tick++) network.tick();
-        check(source.energy == 3_000, "Source limit applies across all receivers");
-        for (var target : targets) check(target.energy == 1_000, "Receiver priority must rotate fairly");
+        network.tick();
+        check(source.energy == 15_000, "One source must fill multiple receivers in one tick");
+        for (var target : targets) check(target.energy == 50_000, "Receivers must fill only to capacity");
+
+        // Restore demand to verify that priority still rotates without a rate limit.
+        for (var target : targets) target.energy = 0;
+        source.energy = 1_000;
+        network.tick();
+        check(targets.get(1).energy == 1_000 && source.energy == 0, "Receiver priority must rotate between ticks");
 
         network.clear();
-        var receiver = new Tower("latex_space", 0, LatexEnergyType.WLP, IOType.OUTPUT, 0);
+        var receiver = new Tower("latex_space", 0, LatexEnergyType.WLP, IOType.OUTPUT, 48_500);
         network.register(receiver);
         List<Tower> senders = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -143,9 +150,16 @@ public final class DimensionTowerChecks {
             senders.add(sender);
             network.register(sender);
         }
-        for (int tick = 0; tick < 10; tick++) network.tick();
-        check(receiver.energy == 1_000, "Receiver limit applies across all sources");
-        for (var sender : senders) check(sender.energy == 800, "Sender priority must rotate fairly");
+        network.tick();
+        check(receiver.energy == 50_000, "Multiple sources must fill one receiver in one tick");
+        check(senders.get(2).energy == 0 && senders.get(3).energy == 500,
+                "Sources must drain only the available receiver space in rotating order");
+        check(senders.stream().mapToInt(sender -> sender.energy).sum() == 3_500,
+                "Excess source energy must remain stored");
+        receiver.energy = 0;
+        network.tick();
+        check(receiver.energy == 3_500 && senders.stream().allMatch(sender -> sender.energy == 0),
+                "Receiver must accept all remaining source buffers without a shared tick budget");
     }
 
     private static void randomizedConservation() {
@@ -162,13 +176,17 @@ public final class DimensionTowerChecks {
                 towers.add(tower);
             }
             for (int tick = 0; tick < 30; tick++) {
-                int[] before = towers.stream().mapToInt(tower -> tower.energy).toArray();
                 long total = towers.stream().mapToLong(tower -> tower.energy).sum();
                 network.tick();
                 check(total == towers.stream().mapToLong(tower -> tower.energy).sum(), "No energy creation or loss");
-                for (int i = 0; i < towers.size(); i++) {
-                    check(Math.abs(before[i] - towers.get(i).energy) <= DimensionTowerChannels.TRANSFER_PER_TICK,
-                            "Per-endpoint rate exceeded in multi-source/multi-receiver channels");
+                for (Tower source : towers) {
+                    if (source.mode != IOType.INPUT || source.energy == 0) continue;
+                    for (Tower target : towers) {
+                        if (target.mode == IOType.OUTPUT && target.channel == source.channel && target.type == source.type) {
+                            check(target.energy == target.capacity(),
+                                    "Available energy must fill every receiver in the channel before the tick ends");
+                        }
+                    }
                 }
             }
         }

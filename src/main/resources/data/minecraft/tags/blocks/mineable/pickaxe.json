@@ -26,6 +26,7 @@
     "changede:latexcreative_extranalbody_craft_table_block",
     "changede:white_latex_power_converter",
     "changede:dark_latex_power_converter",
-    "changede:orange_producer"
+    "changede:orange_producer",
+    { "id": "changede:latex_burner", "required": false }
   ]
 }

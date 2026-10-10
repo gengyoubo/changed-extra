@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.world.ForgeChunkManager;
+@SuppressWarnings("deprecation")
 
 public final class DimensionSpaceTowerBlockEntity extends BlockEntity
         implements ILatexEnergyHandler, ILatexTypedEnergyHandler, DimensionTowerChannels.Endpoint {
@@ -31,9 +32,6 @@ public final class DimensionSpaceTowerBlockEntity extends BlockEntity
     private boolean enabled;
     private boolean anchored;
     private boolean registered;
-    private int budgetTick = Integer.MIN_VALUE;
-    private int receivedThisTick;
-    private int extractedThisTick;
 
     private record Address(ResourceKey<Level> dimension, BlockPos pos) { }
 
@@ -55,7 +53,6 @@ public final class DimensionSpaceTowerBlockEntity extends BlockEntity
     public void tick() {
         refreshNetwork();
         if (!active()) return;
-        resetBudgets();
         for (Direction side : Direction.values()) {
             BlockPos pos = worldPosition.relative(side);
             if (!level.hasChunkAt(pos)) continue;
@@ -66,17 +63,8 @@ public final class DimensionSpaceTowerBlockEntity extends BlockEntity
         }
     }
 
-    private void resetBudgets() {
-        int tick = level instanceof ServerLevel serverLevel ? serverLevel.getServer().getTickCount() : 0;
-        if (budgetTick != tick) {
-            budgetTick = tick;
-            receivedThisTick = 0;
-            extractedThisTick = 0;
-        }
-    }
-
     private void pull(BlockEntity neighbor, Direction side) {
-        int request = Math.min(CAPACITY - stored(), DimensionTowerChannels.TRANSFER_PER_TICK - receivedThisTick);
+        int request = CAPACITY - stored();
         if (request <= 0) return;
         int extracted = 0;
         if (energyType == LatexEnergyType.LP && neighbor instanceof ILatexEnergyHandler handler) {
@@ -88,7 +76,7 @@ public final class DimensionSpaceTowerBlockEntity extends BlockEntity
     }
 
     private void push(BlockEntity neighbor, Direction side) {
-        int offer = Math.min(stored(), DimensionTowerChannels.TRANSFER_PER_TICK - extractedThisTick);
+        int offer = stored();
         if (offer <= 0) return;
         int received = 0;
         if (energyType == LatexEnergyType.LP && neighbor instanceof ILatexEnergyHandler handler) {
@@ -205,18 +193,14 @@ public final class DimensionSpaceTowerBlockEntity extends BlockEntity
     @Override public LatexEnergyType getEnergyType() { return energyType; }
     @Override public int receiveTypedEnergy(LatexEnergyType type, int amount) {
         if (type != energyType || mode != IOType.INPUT || !active()) return 0;
-        resetBudgets();
-        int accepted = Math.min(Math.max(0, amount), Math.min(CAPACITY - stored(),
-                DimensionTowerChannels.TRANSFER_PER_TICK - receivedThisTick));
-        if (accepted > 0) { moveEnergy(accepted); receivedThisTick += accepted; }
+        int accepted = Math.min(Math.max(0, amount), CAPACITY - stored());
+        if (accepted > 0) moveEnergy(accepted);
         return accepted;
     }
     @Override public int extractTypedEnergy(LatexEnergyType type, int amount) {
         if (type != energyType || mode != IOType.OUTPUT || !active()) return 0;
-        resetBudgets();
-        int extracted = Math.min(Math.max(0, amount), Math.min(stored(),
-                DimensionTowerChannels.TRANSFER_PER_TICK - extractedThisTick));
-        if (extracted > 0) { moveEnergy(-extracted); extractedThisTick += extracted; }
+        int extracted = Math.min(Math.max(0, amount), stored());
+        if (extracted > 0) moveEnergy(-extracted);
         return extracted;
     }
     @Override public int getTypedEnergyStored() { return stored(); }

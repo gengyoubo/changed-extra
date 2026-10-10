@@ -25,6 +25,7 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("deprecation")
 public class BasicLatexPurifierBlock extends BaseEntityBlock {
     private static final Component TITLE = Component.translatable("block.changede.basic_latex_purifier");
 

@@ -14,5 +14,6 @@ public class CEPonderPlugin implements PonderPlugin {
     @Override
     public void registerScenes(@NotNull PonderSceneRegistrationHelper<ResourceLocation> helper) {
         CESpaceTowerPonderScenes.register(helper);
+        github.com.gengyoubo.CE.compat.create.burner.LatexBurnerPonder.register(helper);
     }
 }

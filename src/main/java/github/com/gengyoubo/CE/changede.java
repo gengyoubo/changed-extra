@@ -134,6 +134,12 @@ public class changede {
         github.com.gengyoubo.CE.ability.CESkillAbilities.REGISTRY.register(bus);
         github.com.gengyoubo.CE.skill.SkillAttributes.REGISTRY.register(bus);
         CENetwork.register();
+        if (ModList.get().isLoaded("create")) {
+            github.com.gengyoubo.CE.compat.create.burner.LatexBurnerCompat.initialize(bus);
+        }
+        if (Boolean.getBoolean("changede.verifyLatexBurnerNoCreate")) {
+            MinecraftForge.EVENT_BUS.addListener(github.com.gengyoubo.CE.verification.LatexBurnerOptionalChecks::started);
+        }
         CEGameRules.register();
         bus.addListener(EventPriority.NORMAL, false, FMLCommonSetupEvent.class, latexStartEvents::setup);
         if (PROJECTE) {

@@ -11,7 +11,6 @@ import java.util.Map;
 /** Live endpoints only: energy stays in each tower, never in a global energy pool. */
 public final class DimensionTowerChannels {
     public static final int MAX_CHANNEL = 9_999;
-    public static final int TRANSFER_PER_TICK = 100;
 
     public interface Endpoint {
         Object address();
@@ -69,25 +68,20 @@ public final class DimensionTowerChannels {
         if (senders.isEmpty() || receivers.isEmpty()) return;
         // Rotate priority so one full or busy receiver cannot monopolize a channel.
         int receiverIndex = (int) Math.floorMod(tick, receivers.size());
-        int receiverBudget = TRANSFER_PER_TICK;
         int visited = 0;
         int senderStart = (int) Math.floorMod(tick, senders.size());
         for (int i = 0; i < senders.size() && visited < receivers.size(); i++) {
             Endpoint source = senders.get((senderStart + i) % senders.size());
-            int budget = Math.min(TRANSFER_PER_TICK, source.stored());
-            while (budget > 0 && visited < receivers.size()) {
+            while (source.stored() > 0 && visited < receivers.size()) {
                 Endpoint target = receivers.get(receiverIndex);
-                int amount = Math.min(budget, Math.min(receiverBudget, target.capacity() - target.stored()));
+                int amount = Math.min(source.stored(), target.capacity() - target.stored());
                 if (amount > 0) {
                     source.moveEnergy(-amount);
                     target.moveEnergy(amount);
-                    budget -= amount;
-                    receiverBudget -= amount;
                 }
-                if (receiverBudget == 0 || target.stored() == target.capacity()) {
+                if (target.stored() == target.capacity()) {
                     visited++;
                     receiverIndex = (receiverIndex + 1) % receivers.size();
-                    receiverBudget = TRANSFER_PER_TICK;
                 }
             }
         }

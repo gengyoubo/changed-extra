@@ -12,10 +12,14 @@ public class CEJadePlugin implements IWailaPlugin {
     @Override
     public void register(IWailaCommonRegistration registration) {
         registration.registerBlockDataProvider(LPEnergyProvider.INSTANCE, BlockEntity.class);
+        if (net.minecraftforge.fml.ModList.get().isLoaded("create"))
+            github.com.gengyoubo.CE.compat.create.burner.LatexBurnerJade.registerCommon(registration);
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(LPEnergyProvider.INSTANCE, Block.class);
+        if (net.minecraftforge.fml.ModList.get().isLoaded("create"))
+            github.com.gengyoubo.CE.compat.create.burner.LatexBurnerJade.registerClient(registration);
     }
 }

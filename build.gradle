@@ -141,10 +141,14 @@ dependencies {
     //runtimeOnly  fg.deobf("curse.maven:chloride-931925:7378010")
     runtimeOnly  fg.deobf("curse.maven:ferritecore-429235:4810975")
     //等价交换
-    implementation fg.deobf("curse.maven:projecte-226410:4901949")
+    compileOnly fg.deobf("curse.maven:projecte-226410:4901949")
     compileOnly fg.deobf("curse.maven:projectextended-353775:4860891")
     //机械动力
-    compileOnly fg.deobf("curse.maven:create-328085:7149905")
+    if (providers.gradleProperty('omitCreateForChecks').getOrElse('false').toBoolean()) {
+        compileOnly fg.deobf("curse.maven:create-328085:7149905")
+    } else {
+        implementation fg.deobf("curse.maven:create-328085:7149905")
+    }
     compileOnly fg.deobf("net.createmod.ponder:Ponder-Forge-1.20.1:1.0.92")
     //通用机械
     compileOnly fg.deobf("curse.maven:mekanism-268560:6552911")
@@ -152,13 +156,16 @@ dependencies {
     compileOnly fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
     compileOnly fg.deobf("curse.maven:guideme-1173950:7127447")
     //热力系列
-    runtimeOnly fg.deobf("curse.maven:cofh-core-69162:5374122")
-    runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:5443583")
-    runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:5372749")
+    //runtimeOnly fg.deobf("curse.maven:cofh-core-69162:5374122")
+    //runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:5443583")
+    //runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:5372749")
     compileOnly fg.deobf("curse.maven:thermal-dynamics-227443:5372747")
+    //匠魂
+    implementation fg.deobf("curse.maven:mantle-74924:8809819")
+    implementation fg.deobf("curse.maven:tinkers-construct-74072:8944121")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
-    implementation fg.deobf("curse.maven:jei-238222:7391695")
+    implementation fg.deobf("curse.maven:jei-238222:9058038")
     implementation fg.deobf("curse.maven:bakeries-1191781:8041836")
     //拍摄
     //runtimeOnly fg.deobf("github.com.gengyoubo.replayneo:RePlay:1.0.4")
@@ -249,6 +256,22 @@ minecraft {
             property 'changede.verifyDimensionTowerRestart', providers.gradleProperty('dimensionTowerRestart').getOrElse('false')
             property 'changede.verifyTechBlockDrops', 'true'
         }
+        create("latexBurnerServer") {
+            parent null, "server"
+            taskName "runLatexBurnerServer"
+            workingDirectory project.file('build/latex-burner-server')
+            args '--nogui'
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyLatexBurner', 'true'
+        }
+        create("latexBurnerNoCreateServer") {
+            parent null, "server"
+            taskName "runLatexBurnerNoCreateServer"
+            workingDirectory project.file('build/latex-burner-no-create-server')
+            args '--nogui'
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyLatexBurnerNoCreate', 'true'
+        }
     }
 }
 tasks.named('test') {
@@ -272,7 +295,7 @@ tasks.register('verifySpaceTowerEnergy', JavaExec) {
 
 tasks.register('verifyDimensionTower', JavaExec) {
     group = 'verification'
-    description = 'Checks dimension tower channel isolation, conservation, budgets and chunk boundaries.'
+    description = 'Checks dimension tower channel isolation, conservation, unlimited transfers and chunk boundaries.'
     dependsOn tasks.named('testClasses')
     classpath = sourceSets.test.runtimeClasspath
     mainClass = 'github.com.gengyoubo.CE.LP.DimensionTowerChecks'
@@ -505,10 +528,10 @@ tasks.register('verifyDevRunSnapshot') {
 }
 
 tasks.configureEach {
-    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer']) {
+    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer']) {
         dependsOn tasks.named('classes')
         doFirst { runTask ->
-            if (runTask.name == 'runDimensionTowerServer') {
+            if (runTask.name in ['runDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer']) {
                 // Forge merges sibling parents before applying its userdev template.
                 // At execution time the server run has the complete bootstrap settings.
                 def config = runTask.getRunConfig().get()

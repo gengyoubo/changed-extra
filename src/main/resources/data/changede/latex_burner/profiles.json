@@ -1,0 +1,102 @@
+{
+  "defaults": {
+    "dark": {
+      "speed": 1,
+      "fuel_ticks": 2400
+    },
+    "white": {
+      "speed": 1,
+      "fuel_ticks": 3600
+    }
+  },
+  "entities": {
+    "changed:dark_latex_wolf_pup": {
+      "latex": "dark",
+      "speed": 0.75
+    },
+    "changed:dark_latex_wolf_male": {
+      "latex": "dark",
+      "speed": 1
+    },
+    "changed:dark_latex_wolf_female": {
+      "latex": "dark",
+      "speed": 1
+    },
+    "changed:phage_latex_wolf_male": {
+      "latex": "dark",
+      "speed": 1
+    },
+    "changed:phage_latex_wolf_female": {
+      "latex": "dark",
+      "speed": 1
+    },
+    "changed:dark_latex_wolf_partial": {
+      "latex": "dark",
+      "speed": 1
+    },
+    "changed_addon:puro_kind_male": {
+      "latex": "dark",
+      "speed": 1
+    },
+    "changed_addon:puro_kind_female": {
+      "latex": "dark",
+      "speed": 1
+    },
+    "changed_addon:wolfy": {
+      "latex": "dark",
+      "speed": 1
+    },
+    "changed:dark_latex_yufeng": {
+      "latex": "dark",
+      "speed": 1.5
+    },
+    "changed:dark_dragon": {
+      "latex": "dark",
+      "speed": 1.5
+    },
+    "changed:dark_latex_double_yufeng": {
+      "latex": "dark",
+      "speed": 1.5
+    },
+    "changed_addon:dark_latex_yufeng_queen": {
+      "latex": "dark",
+      "speed": 2
+    },
+    "changed:pure_white_latex_wolf_pup": {
+      "latex": "white",
+      "speed": 0.75
+    },
+    "changed:pure_white_latex_wolf": {
+      "latex": "white",
+      "speed": 1
+    },
+    "changed:white_latex_wolf_male": {
+      "latex": "white",
+      "speed": 1
+    },
+    "changed:white_latex_wolf_female": {
+      "latex": "white",
+      "speed": 1
+    },
+    "changed:pure_white_latex_cerberus": {
+      "latex": "white",
+      "speed": 1.5
+    },
+    "changed:latex_mutant_bloodcell_wolf": {
+      "latex": "white",
+      "speed": 1.5
+    },
+    "changed:white_latex_knight": {
+      "latex": "white",
+      "speed": 1.5
+    },
+    "changed:white_latex_knight_fusion": {
+      "latex": "white",
+      "speed": 2
+    },
+    "changed:white_latex_centaur": {
+      "latex": "white",
+      "speed": 2
+    }
+  }
+}

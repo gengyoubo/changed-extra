@@ -10,8 +10,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public final class SpaceTowerForgeEnergyPusher {
-    private static final int TRANSFER_PER_TICK = 1_000;
-
     private SpaceTowerForgeEnergyPusher() {
     }
 
@@ -52,7 +50,7 @@ public final class SpaceTowerForgeEnergyPusher {
             return;
         }
 
-        int available = (int)Math.floor(tower.extractEnergyAsType(type, TRANSFER_PER_TICK, true));
+        int available = (int)Math.floor(tower.extractEnergyAsType(type, Integer.MAX_VALUE, true));
         int accepted = Math.min(available, storage.receiveEnergy(available, true));
         if (accepted <= 0) {
             return;
@@ -74,7 +72,7 @@ public final class SpaceTowerForgeEnergyPusher {
             return;
         }
 
-        int capacity = (int)Math.floor(tower.receiveEnergyAsType(type, TRANSFER_PER_TICK, true));
+        int capacity = (int)Math.floor(tower.receiveEnergyAsType(type, Integer.MAX_VALUE, true));
         int extractable = Math.min(capacity, storage.extractEnergy(capacity, true));
         if (extractable <= 0) {
             return;

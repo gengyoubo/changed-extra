@@ -53,6 +53,9 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if ("github.com.gengyoubo.CE.LP.mixins.LatexBurnerMixerMixin".equals(mixinClassName)) {
+            return isModLoaded("create");
+        }
         if ("github.com.gengyoubo.CE.mixins.CreatureMorphCampStateMixin".equals(mixinClassName)
                 || "github.com.gengyoubo.CE.mixins.PlayerOutpostCampAreaMixin".equals(mixinClassName)
                 || "github.com.gengyoubo.CE.mixins.LatexSocialInventoryBackupMixin".equals(mixinClassName)

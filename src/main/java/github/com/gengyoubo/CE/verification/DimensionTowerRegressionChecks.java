@@ -31,6 +31,8 @@ import java.nio.file.Path;
 
 /** Opt-in real server checks. Run only with the disposable runDimensionTowerServer world. */
 @Mod.EventBusSubscriber(modid = "changede")
+@SuppressWarnings("deprecation")
+
 public final class DimensionTowerRegressionChecks {
     private static final BlockPos SOURCE = new BlockPos(2048, 160, 2048);
     private static final BlockPos TARGET = new BlockPos(4095, 160, 4095);
@@ -93,12 +95,26 @@ public final class DimensionTowerRegressionChecks {
             var sender = placeTower(overworld, a, "INPUT", type, 123);
             var receiver = placeTower(remote, b, "OUTPUT", type, 0);
             DimensionTowerManager.network(server).tick();
-            check(sender.stored() == 23 && receiver.stored() == 100, type + " transfers unchanged between real dimensions");
+            check(sender.stored() == 0 && receiver.stored() == 123, type + " transfers its entire buffer between real dimensions");
             check(receiver.receiveEnergy(50, null) == 0, type + " endpoint rejects LP");
+            LatexEnergyType energyType = LatexEnergyType.valueOf(type);
+            check(receiver.extractTypedEnergy(energyType, Integer.MAX_VALUE) == 123, type + " output is bounded by stored energy");
+            check(sender.receiveTypedEnergy(energyType, 20_000) == 20_000
+                    && sender.receiveTypedEnergy(energyType, 30_000) == 30_000
+                    && sender.receiveTypedEnergy(energyType, 1) == 0,
+                    type + " repeated same-tick input fills only to capacity without a shared rate limit");
+            DimensionTowerManager.network(server).tick();
+            check(sender.stored() == 0 && receiver.stored() == 50_000,
+                    type + " full buffer crosses dimensions in one tick");
+            check(receiver.extractTypedEnergy(energyType, 20_000) == 20_000
+                    && receiver.extractTypedEnergy(energyType, 30_000) == 30_000
+                    && receiver.extractTypedEnergy(energyType, 1) == 0,
+                    type + " repeated same-tick output drains only stored energy without a shared rate limit");
+            sender.receiveTypedEnergy(energyType, 123);
             CompoundTag saved = sender.saveWithoutMetadata();
             var restored = new DimensionSpaceTowerBlockEntity(a, sender.getBlockState());
             restored.load(saved);
-            check(restored.stored() == 23 && restored.getChannel() == 35 && restored.isSwitchedOn(), type + " persists configuration and buffer");
+            check(restored.stored() == 123 && restored.getChannel() == 35 && restored.isSwitchedOn(), type + " persists configuration and buffer");
             overworld.setBlockAndUpdate(a, Blocks.AIR.defaultBlockState());
             remote.setBlockAndUpdate(b, Blocks.AIR.defaultBlockState());
         }

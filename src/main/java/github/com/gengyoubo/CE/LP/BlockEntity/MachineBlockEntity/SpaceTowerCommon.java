@@ -36,7 +36,7 @@ final class SpaceTowerCommon {
         for (Direction dir : Direction.values()) {
             BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
             if (neighbor instanceof ILatexEnergyHandler handler) {
-                int extracted = source.extractEnergy(100, dir);
+                int extracted = source.extractEnergy(source.getEnergyStored(), dir);
                 int received = handler.receiveEnergy(extracted, dir.getOpposite());
                 if (received < extracted) {
                     refundLp.accept(extracted - received);

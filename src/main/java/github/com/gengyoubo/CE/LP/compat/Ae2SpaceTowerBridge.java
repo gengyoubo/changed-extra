@@ -21,8 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.EnumSet;
 
 public class Ae2SpaceTowerBridge {
-    private static final double AE_TRANSFER_PER_TICK = 1_000.0D;
-
     private final BlockEntity owner;
     private final SpaceTowerAccess tower;
     private final IManagedGridNode node;
@@ -89,7 +87,7 @@ public class Ae2SpaceTowerBridge {
     }
 
     private void pullAeFromNetwork(IEnergyService energy) {
-        double requestedAe = tower.receiveEnergyAsType(SpaceTowerEnergyType.AE, AE_TRANSFER_PER_TICK, true);
+        double requestedAe = tower.receiveEnergyAsType(SpaceTowerEnergyType.AE, Double.MAX_VALUE, true);
         if (requestedAe <= 0.0D) {
             return;
         }
@@ -101,7 +99,8 @@ public class Ae2SpaceTowerBridge {
     }
 
     private void pushAeToNetwork(IEnergyService energy) {
-        double demand = energy.getEnergyDemand(AE_TRANSFER_PER_TICK);
+        double availableAe = tower.extractEnergyAsType(SpaceTowerEnergyType.AE, Double.MAX_VALUE, true);
+        double demand = energy.getEnergyDemand(availableAe);
         if (demand <= 0.0D) {
             return;
         }

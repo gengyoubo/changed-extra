@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
+@SuppressWarnings("deprecation")
 
 public record DimensionTowerConfigPacket(BlockPos pos, int action, int value) {
     public static final int SET_CHANNEL = 0;
