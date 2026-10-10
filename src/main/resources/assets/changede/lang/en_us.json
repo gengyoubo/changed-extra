@@ -1187,7 +1187,7 @@
   "changede.latex_burner.items": "Items: %s × %s",
   "changede.latex_burner.fluid": "Fluid: %s · %s mB",
   "changede.latex_burner.unsupported": "Creature unsupported by current data; fuel use paused",
-  "jade.changede.latex_burner": "Latex Creature Burner",
+  "config.jade.plugin_changede.latex_burner": "Latex Creature Burner",
   "changede.ponder.latex_burner.capture": "Craft an empty burner and capture a creature. Adult dark and pure white latex wolves provide the initial 1× tier.",
   "changede.ponder.latex_burner.single": "Latex goo items or fluid latex each provide ordinary heat. Use hoppers, arms or pipes for automatic supply.",
   "changede.ponder.latex_burner.both": "Active item and fluid fuel together automatically provide superheat. Both fuel lanes are consumed independently.",

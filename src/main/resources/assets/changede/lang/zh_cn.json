@@ -1187,7 +1187,7 @@
   "changede.latex_burner.items": "物品：%s × %s",
   "changede.latex_burner.fluid": "液体：%s · %s mB",
   "changede.latex_burner.unsupported": "当前数据配置不支持此胶兽，已暂停燃烧",
-  "jade.changede.latex_burner": "胶兽燃烧室",
+  "config.jade.plugin_changede.latex_burner": "胶兽燃烧室",
   "changede.ponder.latex_burner.capture": "合成空胶兽燃烧室，再捕获胶兽。成年黑胶狼和纯白胶狼为 1× 起步核心。",
   "changede.ponder.latex_burner.single": "物品胶液或液体胶液可单独维持普通加热，使用漏斗、机械臂或管道自动供料。",
   "changede.ponder.latex_burner.both": "物品和液体两路同时有效时自动超级加热，两路燃料分别消耗。",
