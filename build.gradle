@@ -284,6 +284,7 @@ minecraft {
             args '--nogui'
             mods { changede { source sourceSets.main } }
             property 'changede.verifyAddonOre', 'true'
+            property 'changede.verifyAddonOreOriginal', providers.gradleProperty('originalAddonHarvestForChecks').getOrElse('false')
         }
         create("latexBurnerNoCreateServer") {
             parent null, "server"

@@ -54,6 +54,10 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        // Only the explicitly enabled disposable ore comparison may load Addon's original harvest method.
+        if ("github.com.gengyoubo.CE.LP.mixins.AddonIridiumHarvestMixin".equals(mixinClassName)
+                && Boolean.getBoolean("changede.verifyAddonOre")
+                && Boolean.getBoolean("changede.verifyAddonOreOriginal")) return false;
         if (mixinClassName.startsWith("github.com.gengyoubo.CE.LP.mixins.TinkersLatex")) return isModLoaded("tconstruct");
         if ("github.com.gengyoubo.CE.LP.mixins.LatexBurnerMixerMixin".equals(mixinClassName)) {
             return isModLoaded("create");
