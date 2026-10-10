@@ -45,9 +45,11 @@ public class CEScreen {
             MenuScreens.register(CEMenus.LATEX_CREATIVE_EXTRANALBODY_CRAFT_TABLE.get(), LatexCreativeExtranalbodyCraftTableScreen::new);
             MenuScreens.register(CEMenus.SPACE_TOWER.get(), SpaceTowerScreen::new);
             MenuScreens.register(CEMenus.DIMENSION_SPACE_TOWER.get(), DimensionSpaceTowerScreen::new);
+            MenuScreens.register(CEMenus.FLUID_DIMENSION_SPACE_TOWER.get(), FluidDimensionSpaceTowerScreen::new);
             MenuScreens.register(CEMenus.PIPE_CONFIG.get(), PipeConfigScreen::new);
             ItemBlockRenderTypes.setRenderLayer(CELPBlock.SPACE_TOWER.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(CELPBlock.DIMENSION_SPACE_TOWER.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(CELPBlock.FLUID_DIMENSION_SPACE_TOWER.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(CEBlock.DARK_LATEX_LEAVES.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(CEBlock.WHITE_LATEX_LEAVES.get(), RenderType.cutout());
             registerPonderPluginIfAvailable();

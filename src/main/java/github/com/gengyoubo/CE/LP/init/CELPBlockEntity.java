@@ -33,6 +33,11 @@ public class CELPBlockEntity {
                     github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.DimensionSpaceTowerBlockEntity::new,
                     CELPBlock.DIMENSION_SPACE_TOWER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.FluidDimensionSpaceTowerBlockEntity>> FLUID_DIMENSION_SPACE_TOWER =
+            BLOCK_ENTITIES.register("fluid_dimension_space_tower", () -> BlockEntityType.Builder.of(
+                    github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.FluidDimensionSpaceTowerBlockEntity::new,
+                    CELPBlock.FLUID_DIMENSION_SPACE_TOWER.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<BasicAlloyFurnaceBlockEntity>> BASIC_ALLOY_FURNACE =
             BLOCK_ENTITIES.register("basic_alloy_furnace", () -> BlockEntityType.Builder.of(
                     BasicAlloyFurnaceBlockEntity::new, CELPBlock.BASIC_ALLOY_FURNACE.get()).build(null));

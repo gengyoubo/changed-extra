@@ -22,6 +22,8 @@ public class CEMenus {
             REGISTRY.register("space_tower", () -> IForgeMenuType.create(SpaceTowerMenu::new));
     public static final RegistryObject<MenuType<DimensionSpaceTowerMenu>> DIMENSION_SPACE_TOWER =
             REGISTRY.register("dimension_space_tower", () -> IForgeMenuType.create(DimensionSpaceTowerMenu::new));
+    public static final RegistryObject<MenuType<FluidDimensionSpaceTowerMenu>> FLUID_DIMENSION_SPACE_TOWER =
+            REGISTRY.register("fluid_dimension_space_tower", () -> IForgeMenuType.create(FluidDimensionSpaceTowerMenu::new));
     public static final RegistryObject<MenuType<PipeConfigMenu>> PIPE_CONFIG =
             REGISTRY.register("pipe_config", () -> IForgeMenuType.create(PipeConfigMenu::new));
 

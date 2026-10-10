@@ -248,6 +248,15 @@ minecraft {
                 }
             }
         }
+        create("fluidDimensionTowerServer") {
+            parent null, "server"
+            taskName "runFluidDimensionTowerServer"
+            workingDirectory project.file('build/fluid-dimension-tower-server')
+            args '--nogui'
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyFluidDimensionTower', 'true'
+            property 'changede.verifyFluidDimensionTowerRestart', providers.gradleProperty('fluidDimensionTowerRestart').getOrElse('false')
+        }
         create("dimensionTowerServer") {
             parent null, "server"
             taskName "runDimensionTowerServer"
@@ -555,10 +564,10 @@ tasks.register('verifyDevRunSnapshot') {
 }
 
 tasks.configureEach {
-    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient']) {
+    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient']) {
         dependsOn tasks.named('classes')
         doFirst { runTask ->
-            if (runTask.name in ['runDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer']) {
+            if (runTask.name in ['runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer']) {
                 // Forge merges sibling parents before applying its userdev template.
                 // At execution time the server run has the complete bootstrap settings.
                 def config = runTask.getRunConfig().get()

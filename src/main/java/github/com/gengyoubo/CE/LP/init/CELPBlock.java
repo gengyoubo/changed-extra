@@ -42,6 +42,7 @@ public class CELPBlock {
     public static final RegistryObject<Block> LATEXCREATIVE_EXTRANALBODY_CRAFT_TABLE_BLOCK;
     public static final RegistryObject<Block> SPACE_TOWER;
     public static final RegistryObject<Block> DIMENSION_SPACE_TOWER;
+    public static final RegistryObject<Block> FLUID_DIMENSION_SPACE_TOWER;
     public static final RegistryObject<Block> WHITE_LATEX_POWER_CONVERTER;
     public static final RegistryObject<Block> DARK_LATEX_POWER_CONVERTER;
     public static final RegistryObject<Block> ORANGE_PRODUCER;
@@ -80,6 +81,9 @@ public class CELPBlock {
                         .sound(net.minecraft.world.level.block.SoundType.METAL).strength(3.0F, 12.0F).noOcclusion()));
         DIMENSION_SPACE_TOWER = BLOCKS.register("dimension_space_tower",
                 () -> new github.com.gengyoubo.CE.LP.Block.DimensionSpaceTowerBlock(BlockBehaviour.Properties.of()
+                        .sound(net.minecraft.world.level.block.SoundType.METAL).strength(3.0F, 12.0F).noOcclusion()));
+        FLUID_DIMENSION_SPACE_TOWER = BLOCKS.register("fluid_dimension_space_tower",
+                () -> new github.com.gengyoubo.CE.LP.Block.FluidDimensionSpaceTowerBlock(BlockBehaviour.Properties.of()
                         .sound(net.minecraft.world.level.block.SoundType.METAL).strength(3.0F, 12.0F).noOcclusion()));
         WHITE_LATEX_POWER_CONVERTER = BLOCKS.register("white_latex_power_converter",
                 () -> new LatexEnergyConverterBlock(BlockBehaviour.Properties.of(), true));

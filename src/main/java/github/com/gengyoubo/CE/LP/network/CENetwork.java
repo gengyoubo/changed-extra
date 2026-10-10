@@ -7,6 +7,7 @@ import github.com.gengyoubo.CE.LP.network.packet.RequestLatexPaintingPortalPrevi
 import github.com.gengyoubo.CE.LP.network.packet.RequestWorkbenchEnergyPacket;
 import github.com.gengyoubo.CE.LP.network.packet.SpaceTowerConfigPacket;
 import github.com.gengyoubo.CE.LP.network.packet.DimensionTowerConfigPacket;
+import github.com.gengyoubo.CE.LP.network.packet.FluidDimensionTowerConfigPacket;
 import github.com.gengyoubo.CE.LP.network.packet.WorkbenchEnergyPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
@@ -107,6 +108,9 @@ public class CENetwork {
         );
         INSTANCE.registerMessage(packetId++, DimensionTowerConfigPacket.class,
                 DimensionTowerConfigPacket::encode, DimensionTowerConfigPacket::decode, DimensionTowerConfigPacket::handle,
+                java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER));
+        INSTANCE.registerMessage(packetId++, FluidDimensionTowerConfigPacket.class,
+                FluidDimensionTowerConfigPacket::encode, FluidDimensionTowerConfigPacket::decode, FluidDimensionTowerConfigPacket::handle,
                 java.util.Optional.of(net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER));
     }
 
