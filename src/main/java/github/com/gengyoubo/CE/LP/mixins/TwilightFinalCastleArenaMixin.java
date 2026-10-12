@@ -21,17 +21,22 @@ import twilightforest.world.components.structures.finalcastle.FinalCastleBossGaz
 @Mixin(value = FinalCastleBossGazeboComponent.class, remap = false)
 public abstract class TwilightFinalCastleArenaMixin extends TFStructureComponentOld {
     protected TwilightFinalCastleArenaMixin(StructurePieceType type, CompoundTag tag) { super(type, tag); }
+    @Inject(method = "<init>(ILtwilightforest/world/components/structures/TFStructureComponentOld;III)V", at = @At("RETURN"))
+    private void changede$expandArena(int index, TFStructureComponentOld keep, int x, int y, int z, CallbackInfo ci) {
+        var box = keep.getBoundingBox();
+        this.boundingBox = new BoundingBox(box.minX(), box.maxY() + 2, box.minZ(), box.maxX(), box.maxY() + 26, box.maxZ());
+    }
     @Inject(method = "postProcess", at = @At("HEAD"), cancellable = true, remap = true)
     private void changede$finishArena(WorldGenLevel world, StructureManager manager, ChunkGenerator generator,
                                      RandomSource random, BoundingBox bounds, ChunkPos chunk, BlockPos origin, CallbackInfo ci) {
         var wall = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
         var floor = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState();
-        generateBox(world, bounds, 0, -1, 0, 20, -1, 20, floor, floor, false);
-        generateBox(world, bounds, 0, 0, 0, 20, 11, 20, wall, Blocks.AIR.defaultBlockState(), false);
+        generateBox(world, bounds, 0, -1, 0, 48, -1, 48, floor, floor, false);
+        generateBox(world, bounds, 0, 0, 0, 48, 24, 48, wall, Blocks.AIR.defaultBlockState(), false);
         // Two entrances connect the existing castle roof to the former WIP enclosure.
-        generateAirBox(world, bounds, 9, 0, 0, 11, 3, 0);
-        generateAirBox(world, bounds, 9, 0, 20, 11, 3, 20);
-        placeBlock(world, TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().defaultBlockState(), 10, 0, 10, bounds);
+        generateAirBox(world, bounds, 23, 0, 0, 25, 3, 0);
+        generateAirBox(world, bounds, 23, 0, 48, 25, 3, 48);
+        placeBlock(world, TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().defaultBlockState(), 24, 0, 24, bounds);
         ci.cancel();
     }
 }

@@ -10,14 +10,21 @@ public final class LatexTinkersOptionalChecks {
     public static void started(ServerStartedEvent event) {
         try {
             if (ModList.get().isLoaded("tconstruct")) throw new AssertionError("Tinkers must be absent in this check");
+            if (!ModList.get().isLoaded("twilightforest")) {
+                if (event.getServer().getPackRepository().getSelectedIds().contains("changede:twilight_final")
+                        || event.getServer().getAdvancements().getAdvancement(ResourceLocation.parse("changede:twilight_final_boss")) != null)
+                    throw new AssertionError("Final castle rewards must be absent without Twilight Forest");
+            }
             if (event.getServer().getPackRepository().getSelectedIds().contains("changede:latex_smeltery"))
                 throw new AssertionError("Optional smeltery loot pack must be absent");
-            for (String name : new String[]{"latex_combustion_core", "latex_fuel_tank"}) {
+            for (String name : new String[]{"latex_combustion_core", "latex_fuel_tank", "dynamic_fuel_core", "molten_dark_latex", "molten_white_latex", "molten_dark_latex_bucket", "molten_white_latex_bucket"}) {
                 if (net.minecraftforge.registries.ForgeRegistries.BLOCKS.containsKey(ResourceLocation.parse("changede:" + name))
                         || net.minecraftforge.registries.ForgeRegistries.ITEMS.containsKey(ResourceLocation.parse("changede:" + name)))
                     throw new AssertionError("Optional smeltery block must not register: " + name);
             }
-            for (String path : new String[]{"smeltery/latex_combustion_core", "smeltery/latex_fuel_tank", "smeltery/fuel/dark_latex", "smeltery/fuel/white_latex"})
+            for (String path : new String[]{"smeltery/latex_combustion_core", "smeltery/latex_fuel_tank", "smeltery/dynamic_fuel_core",
+                    "smeltery/fuel/dark_latex", "smeltery/fuel/white_latex", "smeltery/fuel/molten_dark_latex", "smeltery/fuel/molten_white_latex",
+                    "smeltery/melting/dark_latex_goo", "smeltery/melting/white_latex_goo", "smeltery/entity_melting/latex"})
                 if (event.getServer().getRecipeManager().byKey(ResourceLocation.parse("changede:" + path)).isPresent())
                     throw new AssertionError("Optional smeltery recipe must not load: " + path);
             for (String name : new String[]{"latex_plasticity", "latex_resilience"}) {

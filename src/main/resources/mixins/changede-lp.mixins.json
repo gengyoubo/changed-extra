@@ -6,6 +6,12 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "changede.refmap.json",
   "mixins": [
+    "TwilightFinalHealthRangeMixin",
+    "TwilightFinalHealthLockMixin",
+    "TwilightFinal009Mixin",
+    "TwilightFinalGuardianBufferMixin",
+    "TwilightFinalGuardianContainerMixin",
+    "TwilightFinalGuardianKnightMixin",
     "TwilightFinalBossSpawnerMixin",
     "TwilightFinalCastleArenaMixin",
     "TinkersLatexFuelMixin",

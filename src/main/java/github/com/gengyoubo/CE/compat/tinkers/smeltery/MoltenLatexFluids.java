@@ -41,7 +41,7 @@ public final class MoltenLatexFluids {
         public final RegistryObject<LiquidBlock> block;
         public final RegistryObject<Item> bucket;
         private Entry(String name, int color) {
-            type = TYPES.register(name, () -> new FluidType(FluidType.Properties.create().temperature(2273).density(3000)
+            type = TYPES.register(name, () -> new FluidType(FluidType.Properties.create().descriptionId("fluid.changede." + name).temperature(2273).density(3000)
                     .viscosity(6000).lightLevel(8).canSwim(false).canDrown(false)) {
                 @Override public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {

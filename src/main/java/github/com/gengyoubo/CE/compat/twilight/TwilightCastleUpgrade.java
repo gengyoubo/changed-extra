@@ -34,8 +34,10 @@ public final class TwilightCastleUpgrade extends SavedData {
         if (event.phase != TickEvent.Phase.END || event.player.tickCount % 40 != 0
                 || !(event.player.level() instanceof ServerLevel level)
                 || !level.dimension().location().equals(net.minecraft.resources.ResourceLocation.parse("twilightforest:twilight_forest"))) return;
+        var nearest = twilightforest.util.LegacyLandmarkPlacements.getNearestCenterXZ(event.player.getBlockX() >> 4, event.player.getBlockZ() >> 4);
+        if (!level.hasChunk(nearest.getX() >> 4, nearest.getZ() >> 4)) return;
         var start = LandmarkUtil.locateNearestLandmarkStart(level, TFStructures.FINAL_CASTLE, event.player.blockPosition());
-        if (start.isEmpty()) return;
+        if (start.isEmpty() || start.get() instanceof twilightforest.world.components.structures.start.TFStructureStart castle && castle.isConquered()) return;
         var data = level.getDataStorage().computeIfAbsent(TwilightCastleUpgrade::load, TwilightCastleUpgrade::new, "changede_final_castle_upgrades");
         for (var piece : start.get().getPieces()) {
             if (!(piece instanceof FinalCastleBossGazeboComponent)) continue;
@@ -50,11 +52,9 @@ public final class TwilightCastleUpgrade extends SavedData {
             // No edits to rebuilt/player-owned arenas: require the original force-field enclosure.
             if (!level.getBlockState(new BlockPos(center.getX(), center.getY(), bounds.minZ())).is(TFBlocks.VIOLET_FORCE_FIELD.get())
                     || !level.getBlockState(center).isAir()) continue;
-            for (int z : new int[]{bounds.minZ(), bounds.maxZ()}) {
-                for (BlockPos pos : BlockPos.betweenClosed(center.getX() - 1, center.getY(), z, center.getX() + 1, center.getY() + 3, z)) {
-                    if (level.getBlockState(pos).is(TFBlocks.VIOLET_FORCE_FIELD.get())) level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                }
-            }
+            // Remove the obsolete small enclosure so Hydra and the flying bosses can use the castle roof.
+            for (BlockPos pos : BlockPos.betweenClosed(bounds.minX(), center.getY(), bounds.minZ(), bounds.maxX(), bounds.maxY(), bounds.maxZ()))
+                if (level.getBlockState(pos).is(TFBlocks.VIOLET_FORCE_FIELD.get())) level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
             level.setBlockAndUpdate(center, TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().defaultBlockState());
             texts.forEach(ArmorStand::discard);
             data.upgraded.add(center.asLong()); data.setDirty();

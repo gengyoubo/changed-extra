@@ -141,7 +141,7 @@ public class changede {
         github.com.gengyoubo.CE.skill.SkillAttributes.REGISTRY.register(bus);
         CENetwork.register();
         if (ModList.get().isLoaded("twilightforest")) {
-            github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossCompat.initialize();
+            github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossCompat.initialize(bus);
         }
         if (ModList.get().isLoaded("create")) {
             github.com.gengyoubo.CE.compat.create.burner.LatexBurnerCompat.initialize(bus);

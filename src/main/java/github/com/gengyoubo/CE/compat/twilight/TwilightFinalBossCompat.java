@@ -19,12 +19,28 @@ import twilightforest.util.LandmarkUtil;
 public final class TwilightFinalBossCompat {
     public static final String MARKER = "changede_twilight_final_boss";
     public static final String HOME = "changede_twilight_final_home";
-    public static final float HEALTH = 1000;
+    public static final float HEALTH = 2800;
     private TwilightFinalBossCompat() {}
-    public static void initialize() {
+    public static void initialize(net.minecraftforge.eventbus.api.IEventBus bus) {
         MinecraftForge.EVENT_BUS.addListener(TwilightFinalBossCompat::joined);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, TwilightFinalBossCompat::died);
         MinecraftForge.EVENT_BUS.addListener(TwilightCastleUpgrade::tick);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, TwilightFinalBossRewards::prepare);
+        MinecraftForge.EVENT_BUS.addListener(TwilightFinalBossRewards::removed);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, TwilightFinalEncounter::attacked);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, TwilightFinalEncounter::died);
+        MinecraftForge.EVENT_BUS.addListener(TwilightFinalEncounter::removed);
+        MinecraftForge.EVENT_BUS.addListener(TwilightFinalEncounter::drops);
+        MinecraftForge.EVENT_BUS.addListener(TwilightFinalEncounter::experience);
+        bus.addListener((net.minecraftforge.event.AddPackFindersEvent event) -> {
+            if (event.getPackType() != net.minecraft.server.packs.PackType.SERVER_DATA) return;
+            var path = net.minecraftforge.fml.ModList.get().getModFileById("changede").getFile().findResource("resourcepacks", "twilight_final");
+            var pack = net.minecraft.server.packs.repository.Pack.readMetaAndCreate("changede:twilight_final",
+                    net.minecraft.network.chat.Component.literal("Changed Extra Final Castle"), true,
+                    id -> new net.minecraftforge.resource.PathPackResources(id, true, path), net.minecraft.server.packs.PackType.SERVER_DATA,
+                    net.minecraft.server.packs.repository.Pack.Position.BOTTOM, net.minecraft.server.packs.repository.PackSource.BUILT_IN);
+            if (pack != null) event.addRepositorySource(output -> output.accept(pack));
+        });
     }
     public static boolean spawn(ServerLevelAccessor world, BlockPos pos) {
         var boss = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(world.getLevel());
@@ -33,10 +49,12 @@ public final class TwilightFinalBossCompat {
         ForgeEventFactory.onFinalizeSpawn(boss, world, world.getCurrentDifficultyAt(pos), MobSpawnType.SPAWNER, null, null);
         boss.getPersistentData().putBoolean(MARKER, true);
         boss.getPersistentData().putLong(HOME, pos.asLong());
+        boss.getPersistentData().putInt(TwilightFinalEncounter.STAGE, 0);
         boss.getAttribute(Attributes.MAX_HEALTH).setBaseValue(HEALTH);
         boss.setHealth(HEALTH);
         boss.setPersistenceRequired();
         boss.restrictTo(pos, 32);
+        TwilightFinalEncounter.initialize(boss);
         return world.addFreshEntity(boss);
     }
     private static void joined(EntityJoinLevelEvent event) {
@@ -45,6 +63,7 @@ public final class TwilightFinalBossCompat {
         // NBT already preserves current health. Never heal the boss when its chunk reloads.
         boss.getAttribute(Attributes.MAX_HEALTH).setBaseValue(HEALTH);
         boss.restrictTo(BlockPos.of(boss.getPersistentData().getLong(HOME)), 32);
+        TwilightFinalEncounter.initialize(boss);
     }
     private static void died(LivingDeathEvent event) {
         var boss = event.getEntity();

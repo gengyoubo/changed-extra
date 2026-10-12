@@ -43,6 +43,11 @@ public final class LatexTinkersRegressionChecks {
             ServerLevel level = event.getServer().overworld();
             recipes(level); effects(level);
             github.com.gengyoubo.CE.compat.tinkers.smeltery.LatexSmelteryRegressionChecks.run(level, LatexTinkersRegressionChecks::check);
+            if (Boolean.getBoolean("changede.verifyIssue38")) {
+                github.com.gengyoubo.CE.compat.tinkers.smeltery.Issue38SmelteryChecks.run(level, LatexTinkersRegressionChecks::check);
+                if (net.minecraftforge.fml.ModList.get().isLoaded("twilightforest"))
+                    github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossChecks.run(event.getServer(), LatexTinkersRegressionChecks::check);
+            }
             Files.writeString(Path.of("latex-tinkers-checks.txt"), "PASS: " + assertions + " assertions\n");
         } catch (Throwable error) {
             github.com.gengyoubo.CE.changede.LOGGER.error("LATEX TINKERS CHECKS FAILED", error);

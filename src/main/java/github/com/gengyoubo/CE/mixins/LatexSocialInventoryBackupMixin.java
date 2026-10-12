@@ -8,9 +8,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LatexSocialMemory.class, remap = false)
 public abstract class LatexSocialInventoryBackupMixin {
+    @Inject(method = "usesNativePetMenu", at = @At("HEAD"), cancellable = true)
+    private static void changede$inspectPetMenuWithoutClientClasses(ChangedEntity creature, CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(github.com.gengyoubo.CE.compat.synergy.SafeNativePetMenu.hasMenu(creature));
+    }
     @Inject(method = "promoteNativePet", at = @At("HEAD"))
     private static void changede$backupBeforeTaming(ChangedEntity creature, ServerPlayer player, CallbackInfo ci) {
         CreatureInventoryBackup.beforePromotion(creature);
