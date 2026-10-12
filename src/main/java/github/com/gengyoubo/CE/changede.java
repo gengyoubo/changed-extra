@@ -107,6 +107,12 @@ public class changede {
             github.com.gengyoubo.CE.compat.synergy.camp.LatexCampfireCompat.initialize(bus);
             github.com.gengyoubo.CE.compat.synergy.CreatureInventoryBackup.initialize();
             try {
+                Class<?> recovery = Class.forName("github.com.gengyoubo.CE.compat.synergy.ChangedSynergyTransactionRecovery");
+                recovery.getMethod("initialize").invoke(null);
+            } catch (ReflectiveOperationException | LinkageError exception) {
+                LOGGER.error("Failed to initialize Changed: Synergy transaction recovery", exception);
+            }
+            try {
                 Class<?> morphCompat = Class.forName("github.com.gengyoubo.CE.compat.synergy.ChangedSynergyMorphCompat");
                 morphCompat.getMethod("initialize").invoke(null);
             } catch (ReflectiveOperationException | LinkageError exception) {

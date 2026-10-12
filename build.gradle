@@ -330,6 +330,14 @@ tasks.register('verifyChangedMixinDiagnostics', JavaExec) {
     classpath = sourceSets.test.runtimeClasspath
     mainClass = 'github.com.gengyoubo.CE.diagnostics.ChangedMixinDiagnosticsTest'
 }
+
+tasks.register('verifySynergyTransactionRecovery', JavaExec) {
+    group = 'verification'
+    description = 'Checks conservative recovery of stranded CS captures and preservation of unrelated NBT.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'github.com.gengyoubo.CE.compat.synergy.SynergyTransactionRecoveryChecks'
+}
 tasks.register('verifySpaceTowerEnergy', JavaExec) {
     group = 'verification'
     description = 'Checks bounded space tower energy conversion and Forge Energy contracts.'
@@ -353,7 +361,7 @@ tasks.register('verifyPortalPreviewPolicy', JavaExec) {
     mainClass = 'github.com.gengyoubo.CE.client.PortalPreviewPolicyChecks'
 }
 tasks.named('check') {
-    dependsOn 'verifySpaceTowerEnergy', 'verifyPortalPreviewPolicy', 'verifyDimensionTower'
+    dependsOn 'verifySpaceTowerEnergy', 'verifyPortalPreviewPolicy', 'verifyDimensionTower', 'verifySynergyTransactionRecovery'
 }
 tasks.named('processResources', ProcessResources).configure {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
