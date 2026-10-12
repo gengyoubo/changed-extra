@@ -115,7 +115,7 @@ public final class Issue38SmelteryChecks {
             check.accept(amountCorrect, "Entity output is exactly 250 mB for " + id);
             check.accept(id.contains("dark_latex") ? dark == 64 : id.contains("white_latex") ? white == 64 : dark > 0 && white > 0,
                     "Latex faction controls output; neutral creatures can produce either color: " + id);
-            BlockPos pos = level.getSharedSpawnPos().above(32).offset(id.contains("dark_latex") ? 0 : id.contains("white_latex") ? 8 : 16, 0, 0);
+            BlockPos pos = level.getSharedSpawnPos().above(32);
             level.getChunkAt(pos); entity.moveTo(pos, 0, 0); ((Mob) entity).setNoAi(true); level.addFreshEntity(entity);
             entity.tickCount = 40; // Changed ignores all damage for the first 30 ticks after spawning.
             var outputTank = new net.minecraftforge.fluids.capability.templates.FluidTank(10000);
@@ -125,6 +125,7 @@ public final class Issue38SmelteryChecks {
             boolean interacted = module.interactWithEntities();
             check.accept(interacted && outputTank.getFluidAmount() == 250 && entity.getHealth() < entity.getMaxHealth(),
                     "Native smeltery damages the creature and deposits 250 mB: " + id + " (interacted=" + interacted
+                            + ", nearby=" + level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(2)).contains(entity)
                             + ", fluid=" + outputTank.getFluidAmount() + ", health=" + entity.getHealth() + "/" + entity.getMaxHealth() + ")");
             entity.discard();
         }

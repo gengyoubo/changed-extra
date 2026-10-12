@@ -38,6 +38,7 @@ public final class LatexTinkersRegressionChecks {
         github.com.gengyoubo.CE.changede.LOGGER.info("TINKERS PASS: {}", message);
     }
     public static void started(ServerStartedEvent event) {
+        boolean deferred = false;
         try {
             check(event.getServer().getPlayerCount() == 0, "Disposable server has no real players");
             ServerLevel level = event.getServer().overworld();
@@ -45,14 +46,28 @@ public final class LatexTinkersRegressionChecks {
             github.com.gengyoubo.CE.compat.tinkers.smeltery.LatexSmelteryRegressionChecks.run(level, LatexTinkersRegressionChecks::check);
             if (Boolean.getBoolean("changede.verifyIssue38")) {
                 github.com.gengyoubo.CE.compat.tinkers.smeltery.Issue38SmelteryChecks.run(level, LatexTinkersRegressionChecks::check);
-                if (net.minecraftforge.fml.ModList.get().isLoaded("twilightforest"))
-                    github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossChecks.run(event.getServer(), LatexTinkersRegressionChecks::check);
+                if (net.minecraftforge.fml.ModList.get().isLoaded("twilightforest")) {
+                    github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossChecks.prepare(event.getServer());
+                    var ticks = new java.util.concurrent.atomic.AtomicInteger();
+                    net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(net.minecraftforge.eventbus.api.EventPriority.NORMAL,
+                            false, net.minecraftforge.event.TickEvent.ServerTickEvent.class, tick -> {
+                        if (tick.phase != net.minecraftforge.event.TickEvent.Phase.END || ticks.incrementAndGet() != 20) return;
+                        try {
+                            github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossChecks.run(event.getServer(), LatexTinkersRegressionChecks::check);
+                            Files.writeString(Path.of("latex-tinkers-checks.txt"), "PASS: " + assertions + " assertions\n");
+                        } catch (Throwable error) {
+                            github.com.gengyoubo.CE.changede.LOGGER.error("TWILIGHT FINAL CHECKS FAILED", error);
+                            try { Files.writeString(Path.of("latex-tinkers-checks.txt"), "FAIL: " + error + "\n"); } catch (Exception ignored) {}
+                        } finally { event.getServer().execute(() -> event.getServer().halt(false)); }
+                    });
+                    deferred = true;
+                }
             }
-            Files.writeString(Path.of("latex-tinkers-checks.txt"), "PASS: " + assertions + " assertions\n");
+            if (!deferred) Files.writeString(Path.of("latex-tinkers-checks.txt"), "PASS: " + assertions + " assertions\n");
         } catch (Throwable error) {
             github.com.gengyoubo.CE.changede.LOGGER.error("LATEX TINKERS CHECKS FAILED", error);
             try { Files.writeString(Path.of("latex-tinkers-checks.txt"), "FAIL: " + error + "\n"); } catch (Exception ignored) {}
-        } finally { event.getServer().execute(() -> event.getServer().halt(false)); }
+        } finally { if (!deferred) event.getServer().execute(() -> event.getServer().halt(false)); }
     }
     private static ToolStack tool() {
         var item = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("tconstruct:pickaxe"));

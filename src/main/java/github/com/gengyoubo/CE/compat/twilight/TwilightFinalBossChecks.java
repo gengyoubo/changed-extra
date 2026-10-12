@@ -37,6 +37,10 @@ import java.util.function.BiConsumer;
 /** Real arena generation, native spawner lifecycle, conquest and reward checks. */
 public final class TwilightFinalBossChecks {
     private TwilightFinalBossChecks() {}
+    public static void prepare(MinecraftServer server) {
+        ServerLevel level = server.getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("twilightforest:twilight_forest")));
+        for (int x = -2; x <= 1; x++) for (int z = -2; z <= 1; z++) { level.setChunkForced(x, z, true); level.getChunk(x, z); }
+    }
     public static void run(MinecraftServer server, BiConsumer<Boolean, String> check) {
         ServerLevel level = server.getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("twilightforest:twilight_forest")));
         check.accept(level != null, "Twilight dimension loads with optional compatibility");
@@ -75,7 +79,7 @@ public final class TwilightFinalBossChecks {
         startChunk.addReferenceForStructure(structure, startChunk.getPos().toLong());
         check.accept(LandmarkUtil.locateNearestLandmarkStart(level, TFStructures.FINAL_CASTLE, home).orElse(null) == start,
                 "Conquest fixture resolves through native landmark references");
-        var player = FakePlayerFactory.getMinecraft(level);
+        var player = FakePlayerFactory.get(level, new com.mojang.authlib.GameProfile(java.util.UUID.fromString("c7ae3aab-1d38-4e67-971d-003800000009"), "CEIssue38Twilight"));
         player.setPos(home.getX() + 1, home.getY(), home.getZ()); player.tickCount = 40;
         level.setBlockAndUpdate(home, Blocks.AIR.defaultBlockState());
         level.setBlockAndUpdate(new BlockPos(home.getX(), home.getY(), bounds.minZ()), TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState());
@@ -83,7 +87,10 @@ public final class TwilightFinalBossChecks {
         text.setCustomName(net.minecraft.network.chat.Component.literal("Final Castle WIP.")); level.addFreshEntity(text);
         TwilightCastleUpgrade.tick(new net.minecraftforge.event.TickEvent.PlayerTickEvent(net.minecraftforge.event.TickEvent.Phase.END, player));
         check.accept(level.getBlockState(home).is(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get()) && text.isRemoved(),
-                "Existing untouched WIP arena upgrades on player approach and removes its placeholder");
+                "Existing untouched WIP arena upgrades on player approach and removes its placeholder (home=" + home
+                        + ", player=" + player.blockPosition() + ", level=" + player.level().dimension().location()
+                        + ", state=" + level.getBlockState(home) + ", textRemoved=" + text.isRemoved()
+                        + ", visible=" + level.getEntitiesOfClass(net.minecraft.world.entity.decoration.ArmorStand.class, new AABB(home).inflate(3)).size() + ")");
         var state = level.getBlockState(home);
         var spawner = new FinalBossSpawnerBlockEntity(home, state) { @Override public boolean anyPlayerInRange() { return true; } };
         spawner.setLevel(level);
@@ -92,6 +99,7 @@ public final class TwilightFinalBossChecks {
         check.accept(level.getBlockState(home).is(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get()), "Peaceful mode retains final boss spawner");
         server.setDifficulty(Difficulty.NORMAL, true);
         BossSpawnerBlockEntity.tick(level, home, state, spawner);
+        level.tick(() -> true);
         var bosses = level.getEntitiesOfClass(Experiment009BossEntity.class, new AABB(home).inflate(8),
                 boss -> boss.getPersistentData().getBoolean(TwilightFinalBossCompat.MARKER));
         check.accept(bosses.size() == 1 && level.getBlockState(home).isAir(), "Native final spawner creates exactly one Experiment 009 and consumes itself");
