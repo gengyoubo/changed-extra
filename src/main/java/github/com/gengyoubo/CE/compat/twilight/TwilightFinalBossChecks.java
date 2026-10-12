@@ -97,17 +97,18 @@ public final class TwilightFinalBossChecks {
         check.accept(bosses.size() == 1 && level.getBlockState(home).isAir(), "Native final spawner creates exactly one Experiment 009 and consumes itself");
         var boss = bosses.get(0);
         boss.setNoAi(true);
-        check.accept(boss.getMaxHealth() == 1000 && boss.getHealth() == 1000, "Final encounter has exactly 500 hearts");
+        check.accept(boss.getMaxHealth() == 2800 && boss.getHealth() == 2800, "Final encounter has exactly 1400 hearts");
         var ordinary = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(level);
         check.accept(ordinary.getMaxHealth() == 425, "Ordinary Experiment 009 boss retains Addon's health");
-        boss.setHealth(700);
+        boss.setHealth(2600);
         var saved = new CompoundTag(); boss.save(saved);
         var loaded = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(level); loaded.load(saved);
-        check.accept(loaded.getHealth() == 700 && loaded.getMaxHealth() == 1000 && loaded.getPersistentData().getLong(TwilightFinalBossCompat.HOME) == home.asLong(),
+        check.accept(loaded.getHealth() == 2600 && loaded.getMaxHealth() == 2800 && loaded.getPersistentData().getLong(TwilightFinalBossCompat.HOME) == home.asLong(),
                 "Encounter health and origin survive entity NBT reload without healing");
         boolean config = TFConfig.COMMON_CONFIG.bossDropChests.get();
         try {
             TFConfig.COMMON_CONFIG.bossDropChests.set(true);
+            stages(level, boss, home, player, check);
             boss.setLastHurtByPlayer(player); boss.setHealth(0); boss.die(level.damageSources().playerAttack(player));
             check.accept(level.getBlockEntity(home.below()) == null, "Chest waits until the native death animation ends");
             check.accept(boss.getPersistentData().contains("changede_final_rewards"), "Extra loot is buffered in entity NBT at death");
@@ -145,6 +146,47 @@ public final class TwilightFinalBossChecks {
                         "bossDropChests=false drops extra loot on the ground");
             }
         } finally { TFConfig.COMMON_CONFIG.bossDropChests.set(config); }
+    }
+    private static void stages(ServerLevel level, Experiment009BossEntity boss, BlockPos home,
+                               net.minecraft.server.level.ServerPlayer player, BiConsumer<Boolean, String> check) {
+        int[] counts = {1, 1, 7, 2, 1, 1};
+        String[][] types = {{"naga"}, {"lich"}, {"minoshroom", "knight_phantom"}, {"alpha_yeti", "snow_queen"}, {"hydra"}, {"ur_ghast"}};
+        for (int waveIndex = 0; waveIndex < 6; waveIndex++) {
+            check.accept(TwilightFinalEncounter.stage(boss) == waveIndex && boss.getPhase() == TwilightFinalEncounter.phase(boss),
+                    "Addon phase follows the 2/2/3 stage distribution: stage " + (waveIndex + 1));
+            boss.setHealth(-99999); // A single huge hit must not skip any segment or the guardian fight.
+            float expected = 2800 - (waveIndex + 1) * 400;
+            check.accept(boss.getHealth() == expected && TwilightFinalEncounter.locked(boss), "Oversized hit stops exactly at the 200-heart checkpoint");
+            var wave = boss.getPersistentData().getList(TwilightFinalEncounter.WAVE, net.minecraft.nbt.Tag.TAG_COMPOUND);
+            check.accept(wave.size() == counts[waveIndex], "Correct native guardian group size for wave " + (waveIndex + 1));
+            for (String type : types[waveIndex]) {
+                boolean matched = false;
+                for (int i = 0; i < wave.size(); i++) matched |= wave.getCompound(i).getString("type").equals("twilightforest:" + type);
+                check.accept(matched, "Guardian group includes " + type);
+            }
+            boss.setHealth(1); boss.heal(100);
+            check.accept(boss.getHealth() == expected, "Damage and healing cannot move the locked checkpoint");
+            boss.die(level.damageSources().genericKill());
+            check.accept(!boss.getPersistentData().contains("changede_final_rewards"), "Locked stage cannot award final rewards");
+            var saved = new CompoundTag(); boss.save(saved);
+            var reload = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(level); reload.load(saved);
+            check.accept(reload.getPersistentData().getList(TwilightFinalEncounter.WAVE, net.minecraft.nbt.Tag.TAG_COMPOUND).size() == wave.size()
+                    && reload.getHealth() == expected, "Locked wave and checkpoint survive NBT reload");
+            for (int i = 0; i < wave.size(); i++) {
+                var entry = wave.getCompound(i);
+                var guardian = (net.minecraft.world.entity.Mob) level.getEntity(entry.getUUID("id"));
+                check.accept(guardian != null && guardian.getPersistentData().getBoolean(TwilightFinalEncounter.GUARDIAN), "Summoned native boss exists and is scoped to the encounter");
+                guardian.setLastHurtByPlayer(player); guardian.setHealth(0); guardian.die(level.damageSources().playerAttack(player));
+                guardian.remove(Entity.RemovalReason.KILLED);
+                TwilightFinalEncounter.tick(boss);
+                check.accept(i == wave.size() - 1 ? !TwilightFinalEncounter.locked(boss) : TwilightFinalEncounter.locked(boss),
+                        "009 unlocks only after every guardian in the group dies");
+                check.accept(level.getBlockEntity(home.below()) == null, "Guardian death skips Twilight's native reward chest");
+            }
+            check.accept(TwilightFinalEncounter.stage(boss) == waveIndex + 1 && boss.getHealth() == expected,
+                    "Next 200-heart segment resumes without healing");
+        }
+        check.accept(boss.getPhase() == Experiment009BossEntity.Exp9Phase.PHASE3, "Final three segments use Addon's third phase and its skill multipliers");
     }
     private static int count(Container container) {
         int total = 0;

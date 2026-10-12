@@ -48,6 +48,10 @@ public abstract class TwilightFinal009Mixin implements Twilight009StateAccess {
     private void changede$correctPhasePriority(CallbackInfoReturnable<Experiment009BossEntity.Exp9Phase> cir) {
         if (TwilightFinalEncounter.isFinal(changede$self())) cir.setReturnValue(TwilightFinalEncounter.phase(changede$self()));
     }
+    @Inject(method = "shouldDespawnInPeaceful", at = @At("HEAD"), cancellable = true, remap = true)
+    private void changede$keepEncounterInPeaceful(CallbackInfoReturnable<Boolean> cir) {
+        if (TwilightFinalEncounter.isFinal(changede$self())) cir.setReturnValue(false);
+    }
     @Redirect(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/foxyas/changedaddon/entity/bosses/Experiment009BossEntity;computeHealthRatio()F", remap = false), remap = true)
     private float changede$nativeRatio(Experiment009BossEntity boss) {
         return TwilightFinalEncounter.isFinal(boss) ? TwilightFinalEncounter.addonRatio(boss) : boss.computeHealthRatio();

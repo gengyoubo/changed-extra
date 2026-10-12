@@ -28,6 +28,8 @@ public final class CreatureInventoryBackup {
     private static final int HISTORY_SIZE = 5;
     private static final ClassValue<Optional<Method>> NATIVE_INVENTORY = new ClassValue<>() {
         @Override protected Optional<Method> computeValue(Class<?> type) {
+            // getMethod resolves every method signature, including 009's client-only GUI types.
+            if (!SafeNativePetMenu.hasInventoryGetter(type)) return Optional.empty();
             try {
                 return Optional.of(type.getMethod("getInventory"));
             } catch (NoSuchMethodException ignored) {

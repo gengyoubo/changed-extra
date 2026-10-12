@@ -31,4 +31,22 @@ public final class SafeNativePetMenu {
         }
     };
     public static boolean hasMenu(ChangedEntity entity) { return CACHE.get(entity.getClass()); }
+    public static boolean hasInventoryGetter(Class<?> type) {
+        for (Class<?> current = type; current != null; current = current.getSuperclass()) {
+            boolean[] found = {false};
+            try (var input = current.getResourceAsStream("/" + current.getName().replace('.', '/') + ".class")) {
+                if (input == null) continue;
+                new ClassReader(input).accept(new ClassVisitor(Opcodes.ASM9) {
+                    @Override public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+                        if ((access & Opcodes.ACC_PUBLIC) != 0 && name.equals("getInventory") && Type.getArgumentTypes(descriptor).length == 0) found[0] = true;
+                        return null;
+                    }
+                }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+            } catch (java.io.IOException exception) {
+                github.com.gengyoubo.CE.changede.LOGGER.warn("Cannot inspect native inventory getter for {}", current.getName(), exception);
+            }
+            if (found[0]) return true;
+        }
+        return false;
+    }
 }
