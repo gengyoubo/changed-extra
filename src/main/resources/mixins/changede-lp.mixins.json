@@ -9,6 +9,8 @@
     "TwilightFinalHealthRangeMixin",
     "TwilightFinalHealthLockMixin",
     "TwilightFinal009Mixin",
+    "TwilightFinalLightningTargetMixin",
+    "TwilightFinalLightningFireMixin",
     "TwilightFinalGuardianBufferMixin",
     "TwilightFinalGuardianContainerMixin",
     "TwilightFinalGuardianKnightMixin",

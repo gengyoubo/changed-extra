@@ -9,9 +9,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class TwilightFinalHealthLockMixin {
+    @Inject(method = "canAttack(Lnet/minecraft/world/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
+    private void changede$avoidTwilightBosses(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
+        if ((Object) this instanceof Experiment009BossEntity boss && TwilightFinalEncounter.isFinal(boss)
+                && TwilightFinalEncounter.isTwilightBoss(target)) cir.setReturnValue(false);
+    }
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
+    private void changede$block009Damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (TwilightFinalEncounter.blocksDamage((LivingEntity) (Object) this, source)) cir.setReturnValue(false);
+    }
     @ModifyVariable(method = "setHealth", at = @At("HEAD"), argsOnly = true)
     private float changede$clampCheckpoint(float health) {
         return (Object) this instanceof Experiment009BossEntity boss ? TwilightFinalEncounter.clamp(boss, health) : health;

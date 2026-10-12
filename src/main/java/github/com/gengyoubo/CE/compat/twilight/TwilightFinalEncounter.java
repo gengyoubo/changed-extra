@@ -13,6 +13,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -27,6 +29,9 @@ public final class TwilightFinalEncounter {
     public static final String STAGE = "changede_twilight_stage", LOCKED = "changede_twilight_locked";
     public static final String WAVE = "changede_twilight_guardians", GUARDIAN = "changede_twilight_guardian", OWNER = "changede_twilight_owner";
     private static final String PREVIOUS_AI = "changede_twilight_previous_no_ai";
+    public static final String ATTACK = "changede_twilight_009_attack";
+    private static final java.util.Set<String> TWILIGHT_BOSSES = java.util.Set.of("naga", "lich", "minoshroom", "knight_phantom",
+            "alpha_yeti", "snow_queen", "hydra", "ur_ghast");
     public static final int SEGMENT = 400;
     private record Group(String type, int count) {}
     private static final Group[][] WAVES = {
@@ -37,8 +42,9 @@ public final class TwilightFinalEncounter {
     };
     private TwilightFinalEncounter() {}
     public static boolean isFinal(Entity entity) {
-        return entity instanceof Experiment009BossEntity && (entity.getPersistentData().getBoolean(TwilightFinalBossCompat.MARKER)
-                || entity instanceof Twilight009StateAccess access && access.changede$stage() >= 0);
+        return entity instanceof Experiment009BossEntity && (entity.level().isClientSide
+                ? entity instanceof Twilight009StateAccess access && access.changede$stage() >= 0
+                : entity.getPersistentData().getBoolean(TwilightFinalBossCompat.MARKER));
     }
     public static int stage(Experiment009BossEntity boss) {
         return boss.level().isClientSide ? Math.max(0, ((Twilight009StateAccess) boss).changede$stage())
@@ -61,7 +67,9 @@ public final class TwilightFinalEncounter {
         var access = (Twilight009StateAccess) boss;
         access.changede$setStage(stage(boss)); access.changede$setLocked(locked(boss));
         boss.setPhase2(form(stage(boss)) >= 2); boss.setPhase3(form(stage(boss)) == 3);
-        if (locked(boss)) boss.setNoAi(true);
+        // Older CE saves froze AI during a guardian wave. Restore the pre-lock setting once.
+        var data = boss.getPersistentData();
+        if (data.contains(PREVIOUS_AI)) { boss.setNoAi(data.getBoolean(PREVIOUS_AI)); data.remove(PREVIOUS_AI); }
     }
     public static float clamp(Experiment009BossEntity boss, float requested) {
         if (boss.level().isClientSide || !isFinal(boss) || !boss.getPersistentData().contains(STAGE)) return requested;
@@ -73,7 +81,7 @@ public final class TwilightFinalEncounter {
         if (!(boss.level() instanceof ServerLevel level) || !isFinal(boss) || !boss.getPersistentData().contains(STAGE)
                 || locked(boss) || stage(boss) == 6 || boss.getHealth() > floor(boss)) return;
         var data = boss.getPersistentData();
-        data.putBoolean(LOCKED, true); data.putBoolean(PREVIOUS_AI, boss.isNoAi()); boss.setNoAi(true);
+        data.putBoolean(LOCKED, true);
         var list = new ListTag();
         for (Group group : WAVES[stage(boss)]) for (int i = 0; i < group.count; i++) {
             var entry = new CompoundTag(); entry.putString("type", "twilightforest:" + group.type); entry.putInt("number", i);
@@ -106,7 +114,6 @@ public final class TwilightFinalEncounter {
         if (!(boss.level() instanceof ServerLevel level) || !isFinal(boss)) return;
         if (!boss.getPersistentData().contains(STAGE)) initialize(boss);
         if (!locked(boss)) { healthChanged(boss); return; }
-        boss.setNoAi(true);
         var data = boss.getPersistentData(); var wave = data.getList(WAVE, Tag.TAG_COMPOUND); var deaths = TwilightGuardianDeaths.get(level);
         boolean complete = !wave.isEmpty();
         for (int i = 0; i < wave.size(); i++) {
@@ -121,7 +128,7 @@ public final class TwilightFinalEncounter {
         if (!complete) { if (boss.tickCount % 40 == 0) spawnPending(level, boss, wave); return; }
         for (int i = 0; i < wave.size(); i++) deaths.forget(wave.getCompound(i).getUUID("id"));
         int before = form(stage(boss)); data.putInt(STAGE, stage(boss) + 1); data.putBoolean(LOCKED, false); data.remove(WAVE);
-        boss.setNoAi(data.getBoolean(PREVIOUS_AI)); data.remove(PREVIOUS_AI); sync(boss);
+        sync(boss);
         if (form(stage(boss)) != before) ((Twilight009StateAccess) boss).changede$phaseChanged(phase(boss));
     }
     public static Experiment009BossEntity.Exp9Phase phase(Experiment009BossEntity boss) {
@@ -142,8 +149,22 @@ public final class TwilightFinalEncounter {
     public static void attacked(LivingAttackEvent event) {
         var entity = event.getEntity();
         if (entity instanceof Experiment009BossEntity boss && isFinal(boss) && locked(boss)) event.setCanceled(true);
-        if (entity.getPersistentData().getBoolean(GUARDIAN) && event.getSource().getEntity() instanceof Experiment009BossEntity owner
-                && entity.getPersistentData().hasUUID(OWNER) && entity.getPersistentData().getUUID(OWNER).equals(owner.getUUID())) event.setCanceled(true);
+        if (blocksDamage(entity, event.getSource())) event.setCanceled(true);
+    }
+    public static boolean isTwilightBoss(Entity entity) {
+        if (entity.getPersistentData().getBoolean(GUARDIAN)) return true;
+        var id = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
+        return id != null && id.getNamespace().equals("twilightforest") && TWILIGHT_BOSSES.contains(id.getPath());
+    }
+    public static boolean blocksDamage(Entity target, DamageSource source) {
+        if (!isTwilightBoss(target)) return false;
+        Entity direct = source.getDirectEntity();
+        return isFinal(source.getEntity()) || isFinal(direct)
+                || direct instanceof Projectile projectile && isFinal(projectile.getOwner())
+                || direct != null && direct.getPersistentData().getBoolean(ATTACK);
+    }
+    public static void markAttack(Entity attack, Entity owner) {
+        if (isFinal(owner)) { attack.getPersistentData().putBoolean(ATTACK, true); attack.getPersistentData().putUUID(OWNER, owner.getUUID()); }
     }
     public static void died(LivingDeathEvent event) {
         if (!event.isCanceled() && event.getEntity().level() instanceof ServerLevel level && event.getEntity().getPersistentData().getBoolean(GUARDIAN)) {

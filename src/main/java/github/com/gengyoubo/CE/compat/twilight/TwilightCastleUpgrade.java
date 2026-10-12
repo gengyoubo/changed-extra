@@ -44,20 +44,33 @@ public final class TwilightCastleUpgrade extends SavedData {
             var bounds = piece.getBoundingBox();
             BlockPos center = new BlockPos((bounds.minX() + bounds.maxX()) / 2, bounds.minY(), (bounds.minZ() + bounds.maxZ()) / 2);
             if (data.upgraded.contains(center.asLong()) || event.player.distanceToSqr(center.getX() + .5, center.getY(), center.getZ() + .5) > 32 * 32) continue;
-            if (!level.hasChunkAt(new BlockPos(bounds.minX(), center.getY(), bounds.minZ()))
-                    || !level.hasChunkAt(new BlockPos(bounds.maxX(), center.getY(), bounds.maxZ()))) continue;
+            if (!level.hasChunkAt(center.offset(-22, 0, -22)) || !level.hasChunkAt(center.offset(22, 0, 22))) continue;
             var texts = level.getEntitiesOfClass(ArmorStand.class, new AABB(center).inflate(3),
                     stand -> stand.hasCustomName() && WIP_TEXT.contains(stand.getCustomName().getString()));
             if (texts.stream().noneMatch(stand -> stand.getCustomName().getString().equals("Final Castle WIP."))) continue;
             // No edits to rebuilt/player-owned arenas: require the original force-field enclosure.
             if (!level.getBlockState(new BlockPos(center.getX(), center.getY(), bounds.minZ())).is(TFBlocks.VIOLET_FORCE_FIELD.get())
                     || !level.getBlockState(center).isAir()) continue;
-            // Remove the obsolete small enclosure so Hydra and the flying bosses can use the castle roof.
+            // Replace the old WIP enclosure with the same 45x45x25 arena used by newly generated castles.
             for (BlockPos pos : BlockPos.betweenClosed(bounds.minX(), center.getY(), bounds.minZ(), bounds.maxX(), bounds.maxY(), bounds.maxZ()))
                 if (level.getBlockState(pos).is(TFBlocks.VIOLET_FORCE_FIELD.get())) level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+            for (int x = -22; x <= 22; x++) for (int z = -22; z <= 22; z++) {
+                placeArenaBlock(level, center.offset(x, -1, z), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState());
+                for (int y = 0; y < 25; y++) {
+                    if (Math.abs(x) != 22 && Math.abs(z) != 22 && y != 24) continue;
+                    if (Math.abs(x) <= 1 && Math.abs(z) == 22 && y <= 3) continue;
+                    placeArenaBlock(level, center.offset(x, y, z), TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState());
+                }
+            }
             level.setBlockAndUpdate(center, TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().defaultBlockState());
             texts.forEach(ArmorStand::discard);
             data.upgraded.add(center.asLong()); data.setDirty();
         }
+    }
+    private static void placeArenaBlock(ServerLevel level, BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+        var existing = level.getBlockState(pos);
+        if (level.getBlockEntity(pos) == null && (existing.isAir() || existing.canBeReplaced()
+                || existing.is(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get()) || existing.is(TFBlocks.VIOLET_FORCE_FIELD.get())))
+            level.setBlockAndUpdate(pos, state);
     }
 }

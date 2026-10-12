@@ -47,6 +47,8 @@ public final class TwilightFinalBossChecks {
         var main = new FinalCastleMainComponent(0, 0, 0, 0);
         var arena = new FinalCastleBossGazeboComponent(1, main, 0, 0, 0);
         var bounds = arena.getBoundingBox();
+        check.accept(bounds.getXSpan() == 45 && bounds.getZSpan() == 45 && bounds.getYSpan() == 25,
+                "Final castle barrier occupies exactly 45 by 45 by 25 blocks");
         for (int x = bounds.minX() >> 4; x <= bounds.maxX() >> 4; x++)
             for (int z = bounds.minZ() >> 4; z <= bounds.maxZ() >> 4; z++) { level.setChunkForced(x, z, true); level.getChunk(x, z); }
         level.getChunkSource().tick(() -> true, false);
@@ -81,6 +83,8 @@ public final class TwilightFinalBossChecks {
                 "Conquest fixture resolves through native landmark references");
         var player = FakePlayerFactory.get(level, new com.mojang.authlib.GameProfile(java.util.UUID.fromString("c7ae3aab-1d38-4e67-971d-003800000009"), "CEIssue38Twilight"));
         player.setPos(home.getX() + 1, home.getY(), home.getZ()); player.tickCount = 40;
+        // This opt-in test recreates the same arena on every run; reset only its test-world upgrade ledger.
+        level.getDataStorage().set("changede_final_castle_upgrades", new TwilightCastleUpgrade());
         level.setBlockAndUpdate(home, Blocks.AIR.defaultBlockState());
         level.setBlockAndUpdate(new BlockPos(home.getX(), home.getY(), bounds.minZ()), TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState());
         var text = new net.minecraft.world.entity.decoration.ArmorStand(level, home.getX() + .5, home.getY() + 2.3, home.getZ() + .5);
@@ -91,6 +95,9 @@ public final class TwilightFinalBossChecks {
                         + ", player=" + player.blockPosition() + ", level=" + player.level().dimension().location()
                         + ", state=" + level.getBlockState(home) + ", textRemoved=" + text.isRemoved()
                         + ", visible=" + level.getEntitiesOfClass(net.minecraft.world.entity.decoration.ArmorStand.class, new AABB(home).inflate(3)).size() + ")");
+        check.accept(level.getBlockState(home.offset(22, 0, 0)).is(TFBlocks.VIOLET_FORCE_FIELD.get())
+                && level.getBlockState(home.offset(0, 24, 0)).is(TFBlocks.VIOLET_FORCE_FIELD.get())
+                && level.getBlockState(home.offset(0, 1, -22)).isAir(), "WIP migration builds the matching 45x45x25 barrier and open entrance");
         var state = level.getBlockState(home);
         var spawner = new FinalBossSpawnerBlockEntity(home, state) { @Override public boolean anyPlayerInRange() { return true; } };
         spawner.setLevel(level);
@@ -108,6 +115,12 @@ public final class TwilightFinalBossChecks {
         check.accept(boss.getMaxHealth() == 2800 && boss.getHealth() == 2800, "Final encounter has exactly 1400 hearts");
         var ordinary = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(level);
         check.accept(ordinary.getMaxHealth() == 425, "Ordinary Experiment 009 boss retains Addon's health");
+        check.accept(!TwilightFinalEncounter.isFinal(ordinary) && ((Twilight009StateAccess) ordinary).changede$stage() == -1
+                && !((Twilight009StateAccess) ordinary).changede$locked(), "Ordinary 009 construction initializes CE data without entering the encounter");
+        ordinary.setPhase2(true);
+        check.accept(ordinary.getPhase() == Experiment009BossEntity.Exp9Phase.PHASE2, "Ordinary 009 retains native phase selection");
+        movement(level, boss, ordinary, home, player, check);
+        damageProtection(level, boss, ordinary, home, player, check);
         boss.setHealth(2600);
         var saved = new CompoundTag(); boss.save(saved);
         var loaded = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(level); loaded.load(saved);
@@ -116,6 +129,7 @@ public final class TwilightFinalBossChecks {
         boolean config = TFConfig.COMMON_CONFIG.bossDropChests.get();
         try {
             TFConfig.COMMON_CONFIG.bossDropChests.set(true);
+            boss.setNoAi(false);
             stages(level, boss, home, player, check);
             boss.setLastHurtByPlayer(player); boss.setHealth(0); boss.die(level.damageSources().playerAttack(player));
             check.accept(level.getBlockEntity(home.below()) == null, "Chest waits until the native death animation ends");
@@ -155,6 +169,82 @@ public final class TwilightFinalBossChecks {
             }
         } finally { TFConfig.COMMON_CONFIG.bossDropChests.set(config); }
     }
+    private static void movement(ServerLevel level, Experiment009BossEntity boss, Experiment009BossEntity ordinary,
+                                 BlockPos home, net.minecraft.server.level.ServerPlayer player, BiConsumer<Boolean, String> check) {
+        // The WIP migration fixture removed its old enclosure; recreate an actual force-field wall for recovery.
+        for (BlockPos pos : BlockPos.betweenClosed(home.offset(22, 0, -1), home.offset(22, 3, 1)))
+            level.setBlockAndUpdate(pos, TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState());
+        player.setPos(home.getX() + 22.5, home.getY(), home.getZ() + .5);
+        boss.teleportToTarget(player);
+        check.accept(level.noCollision(boss) && Math.abs(boss.getX() - home.getX()) < 21,
+                "Native teleport near a wall selects room for the complete final 009 body inside the arena");
+        ordinary.teleportToTarget(player);
+        check.accept(ordinary.position().equals(player.position().add(0, player.getEyeHeight() * .5, 0)),
+                "Ordinary 009 keeps Addon's original teleport destination");
+        BlockPos ceiling = home.offset(8, 1, 8);
+        for (BlockPos pos : BlockPos.betweenClosed(ceiling.offset(-1, 0, -1), ceiling.offset(1, 0, 1)))
+            level.setBlockAndUpdate(pos, Blocks.STONE.defaultBlockState());
+        player.setPos(ceiling.getX() + .5, home.getY(), ceiling.getZ() + .5);
+        boss.teleportToTarget(player);
+        check.accept(level.noCollision(boss) && !level.containsAnyLiquid(boss.getBoundingBox()),
+                "Teleport rejects low headroom and chooses collision-free standing space");
+        for (BlockPos pos : BlockPos.betweenClosed(ceiling.offset(-1, 0, -1), ceiling.offset(1, 0, 1)))
+            level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        var open = boss.position(); boss.tickCount = 40;
+        TwilightFinalBossMovement.tick(boss);
+        check.accept(boss.position().equals(open), "Recovery leaves unobstructed movement alone");
+        boss.moveTo(home.getX() + 22.5, home.getY(), home.getZ() + .5, 0, 0);
+        check.accept(!level.noCollision(boss), "Recovery fixture embeds 009 inside the actual arena force field");
+        boss.setDeltaMovement(1, 0, 0);
+        TwilightFinalBossMovement.tick(boss);
+        check.accept(level.noCollision(boss) && boss.getDeltaMovement().equals(net.minecraft.world.phys.Vec3.ZERO)
+                && boss.getHealth() == 2800, "Embedded final 009 escapes the wall without changing health or retaining its push velocity");
+        boss.moveTo(home.getX() + .5, home.getY(), home.getZ() + .5, 0, 0);
+        player.setPos(home.getX() + 1, home.getY(), home.getZ());
+    }
+    private static void damageProtection(ServerLevel level, Experiment009BossEntity boss, Experiment009BossEntity ordinary,
+                                         BlockPos home, net.minecraft.server.level.ServerPlayer player, BiConsumer<Boolean, String> check) {
+        var type = net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.parse("twilightforest:minoshroom"));
+        var wild = (net.minecraft.world.entity.Mob) type.create(level);
+        wild.moveTo(home.getX() + 15.5, home.getY(), home.getZ() + .5, 0, 0); wild.tickCount = 40;
+        wild.setNoAi(true); level.addFreshEntity(wild);
+        float health = wild.getHealth();
+        check.accept(!wild.hurt(level.damageSources().mobAttack(boss), 10) && wild.getHealth() == health,
+                "Final 009 melee cannot damage a wild Twilight boss");
+        var projectile = new net.minecraft.world.entity.projectile.Snowball(level, boss);
+        check.accept(!wild.hurt(level.damageSources().thrown(projectile, boss), 10) && wild.getHealth() == health,
+                "Final 009 projectiles cannot damage Twilight bosses");
+        check.accept(!wild.hurt(boss.getThunderDmg(), 10) && wild.getHealth() == health,
+                "009 attributed skill damage cannot damage Twilight bosses");
+        wild.hurt(level.damageSources().playerAttack(player), 5);
+        check.accept(wild.getHealth() < health, "Player attacks still damage Twilight bosses");
+        wild.invulnerableTime = 0; health = wild.getHealth();
+        wild.hurt(level.damageSources().mobAttack(ordinary), 5);
+        check.accept(wild.getHealth() < health, "Ordinary Addon 009 retains its damage behavior");
+        wild.invulnerableTime = 0; health = wild.getHealth();
+        boss.spawnThunderBolt(wild.blockPosition());
+        var bolts = level.getEntitiesOfClass(net.minecraft.world.entity.LightningBolt.class, new AABB(wild.blockPosition()).inflate(3));
+        check.accept(!bolts.isEmpty() && bolts.stream().allMatch(bolt -> bolt.getPersistentData().getBoolean(TwilightFinalEncounter.ATTACK)),
+                "009 native lightning records its encounter source");
+        var bolt = bolts.get(0); int fire = wild.getRemainingFireTicks();
+        wild.thunderHit(level, bolt);
+        check.accept(wild.getHealth() == health && wild.getRemainingFireTicks() == fire,
+                "009 lightning neither hurts nor ignites a Twilight boss");
+        var cow = net.minecraft.world.entity.EntityType.COW.create(level); cow.tickCount = 40;
+        float cowHealth = cow.getHealth(); cow.thunderHit(level, bolt);
+        check.accept(cow.getHealth() < cowHealth, "009 lightning still damages non-boss targets");
+        bolt.tick();
+        check.accept(!level.getBlockState(bolt.blockPosition()).is(Blocks.FIRE), "009 lightning cannot leave indirect fire damage in the arena");
+        wild.invulnerableTime = 0;
+        wild.thunderHit(level, new net.minecraft.world.entity.LightningBolt(net.minecraft.world.entity.EntityType.LIGHTNING_BOLT, level));
+        check.accept(wild.getHealth() < health, "Natural lightning is not blocked by the 009 protection");
+        bolts.forEach(Entity::discard);
+        Experiment009BossEntity.spawnThunderCircle(boss, level, home.offset(16, 0, 0), 1, 1);
+        var circle = level.getEntitiesOfClass(net.minecraft.world.entity.LightningBolt.class, new AABB(home.offset(16, 0, 0)).inflate(3));
+        check.accept(!circle.isEmpty() && circle.stream().allMatch(entity -> entity.getPersistentData().getBoolean(TwilightFinalEncounter.ATTACK)),
+                "Phase-change lightning circles also record their encounter source");
+        circle.forEach(Entity::discard); wild.discard();
+    }
     private static void stages(ServerLevel level, Experiment009BossEntity boss, BlockPos home,
                                net.minecraft.server.level.ServerPlayer player, BiConsumer<Boolean, String> check) {
         int[] counts = {1, 1, 7, 2, 1, 1};
@@ -165,8 +255,19 @@ public final class TwilightFinalBossChecks {
             boss.setHealth(-99999); // A single huge hit must not skip any segment or the guardian fight.
             float expected = 2800 - (waveIndex + 1) * 400;
             check.accept(boss.getHealth() == expected && TwilightFinalEncounter.locked(boss), "Oversized hit stops exactly at the 200-heart checkpoint");
+            check.accept(!boss.isNoAi(), "Health locking retains normal 009 AI and movement");
             var wave = boss.getPersistentData().getList(TwilightFinalEncounter.WAVE, net.minecraft.nbt.Tag.TAG_COMPOUND);
             check.accept(wave.size() == counts[waveIndex], "Correct native guardian group size for wave " + (waveIndex + 1));
+            if (waveIndex == 0) {
+                boss.moveTo(home.getX() + 22.5, home.getY(), home.getZ() + .5, 0, 0); boss.tickCount = 40;
+                TwilightFinalBossMovement.tick(boss);
+                check.accept(level.noCollision(boss) && boss.getHealth() == expected && TwilightFinalEncounter.locked(boss)
+                        && TwilightFinalEncounter.stage(boss) == 0 && boss.getPersistentData().getList(TwilightFinalEncounter.WAVE, net.minecraft.nbt.Tag.TAG_COMPOUND).equals(wave),
+                        "Wall recovery works while locked and preserves the guardian wave, checkpoint and stage");
+                var lockedPosition = boss.position(); boss.teleportToTarget(player);
+                check.accept(!boss.position().equals(lockedPosition) && level.noCollision(boss) && boss.getHealth() == expected,
+                        "Locked 009 retains collision-safe teleport movement without changing health");
+            }
             for (String type : types[waveIndex]) {
                 boolean matched = false;
                 for (int i = 0; i < wave.size(); i++) matched |= wave.getCompound(i).getString("type").equals("twilightforest:" + type);
@@ -179,11 +280,20 @@ public final class TwilightFinalBossChecks {
             var saved = new CompoundTag(); boss.save(saved);
             var reload = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(level); reload.load(saved);
             check.accept(reload.getPersistentData().getList(TwilightFinalEncounter.WAVE, net.minecraft.nbt.Tag.TAG_COMPOUND).size() == wave.size()
-                    && reload.getHealth() == expected, "Locked wave and checkpoint survive NBT reload");
+                    && reload.getHealth() == expected && !reload.isNoAi(), "Locked wave, checkpoint and active AI survive NBT reload");
+            if (waveIndex == 0) {
+                reload.setNoAi(true); reload.getPersistentData().putBoolean("changede_twilight_previous_no_ai", false);
+                TwilightFinalEncounter.initialize(reload);
+                check.accept(!reload.isNoAi() && TwilightFinalEncounter.locked(reload), "Legacy locked saves restore moving AI without unlocking health");
+            }
             for (int i = 0; i < wave.size(); i++) {
                 var entry = wave.getCompound(i);
                 var guardian = (net.minecraft.world.entity.Mob) level.getEntity(entry.getUUID("id"));
                 check.accept(guardian != null && guardian.getPersistentData().getBoolean(TwilightFinalEncounter.GUARDIAN), "Summoned native boss exists and is scoped to the encounter");
+                check.accept(!boss.canAttack(guardian), "009 targeting and area skills exclude the summoned Twilight boss");
+                var attack = new net.minecraftforge.event.entity.living.LivingAttackEvent(guardian, boss.getThunderDmg(), 10);
+                net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(attack);
+                check.accept(attack.isCanceled(), "Every summoned boss type rejects 009 skill damage");
                 guardian.setLastHurtByPlayer(player); guardian.setHealth(0); guardian.die(level.damageSources().playerAttack(player));
                 guardian.remove(Entity.RemovalReason.KILLED);
                 TwilightFinalEncounter.tick(boss);

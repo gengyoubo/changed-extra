@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.LP.mixins;
 
 import github.com.gengyoubo.CE.compat.twilight.Twilight009StateAccess;
 import github.com.gengyoubo.CE.compat.twilight.TwilightFinalEncounter;
+import github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossMovement;
 import net.foxyas.changedaddon.entity.bosses.Experiment009BossEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -26,15 +27,18 @@ public abstract class TwilightFinal009Mixin implements Twilight009StateAccess {
     @Shadow @Final private ServerBossEvent bossInfo;
     @Unique private static final EntityDataAccessor<Integer> changede$STAGE = SynchedEntityData.defineId(Experiment009BossEntity.class, EntityDataSerializers.INT);
     @Unique private static final EntityDataAccessor<Boolean> changede$LOCKED = SynchedEntityData.defineId(Experiment009BossEntity.class, EntityDataSerializers.BOOLEAN);
+    // defineSynchedData runs from Entity's constructor, before subclass field initializers.
+    @Unique private boolean changede$stageDataReady;
     @Unique private Experiment009BossEntity changede$self() { return (Experiment009BossEntity) (Object) this; }
-    @Inject(method = "defineSynchedData", at = @At("RETURN"), remap = true)
+    @Inject(method = "defineSynchedData", at = @At("HEAD"), remap = true)
     private void changede$defineStages(CallbackInfo ci) {
         changede$self().getEntityData().define(changede$STAGE, -1); changede$self().getEntityData().define(changede$LOCKED, false);
+        changede$stageDataReady = true;
     }
-    @Override public int changede$stage() { return changede$self().getEntityData().get(changede$STAGE); }
-    @Override public void changede$setStage(int stage) { changede$self().getEntityData().set(changede$STAGE, stage); }
-    @Override public boolean changede$locked() { return changede$self().getEntityData().get(changede$LOCKED); }
-    @Override public void changede$setLocked(boolean locked) { changede$self().getEntityData().set(changede$LOCKED, locked); }
+    @Override public int changede$stage() { return changede$stageDataReady ? changede$self().getEntityData().get(changede$STAGE) : -1; }
+    @Override public void changede$setStage(int stage) { if (changede$stageDataReady) changede$self().getEntityData().set(changede$STAGE, stage); }
+    @Override public boolean changede$locked() { return changede$stageDataReady && changede$self().getEntityData().get(changede$LOCKED); }
+    @Override public void changede$setLocked(boolean locked) { if (changede$stageDataReady) changede$self().getEntityData().set(changede$LOCKED, locked); }
     @Invoker("onPhaseChange") public abstract void changede$phaseChanged(Experiment009BossEntity.Exp9Phase phase);
     @ModifyVariable(method = "setPhase2", at = @At("HEAD"), argsOnly = true)
     private boolean changede$phase2ByStage(boolean requested) {
@@ -48,6 +52,25 @@ public abstract class TwilightFinal009Mixin implements Twilight009StateAccess {
     private void changede$correctPhasePriority(CallbackInfoReturnable<Experiment009BossEntity.Exp9Phase> cir) {
         if (TwilightFinalEncounter.isFinal(changede$self())) cir.setReturnValue(TwilightFinalEncounter.phase(changede$self()));
     }
+    @Inject(method = {"teleport", "teleportToTarget"}, at = @At("HEAD"), cancellable = true, require = 1)
+    private void changede$safeCastleTeleport(net.minecraft.world.entity.LivingEntity target, CallbackInfo ci) {
+        if (!TwilightFinalEncounter.isFinal(changede$self())) return;
+        TwilightFinalBossMovement.teleportNear(changede$self(), target);
+        ci.cancel();
+    }
+    @Redirect(method = {"spawnThunderBolt", "spawnVisualThunderBolt"}, at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z", remap = true))
+    private boolean changede$tagThunder(net.minecraft.world.level.Level level, net.minecraft.world.entity.Entity attack) {
+        TwilightFinalEncounter.markAttack(attack, changede$self());
+        return level.addFreshEntity(attack);
+    }
+    @Redirect(method = "spawnThunderCircle(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;FI)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z", remap = true), require = 0)
+    private static boolean changede$tagThunderCircle(net.minecraft.server.level.ServerLevel level, net.minecraft.world.entity.Entity attack,
+            net.minecraft.world.entity.LivingEntity owner, net.minecraft.server.level.ServerLevel world, net.minecraft.core.BlockPos center, float radius, int count) {
+        TwilightFinalEncounter.markAttack(attack, owner);
+        return level.addFreshEntity(attack);
+    }
     @Inject(method = "shouldDespawnInPeaceful", at = @At("HEAD"), cancellable = true, remap = true)
     private void changede$keepEncounterInPeaceful(CallbackInfoReturnable<Boolean> cir) {
         if (TwilightFinalEncounter.isFinal(changede$self())) cir.setReturnValue(false);
@@ -58,6 +81,7 @@ public abstract class TwilightFinal009Mixin implements Twilight009StateAccess {
     }
     @Inject(method = "baseTick", at = @At("RETURN"), remap = true)
     private void changede$tickEncounter(CallbackInfo ci) {
+        TwilightFinalBossMovement.tick(changede$self());
         TwilightFinalEncounter.tick(changede$self()); changede$updateBar();
     }
     @Inject(method = "customServerAiStep", at = @At("RETURN"), remap = true)
