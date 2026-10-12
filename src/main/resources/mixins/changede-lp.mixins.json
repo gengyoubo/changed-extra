@@ -6,8 +6,11 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "changede.refmap.json",
   "mixins": [
+    "TwilightFinalBossSpawnerMixin",
+    "TwilightFinalCastleArenaMixin",
     "TinkersLatexFuelMixin",
     "TinkersLatexMultitankMixin",
+    "TinkersLatexEntityMeltingMixin",
     "LatexBurnerMixerMixin",
     "ChangedBlockEnergyDropMixin",
     "AddonIridiumHarvestMixin",

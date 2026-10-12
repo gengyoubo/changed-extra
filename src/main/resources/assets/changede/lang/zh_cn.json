@@ -1226,5 +1226,16 @@
   "screen.changede.fluid_dimension_tower.empty": "空",
   "screen.changede.fluid_dimension_tower.fluid": "液体：%s",
   "screen.changede.fluid_dimension_tower.single_fluid": "缓存：50B；不同液体不会混合",
-  "screen.changede.fluid_dimension_tower.tagged": "带有附加数据；仅与相同数据液体合并"
+  "screen.changede.fluid_dimension_tower.tagged": "带有附加数据；仅与相同数据液体合并",
+  "block.changede.dynamic_fuel_core": "动态燃料核心",
+  "tooltip.changede.dynamic_fuel_core": "安装在炉壁，先用低温燃料熔炼低温配方，再自动切换高温燃料；兼具胶液燃烧核心功能。",
+  "gui.changede.smeltery.molten_latex_amounts": "熔融黑胶：%s mB  |  熔融白胶：%s mB",
+  "advancement.changede.twilight_final_boss": "最终实验",
+  "advancement.changede.twilight_final_boss.desc": "在最终城堡击败实验体 009（500颗心）",
+  "fluid.changede.molten_dark_latex": "熔融黑胶液",
+  "block.changede.molten_dark_latex": "熔融黑胶液",
+  "item.changede.molten_dark_latex_bucket": "熔融黑胶液桶",
+  "fluid.changede.molten_white_latex": "熔融白胶液",
+  "block.changede.molten_white_latex": "熔融白胶液",
+  "item.changede.molten_white_latex_bucket": "熔融白胶液桶"
 }

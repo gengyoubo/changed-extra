@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#twilightforest:in_twilight_forest",
+      "required": false
+    }
+  ]
+}

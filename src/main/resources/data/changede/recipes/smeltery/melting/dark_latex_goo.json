@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:melting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "ingredient": {
+    "item": "changed:dark_latex_goo"
+  },
+  "result": {
+    "fluid": "changede:molten_dark_latex",
+    "amount": 250
+  },
+  "temperature": 1000,
+  "time": 60
+}

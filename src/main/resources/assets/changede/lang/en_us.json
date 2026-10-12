@@ -1226,5 +1226,16 @@
   "screen.changede.fluid_dimension_tower.empty": "Empty",
   "screen.changede.fluid_dimension_tower.fluid": "Fluid: %s",
   "screen.changede.fluid_dimension_tower.single_fluid": "50B buffer; different fluids cannot mix",
-  "screen.changede.fluid_dimension_tower.tagged": "Tagged fluid; merges only with identical data"
+  "screen.changede.fluid_dimension_tower.tagged": "Tagged fluid; merges only with identical data",
+  "block.changede.dynamic_fuel_core": "Dynamic Fuel Core",
+  "tooltip.changede.dynamic_fuel_core": "Install in the furnace wall to melt low-temperature recipes first, then switch to hotter fuels. Also enables latex fuel.",
+  "gui.changede.smeltery.molten_latex_amounts": "Molten dark latex: %s mB  |  Molten white latex: %s mB",
+  "advancement.changede.twilight_final_boss": "The Final Experiment",
+  "advancement.changede.twilight_final_boss.desc": "Defeat Experiment 009 in the Final Castle (500 hearts)",
+  "fluid.changede.molten_dark_latex": "Molten Dark Latex",
+  "block.changede.molten_dark_latex": "Molten Dark Latex",
+  "item.changede.molten_dark_latex_bucket": "Molten Dark Latex Bucket",
+  "fluid.changede.molten_white_latex": "Molten White Latex",
+  "block.changede.molten_white_latex": "Molten White Latex",
+  "item.changede.molten_white_latex_bucket": "Molten White Latex Bucket"
 }

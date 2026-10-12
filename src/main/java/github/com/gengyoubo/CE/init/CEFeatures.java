@@ -11,5 +11,7 @@ public final class CEFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES=DeferredRegister.create(Registries.FEATURE,"changede");
     public static final RegistryObject<Feature<OreConfiguration>> MORPHIC_CRYSTAL_ORE=
             FEATURES.register("morphic_crystal_ore",MorphicCrystalOreFeature::new);
+    public static final RegistryObject<Feature<OreConfiguration>> TWILIGHT_ORE =
+            FEATURES.register("twilight_ore", github.com.gengyoubo.CE.worldgen.TwilightOreFeature::new);
     private CEFeatures() { }
 }

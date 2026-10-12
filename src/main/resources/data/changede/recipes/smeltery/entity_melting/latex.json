@@ -1,0 +1,17 @@
+{
+  "type": "tconstruct:entity_melting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "entity": {
+    "tag": "changed:latexes"
+  },
+  "damage": 2,
+  "result": {
+    "fluid": "changede:molten_dark_latex",
+    "amount": 250
+  }
+}

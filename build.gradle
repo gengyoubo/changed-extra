@@ -130,6 +130,12 @@ dependencies {
     implementation fg.deobf("curse.maven:touhou-little-maid-355044:8061847")//changed-synergy的额外可选依赖
     //模组外扩展
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    //暮色森林
+    if (providers.gradleProperty('omitTwilightForChecks').getOrElse('false').toBoolean()) {
+        compileOnly fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
+    } else {
+        implementation fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
+    }
     //玉
     implementation fg.deobf("curse.maven:jade-324717:8479276")//可选依赖
     //优化
@@ -301,6 +307,15 @@ minecraft {
             args '--nogui'
             mods { changede { source sourceSets.main } }
             property 'changede.verifyLatexTinkers', 'true'
+        }
+        create("issue38Server") {
+            parent null, "server"
+            taskName "runIssue38Server"
+            workingDirectory project.file('build/issue38-server')
+            args '--nogui'
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyLatexTinkers', 'true'
+            property 'changede.verifyIssue38', 'true'
         }
         create("latexTinkersClient") {
             parent null, "client"
@@ -581,10 +596,10 @@ tasks.register('verifyDevRunSnapshot') {
 }
 
 tasks.configureEach {
-    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient']) {
+    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient', 'runIssue38Server']) {
         dependsOn tasks.named('classes')
         doFirst { runTask ->
-            if (runTask.name in ['runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer']) {
+            if (runTask.name in ['runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runIssue38Server']) {
                 // Forge merges sibling parents before applying its userdev template.
                 // At execution time the server run has the complete bootstrap settings.
                 def config = runTask.getRunConfig().get()

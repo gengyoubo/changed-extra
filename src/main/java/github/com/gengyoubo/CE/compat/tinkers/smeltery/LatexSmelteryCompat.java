@@ -37,10 +37,21 @@ public final class LatexSmelteryCompat {
         }
     });
     public static final RegistryObject<LatexFuelTankBlock> TANK = BLOCKS.register("latex_fuel_tank", LatexFuelTankBlock::new);
+    public static final RegistryObject<Block> DYNAMIC_CORE = BLOCKS.register("dynamic_fuel_core", () -> new SearedBlock(properties(), true) {
+        @Override public net.minecraft.world.level.block.entity.BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new CoreBlockEntity(pos, state);
+        }
+    });
+    public static final RegistryObject<Item> DYNAMIC_CORE_ITEM = ITEMS.register("dynamic_fuel_core", () -> new BlockItem(DYNAMIC_CORE.get(), new Item.Properties()) {
+        @Override public void appendHoverText(net.minecraft.world.item.ItemStack stack, net.minecraft.world.level.Level level,
+                                             java.util.List<Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+            tooltip.add(Component.translatable("tooltip.changede.dynamic_fuel_core").withStyle(net.minecraft.ChatFormatting.GRAY));
+        }
+    });
     public static final RegistryObject<Item> CORE_ITEM = ITEMS.register("latex_combustion_core", () -> new BlockItem(CORE.get(), new Item.Properties()));
     public static final RegistryObject<Item> TANK_ITEM = ITEMS.register("latex_fuel_tank", () -> new LatexFuelTankItem(TANK.get()));
     public static final RegistryObject<BlockEntityType<CoreBlockEntity>> CORE_ENTITY = ENTITIES.register("latex_combustion_core",
-            () -> BlockEntityType.Builder.of(CoreBlockEntity::new, CORE.get()).build(null));
+            () -> BlockEntityType.Builder.of(CoreBlockEntity::new, CORE.get(), DYNAMIC_CORE.get()).build(null));
     public static final RegistryObject<BlockEntityType<LatexFuelTankBlockEntity>> TANK_ENTITY = ENTITIES.register("latex_fuel_tank",
             () -> BlockEntityType.Builder.of(LatexFuelTankBlockEntity::new, TANK.get()).build(null));
     private LatexSmelteryCompat() {}
@@ -48,6 +59,7 @@ public final class LatexSmelteryCompat {
         return BlockBehaviour.Properties.copy(Blocks.BRICKS).strength(3, 20).requiresCorrectToolForDrops();
     }
     public static void initialize(IEventBus bus) {
+        MoltenLatexFluids.initialize(bus);
         BLOCKS.register(bus); ITEMS.register(bus); ENTITIES.register(bus);
         bus.addListener((AddPackFindersEvent event) -> {
             if (event.getPackType() != PackType.SERVER_DATA) return;
@@ -58,7 +70,8 @@ public final class LatexSmelteryCompat {
         });
         bus.addListener((BuildCreativeModeTabContentsEvent event) -> {
             if (event.getTabKey().location().equals(ResourceLocation.parse("changede:extra"))) {
-                event.accept(CORE_ITEM.get()); event.accept(TANK_ITEM.get());
+                event.accept(CORE_ITEM.get()); event.accept(TANK_ITEM.get()); event.accept(DYNAMIC_CORE_ITEM.get());
+                event.accept(MoltenLatexFluids.DARK.bucket.get()); event.accept(MoltenLatexFluids.WHITE.bucket.get());
             }
         });
         if (FMLEnvironment.dist == Dist.CLIENT) LatexSmelteryClient.initialize(bus);

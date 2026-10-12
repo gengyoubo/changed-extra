@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "changede:molten_white_latex",
+      "required": false
+    },
+    {
+      "id": "changede:flowing_molten_white_latex",
+      "required": false
+    }
+  ]
+}

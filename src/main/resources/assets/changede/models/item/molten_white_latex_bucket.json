@@ -1,0 +1,5 @@
+{
+  "loader": "forge:fluid_container",
+  "parent": "forge:item/bucket",
+  "fluid": "changede:molten_white_latex"
+}

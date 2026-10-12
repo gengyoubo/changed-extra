@@ -3,6 +3,8 @@ package github.com.gengyoubo.CE.LP.mixins;
 import github.com.gengyoubo.CE.compat.tinkers.smeltery.LatexFuelAccess;
 import github.com.gengyoubo.CE.compat.tinkers.smeltery.LatexSmelteryRules;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,6 +14,19 @@ import slimeknights.tconstruct.smeltery.block.entity.module.MultitankFuelModule;
 
 @Mixin(value = MultitankFuelModule.class, remap = false)
 public abstract class TinkersLatexMultitankMixin {
+    @Shadow private int tryFuelPosition(BlockPos pos, boolean consume) { throw new AssertionError(); }
+    @Inject(method = "findFuel", at = @At("HEAD"), cancellable = true)
+    private void changede$chooseFuel(boolean consume, CallbackInfoReturnable<Integer> cir) {
+        var access = (LatexFuelAccess) this;
+        if (!(access.changede$parent() instanceof slimeknights.tconstruct.smeltery.block.entity.controller.HeatingStructureBlockEntity parent)
+                || !LatexSmelteryRules.dynamicCoreReady(parent)) return;
+        var module = (MultitankFuelModule) (Object) this;
+        BlockPos selected = LatexSmelteryRules.selectFuel(module, parent);
+        if (selected == null) {
+            if (consume) { module.set(2, 0); module.set(3, 0); }
+            cir.setReturnValue(0);
+        } else cir.setReturnValue(tryFuelPosition(selected, consume));
+    }
     // ContainerData overrides use Minecraft's SRG names outside the development runtime.
     @Inject(method = "getCount()I", at = @At("RETURN"), cancellable = true, remap = true)
     private void changede$extraFuelData(CallbackInfoReturnable<Integer> cir) { cir.setReturnValue(cir.getReturnValue() + 2); }

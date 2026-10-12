@@ -1,0 +1,11 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#changede:twilight_ores",
+  "features": [
+    "changede:twilight_iridium_ore",
+    "changede:twilight_painite_ore",
+    "changede:twilight_dark_morphic_ore",
+    "changede:twilight_white_morphic_ore"
+  ],
+  "step": "underground_ores"
+}

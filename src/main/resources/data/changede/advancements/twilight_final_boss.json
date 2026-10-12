@@ -1,0 +1,26 @@
+{
+  "parent": "twilightforest:progression_end",
+  "display": {
+    "icon": {
+      "item": "changed_addon:experiment_009_dna"
+    },
+    "title": {
+      "translate": "advancement.changede.twilight_final_boss"
+    },
+    "description": {
+      "translate": "advancement.changede.twilight_final_boss.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "defeated": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 500
+  }
+}

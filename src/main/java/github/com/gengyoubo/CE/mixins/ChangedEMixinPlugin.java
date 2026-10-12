@@ -59,6 +59,8 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
                 && Boolean.getBoolean("changede.verifyAddonOre")
                 && Boolean.getBoolean("changede.verifyAddonOreOriginal")) return false;
         if (mixinClassName.startsWith("github.com.gengyoubo.CE.LP.mixins.TinkersLatex")) return isModLoaded("tconstruct");
+        if (mixinClassName.startsWith("github.com.gengyoubo.CE.LP.mixins.TwilightFinal"))
+            return isModLoaded("twilightforest") && isModLoaded("changed_addon");
         if ("github.com.gengyoubo.CE.LP.mixins.LatexBurnerMixerMixin".equals(mixinClassName)) {
             return isModLoaded("create");
         }

@@ -3,6 +3,10 @@
     {
       "id": "changede:latex_combustion_core",
       "required": false
+    },
+    {
+      "id": "changede:dynamic_fuel_core",
+      "required": false
     }
   ]
 }
