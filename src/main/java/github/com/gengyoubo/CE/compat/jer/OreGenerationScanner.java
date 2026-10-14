@@ -55,8 +55,15 @@ public final class OreGenerationScanner {
             Map<ChartKey, float[]> curves = new LinkedHashMap<>();
             for (PlacedFeature placed : active.keySet()) {
                 var configured = placed.feature().value();
-                if (!(configured.config() instanceof OreConfiguration ore)
-                        || ore.size <= 0 || !allowedFeature(configured.feature(), level)) continue;
+                OreConfiguration ore;
+                if (configured.config() instanceof OreConfiguration standard && allowedFeature(configured.feature(), level)) {
+                    ore = standard;
+                } else if (net.minecraftforge.fml.ModList.get().isLoaded("mekanism")) {
+                    ore = MekanismOreCompat.configuration(configured);
+                } else {
+                    continue;
+                }
+                if (ore == null || ore.size <= 0) continue;
                 float[] curve = distribution(placed, ore.size, level);
                 if (curve == null) continue; // Unknown/disabled placement conditions are never guessed.
                 // Duplicate target rules in a feature do not create a second generation attempt.
@@ -125,14 +132,20 @@ public final class OreGenerationScanner {
                     var heightJson = json.get("height");
                     if (heightJson.isJsonObject() && heightJson.getAsJsonObject().has("type")) {
                         String type = heightJson.getAsJsonObject().get("type").getAsString();
-                        if (!Set.of("minecraft:constant", "minecraft:uniform", "minecraft:trapezoid",
-                                "minecraft:biased_to_bottom", "minecraft:very_biased_to_bottom").contains(type)) return null;
+                        boolean supported = Set.of("minecraft:constant", "minecraft:uniform", "minecraft:trapezoid",
+                                "minecraft:biased_to_bottom", "minecraft:very_biased_to_bottom").contains(type);
+                        if (!supported && !(type.equals("mekanism:configurable")
+                                && net.minecraftforge.fml.ModList.get().isLoaded("mekanism"))) return null;
                     }
                     heights = HeightProvider.CODEC.parse(JsonOps.INSTANCE, json.get("height")).result().orElse(null);
                     if (heights == null) return null;
                 }
                 case "minecraft:in_square", "minecraft:biome" -> { }
                 case "create:config_filter" -> { if (!createEnabled()) return null; }
+                case "mekanism:disableable" -> {
+                    if (!net.minecraftforge.fml.ModList.get().isLoaded("mekanism")
+                            || !MekanismOreCompat.enabledPlacement(json)) return null;
+                }
                 default -> { return null; }
             }
         }

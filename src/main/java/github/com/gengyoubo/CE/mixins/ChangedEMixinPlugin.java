@@ -66,6 +66,10 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
             return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("jeresources")
                     && isModLoaded("jerintegration") && isModLoaded("create");
         }
+        if ("github.com.gengyoubo.CE.mixins.JerIntegrationMekanismMixin".equals(mixinClassName)) {
+            return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("jeresources")
+                    && isModLoaded("jerintegration") && isModLoaded("mekanism");
+        }
         // Only the explicitly enabled disposable ore comparison may load Addon's original harvest method.
         if ("github.com.gengyoubo.CE.LP.mixins.AddonIridiumHarvestMixin".equals(mixinClassName)
                 && Boolean.getBoolean("changede.verifyAddonOre")

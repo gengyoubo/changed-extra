@@ -86,6 +86,14 @@ public final class JerCompatibilityClientChecks {
                 check(JerOreClientState.snapshot().stream().anyMatch(data -> data.block().getNamespace().equals("tconstruct")),
                         "Standard ore features from another mod must be discovered");
                 check(hasChart(runtime, "tconstruct:cobalt_ore"), "Tinkers cobalt ore must be queryable in JEI");
+                if (ModList.get().isLoaded("mekanism")) {
+                    for (String ore : new String[]{"osmium", "tin", "lead", "uranium", "fluorite"}) {
+                        check(hasChart(runtime, "mekanism:" + ore + "_ore"), "Missing Mekanism ore chart: " + ore);
+                        check(hasChart(runtime, "mekanism:deepslate_" + ore + "_ore"), "Missing deepslate Mekanism ore chart: " + ore);
+                    }
+                    check(JerOreClientState.snapshot().stream().filter(data -> data.block().getNamespace().equals("mekanism"))
+                            .allMatch(data -> data.dimension().toString().equals("minecraft:overworld")), "Mekanism ores must have their actual overworld restriction");
+                }
                 check(jeresources.util.TranslationHelper.tryDimensionTranslate("changede:latex_space")
                         .equals(net.minecraft.network.chat.Component.translatable("dimension.changede.latex_space").getString()), "JER latex dimension title must translate");
                 check(!jeresources.util.TranslationHelper.tryDimensionTranslate("twilightforest:twilight_forest")
@@ -101,6 +109,7 @@ public final class JerCompatibilityClientChecks {
                     var server = minecraft.getSingleplayerServer();
                     server.overworld().getGameRules().getRule(net.foxyas.changedaddon.init.ChangedAddonGameRules.PAINITE_GENERATION).set(false, server);
                     com.simibubi.create.infrastructure.config.AllConfigs.common().worldGen.disable.set(true);
+                    if (ModList.get().isLoaded("mekanism")) setOsmiumGeneration(false);
                 });
                 return;
             }
@@ -110,11 +119,16 @@ public final class JerCompatibilityClientChecks {
                 check(recipeCount(runtime) < initialCount, "Disabled Painite charts must be hidden in JEI");
                 check(JerOreClientState.snapshot().stream().noneMatch(data -> data.block().getNamespace().equals("create")), "Disabled Create worldgen must not expose zinc charts");
                 check(!hasChart(runtime, "create:zinc_ore"), "Disabled zinc charts must disappear from JEI");
+                if (ModList.get().isLoaded("mekanism")) {
+                    check(!hasChart(runtime, "mekanism:osmium_ore"), "Disabled osmium charts must disappear from JEI");
+                    check(hasChart(runtime, "mekanism:tin_ore"), "Disabling osmium must preserve other Mekanism ores");
+                }
                 stage = 3;
                 minecraft.getSingleplayerServer().execute(() -> {
                     var server = minecraft.getSingleplayerServer();
                     server.overworld().getGameRules().getRule(net.foxyas.changedaddon.init.ChangedAddonGameRules.PAINITE_GENERATION).set(true, server);
                     com.simibubi.create.infrastructure.config.AllConfigs.common().worldGen.disable.set(false);
+                    if (ModList.get().isLoaded("mekanism")) setOsmiumGeneration(true);
                 });
                 return;
             }
@@ -130,8 +144,8 @@ public final class JerCompatibilityClientChecks {
             if (JerOreClientState.snapshot() == beforeRepeat) return;
             check(recipeCount(runtime) == initialCount, "Repeated sync must not double-count ore charts");
             finish(minecraft, "PASS: live JER biome queries; six categories; Addon/CE/Create/other-mod ores; "
-                    + initialSnapshotCount + " verified charts; translated dimension titles; dormant feature omitted; Painite/Create disable/re-enable; reload and repeated sync; Integration="
-                    + ModList.get().isLoaded("jerintegration"));
+                    + initialSnapshotCount + " verified charts; translated dimension titles; dormant feature omitted; Painite/Create/Mekanism disable/re-enable; reload and repeated sync; Integration="
+                    + ModList.get().isLoaded("jerintegration") + "; Mekanism=" + ModList.get().isLoaded("mekanism"));
         } catch (Throwable error) {
             finished = true;
             LogManager.getLogger("changede-jer-checks").error("JER COMPATIBILITY CHECKS FAILED", error);
@@ -146,6 +160,18 @@ public final class JerCompatibilityClientChecks {
                 .anyMatch(recipe -> recipe.getBlocks().stream().anyMatch(stack -> stack.getItem() == item));
     }
     private static long recipeCount(IJeiRuntime runtime) { return runtime.getRecipeManager().createRecipeLookup(JEIConfig.WORLD_GEN_TYPE).get().count(); }
+    private static void setOsmiumGeneration(boolean enabled) {
+        // Regression-only access to Mekanism's private per-ore switch; production uses its public suppliers.
+        try {
+            var world = mekanism.common.config.MekanismConfig.world;
+            var field = world.getClass().getDeclaredField("ores");
+            field.setAccessible(true);
+            var ore = ((java.util.Map<?, ?>) field.get(world)).get(mekanism.common.resource.ore.OreType.OSMIUM);
+            var switchField = ore.getClass().getDeclaredField("shouldGenerate");
+            switchField.setAccessible(true);
+            ((mekanism.common.config.value.CachedBooleanValue) switchField.get(ore)).set(enabled);
+        } catch (ReflectiveOperationException error) { throw new AssertionError("Cannot toggle Mekanism ore fixture", error); }
+    }
     private static void check(boolean condition, String message) { if (!condition) throw new AssertionError(message); }
     private static void finish(Minecraft minecraft, String result) throws Exception {
         finished = true;

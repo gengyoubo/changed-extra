@@ -43,8 +43,10 @@ public final class JerOreNetwork {
     }
 
     private static int flags(MinecraftServer server) {
-        return (OreGenerationScanner.painiteEnabled(server.overworld()) ? 1 : 0)
+        int flags = (OreGenerationScanner.painiteEnabled(server.overworld()) ? 1 : 0)
                 | (OreGenerationScanner.createEnabled() ? 2 : 0);
+        return 31 * flags + (net.minecraftforge.fml.ModList.get().isLoaded("mekanism")
+                ? MekanismOreCompat.configFingerprint() : 0);
     }
 
     public static List<OreGenerationData> snapshot(MinecraftServer server) {
