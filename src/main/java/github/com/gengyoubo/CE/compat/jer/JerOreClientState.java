@@ -13,14 +13,17 @@ import java.util.List;
 public final class JerOreClientState {
     private static final List<OreGenerationData> pending = new ArrayList<>();
     private static List<OreGenerationData> snapshot = List.of();
+    private static boolean confirmed;
     private JerOreClientState() {}
 
     public static List<OreGenerationData> snapshot() { return snapshot; }
+    public static boolean confirmed() { return confirmed; }
 
     @SubscribeEvent
     public static void login(ClientPlayerNetworkEvent.LoggingIn event) {
         pending.clear();
         snapshot = List.of();
+        confirmed = false;
         if (ModList.get().isLoaded("jeresources") && JerOreNetwork.CHANNEL.isRemotePresent(event.getConnection())) {
             JerOreNetwork.CHANNEL.sendToServer(new JerOreNetwork.Request());
         }
@@ -30,6 +33,7 @@ public final class JerOreClientState {
     public static void logout(ClientPlayerNetworkEvent.LoggingOut event) {
         pending.clear();
         snapshot = List.of();
+        confirmed = false;
         if (ModList.get().isLoaded("jeresources")) JerWorldGenCompat.clear();
     }
 
@@ -40,6 +44,7 @@ public final class JerOreClientState {
         pending.addAll(packet.entries());
         if (packet.last()) {
             snapshot = List.copyOf(pending);
+            confirmed = true;
             pending.clear();
             JerWorldGenCompat.refresh();
         }

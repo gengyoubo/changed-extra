@@ -27,7 +27,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,8 +44,10 @@ public final class OreGenerationScanner {
         for (ServerLevel level : server.getAllLevels()) {
             // The list includes Forge's applied biome modifiers, not merely registry declarations.
             var generator = level.getChunkSource().getGenerator();
-            Map<PlacedFeature, Set<ResourceLocation>> active = new IdentityHashMap<>();
-            generator.getBiomeSource().possibleBiomes().forEach(biome -> biome.unwrapKey().ifPresent(key ->
+            Map<PlacedFeature, Set<ResourceLocation>> active = new LinkedHashMap<>();
+            generator.getBiomeSource().possibleBiomes().stream()
+                    .sorted(java.util.Comparator.comparing(biome -> biome.unwrapKey().map(key -> key.location().toString()).orElse("")))
+                    .forEach(biome -> biome.unwrapKey().ifPresent(key ->
                     generator.getBiomeGenerationSettings(biome).features().forEach(features ->
                             features.stream().map(Holder::value).forEach(placed ->
                                     active.computeIfAbsent(placed, unused -> new LinkedHashSet<>()).add(key.location())))));
@@ -121,6 +122,12 @@ public final class OreGenerationScanner {
                 }
                 case "minecraft:height_range" -> {
                     if (heights != null) return null;
+                    var heightJson = json.get("height");
+                    if (heightJson.isJsonObject() && heightJson.getAsJsonObject().has("type")) {
+                        String type = heightJson.getAsJsonObject().get("type").getAsString();
+                        if (!Set.of("minecraft:constant", "minecraft:uniform", "minecraft:trapezoid",
+                                "minecraft:biased_to_bottom", "minecraft:very_biased_to_bottom").contains(type)) return null;
+                    }
                     heights = HeightProvider.CODEC.parse(JsonOps.INSTANCE, json.get("height")).result().orElse(null);
                     if (heights == null) return null;
                 }
