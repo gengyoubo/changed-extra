@@ -44,12 +44,15 @@ public final class OreGenerationScanner {
         List<OreGenerationData> result = new ArrayList<>();
         for (ServerLevel level : server.getAllLevels()) {
             // The list includes Forge's applied biome modifiers, not merely registry declarations.
-            Set<PlacedFeature> active = java.util.Collections.newSetFromMap(new IdentityHashMap<>());
-            level.getChunkSource().getGenerator().getBiomeSource().possibleBiomes().forEach(biome ->
-                    biome.value().getGenerationSettings().features().forEach(features ->
-                            features.stream().map(Holder::value).forEach(active::add)));
-            Map<BlockState, float[]> curves = new LinkedHashMap<>();
-            for (PlacedFeature placed : active) {
+            var generator = level.getChunkSource().getGenerator();
+            Map<PlacedFeature, Set<ResourceLocation>> active = new IdentityHashMap<>();
+            generator.getBiomeSource().possibleBiomes().forEach(biome -> biome.unwrapKey().ifPresent(key ->
+                    generator.getBiomeGenerationSettings(biome).features().forEach(features ->
+                            features.stream().map(Holder::value).forEach(placed ->
+                                    active.computeIfAbsent(placed, unused -> new LinkedHashSet<>()).add(key.location())))));
+            record ChartKey(BlockState state, List<ResourceLocation> biomes) {}
+            Map<ChartKey, float[]> curves = new LinkedHashMap<>();
+            for (PlacedFeature placed : active.keySet()) {
                 var configured = placed.feature().value();
                 if (!(configured.config() instanceof OreConfiguration ore)
                         || ore.size <= 0 || !allowedFeature(configured.feature(), level)) continue;
@@ -61,12 +64,13 @@ public final class OreGenerationScanner {
                 for (BlockState state : targets) {
                     var key = ForgeRegistries.BLOCKS.getKey(state.getBlock());
                     if (key == null || "minecraft".equals(key.getNamespace()) || state.getBlock().asItem() == Items.AIR) continue;
-                    float[] sum = curves.computeIfAbsent(state, unused -> new float[OreGenerationData.HEIGHTS]);
+                    var biomeKeys = active.get(placed).stream().sorted(java.util.Comparator.comparing(ResourceLocation::toString)).toList();
+                    float[] sum = curves.computeIfAbsent(new ChartKey(state, biomeKeys), unused -> new float[OreGenerationData.HEIGHTS]);
                     for (int y = 0; y < sum.length; y++) sum[y] += curve[y];
                 }
             }
-            curves.forEach((state, curve) -> result.add(new OreGenerationData(
-                    ForgeRegistries.BLOCKS.getKey(state.getBlock()), level.dimension().location(), curve, drops(state, level))));
+            curves.forEach((key, curve) -> result.add(new OreGenerationData(
+                    ForgeRegistries.BLOCKS.getKey(key.state().getBlock()), level.dimension().location(), key.biomes(), curve, drops(key.state(), level))));
         }
         return List.copyOf(result);
     }

@@ -59,6 +59,7 @@
   "server": [],
   "client": [
     "JerBiomeHelperMixin",
+    "JerWorldGenRecipesMixin",
     "JerIntegrationLifecycleMixin",
     "JerCompatibilityInitMixin",
     "JerIntegrationCreateMixin",

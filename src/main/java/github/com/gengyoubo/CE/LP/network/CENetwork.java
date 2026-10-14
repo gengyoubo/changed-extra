@@ -25,6 +25,7 @@ public class CENetwork {
     private static int packetId = 0;
 
     public static void register() {
+        github.com.gengyoubo.CE.compat.jer.JerOreNetwork.initialize();
         INSTANCE.registerMessage(packetId++, github.com.gengyoubo.CE.skill.SkillResearchPacket.class,
                 github.com.gengyoubo.CE.skill.SkillResearchPacket::encode,
                 github.com.gengyoubo.CE.skill.SkillResearchPacket::decode,

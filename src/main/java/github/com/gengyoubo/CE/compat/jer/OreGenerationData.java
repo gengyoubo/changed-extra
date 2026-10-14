@@ -6,13 +6,14 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 /** Server-confirmed ore generation. No client/JER classes: also safe on dedicated servers. */
-public record OreGenerationData(ResourceLocation block, ResourceLocation dimension,
+public record OreGenerationData(ResourceLocation block, ResourceLocation dimension, List<ResourceLocation> biomes,
                                 float[] distribution, List<Drop> drops) {
     public static final int MIN_Y = -64;
     public static final int HEIGHTS = 320; // JER 1.20.1's chart coordinate system.
 
     public OreGenerationData {
         distribution = distribution.clone();
+        biomes = List.copyOf(biomes);
         drops = List.copyOf(drops);
         if (distribution.length != HEIGHTS) throw new IllegalArgumentException("Invalid ore distribution length");
         for (float value : distribution) {
