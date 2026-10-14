@@ -173,9 +173,12 @@ dependencies {
     } else {
         implementation fg.deobf("curse.maven:tinkers-construct-74072:8944121")
     }
+    //JEI系列
+    implementation fg.deobf("curse.maven:jei-238222:9058038")
+    implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:5057220")
+    implementation fg.deobf("curse.maven:jer-integration-506948:5281932")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
-    implementation fg.deobf("curse.maven:jei-238222:9058038")
     implementation fg.deobf("curse.maven:bakeries-1191781:8041836")
     //拍摄
     //runtimeOnly fg.deobf("github.com.gengyoubo.replayneo:RePlay:1.0.4")

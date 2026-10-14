@@ -54,6 +54,17 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if ("github.com.gengyoubo.CE.mixins.JerBiomeHelperMixin".equals(mixinClassName)) {
+            return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("jeresources");
+        }
+        if ("github.com.gengyoubo.CE.mixins.JerIntegrationLifecycleMixin".equals(mixinClassName)
+                || "github.com.gengyoubo.CE.mixins.JerCompatibilityInitMixin".equals(mixinClassName)) {
+            return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("jeresources") && isModLoaded("jerintegration");
+        }
+        if ("github.com.gengyoubo.CE.mixins.JerIntegrationCreateMixin".equals(mixinClassName)) {
+            return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("jeresources")
+                    && isModLoaded("jerintegration") && isModLoaded("create");
+        }
         // Only the explicitly enabled disposable ore comparison may load Addon's original harvest method.
         if ("github.com.gengyoubo.CE.LP.mixins.AddonIridiumHarvestMixin".equals(mixinClassName)
                 && Boolean.getBoolean("changede.verifyAddonOre")
