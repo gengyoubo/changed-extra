@@ -86,6 +86,10 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 repositories {
     mavenCentral()
+    maven {
+        url 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
     maven { url "https://maven.createmod.net" }
     maven {
         name = "RePlayNeo"
@@ -158,6 +162,15 @@ dependencies {
     compileOnly fg.deobf("net.createmod.ponder:Ponder-Forge-1.20.1:1.0.92")
     //通用机械
     compileOnly fg.deobf("curse.maven:mekanism-268560:6552911")
+    compileOnly fg.deobf('maven.modrinth:mekanism-generators:10.4.16.80')
+    if (providers.gradleProperty('fissionChecks').getOrElse('false').toBoolean()) {
+        runtimeOnly fg.deobf("curse.maven:mekanism-268560:6552911")
+        runtimeOnly fg.deobf('maven.modrinth:mekanism-generators:10.4.16.80')
+        if (!providers.gradleProperty('omitAe2ForChecks').getOrElse('false').toBoolean()) {
+            runtimeOnly fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
+            runtimeOnly fg.deobf("curse.maven:guideme-1173950:7127447")
+        }
+    }
     //AE2
     compileOnly fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
     compileOnly fg.deobf("curse.maven:guideme-1173950:7127447")
@@ -319,6 +332,14 @@ minecraft {
             mods { changede { source sourceSets.main } }
             property 'changede.verifyLatexTinkers', 'true'
             property 'changede.verifyIssue38', 'true'
+        }
+        create("fissionServer") {
+            parent null, "server"
+            taskName "runFissionServer"
+            workingDirectory project.file('build/fission-server')
+            args '--nogui'
+            mods { changede { source sourceSets.main } }
+            property 'changede.verifyFission', 'true'
         }
         create("latexTinkersClient") {
             parent null, "client"
@@ -599,10 +620,10 @@ tasks.register('verifyDevRunSnapshot') {
 }
 
 tasks.configureEach {
-    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient', 'runIssue38Server']) {
+    if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient', 'runIssue38Server', 'runFissionServer']) {
         dependsOn tasks.named('classes')
         doFirst { runTask ->
-            if (runTask.name in ['runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runIssue38Server']) {
+            if (runTask.name in ['runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runIssue38Server', 'runFissionServer']) {
                 // Forge merges sibling parents before applying its userdev template.
                 // At execution time the server run has the complete bootstrap settings.
                 def config = runTask.getRunConfig().get()

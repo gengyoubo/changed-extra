@@ -54,6 +54,9 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (mixinClassName.equals("github.com.gengyoubo.CE.mixins.FissionReactorUpgradesMixin")) {
+            return isModLoaded("mekanismgenerators");
+        }
         if ("github.com.gengyoubo.CE.mixins.JerBiomeHelperMixin".equals(mixinClassName)
                 || "github.com.gengyoubo.CE.mixins.JerWorldGenRecipesMixin".equals(mixinClassName)) {
             return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("jeresources");

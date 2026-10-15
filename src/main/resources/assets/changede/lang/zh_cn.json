@@ -1241,5 +1241,16 @@
   "block.changede.molten_white_latex": "熔融白胶液",
   "item.changede.molten_white_latex_bucket": "熔融白胶液桶",
   "boss.changede.twilight009.stage": "%s — 第%s/7阶段",
-  "boss.changede.twilight009.locked": "%s — 第%s/7阶段：击败召唤的暮色 Boss 后解锁"
+  "boss.changede.twilight009.locked": "%s — 第%s/7阶段：击败召唤的暮色 Boss 后解锁",
+  "tooltip.changede.fission_casing_upgrade": "替换裂变反应堆外壳。冷却方块与处理器可叠放；每个约提升 1%，可在服务器配置调整。",
+  "block.changede.advanced_fission_cooling": "高级冷却方块",
+  "tooltip.changede.advanced_fission_cooling": "每个增加 1% 节水效率：耗水量 ÷ (1 + 数量 × 1%)，产汽量与散热不变。",
+  "block.changede.advanced_uranium_processor_x": "高级铀处理器 X",
+  "tooltip.changede.advanced_uranium_processor_x": "每个增加 1% 燃料效率和 1% 热量、核废料产量。额外热量需要额外冷却。",
+  "block.changede.advanced_uranium_processor_y": "高级铀处理器 Y",
+  "tooltip.changede.advanced_uranium_processor_y": "每个增加 1 个百分点的返还概率（最高 100%）；返还当次实际消耗的燃料，保留热量与废料。",
+  "block.changede.fission_emergency_scram": "紧急跳闸系统",
+  "tooltip.changede.fission_emergency_scram": "按设定燃烧速率预测；冷却水不足 10 秒时，在燃烧前强制停堆。补水后需重新启动。",
+  "block.changede.fission_me_interface": "裂变反应堆 ME 交互接口",
+  "tooltip.changede.fission_me_interface": "直接抽取 ME 网络中的水，每 tick 补满反应堆；无额外速率上限，需要频道与 AE 能量。"
 }

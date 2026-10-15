@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanismgenerators"
+    }
+  ],
+  "pattern": [
+    "ILI",
+    "ACA",
+    "ILI"
+  ],
+  "key": {
+    "I": {
+      "item": "changede:iridium_ingot"
+    },
+    "L": {
+      "item": "changede:latex_ingot"
+    },
+    "A": {
+      "item": "mekanism:basic_fluid_tank"
+    },
+    "C": {
+      "item": "mekanismgenerators:fission_reactor_casing"
+    }
+  },
+  "result": {
+    "item": "changede:advanced_fission_cooling"
+  }
+}

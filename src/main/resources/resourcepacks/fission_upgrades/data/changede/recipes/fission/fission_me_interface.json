@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanismgenerators"
+    },
+    {
+      "type": "forge:mod_loaded",
+      "modid": "ae2"
+    }
+  ],
+  "pattern": [
+    "ILI",
+    "ACA",
+    "ILI"
+  ],
+  "key": {
+    "I": {
+      "item": "changede:iridium_ingot"
+    },
+    "L": {
+      "item": "changede:latex_ingot"
+    },
+    "A": {
+      "item": "ae2:interface"
+    },
+    "C": {
+      "item": "mekanismgenerators:fission_reactor_casing"
+    }
+  },
+  "result": {
+    "item": "changede:fission_me_interface"
+  }
+}

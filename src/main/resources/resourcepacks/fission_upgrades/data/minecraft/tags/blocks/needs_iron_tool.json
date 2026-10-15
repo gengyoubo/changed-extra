@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "changede:advanced_fission_cooling",
+      "required": false
+    },
+    {
+      "id": "changede:advanced_uranium_processor_x",
+      "required": false
+    },
+    {
+      "id": "changede:advanced_uranium_processor_y",
+      "required": false
+    },
+    {
+      "id": "changede:fission_emergency_scram",
+      "required": false
+    },
+    {
+      "id": "changede:fission_me_interface",
+      "required": false
+    }
+  ]
+}

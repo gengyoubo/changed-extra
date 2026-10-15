@@ -1241,5 +1241,16 @@
   "block.changede.molten_white_latex": "Molten White Latex",
   "item.changede.molten_white_latex_bucket": "Molten White Latex Bucket",
   "boss.changede.twilight009.stage": "%s — Stage %s/7",
-  "boss.changede.twilight009.locked": "%s — Stage %s/7: defeat the summoned Twilight bosses to unlock"
+  "boss.changede.twilight009.locked": "%s — Stage %s/7: defeat the summoned Twilight bosses to unlock",
+  "tooltip.changede.fission_casing_upgrade": "Replaces reactor casing. Cooling blocks and processors stack, adding about 1% each; server-configurable.",
+  "block.changede.advanced_fission_cooling": "Advanced Fission Cooling",
+  "tooltip.changede.advanced_fission_cooling": "Each adds 1% water efficiency: water use / (1 + count * 1%), with unchanged steam and cooling.",
+  "block.changede.advanced_uranium_processor_x": "Advanced Uranium Processor X",
+  "tooltip.changede.advanced_uranium_processor_x": "Each adds 1% fuel efficiency and 1% heat and waste output. Extra heat requires extra cooling.",
+  "block.changede.advanced_uranium_processor_y": "Advanced Uranium Processor Y",
+  "tooltip.changede.advanced_uranium_processor_y": "Each adds 1 percentage point of refund chance (up to 100%). Refunds the tick's consumed fuel, retaining heat and waste.",
+  "block.changede.fission_emergency_scram": "Fission Emergency SCRAM",
+  "tooltip.changede.fission_emergency_scram": "Stops the reactor before burning when water reserves are below 10 seconds of predicted demand. Restart after refilling.",
+  "block.changede.fission_me_interface": "Fission Reactor ME Interface",
+  "tooltip.changede.fission_me_interface": "Pulls water from ME storage to fill the reactor each tick, with no added transfer cap. Requires a channel and AE power."
 }
