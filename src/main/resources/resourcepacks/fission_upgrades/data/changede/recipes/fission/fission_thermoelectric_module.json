@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanismgenerators"
+    }
+  ],
+  "pattern": [
+    "IAI",
+    "HCH",
+    "IEI"
+  ],
+  "key": {
+    "I": {
+      "item": "changede:iridium_ingot"
+    },
+    "A": {
+      "item": "mekanism:alloy_reinforced"
+    },
+    "H": {
+      "item": "changede:fission_heat_exchange_core"
+    },
+    "C": {
+      "item": "mekanismgenerators:fission_reactor_casing"
+    },
+    "E": {
+      "item": "mekanism:elite_control_circuit"
+    }
+  },
+  "result": {
+    "item": "changede:fission_thermoelectric_module"
+  }
+}

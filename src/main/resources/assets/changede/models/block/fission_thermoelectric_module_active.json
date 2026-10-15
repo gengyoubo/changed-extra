@@ -1,0 +1,6 @@
+{
+  "parent": "changede:block/fission_thermoelectric_module",
+  "textures": {
+    "panel": "minecraft:block/sea_lantern"
+  }
+}

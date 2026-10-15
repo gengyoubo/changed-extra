@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanismgenerators"
+    }
+  ],
+  "pattern": [
+    "ICI",
+    "AMA",
+    "ICI"
+  ],
+  "key": {
+    "I": {
+      "item": "changede:iridium_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "A": {
+      "item": "mekanism:alloy_reinforced"
+    },
+    "M": {
+      "item": "changede:morphic_crystal_core"
+    }
+  },
+  "result": {
+    "item": "changede:fission_heat_exchange_core"
+  }
+}
