@@ -146,6 +146,11 @@ public class changede {
         if (ModList.get().isLoaded("create")) {
             github.com.gengyoubo.CE.compat.create.burner.LatexBurnerCompat.initialize(bus);
         }
+        if (ModList.get().isLoaded("mekanism")) {
+            github.com.gengyoubo.CE.compat.mekanism.gas.GasCompat.initialize(bus);
+        } else if (Boolean.getBoolean("changede.verifyGasTechnology")) {
+            MinecraftForge.EVENT_BUS.addListener(github.com.gengyoubo.CE.verification.GasOptionalChecks::started);
+        }
         if (ModList.get().isLoaded("mekanismgenerators")) {
             github.com.gengyoubo.CE.compat.mekanism.fission.FissionCompat.initialize(bus);
         } else if (Boolean.getBoolean("changede.verifyFission")) {

@@ -56,6 +56,7 @@ public class CEJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
+        if (ModList.get().isLoaded("mekanism")) github.com.gengyoubo.CE.compat.mekanism.gas.GasJei.categories(registration);
         registration.addRecipeCategories(
                 new LatexCreativeExtranalbodyCraftingCategory(
                         registration.getJeiHelpers().getGuiHelper(),
@@ -68,6 +69,7 @@ public class CEJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(@NotNull IRecipeRegistration registration) {
+        if (ModList.get().isLoaded("mekanism")) github.com.gengyoubo.CE.compat.mekanism.gas.GasJei.recipes(registration);
         registerSynergyFoodInfo(registration);
 
         var mc = Minecraft.getInstance();
@@ -91,6 +93,7 @@ public class CEJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        if (ModList.get().isLoaded("mekanism")) github.com.gengyoubo.CE.compat.mekanism.gas.GasJei.catalysts(registration);
         if (ModList.get().isLoaded("mekanismgenerators"))
             github.com.gengyoubo.CE.compat.mekanism.fission.jei.FissionJei.registerCatalysts(registration);
         registration.addRecipeCatalyst(new ItemStack(CELPBlock.BASIC_ALLOY_FURNACE.get()), AlloyFurnaceCategory.TYPE);

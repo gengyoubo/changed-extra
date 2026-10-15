@@ -161,8 +161,17 @@ dependencies {
     }
     compileOnly fg.deobf("net.createmod.ponder:Ponder-Forge-1.20.1:1.0.92")
     //通用机械
-    implementation fg.deobf("curse.maven:mekanism-268560:6552911")
-    implementation fg.deobf('maven.modrinth:mekanism-generators:10.4.16.80')
+    if (providers.gradleProperty('omitMekanismForChecks').getOrElse('false').toBoolean()) {
+        compileOnly fg.deobf("curse.maven:mekanism-268560:6552911")
+    } else {
+        implementation fg.deobf("curse.maven:mekanism-268560:6552911")
+    }
+    if (providers.gradleProperty('omitGeneratorsForChecks').getOrElse('false').toBoolean()
+            || providers.gradleProperty('omitMekanismForChecks').getOrElse('false').toBoolean()) {
+        compileOnly fg.deobf('maven.modrinth:mekanism-generators:10.4.16.80')
+    } else {
+        implementation fg.deobf('maven.modrinth:mekanism-generators:10.4.16.80')
+    }
     //AE2
     implementation fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
     implementation fg.deobf("curse.maven:guideme-1173950:7127447")
@@ -219,13 +228,48 @@ minecraft {
             }
         }
         server {
-            workingDirectory project.file('run')
+            def fissionChecks = providers.gradleProperty('verifyFission').getOrElse('false').toBoolean()
+            def gasChecks = providers.gradleProperty('verifyGasTechnology').getOrElse('false').toBoolean()
+            def gasWorld = providers.gradleProperty('omitMekanismForChecks').getOrElse('false').toBoolean() ? 'build/gas-optional-server' : 'build/gas-technology-server'
+            workingDirectory project.file(gasChecks ? gasWorld : fissionChecks ? 'build/thermoelectric-server' : 'run')
+            if (gasChecks) {
+                property 'changede.verifyGasTechnology', 'true'
+                jvmArgs '-Xms512M', '-Xmx2G'
+            }
+            if (fissionChecks) {
+                property 'changede.verifyFission', 'true'
+                jvmArgs '-Xms512M', '-Xmx2G'
+            }
             args '--nogui'
             mods {
                 changede {
                     source sourceSets.main
                 }
             }
+        }
+    }
+}
+tasks.register('thermoelectricModelChecks', JavaExec) {
+    group = 'verification'
+    description = 'Checks thermoelectric heat conservation and operating limits.'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'github.com.gengyoubo.CE.compat.mekanism.fission.ThermoelectricModelChecks'
+    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+}
+tasks.register('dualEnergyProcessChecks', JavaExec) {
+    group = 'verification'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'github.com.gengyoubo.CE.LP.DualEnergyProcessChecks'
+    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+}
+if (providers.gradleProperty('verifyGasTechnology').getOrElse('false').toBoolean()) {
+    def gasWorld = providers.gradleProperty('omitMekanismForChecks').getOrElse('false').toBoolean() ? 'build/gas-optional-server' : 'build/gas-technology-server'
+    def gasReport = file(gasWorld + '/gas-checks.txt')
+    tasks.matching { it.name == 'runServer' }.configureEach {
+        doFirst { if (gasReport.exists()) gasReport.delete() }
+        doLast {
+            if (!gasReport.exists() || !gasReport.text.startsWith('PASS:'))
+                throw new GradleException(gasReport.exists() ? gasReport.text : 'Gas verification did not produce a report')
         }
     }
 }

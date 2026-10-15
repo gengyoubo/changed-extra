@@ -21,6 +21,8 @@ public final class FissionUpgradeState {
     private final List<BlockPos> positions = new ArrayList<>();
     private final EnumMap<FissionUpgrade, Integer> installed = new EnumMap<>(FissionUpgrade.class);
     private boolean discovered;
+    private final FissionThermalState thermal = new FissionThermalState();
+    public FissionThermalState thermal() { return thermal; }
 
     public void beforeTick(FissionReactorMultiblockData reactor, Level level) {
         if (!discovered) {
@@ -31,13 +33,16 @@ public final class FissionUpgradeState {
             discovered = true;
         }
         installed.clear();
+        List<FissionThermoelectricBlockEntity> modules = new ArrayList<>();
         for (BlockPos pos : positions) {
             if (!level.hasChunkAt(pos)) continue;
             if (level.getBlockState(pos).getBlock() instanceof FissionUpgradeBlock block) {
                 installed.merge(block.upgrade, 1, Integer::sum);
                 if (level.getBlockEntity(pos) instanceof ReactorWaterSource source) source.supplyWater(reactor);
+                if (level.getBlockEntity(pos) instanceof FissionThermoelectricBlockEntity module) modules.add(module);
             }
         }
+        thermal.setModules(modules);
         // Supply comes first; trip before burning, including the very first tick after activation.
         if (has(FissionUpgrade.SCRAM) && reactor.isActive() && reactor.gasCoolantTank.isEmpty()) {
             double demand = predictedWaterPerTick(reactor);

@@ -3,7 +3,7 @@ package github.com.gengyoubo.CE.LP;
 import net.minecraft.core.Direction;
 
 /** Interface for energy stores whose type must match exactly during transfer. */
-public interface ILatexTypedEnergyHandler {
+public interface ILatexTypedEnergyHandler extends ILatexMultiEnergyHandler {
     LatexEnergyType getEnergyType();
     int receiveTypedEnergy(LatexEnergyType type, int amount);
     int extractTypedEnergy(LatexEnergyType type, int amount);
@@ -11,4 +11,7 @@ public interface ILatexTypedEnergyHandler {
     default int extractTypedEnergy(LatexEnergyType type,int amount,Direction from) { return extractTypedEnergy(type,amount); }
     int getTypedEnergyStored();
     int getTypedEnergyCapacity();
+    @Override default boolean supportsTypedEnergy(LatexEnergyType type, Direction side) { return type == getEnergyType(); }
+    @Override default int getTypedEnergyStored(LatexEnergyType type) { return type == getEnergyType() ? getTypedEnergyStored() : 0; }
+    @Override default int getTypedEnergyCapacity(LatexEnergyType type) { return type == getEnergyType() ? getTypedEnergyCapacity() : 0; }
 }

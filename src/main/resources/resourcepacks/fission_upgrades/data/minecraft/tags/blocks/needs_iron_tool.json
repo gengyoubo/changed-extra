@@ -20,6 +20,10 @@
     {
       "id": "changede:fission_me_interface",
       "required": false
+    },
+    {
+      "id": "changede:fission_thermoelectric_module",
+      "required": false
     }
   ]
 }

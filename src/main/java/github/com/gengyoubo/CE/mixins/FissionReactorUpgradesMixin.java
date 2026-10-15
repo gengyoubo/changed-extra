@@ -7,6 +7,7 @@ import mekanism.generators.common.content.fission.FissionReactorMultiblockData;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,12 +16,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = FissionReactorMultiblockData.class, remap = false)
 public abstract class FissionReactorUpgradesMixin implements FissionUpgradeAccess {
     @Unique private final FissionUpgradeState changede$upgrades = new FissionUpgradeState();
+    @Shadow private double biomeAmbientTemp;
 
     @Override public FissionUpgradeState changede$fissionUpgrades() { return changede$upgrades; }
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void changede$prepare(Level level, CallbackInfoReturnable<Boolean> cir) {
         changede$upgrades.beforeTick((FissionReactorMultiblockData) (Object) this, level);
+    }
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lmekanism/generators/common/content/fission/FissionReactorMultiblockData;handleCoolant()V"))
+    private void changede$thermalBeforeBoiling(Level level, CallbackInfoReturnable<Boolean> cir) {
+        changede$upgrades.thermal().beforeCoolant((FissionReactorMultiblockData) (Object) this, level, biomeAmbientTemp);
+    }
+
+    @Inject(method = "handleDamage", at = @At("TAIL"))
+    private void changede$thermalCriticalDamage(Level level, CallbackInfo ci) {
+        changede$upgrades.thermal().checkFuses((FissionReactorMultiblockData) (Object) this);
+    }
+
+    @Inject(method = "meltdownHappened", at = @At("HEAD"))
+    private void changede$thermalMeltdown(Level level, CallbackInfo ci) {
+        changede$upgrades.thermal().meltdown((FissionReactorMultiblockData) (Object) this, level);
     }
 
     @Inject(method = "burnFuel", at = @At("HEAD"), cancellable = true)

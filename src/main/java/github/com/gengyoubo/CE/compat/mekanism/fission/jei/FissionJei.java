@@ -25,9 +25,15 @@ public final class FissionJei {
                 case PROCESSOR_Y -> details.add(Component.translatable("jei.changede.fission.y_info", percent(FissionConfig.RETURN_CHANCE.get())));
                 case SCRAM -> details.add(Component.translatable("jei.changede.fission.scram_info"));
                 case ME_PORT -> details.add(Component.translatable("jei.changede.fission.me_info"));
+                case THERMOELECTRIC -> {
+                    details.add(Component.translatable("jei.changede.fission.thermo_info",
+                            FissionConfig.THERMO_MAX_HEAT.get(), percent(FissionConfig.THERMO_PASSIVE.get()), FissionConfig.THERMO_OUTPUT.get()));
+                    details.add(Component.translatable("jei.changede.fission.thermo_fuse"));
+                }
             }
             registration.addItemStackInfo(block.getItemStack(), details.toArray(Component[]::new));
         });
+        registration.addItemStackInfo(new net.minecraft.world.item.ItemStack(FissionCompat.HEAT_EXCHANGE_CORE.get()), Component.translatable("jei.changede.fission.thermo_core"));
     }
 
     static String percent(double value) { return String.format(java.util.Locale.ROOT, "%.2f%%", value * 100); }

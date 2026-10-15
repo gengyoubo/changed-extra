@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.E;
 
 import github.com.gengyoubo.CE.LP.ILatexTypedEnergyHandler;
+import github.com.gengyoubo.CE.LP.ILatexMultiEnergyHandler;
 import github.com.gengyoubo.CE.LP.LatexEnergyType;
 import github.com.gengyoubo.CE.LP.TypedLatexEnergyStorage;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.BasePipeBlockEntity;
@@ -29,7 +30,7 @@ public final class TypedEnergyPipeBlockEntity extends BasePipeBlockEntity implem
         return other instanceof TypedEnergyPipeBlockEntity pipe && pipe.getEnergyType()==getEnergyType();
     }
     @Override protected boolean canConnectToMachine(BlockEntity other,Direction side) {
-        return other instanceof ILatexTypedEnergyHandler handler && handler.getEnergyType()==getEnergyType();
+        return other instanceof ILatexMultiEnergyHandler handler && handler.supportsTypedEnergy(getEnergyType(), side.getOpposite());
     }
     private BlockEntity neighbor(Direction side) {
         BlockPos pos=worldPosition.relative(side);
@@ -44,7 +45,7 @@ public final class TypedEnergyPipeBlockEntity extends BasePipeBlockEntity implem
             if(!getConnectionMode(side).canSource())continue;
             var target=neighbor(side);
             if(target instanceof TypedEnergyPipeBlockEntity)continue;
-            if(target instanceof ILatexTypedEnergyHandler handler && handler.getEnergyType()==getEnergyType()) {
+            if(target instanceof ILatexMultiEnergyHandler handler && handler.supportsTypedEnergy(getEnergyType(), side.getOpposite())) {
                 int extracted=handler.extractTypedEnergy(getEnergyType(),Math.min(space,pullBudget),side.getOpposite());
                 pullBudget-=receiveTypedEnergy(getEnergyType(),extracted,side);
             }
@@ -55,7 +56,7 @@ public final class TypedEnergyPipeBlockEntity extends BasePipeBlockEntity implem
                 if(side==lastInput || !getConnectionMode(side).canSink())continue;
                 var target=neighbor(side);
                 if((target instanceof TypedEnergyPipeBlockEntity)!=toPipe)continue;
-                if(target instanceof ILatexTypedEnergyHandler handler && handler.getEnergyType()==getEnergyType()) {
+                if(target instanceof ILatexMultiEnergyHandler handler && handler.supportsTypedEnergy(getEnergyType(), side.getOpposite())) {
                     int offered=Math.min(energy.getEnergyStored(),outputBudget());
                     if(offered<=0)return;
                     int accepted=Math.max(0,Math.min(offered,handler.receiveTypedEnergy(getEnergyType(),offered,side.getOpposite())));

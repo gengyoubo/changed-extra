@@ -12,7 +12,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 
 /** Native casing block type: participates in formation, GUI, heat, cache and dismantling. */
-public final class FissionUpgradeBlock extends BlockTile<TileEntityFissionReactorCasing, BlockTypeTile<TileEntityFissionReactorCasing>> {
+public class FissionUpgradeBlock extends BlockTile<TileEntityFissionReactorCasing, BlockTypeTile<TileEntityFissionReactorCasing>> {
     public final FissionUpgrade upgrade;
 
     public FissionUpgradeBlock(FissionUpgrade upgrade) {

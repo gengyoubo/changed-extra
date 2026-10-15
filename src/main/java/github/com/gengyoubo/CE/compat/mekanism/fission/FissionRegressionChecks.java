@@ -70,7 +70,16 @@ public final class FissionRegressionChecks {
 
     public static void tick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END || server == null || done) return;
-        if (++ticks != 100) return;
+        ++ticks;
+        if (ticks == 99) {
+            try {
+                var level = server.overworld();
+                var casing = (TileEntityFissionReactorCasing) level.getBlockEntity(BASE);
+                FissionThermoelectricChecks.prepareNativeTick(level, casing.getMultiblock(), POSITIONS.get(FissionUpgrade.THERMOELECTRIC));
+            } catch (Throwable error) { finish(error); }
+            return;
+        }
+        if (ticks != 100) return;
         try {
             var level = server.overworld();
             var casing = (TileEntityFissionReactorCasing) level.getBlockEntity(BASE);
@@ -82,6 +91,7 @@ public final class FissionRegressionChecks {
             for (FissionUpgrade type : FissionUpgrade.values())
                 check(state.count(type) == POSITIONS.getOrDefault(type, List.of()).size(), "Counts installed " + type);
             recipesAndDrops(level);
+            FissionThermoelectricChecks.verify(level, formed, POSITIONS.get(FissionUpgrade.THERMOELECTRIC));
             fuelAndCooling(level);
             scram(level);
             persistence(level);

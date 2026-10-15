@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.LP.compat.jade;
 
 import github.com.gengyoubo.CE.LP.ILatexEnergyHandler;
 import github.com.gengyoubo.CE.LP.ILatexTypedEnergyHandler;
+import github.com.gengyoubo.CE.LP.ILatexMultiEnergyHandler;
 import github.com.gengyoubo.CE.LP.LatexEnergyType;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.DimensionSpaceTowerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.WireBlockEntity.I.ItemPipeBlockEntity;
@@ -62,6 +63,15 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
             data.putInt(TYPED_STORED_KEY, energy.getTypedEnergyStored());
             data.putInt(TYPED_CAPACITY_KEY, energy.getTypedEnergyCapacity());
             data.putString(TYPED_TYPE_KEY, energy.getEnergyType().name());
+        } else if (blockEntity instanceof ILatexMultiEnergyHandler energy && !(blockEntity instanceof ILatexTypedEnergyHandler)) {
+            CompoundTag buffers = new CompoundTag();
+            for (LatexEnergyType type : new LatexEnergyType[]{LatexEnergyType.WLP, LatexEnergyType.DLP}) {
+                CompoundTag buffer = new CompoundTag();
+                buffer.putInt("Stored", energy.getTypedEnergyStored(type));
+                buffer.putInt("Capacity", energy.getTypedEnergyCapacity(type));
+                buffers.put(type.name(), buffer);
+            }
+            data.put("MultiTypedEnergy", buffers);
         }
     }
 
@@ -78,6 +88,13 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
             lines.add(energyLine("LP", data.getInt(STORED_KEY), data.getInt(CAPACITY_KEY)));
         }
         String type = data.getString(TYPED_TYPE_KEY);
+        if (data.contains("MultiTypedEnergy")) {
+            var buffers = data.getCompound("MultiTypedEnergy");
+            for (String name : new String[]{"WLP", "DLP"}) {
+                var buffer = buffers.getCompound(name);
+                lines.add(energyLine(name, buffer.getInt("Stored"), buffer.getInt("Capacity")));
+            }
+        }
         if ((type.equals("WLP") || type.equals("DLP"))
                 && data.contains(TYPED_STORED_KEY) && data.contains(TYPED_CAPACITY_KEY)) {
             lines.add(energyLine(type, data.getInt(TYPED_STORED_KEY), data.getInt(TYPED_CAPACITY_KEY)));
