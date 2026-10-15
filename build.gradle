@@ -336,8 +336,9 @@ minecraft {
         create("fissionServer") {
             parent null, "server"
             taskName "runFissionServer"
-            workingDirectory project.file('build/fission-server')
+            workingDirectory project.file(providers.gradleProperty('fissionRunDirectory').getOrElse('build/fission-server'))
             args '--nogui'
+            jvmArgs '-Xms256M', '-Xmx2G'
             mods { changede { source sourceSets.main } }
             property 'changede.verifyFission', 'true'
         }
@@ -620,6 +621,14 @@ tasks.register('verifyDevRunSnapshot') {
 }
 
 tasks.configureEach {
+    if (name == 'runFissionServer') {
+        def report = new File(project.file(providers.gradleProperty('fissionRunDirectory').getOrElse('build/fission-server')), 'fission-checks.txt')
+        doFirst { delete report }
+        doLast {
+            if (!report.isFile() || !report.getText('UTF-8').startsWith('PASS:'))
+                throw new GradleException("Fission verification failed: ${report.isFile() ? report.getText('UTF-8') : 'no result report'}")
+        }
+    }
     if (name in ['runClient', 'runClientFast', 'runClientCoverage', 'runClientJfr', 'runServer', 'runDimensionTowerServer', 'runFluidDimensionTowerServer', 'runLatexBurnerServer', 'runAddonOreServer', 'runLatexBurnerNoCreateServer', 'runLatexTinkersServer', 'runLatexTinkersOptionalServer', 'runLatexTinkersClient', 'runIssue38Server', 'runFissionServer']) {
         dependsOn tasks.named('classes')
         doFirst { runTask ->

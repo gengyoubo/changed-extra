@@ -62,6 +62,13 @@ final class FissionAe2Checks {
         FissionRegressionChecks.check(reactor.isActive() && reactor.lastBurnRate > 0 && reactor.fluidCoolantTank.getFluidAmount() > 0,
                 "Tick pulls ME water before dry-start SCRAM and fuel burn");
         reactor.setActive(false);
+        long scarce = cell.extract(water, Long.MAX_VALUE, Actionable.SIMULATE, source);
+        reactor.fluidCoolantTank.setEmpty();
+        port.supplyWater(reactor);
+        FissionRegressionChecks.check(reactor.fluidCoolantTank.getFluidAmount() == Math.min(scarce, capacity),
+                "Scarce ME water transfers exactly the available amount");
+        long remaining = cell.extract(water, Long.MAX_VALUE, Actionable.SIMULATE, source);
+        FissionRegressionChecks.check(remaining + reactor.fluidCoolantTank.getFluidAmount() == scarce, "Scarce source remains conserved");
         var tag = port.saveWithFullMetadata();
         FissionRegressionChecks.check(tag.contains("FissionMeNode"), "ME node identity saved with block entity");
         var host = port.getCapability(appeng.capabilities.Capabilities.IN_WORLD_GRID_NODE_HOST, null);

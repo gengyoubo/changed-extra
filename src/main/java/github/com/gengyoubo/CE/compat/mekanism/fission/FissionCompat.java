@@ -22,6 +22,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.resource.PathPackResources;
 
 /** Loaded only when Mekanism Generators is present. AE2 classes are isolated in FissionMeInterface. */
+@SuppressWarnings("removal")
 public final class FissionCompat {
     private static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister("changede");
     private static final TileEntityTypeDeferredRegister ENTITIES = new TileEntityTypeDeferredRegister("changede");
@@ -34,7 +35,7 @@ public final class FissionCompat {
             var block = BLOCKS.register(upgrade.id, () -> new FissionUpgradeBlock(upgrade));
             UPGRADES.put(upgrade, block);
             var tile = ENTITIES.<TileEntityFissionReactorCasing>register(block, (pos, state) -> upgrade == FissionUpgrade.ME_PORT
-                    ? new FissionMeInterface(block, pos, state)
+                    ? FissionAe2Factory.create(block, pos, state)
                     : new TileEntityFissionReactorCasing(block, pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
             TILES.put(upgrade, tile);
         }
@@ -47,10 +48,13 @@ public final class FissionCompat {
         });
         bus.addListener((AddPackFindersEvent event) -> {
             if (event.getPackType() != PackType.SERVER_DATA) return;
-            var path = ModList.get().getModFileById("changede").getFile().findResource("resourcepacks", "fission_upgrades");
-            var pack = Pack.readMetaAndCreate("changede:fission_upgrades", Component.literal("Changed Extra Fission Upgrades"), true,
-                    id -> new PathPackResources(id, true, path), PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
-            if (pack != null) event.addRepositorySource(output -> output.accept(pack));
+            for (String name : new String[]{"fission_upgrades", "fission_me"}) {
+                if (name.equals("fission_me") && !ModList.get().isLoaded("ae2")) continue;
+                var path = ModList.get().getModFileById("changede").getFile().findResource("resourcepacks", name);
+                var pack = Pack.readMetaAndCreate("changede:" + name, Component.literal("Changed Extra " + name), true,
+                        id -> new PathPackResources(id, true, path), PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
+                if (pack != null) event.addRepositorySource(output -> output.accept(pack));
+            }
         });
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT)
             FissionClient.initialize(bus);

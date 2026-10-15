@@ -42,6 +42,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /** Opt-in verification in a disposable world; never enabled in a normal game. */
+@SuppressWarnings("deprecation")
 @Mod.EventBusSubscriber(modid = "changede")
 public final class FluidDimensionTowerRegressionChecks {
     private static final BlockPos SOURCE = new BlockPos(6015, 160, 6015);

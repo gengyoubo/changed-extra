@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings("deprecation")
 public final class LatexBurnerBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     public static final TagKey<Item> ITEM_FUELS = TagKey.create(Registries.ITEM, ResourceLocation.parse("changede:latex_burner_fuels"));
     public static final TagKey<Fluid> FLUID_FUELS = TagKey.create(Registries.FLUID, ResourceLocation.parse("changede:latex_burner_fuels"));

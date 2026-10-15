@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 /** Only active biome features with understood feature/placement conditions are exposed. */
+@SuppressWarnings("deprecation")
 public final class OreGenerationScanner {
     private static final int SAMPLES = 8192;
     private OreGenerationScanner() {}

@@ -40,6 +40,7 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 /** Real survival mining checks, enabled only in a disposable verification server. */
+@SuppressWarnings("deprecation")
 public final class AddonOreRegressionChecks {
     private static final BlockPos POS = new BlockPos(48, 100, 48);
     private static int assertions;

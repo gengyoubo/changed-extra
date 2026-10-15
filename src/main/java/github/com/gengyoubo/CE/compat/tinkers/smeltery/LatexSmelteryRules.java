@@ -17,6 +17,7 @@ import slimeknights.tconstruct.smeltery.block.entity.module.MultitankFuelModule;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public final class LatexSmelteryRules {
     private LatexSmelteryRules() {}
     public static boolean isLatex(Fluid fluid) {

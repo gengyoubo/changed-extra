@@ -46,7 +46,7 @@ public final class FissionMeInterface extends TileEntityFissionReactorCasing imp
     @Override public void onLoad() {
         super.onLoad();
         if (level != null && !level.isClientSide) GridHelper.onFirstTick(this, tile -> {
-            if (!tile.isRemoved()) tile.node.create(tile.level, tile.worldPosition);
+            if (!tile.isRemoved() && !tile.node.isReady()) tile.node.create(tile.level, tile.worldPosition);
         });
     }
 
@@ -56,7 +56,7 @@ public final class FissionMeInterface extends TileEntityFissionReactorCasing imp
     @Override public void reviveCaps() { super.reviveCaps(); host = LazyOptional.of(() -> this); }
 
     @Override public void supplyWater(FissionReactorMultiblockData reactor) {
-        if (!reactor.isFormed() || !reactor.gasCoolantTank.isEmpty()) return;
+        if (isRemoved() || !reactor.isFormed() || !reactor.gasCoolantTank.isEmpty()) return;
         flushPending(reactor);
         if (pendingWater > 0 || !node.isActive()) return;
         var grid = node.getGrid();

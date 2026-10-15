@@ -9,6 +9,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /** Collision-safe destinations for the castle encounter's native teleport skill. */
+@SuppressWarnings("deprecation")
 public final class TwilightFinalBossMovement {
     private static final int[] HEIGHT_OFFSETS = {0, 1, -1, 2, -2};
     private TwilightFinalBossMovement() {}

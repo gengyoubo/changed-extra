@@ -19,6 +19,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 /** Small voxel mascot; no world entity, entity inventory or AI is created for rendering. */
+@SuppressWarnings({"deprecation","removal"})
 public final class LatexBurnerClient implements BlockEntityRenderer<LatexBurnerBlockEntity> {
     private static final ResourceLocation MATERIALS = ResourceLocation.parse("changede:textures/block/latex_burner_materials.png");
     private static final float[][][] CUBE_FACES = {

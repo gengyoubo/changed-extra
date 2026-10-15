@@ -37,6 +37,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public final class LatexBurnerBlock extends BaseEntityBlock implements IWrenchable, SpecialBlockItemRequirement {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty OCCUPIED = BooleanProperty.create("occupied");

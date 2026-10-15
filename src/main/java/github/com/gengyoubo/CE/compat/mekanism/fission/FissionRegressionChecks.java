@@ -86,8 +86,13 @@ public final class FissionRegressionChecks {
             scram(level);
             persistence(level);
             if (ModList.get().isLoaded("ae2")) FissionAe2Checks.verify(level, formed, POSITIONS.get(FissionUpgrade.ME_PORT).get(0));
-            else check(!net.minecraftforge.registries.ForgeRegistries.BLOCKS.containsKey(net.minecraft.resources.ResourceLocation.parse("changede:fission_me_interface")),
-                    "ME port absent without AE2; other upgrades still work");
+            else {
+                check(!net.minecraftforge.registries.ForgeRegistries.BLOCKS.containsKey(net.minecraft.resources.ResourceLocation.parse("changede:fission_me_interface")),
+                        "ME port absent without AE2; other upgrades still work");
+                check(server.getRecipeManager().byKey(net.minecraft.resources.ResourceLocation.parse("changede:fission/fission_me_interface")).isEmpty(),
+                        "ME recipe absent without AE2");
+                check(!server.getPackRepository().getSelectedIds().contains("changede:fission_me"), "ME loot pack absent without AE2");
+            }
             // Removal must invalidate native structure and remove the corresponding bonuses on reformation.
             BlockPos removed = POSITIONS.get(FissionUpgrade.COOLING).get(0);
             level.setBlockAndUpdate(removed, GeneratorsBlocks.FISSION_REACTOR_CASING.getBlock().defaultBlockState());
@@ -171,6 +176,10 @@ public final class FissionRegressionChecks {
             near(fuel(refund), 1000, "100% chance refunds only consumed fuel");
             near(waste(refund), 1.01, "Refund preserves X waste output");
             near(((FissionUpgradeAccess) refund).changede$fissionUpgrades().returnChance(), 1, "Stacked return probability caps at one");
+            refund.fuelTank.setStack(MekanismGases.FISSILE_FUEL.getStack(refund.fuelTank.getCapacity()));
+            refund.burnRemaining = 0.5;
+            refund.tick(level);
+            near(fuel(refund), refund.fuelTank.getCapacity() + 0.5, "Refund preserves fractional balance at a full tank");
             FissionConfig.RETURN_CHANCE.set(0.01);
             var two = sample(level, 0, 0, 2, false);
             near(((FissionUpgradeAccess) two).changede$fissionUpgrades().returnChance(), 0.02, "Two Y blocks provide two percentage points");

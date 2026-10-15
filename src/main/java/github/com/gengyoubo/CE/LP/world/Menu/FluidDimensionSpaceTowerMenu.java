@@ -17,6 +17,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+@SuppressWarnings("deprecation")
 public final class FluidDimensionSpaceTowerMenu extends AbstractContainerMenu {
     private static final int DATA_COUNT = 20;
     private final BlockPos pos;

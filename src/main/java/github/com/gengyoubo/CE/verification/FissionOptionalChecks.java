@@ -15,7 +15,8 @@ public final class FissionOptionalChecks {
                 if (ForgeRegistries.BLOCKS.containsKey(key) || ForgeRegistries.ITEMS.containsKey(key)) throw new AssertionError("Optional block registered: " + id);
                 if (event.getServer().getRecipeManager().byKey(ResourceLocation.parse("changede:fission/" + id)).isPresent()) throw new AssertionError("Optional recipe loaded: " + id);
             }
-            if (event.getServer().getPackRepository().getSelectedIds().contains("changede:fission_upgrades")) throw new AssertionError("Optional pack loaded");
+            if (event.getServer().getPackRepository().getSelectedIds().contains("changede:fission_upgrades")
+                    || event.getServer().getPackRepository().getSelectedIds().contains("changede:fission_me")) throw new AssertionError("Optional pack loaded");
             Files.writeString(Path.of("fission-checks.txt"), "PASS: dedicated server without Mekanism Generators or AE2; no fission blocks, items, recipes or pack\n");
         } catch (Throwable error) {
             github.com.gengyoubo.CE.changede.LOGGER.error("FISSION OPTIONAL CHECKS FAILED", error);

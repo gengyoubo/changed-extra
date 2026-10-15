@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
-
+@SuppressWarnings("deprecation")
 @Mixin(value = FinalCastleBossGazeboComponent.class, remap = false)
 public abstract class TwilightFinalCastleArenaMixin extends TFStructureComponentOld {
     protected TwilightFinalCastleArenaMixin(StructurePieceType type, CompoundTag tag) { super(type, tag); }

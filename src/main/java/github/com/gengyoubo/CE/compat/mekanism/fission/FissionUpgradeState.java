@@ -16,6 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
 /** Counts upgrades belonging to this formed reactor; unrelated and unloaded blocks never contribute. */
+@SuppressWarnings("deprecation")
 public final class FissionUpgradeState {
     private final List<BlockPos> positions = new ArrayList<>();
     private final EnumMap<FissionUpgrade, Integer> installed = new EnumMap<>(FissionUpgrade.class);
@@ -89,8 +90,9 @@ public final class FissionUpgradeState {
         double remaining = Math.max(0, available - consumed);
         if (consumed > 0 && has(FissionUpgrade.PROCESSOR_Y) && level.random.nextDouble() < returnChance())
             remaining += consumed;
-        // Never create fuel beyond the tank capacity; only refund what this tick actually consumed.
-        remaining = Math.min(remaining, reactor.fuelTank.getCapacity());
+        // Refund cannot exceed the starting balance. Preserve a native sub-mB remainder even when
+        // external pipes have filled the integer tank to capacity in the meantime.
+        remaining = Math.min(remaining, available);
         reactor.fuelTank.setStack(MekanismGases.FISSILE_FUEL.getStack((long) remaining));
         reactor.burnRemaining = remaining % 1;
         double effectiveBurn = baseBurn * output;

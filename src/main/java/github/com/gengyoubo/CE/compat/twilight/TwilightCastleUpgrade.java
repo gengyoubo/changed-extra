@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /** Upgrade only untouched, positively identified WIP arenas in existing saves. */
+@SuppressWarnings("deprecation")
 public final class TwilightCastleUpgrade extends SavedData {
     private final Set<Long> upgraded = new HashSet<>();
     private static final Set<String> WIP_TEXT = Set.of("Final Castle WIP.", "Join our Discord server to",
