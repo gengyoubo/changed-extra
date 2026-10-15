@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "changede:reverser",
+      "required": false
+    },
+    {
+      "id": "changede:basic_gas_pipe",
+      "required": false
+    }
+  ]
+}

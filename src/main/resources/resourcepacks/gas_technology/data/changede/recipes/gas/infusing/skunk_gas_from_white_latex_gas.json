@@ -1,0 +1,21 @@
+{
+  "type": "mekanism:chemical_infusing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "leftInput": {
+    "gas": "changede:white_latex_gas",
+    "amount": 10
+  },
+  "rightInput": {
+    "gas": "changede:skunk_gas",
+    "amount": 10
+  },
+  "output": {
+    "gas": "changede:skunk_gas",
+    "amount": 20
+  }
+}

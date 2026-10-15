@@ -1,0 +1,20 @@
+{
+  "type": "changede:reversing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "input": {
+    "gas": "mekanism:spent_nuclear_waste",
+    "amount": 10
+  },
+  "output": {
+    "gas": "mekanism:fissile_fuel",
+    "amount": 1
+  },
+  "time": 10,
+  "wlp_per_second": 200,
+  "dlp_per_second": 200
+}

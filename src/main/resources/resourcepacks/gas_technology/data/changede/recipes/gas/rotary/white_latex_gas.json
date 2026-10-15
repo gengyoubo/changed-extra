@@ -1,0 +1,25 @@
+{
+  "type": "mekanism:rotary",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "fluidInput": {
+    "fluid": "changed:white_latex",
+    "amount": 1
+  },
+  "gasOutput": {
+    "gas": "changede:white_latex_gas",
+    "amount": 1
+  },
+  "gasInput": {
+    "gas": "changede:white_latex_gas",
+    "amount": 1
+  },
+  "fluidOutput": {
+    "fluid": "changed:white_latex",
+    "amount": 1
+  }
+}

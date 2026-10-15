@@ -1,0 +1,25 @@
+{
+  "type": "mekanism:rotary",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "fluidInput": {
+    "fluid": "changed:tiger_gas",
+    "amount": 1
+  },
+  "gasOutput": {
+    "gas": "changede:tiger_gas",
+    "amount": 1
+  },
+  "gasInput": {
+    "gas": "changede:tiger_gas",
+    "amount": 1
+  },
+  "fluidOutput": {
+    "fluid": "changed:tiger_gas",
+    "amount": 1
+  }
+}

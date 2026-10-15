@@ -1,0 +1,25 @@
+{
+  "type": "mekanism:rotary",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "fluidInput": {
+    "fluid": "changed:skunk_gas",
+    "amount": 1
+  },
+  "gasOutput": {
+    "gas": "changede:skunk_gas",
+    "amount": 1
+  },
+  "gasInput": {
+    "gas": "changede:skunk_gas",
+    "amount": 1
+  },
+  "fluidOutput": {
+    "fluid": "changed:skunk_gas",
+    "amount": 1
+  }
+}
