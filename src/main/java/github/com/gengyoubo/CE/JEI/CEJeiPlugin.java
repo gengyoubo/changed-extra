@@ -74,6 +74,8 @@ public class CEJeiPlugin implements IModPlugin {
         if (mc.level == null) {
             return;
         }
+        if (ModList.get().isLoaded("mekanismgenerators"))
+            github.com.gengyoubo.CE.compat.mekanism.fission.jei.FissionJei.registerRecipes(registration);
 
         List<github.com.gengyoubo.CE.LP.recipe.LatexCreativeExtranalbodyCraftingRecipe> recipes = mc.level.getRecipeManager()
                 .getAllRecipesFor(CELPRecipes.LATEX_CREATIVE_EXTRANALBODY_CRAFTING_TYPE)
@@ -89,6 +91,8 @@ public class CEJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        if (ModList.get().isLoaded("mekanismgenerators"))
+            github.com.gengyoubo.CE.compat.mekanism.fission.jei.FissionJei.registerCatalysts(registration);
         registration.addRecipeCatalyst(new ItemStack(CELPBlock.BASIC_ALLOY_FURNACE.get()), AlloyFurnaceCategory.TYPE);
         registration.addRecipeCatalyst(new ItemStack(CELPBlock.INGOT_FILLER.get()),IngotFillingCategory.TYPE);
         registration.addRecipeCatalyst(

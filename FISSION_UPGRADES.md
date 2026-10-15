@@ -35,22 +35,33 @@ ME 补水发生在跳闸检查与燃烧之前，需要有效频道、供电及 A
 
 ## 源码依据
 
+JEI 使用 Mekanism 原有的裂变反应堆分类 `mekanismgenerators:fission`。
+升级方块通过与原生 `GeneratorsJEI` 相同的 `CatalystRegistryHelper.register` 注册到左侧列表，
+按 U 可查询用途；JEI 物品说明列出当前服务器的叠放参数、跳闸条件与 ME 供水要求。
+原生图中的状态、1.0 消耗速度、300 K 温度等是固定的演示文字，不是实时机器数据。
+
 - [Mekanism 10.4.16.80：裂变燃烧、冷却、损坏与辐射](https://github.com/mekanism/Mekanism/blob/95b03e838aa94128596db42154a1527048372999/src/generators/java/mekanism/generators/common/content/fission/FissionReactorMultiblockData.java)
+- [原生 JEI 分类与催化剂注册](https://github.com/mekanism/Mekanism/blob/95b03e838aa94128596db42154a1527048372999/src/generators/java/mekanism/generators/client/jei/GeneratorsJEI.java)
+- [原生 JEI 裂变反应堆界面](https://github.com/mekanism/Mekanism/blob/95b03e838aa94128596db42154a1527048372999/src/generators/java/mekanism/generators/client/jei/FissionReactorRecipeCategory.java)
 - [原生结构验证器](https://github.com/mekanism/Mekanism/blob/95b03e838aa94128596db42154a1527048372999/src/generators/java/mekanism/generators/common/content/fission/FissionReactorValidator.java)
 - [燃料与废料小数余额的存档缓存](https://github.com/mekanism/Mekanism/blob/95b03e838aa94128596db42154a1527048372999/src/generators/java/mekanism/generators/common/content/fission/FissionReactorCache.java)
 - [AE2 15.4.10：带能耗的存储抽取](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/b4b08d9941e3faecb520d76be617629bb56661e1/src/main/java/appeng/api/storage/StorageHelper.java)
 - [AE2 流体单位与水键](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/b4b08d9941e3faecb520d76be617629bb56661e1/src/main/java/appeng/api/stacks/AEFluidKey.java)
 - [AE2 节点生命周期](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/b4b08d9941e3faecb520d76be617629bb56661e1/src/main/java/appeng/blockentity/grid/AENetworkBlockEntity.java)
 
-## 验证命令
+## 验证
 
-使用独立的测试存档及项目已接受的 EULA：
+实现阶段使用独立测试配置与项目已接受的 EULA，已有结果：
+
+- 完整反应堆与 AE2 网络：78 项断言通过，见 `build/fission-server/fission-checks.txt`。
+- 不安装 AE2：64 项断言通过，见 `build/fission-no-ae-server/fission-checks.txt`。
+
+这些检查覆盖原生反应堆成型、叠放数量、燃料/废料小数守恒、冷却产汽与耗水、10 秒跳闸边界、首次干启动、钠冷却、原生缓存往返、合成及掉落、实际 ME 网络与流体存储元件供水、节点清理与缺少 AE2 的隔离。
+
+当前项目构建命令：
 
 ```powershell
-.\gradlew.bat runFissionServer -PfissionChecks=true
-.\gradlew.bat runFissionServer -PfissionChecks=true -PomitAe2ForChecks=true -PfissionRunDirectory=build/fission-no-ae-server
-.\gradlew.bat runFissionServer -PfissionRunDirectory=build/fission-optional-server
 .\gradlew.bat build --offline
 ```
 
-各测试目录的 `fission-checks.txt` 记录结果。检查覆盖原生反应堆成型、叠放数量、燃料/废料小数守恒、冷却产汽与耗水、10 秒跳闸边界、首次干启动、钠冷却、原生缓存往返、合成及掉落、实际 ME 网络与流体存储元件供水、节点清理及可选依赖缺失。
+JEI 接入沿用 Mekanism 的分类 UID 与注册助手，不替换原生配方或创建另一套裂变分类。

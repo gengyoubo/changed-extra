@@ -1252,5 +1252,11 @@
   "block.changede.fission_emergency_scram": "Fission Emergency SCRAM",
   "tooltip.changede.fission_emergency_scram": "Stops the reactor before burning when water reserves are below 10 seconds of predicted demand. Restart after refilling.",
   "block.changede.fission_me_interface": "Fission Reactor ME Interface",
-  "tooltip.changede.fission_me_interface": "Pulls water from ME storage to fill the reactor each tick, with no added transfer cap. Requires a channel and AE power."
+  "tooltip.changede.fission_me_interface": "Pulls water from ME storage to fill the reactor each tick, with no added transfer cap. Requires a channel and AE power.",
+  "jei.changede.fission.install": "Install as reactor casing. Only upgrades in the formed reactor count. Cooling blocks and processors stack.",
+  "jei.changede.fission.cooling_info": "Current server setting: +%s water efficiency per block. N blocks use 1/(1+N*bonus) water for unchanged steam output and cooling. Water use rounds up each tick.",
+  "jei.changede.fission.x_info": "Current server settings: +%s fuel efficiency and +%s heat/waste output per block. Fuel cost is divided by (1+count*fuel bonus); heat and waste multiply by (1+count*output bonus). Extra heat requires extra cooling.",
+  "jei.changede.fission.y_info": "Current server setting: +%s refund chance per block, stacking up to 100%%. A successful burning tick refunds its actual consumed fuel while retaining heat and waste. Works with processor X.",
+  "jei.changede.fission.scram_info": "Stops before burning when stored water / predicted water use per second is below 10 seconds. Prediction includes cooling and X upgrades; ME fills first. Restart after refilling. Does not interrupt sodium cooling.",
+  "jei.changede.fission.me_info": "A powered ME network with an active channel supplies water directly to the entire reactor tank each tick, with no added transfer rate cap. Pays AE2 extraction power. Only water is extracted; a full tank, disconnected network, or sodium coolant prevents extraction."
 }
