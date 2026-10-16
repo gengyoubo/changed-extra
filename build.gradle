@@ -124,7 +124,6 @@ repositories {
     mavenLocal()
 }
 dependencies {
-    jacocoAgent "org.jacoco:org.jacoco.agent:${jacoco.toolVersion}:runtime"
     //原版
     minecraft "net.minecraftforge:forge:1.20.1-47.4.10"
     //changed类
@@ -297,7 +296,11 @@ tasks.named('processResources', ProcessResources).configure {
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:deprecation"
 }
-def mixinRefmapDir = "${buildDir}/tmp/compileJava"
+def generatedMixinRefmap = layout.buildDirectory.file('tmp/compileJava/compileJava-refmap.json')
+tasks.named('compileJava', JavaCompile) {
+    // MixinGradle writes this outside the class directory. Missing mappings must invalidate compilation.
+    outputs.file(generatedMixinRefmap).withPropertyName('mixinRefmap')
+}
 jar {
     manifest {
         attributes([
@@ -320,12 +323,9 @@ jar {
     from(sourceSets.main.output) {
         exclude '**/*.refmap.json'  // 排除 refmap，后面单独处理
     }
-    // 包含 refmap 文件（确保它在正确的位置）
-    from("${buildDir}/classes/java/main") {
-        include '**/*.refmap.json'
-    }
-    from(mixinRefmapDir) {
-        include '**/*.refmap.json'
+    // Package the annotation processor output under the exact name used by every mixin config.
+    from(generatedMixinRefmap) {
+        rename { 'changede.refmap.json' }
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     finalizedBy 'reobfJar'
@@ -336,6 +336,36 @@ jar {
     archiveVersion.set(mod_version)
     //模组分支(主分支为main)
     //archiveClassifier.set("b")
+}
+tasks.register('verifyMixinRefmap') {
+    group = 'verification'
+    description = 'Checks the packaged Mixin refmap and the production attack method mapping.'
+    dependsOn tasks.named('jar')
+    mustRunAfter 'reobfJar'
+    doLast {
+        def artifact = tasks.named('jar', Jar).get().archiveFile.get().asFile
+        new java.util.zip.ZipFile(artifact).withCloseable { zip ->
+            def json = new groovy.json.JsonSlurper()
+            def configs = zip.entries().findAll { !it.directory && it.name.startsWith('mixins/') && it.name.endsWith('.mixins.json') }
+            if (configs.empty) throw new GradleException("No Mixin configs packaged in ${artifact.name}")
+            configs.each { entry ->
+                def config = zip.getInputStream(entry).withCloseable { json.parse(it, 'UTF-8') }
+                def refmap = config.refmap ? zip.getEntry(config.refmap) : null
+                if (refmap == null) throw new GradleException("${entry.name} references a missing Mixin refmap: ${config.refmap}")
+                def mappings = zip.getInputStream(refmap).withCloseable { json.parse(it, 'UTF-8') }
+                def attackMixin = 'github/com/gengyoubo/CE/mixins/LatexSpearAttackInputMixin'
+                def expectedAttack = 'Lnet/minecraft/client/Minecraft;m_202354_()Z'
+                if (mappings.mappings?[attackMixin]?.startAttack != expectedAttack
+                        || mappings.data?.searge?[attackMixin]?.startAttack != expectedAttack) {
+                    throw new GradleException("${config.refmap} lacks the production mapping for LatexSpearAttackInputMixin.startAttack")
+                }
+            }
+            logger.lifecycle("Verified ${configs.size()} Mixin configs and startAttack -> m_202354_()Z in ${artifact.name}")
+        }
+    }
+}
+tasks.named('check') {
+    dependsOn tasks.named('verifyMixinRefmap')
 }
 publishing {
     publications {

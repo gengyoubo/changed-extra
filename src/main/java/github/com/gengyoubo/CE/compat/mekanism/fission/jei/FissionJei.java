@@ -24,7 +24,7 @@ public final class FissionJei {
                 case PROCESSOR_X -> details.add(Component.translatable("jei.changede.fission.x_info", percent(FissionConfig.FUEL_EFFICIENCY.get()), percent(FissionConfig.OUTPUT_BONUS.get())));
                 case PROCESSOR_Y -> details.add(Component.translatable("jei.changede.fission.y_info", percent(FissionConfig.RETURN_CHANCE.get())));
                 case SCRAM -> details.add(Component.translatable("jei.changede.fission.scram_info"));
-                case ME_PORT -> details.add(Component.translatable("jei.changede.fission.me_info"));
+                case ME_PORT -> details.add(Component.translatable("jei.changede.fission.me_info", FissionConfig.ME_IDLE_POWER.get()));
                 case THERMOELECTRIC -> {
                     details.add(Component.translatable("jei.changede.fission.thermo_info",
                             FissionConfig.THERMO_MAX_HEAT.get(), percent(FissionConfig.THERMO_PASSIVE.get()), FissionConfig.THERMO_OUTPUT.get()));

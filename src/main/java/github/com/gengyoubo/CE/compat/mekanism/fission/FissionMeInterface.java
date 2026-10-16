@@ -7,7 +7,6 @@ import appeng.api.networking.GridHelper;
 import appeng.api.networking.IManagedGridNode;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEFluidKey;
-import appeng.api.storage.StorageHelper;
 import appeng.api.util.AECableType;
 import appeng.capabilities.Capabilities;
 import appeng.me.helpers.BlockEntityNodeListener;
@@ -27,14 +26,15 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 
-/** One channel; powered, permission-aware extraction directly into the reactor's shared water tank. */
+/** One channel and a fixed network power draw; no per-volume water extraction charge. */
 public final class FissionMeInterface extends TileEntityFissionReactorCasing implements IGridConnectedBlockEntity, ReactorWaterSource {
     private final IManagedGridNode node = GridHelper.createManagedNode(this, BlockEntityNodeListener.INSTANCE)
-            .setInWorldNode(true).setIdlePowerUsage(1).setFlags(GridFlags.REQUIRE_CHANNEL)
+            .setInWorldNode(true).setIdlePowerUsage(16).setFlags(GridFlags.REQUIRE_CHANNEL)
             .setTagName("FissionMeNode").setVisualRepresentation(FissionCompat.UPGRADES.get(FissionUpgrade.ME_PORT).asItem())
             .setExposedOnSides(EnumSet.allOf(Direction.class));
     private LazyOptional<IGridConnectedBlockEntity> host = LazyOptional.of(() -> this);
     private int pendingWater;
+    private double idlePowerUsage = 16;
 
     public FissionMeInterface(IBlockProvider provider, BlockPos pos, BlockState state) { super(provider, pos, state); }
 
@@ -46,8 +46,19 @@ public final class FissionMeInterface extends TileEntityFissionReactorCasing imp
     @Override public void onLoad() {
         super.onLoad();
         if (level != null && !level.isClientSide) GridHelper.onFirstTick(this, tile -> {
-            if (!tile.isRemoved() && !tile.node.isReady()) tile.node.create(tile.level, tile.worldPosition);
+            if (!tile.isRemoved() && !tile.node.isReady()) {
+                tile.updateIdlePowerUsage();
+                tile.node.create(tile.level, tile.worldPosition);
+            }
         });
+    }
+
+    private void updateIdlePowerUsage() {
+        double configured = FissionConfig.ME_IDLE_POWER.get();
+        if (idlePowerUsage != configured) {
+            node.setIdlePowerUsage(configured);
+            idlePowerUsage = configured;
+        }
     }
 
     @Override public void onChunkUnloaded() { node.destroy(); super.onChunkUnloaded(); }
@@ -56,7 +67,9 @@ public final class FissionMeInterface extends TileEntityFissionReactorCasing imp
     @Override public void reviveCaps() { super.reviveCaps(); host = LazyOptional.of(() -> this); }
 
     @Override public void supplyWater(FissionReactorMultiblockData reactor) {
-        if (isRemoved() || !reactor.isFormed() || !reactor.gasCoolantTank.isEmpty()) return;
+        if (isRemoved()) return;
+        updateIdlePowerUsage();
+        if (!reactor.isFormed() || !reactor.gasCoolantTank.isEmpty()) return;
         flushPending(reactor);
         if (pendingWater > 0 || !node.isActive()) return;
         var grid = node.getGrid();
@@ -66,8 +79,8 @@ public final class FissionMeInterface extends TileEntityFissionReactorCasing imp
         int rejected = reactor.fluidCoolantTank.insert(new FluidStack(Fluids.WATER, needed), Action.SIMULATE, AutomationType.EXTERNAL).getAmount();
         int requested = needed - rejected;
         if (requested <= 0) return;
-        long extracted = StorageHelper.poweredExtraction(grid.getEnergyService(), grid.getStorageService().getInventory(),
-                AEFluidKey.of(Fluids.WATER), requested, IActionSource.ofMachine(this), Actionable.MODULATE);
+        long extracted = grid.getStorageService().getInventory().extract(AEFluidKey.of(Fluids.WATER), requested,
+                Actionable.MODULATE, IActionSource.ofMachine(this));
         if (extracted > 0) {
             // Persist unexpected reentrant rejection rather than deleting water or duplicating a refund.
             pendingWater = (int) extracted;
