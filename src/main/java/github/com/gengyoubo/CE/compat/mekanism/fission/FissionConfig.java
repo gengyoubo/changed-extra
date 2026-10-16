@@ -8,6 +8,7 @@ public final class FissionConfig {
     public static final ForgeConfigSpec.DoubleValue FUEL_EFFICIENCY;
     public static final ForgeConfigSpec.DoubleValue OUTPUT_BONUS;
     public static final ForgeConfigSpec.DoubleValue RETURN_CHANCE;
+    public static final ForgeConfigSpec.DoubleValue ME_IDLE_POWER;
     public static final ForgeConfigSpec.DoubleValue THERMO_MAX_HEAT;
     public static final ForgeConfigSpec.DoubleValue THERMO_PASSIVE;
     public static final ForgeConfigSpec.DoubleValue THERMO_EFFICIENCY;
@@ -23,6 +24,8 @@ public final class FissionConfig {
                 .defineInRange("outputBonusPerBlock", 0.01, 0.0, 1.0);
         RETURN_CHANCE = builder.comment("Processor Y added chance per block to refund this burning tick's consumed fuel. Total chance caps at 100%; heat and waste are retained.")
                 .defineInRange("fuelReturnChancePerBlock", 0.01, 0.0, 1.0);
+        ME_IDLE_POWER = builder.comment("Fixed power draw per connected fission ME interface, in AE/t before AE2's power multiplier. Water extraction has no additional per-volume energy cost.")
+                .defineInRange("meInterfaceIdlePower", 16.0, 0.0, 1_000_000.0);
         builder.push("thermoelectric");
         THERMO_MAX_HEAT = builder.comment("Maximum heat removed by each intact module, J/t. Starts at 450 K, reaches full load at 1100 K; fuses at 1800 K.")
                 .defineInRange("maxHeatPerTick", 100_000.0, 0.0, 1.0E9);

@@ -8,13 +8,13 @@
   ],
   "input": {
     "gas": "mekanism:spent_nuclear_waste",
-    "amount": 10
+    "amount": 1000
   },
   "output": {
     "gas": "mekanism:fissile_fuel",
-    "amount": 1
+    "amount": 1000
   },
-  "time": 10,
-  "wlp_per_second": 200,
-  "dlp_per_second": 200
+  "time": 1,
+  "wlp_per_second": 20,
+  "dlp_per_second": 20
 }

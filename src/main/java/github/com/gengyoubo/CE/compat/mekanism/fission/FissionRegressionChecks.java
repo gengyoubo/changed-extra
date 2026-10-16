@@ -28,6 +28,7 @@ public final class FissionRegressionChecks {
     private static final BlockPos BASE = new BlockPos(64, 120, 64);
     private static final EnumMap<FissionUpgrade, List<BlockPos>> POSITIONS = new EnumMap<>(FissionUpgrade.class);
     private static MinecraftServer server;
+    private static FissionReactorMultiblockData verifiedReactor;
     private static int ticks, assertions;
     private static boolean done;
 
@@ -71,6 +72,12 @@ public final class FissionRegressionChecks {
     public static void tick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END || server == null || done) return;
         ++ticks;
+        if (ticks > 100) {
+            try {
+                if (FissionAe2Checks.tick()) complete(server.overworld());
+            } catch (Throwable error) { finish(error); }
+            return;
+        }
         if (ticks == 99) {
             try {
                 var level = server.overworld();
@@ -84,6 +91,7 @@ public final class FissionRegressionChecks {
             var level = server.overworld();
             var casing = (TileEntityFissionReactorCasing) level.getBlockEntity(BASE);
             var formed = casing.getMultiblock();
+            verifiedReactor = formed;
             check(formed.isFormed(), "Native validator forms reactor with all upgrade casings");
             check(formed instanceof FissionUpgradeAccess, "Generator multiblock has upgrade Mixin applied");
             var state = ((FissionUpgradeAccess) formed).changede$fissionUpgrades();
@@ -95,7 +103,10 @@ public final class FissionRegressionChecks {
             fuelAndCooling(level);
             scram(level);
             persistence(level);
-            if (ModList.get().isLoaded("ae2")) FissionAe2Checks.verify(level, formed, POSITIONS.get(FissionUpgrade.ME_PORT).get(0));
+            if (ModList.get().isLoaded("ae2")) {
+                FissionAe2Checks.verify(level, formed, POSITIONS.get(FissionUpgrade.ME_PORT).get(0));
+                return; // Continue the finite-power throughput check over actual server ticks.
+            }
             else {
                 check(!net.minecraftforge.registries.ForgeRegistries.BLOCKS.containsKey(net.minecraft.resources.ResourceLocation.parse("changede:fission_me_interface")),
                         "ME port absent without AE2; other upgrades still work");
@@ -103,14 +114,23 @@ public final class FissionRegressionChecks {
                         "ME recipe absent without AE2");
                 check(!server.getPackRepository().getSelectedIds().contains("changede:fission_me"), "ME loot pack absent without AE2");
             }
-            // Removal must invalidate native structure and remove the corresponding bonuses on reformation.
-            BlockPos removed = POSITIONS.get(FissionUpgrade.COOLING).get(0);
-            level.setBlockAndUpdate(removed, GeneratorsBlocks.FISSION_REACTOR_CASING.getBlock().defaultBlockState());
-            state.beforeTick(formed, level);
-            check(state.count(FissionUpgrade.COOLING) == 1, "Removing one cooling block removes exactly one bonus");
-            check(!formed.isFormed() || casing.getStructure().getMultiblockData() == null, "Native structure invalidates when upgrade is replaced");
-            finish(null);
+            complete(level);
         } catch (Throwable error) { finish(error); }
+    }
+
+    private static void complete(ServerLevel level) {
+        var casing = (TileEntityFissionReactorCasing) level.getBlockEntity(BASE);
+        // Keep the instance whose upgrades were verified; native revalidation may replace it
+        // during the sustained ME check, especially after the interface removal check.
+        var formed = verifiedReactor;
+        var state = ((FissionUpgradeAccess) formed).changede$fissionUpgrades();
+        // Removal must invalidate native structure and remove the corresponding bonuses on reformation.
+        BlockPos removed = POSITIONS.get(FissionUpgrade.COOLING).get(0);
+        level.setBlockAndUpdate(removed, GeneratorsBlocks.FISSION_REACTOR_CASING.getBlock().defaultBlockState());
+        state.beforeTick(formed, level);
+        check(state.count(FissionUpgrade.COOLING) == 1, "Removing one cooling block removes exactly one bonus");
+        check(!formed.isFormed() || casing.getStructure().getMultiblockData() == null, "Native structure invalidates when upgrade is replaced");
+        finish(null);
     }
 
     private static void recipesAndDrops(ServerLevel level) {
