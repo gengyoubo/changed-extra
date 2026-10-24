@@ -53,8 +53,8 @@ public class BasicLatexPurifierMenu extends AbstractContainerMenu {
             @Override public boolean mayPlace(@NotNull ItemStack stack) { return false; }
         });
         for (int row = 0; row < 3; row++) for (int col = 0; col < 9; col++)
-            addSlot(new Slot(inventory, col + (row + 1) * 9, 8 + col * 18, 99 + row * 18));
-        for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col, 8 + col * 18, 157));
+            addSlot(new Slot(inventory, col + (row + 1) * 9, 8 + col * 18, 92 + row * 18));
+        for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col, 8 + col * 18, 150));
         checkContainerDataCount(data, DATA_COUNT);
         addDataSlots(data);
     }

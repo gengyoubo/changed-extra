@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,6 +15,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class PipeConfigScreen extends AbstractContainerScreen<PipeConfigMenu> {
+    private static final ResourceLocation TEXTURE = MachineGuiStyle.texture("pipe_config");
     private final Map<Direction, Button> faceButtons = new EnumMap<>(Direction.class);
 
     public PipeConfigScreen(PipeConfigMenu menu, Inventory inventory, Component title) {
@@ -53,16 +55,16 @@ public class PipeConfigScreen extends AbstractContainerScreen<PipeConfigMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        MachineGuiStyle.panel(graphics, leftPos, topPos, imageWidth, imageHeight, true, 0xFF58AAC5);
+        MachineGuiStyle.panel(graphics, TEXTURE, leftPos, topPos, imageWidth, imageHeight);
         for (Direction direction : Direction.values()) {
             graphics.drawString(font, Component.translatable("direction." + direction.getName()), leftPos + 12,
-                    topPos + 33 + direction.ordinal() * 22, 0xFFFFFF, false);
+                    topPos + 33 + direction.ordinal() * 22, MachineGuiStyle.LABEL, false);
         }
     }
 
     @Override
     protected void renderLabels(@NotNull GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(font, title, 8, 8, 0xFFFFFF, false);
+        graphics.drawString(font, title, 8, 8, MachineGuiStyle.TITLE, false);
     }
 
     private static Component modeLabel(PipeConnectionMode mode) {

@@ -6,18 +6,21 @@ import github.com.gengyoubo.CE.LP.energy.DimensionTowerChannels;
 import github.com.gengyoubo.CE.LP.network.CENetwork;
 import github.com.gengyoubo.CE.LP.network.packet.DimensionTowerConfigPacket;
 import github.com.gengyoubo.CE.LP.world.Menu.DimensionSpaceTowerMenu;
-import github.com.gengyoubo.CE.util.AmountFormat;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public final class DimensionSpaceTowerScreen extends AbstractContainerScreen<DimensionSpaceTowerMenu> {
+    private static final ResourceLocation TEXTURE = MachineGuiStyle.texture("dimension_space_tower");
     private EditBox channelInput;
     private Button enabledButton;
     private Button typeButton;
@@ -28,7 +31,7 @@ public final class DimensionSpaceTowerScreen extends AbstractContainerScreen<Dim
     public DimensionSpaceTowerScreen(DimensionSpaceTowerMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         imageWidth = 260;
-        imageHeight = 254;
+        imageHeight = 196;
     }
 
     private static Component text(String key, Object... args) {
@@ -84,29 +87,30 @@ public final class DimensionSpaceTowerScreen extends AbstractContainerScreen<Dim
     }
 
     @Override protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        MachineGuiStyle.panel(graphics, leftPos, topPos, imageWidth, imageHeight, false, 0xFF8B72CF);
-        MachineGuiStyle.bar(graphics, leftPos + 12, topPos + 174, 236, 8,
+        MachineGuiStyle.panel(graphics, TEXTURE, leftPos, topPos, imageWidth, imageHeight);
+        MachineGuiStyle.bar(graphics, leftPos + 12, topPos + 158, 236, 8,
                 menu.getStoredEnergy(menu.getEnergyType()), DimensionSpaceTowerBlockEntity.CAPACITY, 0xFF8B72CF);
     }
 
     @Override protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(font, title, 10, 6, 0xFF27313C, false);
-        graphics.drawString(font, text("channel"), 12, 34, 0xFF27313C, false);
+        graphics.drawString(font, title, 10, 6, MachineGuiStyle.TITLE, false);
+        graphics.drawString(font, text("channel"), 12, 34, MachineGuiStyle.LABEL, false);
         String status = menu.getChannel() == 0 ? "unassigned" : menu.isActive() ? "active" : "paused";
-        graphics.drawString(font, text("status." + status), 12, 114, menu.isActive() ? 0xFF267E41 : 0xFF735D30, false);
-        graphics.drawString(font, text("chunks", menu.getLoadedChunkCount()), 12, 129, 0xFF27313C, false);
-        graphics.drawString(font, text("peers", menu.getPeerCount()), 12, 144, 0xFF27313C, false);
-        graphics.drawString(font, AmountFormat.format(menu.getStoredEnergy(menu.getEnergyType()),
-                DimensionSpaceTowerBlockEntity.CAPACITY, menu.getEnergyType().name()), 12, 161, 0xFF65519E, false);
-        for (LatexEnergyType type : LatexEnergyType.values()) {
-            graphics.drawString(font, text("buffer", type.name(), menu.getStoredEnergy(type)), 12, 192 + 12 * type.ordinal(), 0xFF27313C, false);
-        }
-        graphics.drawString(font, text("range"), 12, 235, 0xFF65519E, false);
+        graphics.drawString(font, text("status." + status), 12, 112, menu.isActive() ? 0xFF267E41 : 0xFF735D30, false);
+        graphics.drawString(font, text("chunks", menu.getLoadedChunkCount()), 12, 126, MachineGuiStyle.LABEL, false);
+        graphics.drawString(font, text("peers", menu.getPeerCount()), 12, 140, MachineGuiStyle.LABEL, false);
+        graphics.drawString(font, text("range"), 12, 178, 0xFF65519E, false);
     }
 
     @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         renderBackground(graphics);
         super.render(graphics, mouseX, mouseY, partialTick);
         renderTooltip(graphics, mouseX, mouseY);
+        if (isHovering(12, 158, 236, 8, mouseX, mouseY)) {
+            List<Component> lines = new ArrayList<>();
+            lines.add(MachineGuiStyle.amount(menu.getStoredEnergy(menu.getEnergyType()), DimensionSpaceTowerBlockEntity.CAPACITY, menu.getEnergyType().name()));
+            for (LatexEnergyType type : LatexEnergyType.values()) lines.add(text("buffer", type.name(), menu.getStoredEnergy(type)));
+            graphics.renderComponentTooltip(font, lines, mouseX, mouseY);
+        }
     }
 }

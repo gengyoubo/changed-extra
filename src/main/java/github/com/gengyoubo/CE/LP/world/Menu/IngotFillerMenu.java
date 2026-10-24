@@ -33,8 +33,8 @@ public final class IngotFillerMenu extends AbstractContainerMenu {
             @Override public boolean mayPlace(ItemStack stack) { return IngotFillerBlockEntity.isValidInput(level,stack) && super.mayPlace(stack); }
         });
         addSlot(new SlotItemHandler(items,1,125,35) { @Override public boolean mayPlace(ItemStack stack) { return false; } });
-        for(int row=0;row<3;row++)for(int col=0;col<9;col++)addSlot(new Slot(inventory,col+(row+1)*9,8+col*18,102+row*18));
-        for(int col=0;col<9;col++)addSlot(new Slot(inventory,col,8+col*18,160));
+        for(int row=0;row<3;row++)for(int col=0;col<9;col++)addSlot(new Slot(inventory,col+(row+1)*9,8+col*18,84+row*18));
+        for(int col=0;col<9;col++)addSlot(new Slot(inventory,col,8+col*18,142));
         checkContainerDataCount(data,DATA_COUNT);addDataSlots(data);
     }
     private static ContainerData createData(Level level,BlockPos pos) {

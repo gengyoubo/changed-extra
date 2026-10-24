@@ -12,13 +12,17 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
+    private static final ResourceLocation TEXTURE = MachineGuiStyle.texture("space_tower");
+    private static final int CE_STORAGE_SECONDS = 300;
     private final Map<SpaceTowerEnergyType, Button> modeButtons = new EnumMap<>(SpaceTowerEnergyType.class);
     private EditBox rpmInput;
     private EditBox suInput;
@@ -28,17 +32,14 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
     public SpaceTowerScreen(SpaceTowerMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.imageWidth = 230;
-        this.imageHeight = 200;
+        this.imageHeight = 164;
     }
 
     @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        MachineGuiStyle.panel(guiGraphics, leftPos, topPos, imageWidth, imageHeight, false, 0xFF60B25F);
-        guiGraphics.fill(leftPos + 10, topPos + 22, leftPos + 220, topPos + 34, 0xFF293342);
-
-        int max = Math.max(1, menu.getMaxEnergyStored());
-        int barWidth = Math.min(208, Math.round(menu.getEnergyStored() * 208.0F / max));
-        guiGraphics.fill(leftPos + 11, topPos + 23, leftPos + 11 + barWidth, topPos + 33, 0xFF60B25F);
+        MachineGuiStyle.panel(guiGraphics, TEXTURE, leftPos, topPos, imageWidth, imageHeight);
+        MachineGuiStyle.bar(guiGraphics, leftPos + 11, topPos + 23, 208, 10, menu.getEnergyStored(), menu.getMaxEnergyStored(), 0xFF60B25F);
+        MachineGuiStyle.bar(guiGraphics, leftPos + 118, topPos + 128, 102, 6, menu.getCeStoredSeconds(), CE_STORAGE_SECONDS, MachineGuiStyle.PROGRESS);
     }
 
     @Override
@@ -46,26 +47,28 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
         renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         renderTooltip(guiGraphics, mouseX, mouseY);
+        if (isHovering(11, 23, 208, 10, mouseX, mouseY)) guiGraphics.renderComponentTooltip(font, List.of(
+                MachineGuiStyle.amount(menu.getEnergyStored(), menu.getMaxEnergyStored(), "LP"),
+                Component.translatable("screen.changede.space_tower.joule_remainder", menu.getJouleBuffer())), mouseX, mouseY);
+        if (isHovering(118, 128, 102, 6, mouseX, mouseY)) guiGraphics.renderComponentTooltip(font, List.of(
+                Component.translatable("screen.changede.space_tower.ce_cost", menu.getCeCostPerMinute()),
+                Component.translatable("screen.changede.space_tower.ce_storage",
+                        AmountFormat.format(formatSeconds(menu.getCeStoredSeconds()), formatSeconds(CE_STORAGE_SECONDS)))), mouseX, mouseY);
     }
 
     @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.title"), 10, 8, 0x202020, false);
-        guiGraphics.drawString(font, Component.literal(AmountFormat.format(menu.getEnergyStored(), menu.getMaxEnergyStored(), "LP")), 12, 24, 0xFFFFFF, false);
+        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.title"), 10, 8, MachineGuiStyle.TITLE, false);
 
         int rowY = 43;
         for (SpaceTowerEnergyType type : SpaceTowerEnergyType.values()) {
-            guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.energy." + type.name().toLowerCase()), 16, rowY, 0x303030, false);
+            guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.energy." + type.name().toLowerCase()), 16, rowY, MachineGuiStyle.LABEL, false);
             rowY += 18;
         }
 
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.joule_remainder", menu.getJouleBuffer()), 16, rowY + 2, 0x303030, false);
-
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_settings"), 118, 43, 0x303030, false);
-        guiGraphics.drawString(font, Component.literal("RPM:"), 118, 60, 0x303030, false);
-        guiGraphics.drawString(font, Component.literal("SU:"), 118, 82, 0x303030, false);
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_cost", menu.getCeCostPerMinute()), 118, 123, 0x303030, false);
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_storage", AmountFormat.format(formatSeconds(menu.getCeStoredSeconds()), "05:00")), 118, 135, 0x303030, false);
+        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_settings"), 118, 43, MachineGuiStyle.LABEL, false);
+        guiGraphics.drawString(font, Component.literal("RPM:"), 118, 60, MachineGuiStyle.LABEL, false);
+        guiGraphics.drawString(font, Component.literal("SU:"), 118, 82, MachineGuiStyle.LABEL, false);
     }
 
     @Override

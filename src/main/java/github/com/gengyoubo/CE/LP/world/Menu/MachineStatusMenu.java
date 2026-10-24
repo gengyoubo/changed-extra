@@ -60,8 +60,8 @@ public class MachineStatusMenu extends AbstractContainerMenu {
             });
         }
         for (int row = 0; row < 3; row++) for (int col = 0; col < 9; col++)
-            addSlot(new Slot(inventory, 9 + row * 9 + col, 8 + col * 18, 112 + row * 18));
-        for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col, 8 + col * 18, 170));
+            addSlot(new Slot(inventory, 9 + row * 9 + col, 8 + col * 18, 102 + row * 18));
+        for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col, 8 + col * 18, 160));
         checkContainerDataCount(data, DATA_COUNT);
         addDataSlots(data);
     }

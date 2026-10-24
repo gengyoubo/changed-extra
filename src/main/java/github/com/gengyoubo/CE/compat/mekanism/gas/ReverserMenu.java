@@ -39,8 +39,8 @@ public final class ReverserMenu extends AbstractContainerMenu {
             @Override public int getCount() { return DATA_COUNT; }
         };
         addDataSlots(data);
-        for (int row = 0; row < 3; row++) for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col + (row + 1) * 9, 8 + col * 18, 135 + row * 18));
-        for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col, 8 + col * 18, 193));
+        for (int row = 0; row < 3; row++) for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col + (row + 1) * 9, 8 + col * 18, 122 + row * 18));
+        for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col, 8 + col * 18, 180));
     }
     @SuppressWarnings("unchecked") private static ForgeRegistry<Gas> registry() { return (ForgeRegistry<Gas>) MekanismAPI.gasRegistry(); }
     public int value(int index) { return (data.get(index * 2) & 0xFFFF) | ((data.get(index * 2 + 1) & 0xFFFF) << 16); }

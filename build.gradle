@@ -126,6 +126,9 @@ repositories {
 dependencies {
     //原版
     minecraft "net.minecraftforge:forge:1.20.1-47.4.10"
+    //前置
+    implementation fg.deobf("curse.maven:curios-309927:6418456")
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
     //changed类
     implementation fg.deobf("curse.maven:changed-addon-plus-711303:8515645")
     implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:8217446")
@@ -174,6 +177,8 @@ dependencies {
     //AE2
     implementation fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
     implementation fg.deobf("curse.maven:guideme-1173950:7127447")
+    implementation fg.deobf("curse.maven:ae2-wcwt-1546802:9036216")
+    implementation fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:7251206")
     //热力系列
     //runtimeOnly fg.deobf("curse.maven:cofh-core-69162:5374122")
     //runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:5443583")
@@ -187,7 +192,7 @@ dependencies {
         implementation fg.deobf("curse.maven:tinkers-construct-74072:8944121")
     }
     //JEI系列
-    implementation fg.deobf("curse.maven:jei-238222:9058038")
+    implementation fg.deobf("curse.maven:jei-238222:9205046")
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:5057220")
     implementation fg.deobf("curse.maven:jer-integration-506948:5281932")
     //其他模组
