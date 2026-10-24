@@ -1,0 +1,12 @@
+{
+  "type": "changede:latex_creative_extranalbody_crafting",
+  "pattern": ["ZYZ", "YXY", "ZYZ"],
+  "key": {
+    "Y": {"item": "changede:latex_ingot"},
+    "X": {"item": "minecraft:leather_boots"},
+    "Z": {"item": "changede:latex_gray"}
+  },
+  "result": {"item": "changede:mimic_siren_tail", "count": 1},
+  "energy": 1200,
+  "time": 1200
+}
