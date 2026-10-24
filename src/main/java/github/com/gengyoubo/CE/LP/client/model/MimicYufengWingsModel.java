@@ -2,6 +2,7 @@ package github.com.gengyoubo.CE.LP.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.ltxprogrammer.changed.client.renderer.model.TorsoedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -19,6 +20,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 public class MimicYufengWingsModel extends EntityModel<LivingEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath("changede", "mimic_yufeng_wings"),
@@ -33,6 +37,7 @@ public class MimicYufengWingsModel extends EntityModel<LivingEntity> {
     private final ModelPart rightWingRoot;
     private final ModelPart rightSecondaries;
     private final ModelPart rightTertiaries;
+    private final Map<LivingEntity, FlightTransition> flightTransitions = new WeakHashMap<>();
 
     public MimicYufengWingsModel(ModelPart root) {
         this.torso = root.getChild("Torso");
@@ -89,29 +94,53 @@ public class MimicYufengWingsModel extends EntityModel<LivingEntity> {
     public void setupAnim(@NotNull LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.torso.getAllParts().forEach(ModelPart::resetPose);
 
-        boolean flying = isActivelyFlying(entity);
-        applyWingPose(flying ? Mth.cos(ageInTicks * 0.7F) * 0.18F : 0.0F, flying ? 0.18F : 0.0F);
+        boolean gliding = entity.isFallFlying();
+        boolean flying = !gliding && isActivelyFlying(entity);
+        FlightTransition transition = this.flightTransitions.computeIfAbsent(entity,
+                ignored -> new FlightTransition(ageInTicks, flying || gliding ? 1.0F : 0.0F, flying ? 1.0F : 0.0F));
+        float elapsed = Mth.clamp(ageInTicks - transition.ageInTicks, 0.0F, 5.0F);
+        float blend = 1.0F - (float) Math.exp(-elapsed * 0.35F);
+        transition.ageInTicks = ageInTicks;
+        transition.spread = Mth.lerp(blend, transition.spread, flying || gliding ? 1.0F : 0.0F);
+        transition.flapping = Mth.lerp(blend, transition.flapping, flying ? 1.0F : 0.0F);
+        applyWingPose(transition.spread, Mth.lerp(transition.flapping, -0.087266F, flightFlap(ageInTicks)));
     }
 
     public void setupItemPose(float ageInTicks) {
         this.torso.getAllParts().forEach(ModelPart::resetPose);
-        applyWingPose(Mth.cos(ageInTicks * 0.35F) * 0.08F, 0.14F);
+        // Keep the silhouette stable in inventories, hands and item frames.
+        applyWingPose(0.65F, -0.087266F);
     }
 
-    private void applyWingPose(float flap, float spread) {
-        this.leftWingRoot.yRot -= spread;
-        this.leftSecondaries.zRot -= spread * 0.7F;
-        this.leftTertiaries.zRot -= spread * 1.1F;
-        this.rightWingRoot.yRot += spread;
-        this.rightSecondaries.zRot += spread * 0.7F;
-        this.rightTertiaries.zRot += spread * 1.1F;
+    private void applyWingPose(float spread, float flap) {
+        // Match Changed's DragonWingInit/CreativeFly/FallFlyAnimator poses.
+        // These are absolute joint angles: adding them to the baked spread
+        // fans the membrane panels apart, especially at the wing tips.
+        this.leftWingRoot.yRot = Mth.lerp(spread, -0.174532F, -flap);
+        this.leftWingRoot.zRot = Mth.lerp(spread, -0.174532F, 0.0F);
+        this.leftSecondaries.zRot = Mth.lerp(spread, -0.087266F, -0.523598F);
+        this.leftTertiaries.zRot = Mth.lerp(spread, -0.48171F, -0.959931F);
+        this.rightWingRoot.yRot = -this.leftWingRoot.yRot;
+        this.rightWingRoot.zRot = -this.leftWingRoot.zRot;
+        this.rightSecondaries.zRot = -this.leftSecondaries.zRot;
+        this.rightTertiaries.zRot = -this.leftTertiaries.zRot;
+    }
 
-        this.leftWingRoot.zRot -= flap;
-        this.leftSecondaries.zRot -= flap * 0.85F;
-        this.leftTertiaries.zRot -= flap * 0.65F;
-        this.rightWingRoot.zRot += flap;
-        this.rightSecondaries.zRot += flap * 0.85F;
-        this.rightTertiaries.zRot += flap * 0.65F;
+    private static float flightFlap(float ageInTicks) {
+        float cycle = Mth.cos(ageInTicks * 0.2F);
+        return Mth.lerp(cycle * cycle, -0.34906585F, 0.55850536F);
+    }
+
+    private static final class FlightTransition {
+        private float ageInTicks;
+        private float spread;
+        private float flapping;
+
+        private FlightTransition(float ageInTicks, float spread, float flapping) {
+            this.ageInTicks = ageInTicks;
+            this.spread = spread;
+            this.flapping = flapping;
+        }
     }
 
     private static boolean isActivelyFlying(LivingEntity entity) {
@@ -126,7 +155,9 @@ public class MimicYufengWingsModel extends EntityModel<LivingEntity> {
     }
 
     public void copyBodyPoseFrom(EntityModel<?> parentModel) {
-        if (parentModel instanceof HumanoidModel<?> humanoidModel) {
+        if (parentModel instanceof TorsoedModel torsoedModel) {
+            this.torso.copyFrom(torsoedModel.getTorso());
+        } else if (parentModel instanceof HumanoidModel<?> humanoidModel) {
             this.torso.copyFrom(humanoidModel.body);
         }
     }

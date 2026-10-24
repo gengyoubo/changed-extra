@@ -50,7 +50,9 @@
     "WhiteLatexBlockLatexSpaceMixin",
     "SkillArthropodMixin",
     "SkillDragonDropsMixin",
-    "SkillGlideMixin"
+    "SkillGlideMixin",
+    "MimicSirenSwimmingMixin",
+    "MimicSirenDepthStriderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -80,6 +82,9 @@
     "ElytraLayerMixin",
     "LatexElytraLayerMixin",
     "MimicYufengHumanoidModelMixin",
+    "MimicSirenLowerBodyMixin",
+    "MimicSirenArmorLayerMixin",
+    "MimicSirenLatexArmorLayerMixin",
     "SignalCatcherItemMixin",
     "WorldOpenFlowsNoExperimentalWarningMixin"
   ]

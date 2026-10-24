@@ -1,9 +1,14 @@
 package github.com.gengyoubo.CE.LP.item;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import github.com.gengyoubo.CE.LP.client.renderer.MimicYufengWingsItemRenderer;
 import github.com.gengyoubo.CE.LP.init.CELPItem;
 import github.com.gengyoubo.CE.fix.SpecialLatexFix.PatreonBenefitsFix;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
@@ -149,6 +154,20 @@ public class MimicYufengWingsItem extends MimicItem implements ExtendedItemPrope
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
             private MimicYufengWingsItemRenderer renderer;
+            private final Model armorModel = new Model(RenderType::armorCutoutNoCull) {
+                @Override
+                public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer,
+                                           int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+                    // The elytra layer renders the wings. Do not add a chestplate.
+                }
+            };
+
+            @Override
+            public @NotNull Model getGenericArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot,
+                                                       HumanoidModel<?> original) {
+                // Both vanilla and Changed armor layers honor this Forge hook.
+                return armorModel;
+            }
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {

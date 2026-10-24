@@ -16,7 +16,11 @@ public abstract class MimicItem extends ArmorItem {
     private static final String WILL_TRANSFUR_TAG = "will_transfur";
 
     protected MimicItem(Properties properties) {
-        super(net.minecraft.world.item.ArmorMaterials.LEATHER, Type.CHESTPLATE, properties);
+        this(Type.CHESTPLATE, properties);
+    }
+
+    protected MimicItem(Type type, Properties properties) {
+        super(net.minecraft.world.item.ArmorMaterials.LEATHER, type, properties);
     }
 
     @Override

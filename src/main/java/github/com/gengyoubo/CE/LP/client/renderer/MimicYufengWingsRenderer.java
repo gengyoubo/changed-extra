@@ -36,7 +36,8 @@ public final class MimicYufengWingsRenderer {
         }
 
         poseStack.pushPose();
-        poseStack.translate(0.0D, 0.0D, 0.125D);
+        // The Yufeng mesh already places the wing roots at the back of the torso.
+        poseStack.translate(0.0D, 0.0D, 0.03125D);
         VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(
                 bufferSource,
                 RenderType.armorCutoutNoCull(MimicYufengWingsModel.TEXTURE),
@@ -53,9 +54,10 @@ public final class MimicYufengWingsRenderer {
         wingsModel.setupItemPose(ageInTicks);
 
         poseStack.pushPose();
-        double yOffset = displayContext == ItemDisplayContext.GUI ? 1.15D : 1.35D;
-        poseStack.translate(0.5D, yOffset, 0.5D);
-        float scale = displayContext == ItemDisplayContext.GUI ? 0.62F : 0.48F;
+        // Centre the actual wing bounds rather than the absent Yufeng body.
+        // The GUI silhouette is about 2.2 blocks wide before scaling.
+        float scale = displayContext == ItemDisplayContext.GUI ? 0.40F : 0.48F;
+        poseStack.translate(0.5D, 0.5D + 0.15D * scale, 0.5D + 0.34D * scale);
         poseStack.scale(scale, -scale, -scale);
         VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(
                 bufferSource,

@@ -86,6 +86,7 @@ public class CECreativeModeTab {
                                             output.accept(CELPItem.DARK_LATEX_POWER_CONVERTER_ITEM.get());
                                             output.accept(CELPItem.ORANGE_PRODUCER_ITEM.get());
                                             output.accept(CELPItem.MIMIC_YUFENG_WINGS.get());
+                                            output.accept(CELPItem.MIMIC_SIREN_TAIL.get());
                                         })
                                         .build()
                         );

@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.LP.init;
 
 import github.com.gengyoubo.CE.LP.item.MimicYufengWingsItem;
+import github.com.gengyoubo.CE.LP.item.MimicSirenTailItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -32,6 +33,7 @@ public class CELPItem {
     public static final RegistryObject<Item> DIMENSION_SPACE_TOWER_ITEM;
     public static final RegistryObject<Item> FLUID_DIMENSION_SPACE_TOWER_ITEM;
     public static final RegistryObject<Item> MIMIC_YUFENG_WINGS;
+    public static final RegistryObject<Item> MIMIC_SIREN_TAIL;
     public static final RegistryObject<Item> WHITE_LATEX_POWER_CONVERTER_ITEM;
     public static final RegistryObject<Item> DARK_LATEX_POWER_CONVERTER_ITEM;
     public static final RegistryObject<Item> ORANGE_PRODUCER_ITEM;
@@ -39,6 +41,8 @@ public class CELPItem {
         ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
         MIMIC_YUFENG_WINGS = ITEMS.register("mimic_yufeng_wings",
                 () -> new MimicYufengWingsItem(new Item.Properties().durability(432).rarity(Rarity.RARE)));
+        MIMIC_SIREN_TAIL = ITEMS.register("mimic_siren_tail",
+                () -> new MimicSirenTailItem(new Item.Properties().durability(432).rarity(Rarity.RARE)));
         PIPE_WRENCH = ITEMS.register("pipe_wrench", () -> new Item(new Item.Properties()));
         BASIC_WIRE_ITEM = ITEMS.register("basic_wire",
                 () -> new BlockItem(CELPBlock.BASIC_WIRE.get(), new Item.Properties()));

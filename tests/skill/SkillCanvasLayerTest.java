@@ -10,7 +10,7 @@ public class SkillCanvasLayerTest {
         check(SkillCanvasLayer.visibleApplicable(true,false,false));
         check(SkillCanvasLayer.visibleApplicable(false,true,false));
         check(!SkillCanvasLayer.visibleApplicable(false,false,false));
-        check(SkillCanvasLayer.visibleApplicable(false,false,true));
+        check(SkillCanvasLayer.visibleApplicable(false,false,true)); // Learned in another form stays drawn.
         Set<String> choices = Set.of("dark", "white");
         check(SkillCanvasLayer.select("", "white", "any", choices).equals("white"));
         check(SkillCanvasLayer.select("dark", "dark", "white", choices).equals("white")); // Keep preview across snapshots.
