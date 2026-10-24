@@ -6,8 +6,9 @@ import java.util.Set;
 public final class SkillCanvasLayer {
     private SkillCanvasLayer() { }
 
-    public static boolean visibleApplicable(boolean applicable, boolean global, boolean previewAll) {
-        return applicable || global || previewAll;
+    /** Automatic canvas: draw what this beast can learn, shared nodes, and anything already learned in any form. */
+    public static boolean visibleApplicable(boolean applicable, boolean global, boolean learned) {
+        return applicable || global || learned;
     }
 
     public static boolean visible(String nodeType, String viewedType) {

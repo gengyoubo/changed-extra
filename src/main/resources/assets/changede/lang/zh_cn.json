@@ -1004,8 +1004,6 @@
   "skill.changede.humanoid_energy_1.description": "饥饿消耗减免每级增加 2.5%。各级按本级贡献叠加。",
   "skill.changede.humanoid_energy_2": "人形耐力 II",
   "skill.changede.humanoid_energy_2.description": "饥饿消耗减免每级增加 2.5%。各级按本级贡献叠加。",
-  "screen.changede.skills.preview_matching": "适用分支",
-  "screen.changede.skills.preview_all": "全部预览",
   "screen.changede.skills.next_branch": "下个分支",
   "screen.changede.skills.lives": "九条命剩余：%s / 9",
   "block.changede.latex_skill_research_table": "胶兽学技能研究台",

@@ -1004,8 +1004,6 @@
   "skill.changede.humanoid_energy_1.description": "Gain 0.025 exhaustion_reduction",
   "skill.changede.humanoid_energy_2": "Endurance II",
   "skill.changede.humanoid_energy_2.description": "Gain 0.025 exhaustion_reduction",
-  "screen.changede.skills.preview_matching": "Matching branches",
-  "screen.changede.skills.preview_all": "Preview all",
   "screen.changede.skills.next_branch": "Next branch",
   "screen.changede.skills.lives": "Nine lives remaining: %s / 9",
   "block.changede.latex_skill_research_table": "Latex Creature Skill Research Table",

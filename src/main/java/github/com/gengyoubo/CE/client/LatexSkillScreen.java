@@ -22,6 +22,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import com.mojang.math.Axis;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import java.util.*;
@@ -32,6 +33,7 @@ public final class LatexSkillScreen extends Screen {
     /** Node frames from tools/generate_machine_gui.py: greyscale frames plus white accents tinted per state. */
     private static final ResourceLocation NODES = ResourceLocation.fromNamespaceAndPath("changede", "textures/gui/skill_nodes.png");
     private static final int ATLAS_W = 296, ATLAS_H = 164, SMALL_W = 40, SMALL_H = 32, KEY_W = 148, KEY_H = 44;
+    private static final int PAW_U = 240, PAW_W = 12, PAW_H = 11;
     private static final List<String> MOTIFS = List.of("grid", "latex", "wings");
     private final Screen parent;
     private CompoundTag data = new CompoundTag();
@@ -41,8 +43,6 @@ public final class LatexSkillScreen extends Screen {
     private String pressedNode;
     private int refreshTicks;
     private String viewedType = "any";
-    private Button layerButton;
-    private boolean previewAll;
     private boolean layoutDirty = true;
     private int visualRevision = -1;
     private List<CompoundTag> layoutNodes = List.of();
@@ -63,7 +63,6 @@ public final class LatexSkillScreen extends Screen {
             if (changedForm) screen.cancelPress();
             String nextType = SkillCanvasLayer.select(previousActual, data.getString("latex_type"), screen.viewedType, screen.layers());
             if (!nextType.equals(screen.viewedType)) screen.changeLayer(nextType);
-            screen.updateLayerButton();
             screen.pending = false;
             if (!screen.positioned && !screen.nodes().isEmpty()) screen.centerRoot();
         }
@@ -78,7 +77,7 @@ public final class LatexSkillScreen extends Screen {
     private List<CompoundTag> nodes() {
         if (layoutDirty || visualRevision != SkillVisuals.revision()) {
             var visible=allNodes().stream().filter(n -> SkillCanvasLayer.visibleApplicable(n.getBoolean("applicable"),
-                    n.getString("scope").equals("global"),previewAll)).toList();
+                    n.getString("scope").equals("global"),learned(n))).toList();
             var layout=SkillBranchLayout.arrange(visible.stream().map(n->new SkillBranchLayout.Node(
                     n.getString("id"),n.getString("tree"),n.getDouble("x"),n.getDouble("y"),
                     n.getString("scope").equals("global"))).toList(),SkillVisuals.branchPadding());
@@ -124,21 +123,6 @@ public final class LatexSkillScreen extends Screen {
         viewedType = type;
         dragging = false;
         pressedNode = null;
-        updateLayerButton();
-    }
-
-    private void updateLayerButton() {
-        if (layerButton == null) return;
-        layerButton.visible = true;
-        layerButton.active = true;
-        layerButton.setMessage(Component.translatable(previewAll ? "screen.changede.skills.preview_all" : "screen.changede.skills.preview_matching"));
-    }
-
-    private void nextLayer() {
-        previewAll = !previewAll;
-        layoutDirty = true;
-        cancelPress();
-        updateLayerButton();
     }
 
     private void centerRoot() {
@@ -152,8 +136,6 @@ public final class LatexSkillScreen extends Screen {
 
     @Override
     protected void init() {
-        layerButton = addRenderableWidget(Button.builder(Component.empty(), b -> nextLayer()).bounds(6, 6, 98, 20).build());
-        updateLayerButton();
         addRenderableWidget(Button.builder(Component.translatable("screen.changede.skills.next_branch"), b -> {
             var keys=nodes().stream().filter(n->n.getBoolean("key")).toList();
             if(keys.isEmpty())return;
@@ -166,7 +148,7 @@ public final class LatexSkillScreen extends Screen {
             var key=keys.get((nearest+1)%keys.size());
             panX=width/2.0-key.getDouble("x")*COLUMN*zoom;
             panY=TOP+50-key.getInt("y")*ROW*zoom;
-        }).bounds(108,6,70,20).build());
+        }).bounds(6,6,70,20).build());
         addRenderableWidget(Button.builder(Component.translatable("screen.changede.skills.center"), b -> centerRoot())
                 .bounds(width - 64, 6, 58, 20).build());
         centerRoot();
@@ -263,44 +245,94 @@ public final class LatexSkillScreen extends Screen {
         });
     }
 
+    /** A paw stamped along a link, collected while meshing links and drawn once the mesh is uploaded. */
+    private record Paw(float x, float y, float angle, int color, float alpha) { }
+
     /**
-     * Thaumonomicon-style link from (x1, y1) to (x2, y2), drawn between fractions {@code from} and {@code to}:
-     * a soft-edged ribbon whose colour follows the regions it crosses. Learned links glow, available ones
-     * pulse, and locked ones wiggle like TC4's unresearched lines, pinned at both ends.
+     * Link from (x1, y1) to (x2, y2), drawn between fractions {@code from} and {@code to}. Latex regions get a
+     * goo tube with beads flowing towards the child; every other region gets a trail of paw prints.
      */
-    private void line(BufferBuilder buffer, Matrix4f pose, int x1, int y1, int x2, int y2, double from, double to,
-                      String state, float time) {
+    private void link(BufferBuilder buffer, Matrix4f pose, List<Paw> paws, int x1, int y1, int x2, int y2,
+                      double from, double to, String state, float time) {
         double dx = x2 - x1, dy = y2 - y1, length = Math.hypot(dx, dy);
         if (length < 1 || to <= from) return;
+        var weights = SkillVisuals.weights(layoutRegions, (x1 + x2) / 2.0 / COLUMN, (y1 + y2) / 2.0 / ROW, viewedType);
+        if (SkillVisuals.theme(SkillVisuals.dominant(weights)).motif().equals("latex"))
+            flow(buffer, pose, x1, y1, dx, dy, length, from, to, state, time);
+        else pawTrail(paws, x1, y1, dx, dy, length, from, to, state, time);
+    }
+
+    /** Dark goo tube with a lit upper edge; learned and available links carry beads of latex downstream. */
+    private void flow(BufferBuilder buffer, Matrix4f pose, int x1, int y1, double dx, double dy, double length,
+                      double from, double to, String state, float time) {
         float nx = (float) (-dy / length), ny = (float) (dx / length);
+        boolean dry = state.equals("locked"), moving = state.equals("active") || state.equals("available");
         float alpha = switch (state) {
             case "active" -> 1F;
-            case "dormant" -> 0.8F;
-            case "available" -> 0.6F + 0.4F * Mth.sin(time / 6F);
-            default -> 0.45F;
+            case "dormant" -> 0.85F;
+            case "available" -> 0.7F + 0.3F * Mth.sin(time / 6F);
+            default -> 0.35F;
         };
-        float core = switch (state) {
-            case "active" -> 1.6F;
-            case "available" -> 1.4F;
-            case "dormant" -> 1.2F;
-            default -> 0.9F;
-        };
-        boolean glow = state.equals("active") || state.equals("available"), wiggle = state.equals("locked");
+        float core = dry ? 0.9F : state.equals("active") ? 1.8F : 1.5F;
         int samples = Math.max(1, (int) (length * (to - from) / 2));
         float px = 0, py = 0;
         int color = 0;
         for (int i = 0; i <= samples; i++) {
-            double t = from + (to - from) * i / samples, along = t * length;
-            double offset = wiggle ? Math.sin(Math.PI * t) * (Math.sin(along / 14 - time / 7) * 2.2 + Math.sin(along / 9 + time / 5)) : 0;
-            float x = (float) (x1 + dx * t + nx * offset), y = (float) (y1 + dy * t + ny * offset);
+            double t = from + (to - from) * i / samples;
+            float x = (float) (x1 + dx * t), y = (float) (y1 + dy * t);
             if (i % 8 == 0) color = stateColor(SkillVisuals.weights(layoutRegions, x / COLUMN, y / ROW, viewedType), state);
-            if (i > 0) {
-                if (glow) ribbon(buffer, pose, px, py, x, y, nx, ny, core * 2.6F, 0F, color, alpha * 0.18F);
-                ribbon(buffer, pose, px, py, x, y, nx, ny, core, 1.2F, color, alpha);
+            // A locked link is a dried trail: broken residue with no shine.
+            if (i > 0 && (!dry || (int) (t * length / 4) % 2 == 0)) {
+                ribbon(buffer, pose, px, py, x, y, nx, ny, core, 1F, shade(color, 0.45F), alpha);
+                if (!dry) ribbon(buffer, pose, px - nx * core * 0.45F, py - ny * core * 0.45F,
+                        x - nx * core * 0.45F, y - ny * core * 0.45F, nx, ny, 0.45F, 0.4F, color, alpha * 0.9F);
             }
             px = x;
             py = y;
         }
+        if (!moving) return;
+        float spacing = 22, speed = state.equals("active") ? 0.9F : 0.45F;
+        for (float along = time * speed % spacing; along < length; along += spacing) {
+            double t = along / length;
+            if (t < from || t > to) continue;
+            float bx = (float) (x1 + dx * t), by = (float) (y1 + dy * t);
+            float ux = (float) (dx / length * 2.5), uy = (float) (dy / length * 2.5);
+            int bead = stateColor(SkillVisuals.weights(layoutRegions, bx / COLUMN, by / ROW, viewedType), state);
+            ribbon(buffer, pose, bx - ux, by - uy, bx + ux, by + uy, nx, ny, core * 1.7F, 1.2F, shade(bead, 1.25F), alpha);
+            ribbon(buffer, pose, bx - ux - nx, by - uy - ny, bx - nx, by - ny, nx, ny, 0.5F, 0.3F, 0xFFFFFF, alpha * 0.8F);
+        }
+    }
+
+    /** Alternating left/right prints; on an available link they keep walking towards the child. */
+    private void pawTrail(List<Paw> paws, int x1, int y1, double dx, double dy, double length,
+                          double from, double to, String state, float time) {
+        float nx = (float) (-dy / length), ny = (float) (dx / length);
+        // Rotates the sprite's upward toes onto the link direction in y-down screen space.
+        float angle = (float) Math.atan2(dx, -dy);
+        int count = (int) ((length - 24) / 11);
+        if (count < 1) return;
+        int head = (int) (time / 4) % (count + 6);
+        for (int k = 0; k < count; k++) {
+            double t = (17.5 + k * 11) / length;
+            if (t < from || t > to) continue;
+            int side = k % 2 == 0 ? -1 : 1;
+            float x = (float) (x1 + dx * t) + nx * side * 2.6F, y = (float) (y1 + dy * t) + ny * side * 2.6F;
+            float alpha = switch (state) {
+                case "active" -> 1F;
+                case "dormant" -> 0.65F;
+                case "available" -> k <= head ? Math.max(0.35F, 1F - (head - k) * 0.15F) : 0.3F;
+                default -> 0.28F;
+            };
+            int color = stateColor(SkillVisuals.weights(layoutRegions, x / COLUMN, y / ROW, viewedType), state);
+            paws.add(new Paw(x, y, angle + side * 0.18F, color, alpha));
+        }
+    }
+
+    private static int shade(int color, float factor) {
+        int r = Math.min(255, (int) (((color >> 16) & 255) * factor));
+        int g = Math.min(255, (int) (((color >> 8) & 255) * factor));
+        int b = Math.min(255, (int) ((color & 255) * factor));
+        return r << 16 | g << 8 | b;
     }
 
     /** One segment: a solid core of half-width {@code core} with edges fading to clear over {@code feather}. */
@@ -424,7 +456,7 @@ public final class LatexSkillScreen extends Screen {
         graphics.pose().scale((float) zoom, (float) zoom, 1);
         LatexSkillBackground.render(graphics, panX, panY, zoom,
                 4, TOP, width - 4, height - 32, COLUMN, ROW, viewedType, layoutRegions);
-        // Links are one batched ribbon mesh; flush first so queued background fills stay underneath.
+        // Latex links are one batched mesh; flush first so queued background fills stay underneath.
         graphics.flush();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -434,6 +466,7 @@ public final class LatexSkillScreen extends Screen {
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         Matrix4f pose = graphics.pose().last().pose();
         float time = (Util.getMillis() % 3_600_000L) / 50F;
+        List<Paw> paws = new ArrayList<>();
         for (CompoundTag node : nodes) for (Tag parentId : node.getList("parents", Tag.TAG_STRING)) {
             CompoundTag prerequisite = byId.get(parentId.getAsString());
             if (prerequisite == null) continue;
@@ -451,10 +484,21 @@ public final class LatexSkillScreen extends Screen {
                 double a = (low[axis] - from[axis]) / delta[axis], b = (high[axis] - from[axis]) / delta[axis];
                 start = Math.max(start, Math.min(a, b)); end = Math.min(end, Math.max(a, b));
             }
-            if (start <= end) line(buffer, pose, x1, y1, x2, y2, start, end, state(node), time);
+            if (start <= end) link(buffer, pose, paws, x1, y1, x2, y2, start, end, state(node), time);
         }
         BufferUploader.drawWithShader(buffer.end());
         RenderSystem.enableCull();
+        for (Paw paw : paws) {
+            graphics.pose().pushPose();
+            graphics.pose().translate(paw.x(), paw.y(), 0);
+            graphics.pose().mulPose(Axis.ZP.rotation(paw.angle()));
+            graphics.setColor(((paw.color() >> 16) & 255) / 255F, ((paw.color() >> 8) & 255) / 255F,
+                    (paw.color() & 255) / 255F, paw.alpha());
+            graphics.blit(NODES, -PAW_W / 2, -PAW_H / 2, PAW_U, 0, PAW_W, PAW_H, ATLAS_W, ATLAS_H);
+            graphics.pose().popPose();
+        }
+        graphics.setColor(1F, 1F, 1F, 1F);
+        RenderSystem.disableBlend();
         for (CompoundTag node : nodes) {
             int x = (int)Math.round(node.getDouble("x") * COLUMN), y = node.getInt("y") * ROW;
             if (x * zoom + panX < -100 || x * zoom + panX > width + 100
