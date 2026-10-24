@@ -39,13 +39,14 @@ public class BasicLatexFluidGeneratorBlockEntity extends GeneratorBlockEntity {
 
     @Override protected int generate(ItemStack fuel) { return 0; }
 
-    @Override protected void tryGenerate() {
-        if (getMaxEnergyStored() - getEnergyStored() < LP_PER_CYCLE || tank.getFluidAmount() < FLUID_PER_CYCLE) return;
+    @Override protected boolean tryGenerate() {
+        if (getMaxEnergyStored() - getEnergyStored() < LP_PER_CYCLE || tank.getFluidAmount() < FLUID_PER_CYCLE) return false;
         FluidStack consumed = tank.drain(FLUID_PER_CYCLE, IFluidHandler.FluidAction.EXECUTE);
-        if (consumed.getAmount() != FLUID_PER_CYCLE) return;
+        if (consumed.getAmount() != FLUID_PER_CYCLE) return false;
         receiveEnergy(LP_PER_CYCLE, null);
         setChanged();
         if (level != null) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        return true;
     }
 
     @Override protected void saveAdditional(@NotNull CompoundTag tag) {

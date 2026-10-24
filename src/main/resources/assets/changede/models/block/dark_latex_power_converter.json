@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "particle": "changede:block/machine_side",
-    "down": "changede:block/machine_top",
-    "up": "changede:block/machine_top",
+    "particle": "changede:block/dark_latex_machine_side",
+    "down": "changede:block/dark_latex_machine_top",
+    "up": "changede:block/dark_latex_machine_top",
     "north": "changede:block/dark_latex_power_converter_front",
-    "south": "changede:block/machine_rear",
-    "west": "changede:block/machine_side",
-    "east": "changede:block/machine_side"
+    "south": "changede:block/dark_latex_machine_rear",
+    "west": "changede:block/dark_latex_machine_side",
+    "east": "changede:block/dark_latex_machine_side"
   }
 }

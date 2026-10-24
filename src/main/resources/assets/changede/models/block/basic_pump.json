@@ -2,8 +2,8 @@
   "parent": "minecraft:block/cube",
   "textures": {
     "particle": "changede:block/basic_pump",
-    "down": "changede:block/basic_pump",
-    "up": "changede:block/basic_pump",
+    "down": "changede:block/basic_pump_top",
+    "up": "changede:block/basic_pump_top",
     "north": "changede:block/basic_pump",
     "south": "changede:block/basic_pump",
     "west": "changede:block/basic_pump",

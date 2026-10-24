@@ -28,6 +28,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
@@ -37,10 +39,12 @@ import org.jetbrains.annotations.Nullable;
 public class BasicAlloyFurnaceBlock extends BaseEntityBlock implements EntityBlock {
     private static final Component TITLE = Component.translatable("block.changede.basic_alloy_furnace");
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    /** Burning front; toggled by the block entity while it works. */
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public BasicAlloyFurnaceBlock(Properties properties) {
         super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(1f, 10f));
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
     }
 
     @Override
@@ -72,7 +76,7 @@ public class BasicAlloyFurnaceBlock extends BaseEntityBlock implements EntityBlo
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<net.minecraft.world.level.block.Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, LIT);
     }
 
     @SuppressWarnings("deprecation")

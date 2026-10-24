@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class MachineBlockEntity extends BaseEnergyBlockEntity {
+    private static final int LIT_LINGER_TICKS = 10;
 
     protected int progress = 0;
 
@@ -49,7 +50,8 @@ public abstract class MachineBlockEntity extends BaseEnergyBlockEntity {
         if (level == null || level.isClientSide) return;
 
         boolean dirty = false;
-        if (canProcess() && hasEnoughEnergyForNextTick()) {
+        boolean working = canProcess() && hasEnoughEnergyForNextTick();
+        if (working) {
             consumeEnergyForNextTick();
             progress++;
             dirty = true;
@@ -68,6 +70,7 @@ public abstract class MachineBlockEntity extends BaseEnergyBlockEntity {
             setChanged();
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
+        updateLit(working, LIT_LINGER_TICKS);
     }
 }
 

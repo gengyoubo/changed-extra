@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class GeneratorBlockEntity extends BaseEnergyBlockEntity {
+    /** Fuel is consumed in one go, so the fire stays visible for a while after each burst. */
+    private static final int LIT_LINGER_TICKS = 40;
     protected final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -91,25 +93,28 @@ public abstract class GeneratorBlockEntity extends BaseEnergyBlockEntity {
     @Override
     public void tick() {
         if (level == null || level.isClientSide) return;
-        if (!shouldWork()) return;
-
-        tryGenerate();
-        pushEnergy();
+        boolean generated = false;
+        if (shouldWork()) {
+            generated = tryGenerate();
+            pushEnergy();
+        }
+        updateLit(generated, LIT_LINGER_TICKS);
     }
 
-    protected void tryGenerate() {
+    /** Burns one unit of fuel if the buffer has room; returns whether energy was produced. */
+    protected boolean tryGenerate() {
         ItemStack fuelStack = itemHandler.getStackInSlot(0);
         if (fuelStack.isEmpty()) {
-            return;
+            return false;
         }
 
         int generated = generate(fuelStack);
         if (generated <= 0) {
-            return;
+            return false;
         }
 
         if (getMaxEnergyStored() - getEnergyStored() < generated) {
-            return;
+            return false;
         }
 
         itemHandler.extractItem(0, 1, false);
@@ -118,6 +123,7 @@ public abstract class GeneratorBlockEntity extends BaseEnergyBlockEntity {
         if (level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
+        return true;
     }
 
     @Override

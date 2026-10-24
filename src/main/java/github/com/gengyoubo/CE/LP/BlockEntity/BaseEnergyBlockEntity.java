@@ -5,13 +5,16 @@ import github.com.gengyoubo.CE.LP.LatexEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 public class BaseEnergyBlockEntity extends BlockEntity implements ILatexEnergyHandler {
     protected final LatexEnergyStorage energy;
+    private int litTicks;
     public BaseEnergyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int capacity) {
         super(type, pos, state);
         this.energy = new LatexEnergyStorage(capacity);
@@ -66,6 +69,21 @@ public class BaseEnergyBlockEntity extends BlockEntity implements ILatexEnergyHa
 
     public void tick() {
         pushEnergy();
+    }
+
+    /**
+     * Drives BlockStateProperties.LIT, for blocks that have it, from whether the machine worked this tick.
+     * The flame lingers for {@code linger} ticks so bursty or power-starved work does not flicker the model.
+     */
+    protected void updateLit(boolean working, int linger) {
+        if (level == null || level.isClientSide) return;
+        if (working) litTicks = linger;
+        else if (litTicks > 0) litTicks--;
+        BlockState state = getBlockState();
+        boolean lit = litTicks > 0;
+        if (state.hasProperty(BlockStateProperties.LIT) && state.getValue(BlockStateProperties.LIT) != lit) {
+            level.setBlock(worldPosition, state.setValue(BlockStateProperties.LIT, lit), Block.UPDATE_ALL);
+        }
     }
 
     @Override

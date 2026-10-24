@@ -82,9 +82,14 @@ public class BasicAlloyFurnaceBlockEntity extends BaseEnergyBlockEntity {
 
     @Override public void tick() {
         if (level == null || level.isClientSide) return;
+        updateLit(process(), 10);
+    }
+
+    /** Advances the running recipe by one tick; returns whether the furnace worked. */
+    private boolean process() {
         SimpleContainer input = new SimpleContainer(items.getStackInSlot(0), items.getStackInSlot(1));
         AlloyFurnaceRecipe recipe = level.getRecipeManager().getRecipeFor(CELPRecipes.ALLOY_FURNACE_TYPE, input, level).orElse(null);
-        if (recipe == null) { resetProcess(); return; }
+        if (recipe == null) { resetProcess(); return false; }
         if (!recipe.getId().equals(runningRecipe)
                 || !ItemStack.isSameItemSameTags(firstInput, input.getItem(0))
                 || !ItemStack.isSameItemSameTags(secondInput, input.getItem(1))) {
@@ -97,14 +102,14 @@ public class BasicAlloyFurnaceBlockEntity extends BaseEnergyBlockEntity {
         processTicks = recipe.getProcessTicks();
         lpPerSecond = recipe.getLpPerSecond();
         ItemStack result = recipe.getResultItem(level.registryAccess());
-        if (!canFitOutput(result)) return;
+        if (!canFitOutput(result)) return false;
 
         // Carry fractional LP between ticks so nonmultiples of 20 retain their configured rate.
         long accumulated = (long) costRemainder + lpPerSecond;
         int cost = (int) (accumulated / 20);
         int remainder = (int) (accumulated % 20);
         if (progress + 1 >= processTicks && remainder > 0) { cost++; remainder = 0; }
-        if (getEnergyStored() < cost) return;
+        if (getEnergyStored() < cost) return false;
         extractEnergy(cost, null);
         costRemainder = remainder;
         progress++;
@@ -118,6 +123,7 @@ public class BasicAlloyFurnaceBlockEntity extends BaseEnergyBlockEntity {
         }
         // Menu data synchronizes progress; block update packets are unnecessary each tick.
         setChanged();
+        return true;
     }
 
     @Override protected void saveAdditional(@NotNull CompoundTag tag) {
