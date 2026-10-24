@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.JEI;
 
 import github.com.gengyoubo.CE.LP.recipe.LatexCreativeExtranalbodyCraftingRecipe;
+import github.com.gengyoubo.CE.LP.world.Screen.MachineGuiStyle;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -10,6 +11,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,15 +22,14 @@ public class LatexCreativeExtranalbodyCraftingCategory implements IRecipeCategor
             LatexCreativeExtranalbodyCraftingRecipe.class
     );
 
+    private static final ResourceLocation BACKGROUND = MachineGuiStyle.texture("jei_extranalbody_crafting");
     private final IDrawable icon;
-    private final IDrawable arrow;
     private final Component title = Component.literal("Latex Creative Extranalbody Crafting");
     private static final int WIDTH = 150;
-    private static final int HEIGHT = 84;
+    private static final int HEIGHT = 90;
 
     public LatexCreativeExtranalbodyCraftingCategory(IGuiHelper guiHelper, ItemStack iconStack) {
         this.icon = guiHelper.createDrawableItemStack(iconStack);
-        this.arrow = guiHelper.getRecipeArrow();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class LatexCreativeExtranalbodyCraftingCategory implements IRecipeCategor
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                var slot = builder.addSlot(RecipeIngredientRole.INPUT, 4 + x * 18, 4 + y * 18).setStandardSlotBackground();
+                var slot = builder.addSlot(RecipeIngredientRole.INPUT, 4 + x * 18, 4 + y * 18);
                 int localX = x - xOffset;
                 int localY = y - yOffset;
                 if (localX >= 0 && localY >= 0 && localX < recipeWidth && localY < recipeHeight) {
@@ -76,7 +77,6 @@ public class LatexCreativeExtranalbodyCraftingCategory implements IRecipeCategor
         }
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 112, 22)
-                .setOutputSlotBackground()
                 .addItemStack(recipe.getResultItem(net.minecraft.core.RegistryAccess.EMPTY));
     }
 
@@ -88,15 +88,14 @@ public class LatexCreativeExtranalbodyCraftingCategory implements IRecipeCategor
             double mouseX,
             double mouseY
     ) {
-        guiGraphics.fill(0, 0, WIDTH, HEIGHT, 0xFF151A24);
-        guiGraphics.fill(2, 2, WIDTH - 2, HEIGHT - 2, 0xFF1C2333);
-        arrow.draw(guiGraphics, 74, 22);
+        MachineGuiStyle.panel(guiGraphics, BACKGROUND, 0, 0, WIDTH, HEIGHT);
+        MachineGuiStyle.loopingBar(guiGraphics, 68, 27, 36, 6, recipe.getProcessTime(), 0xFF5FE3B1);
         guiGraphics.drawString(
                 net.minecraft.client.Minecraft.getInstance().font,
                 "Energy [LP]: " + recipe.getEnergyCost(),
                 4,
                 63,
-                0x56A8FF,
+                0xFF007878,
                 false
         );
         double seconds = recipe.getProcessTime() / 20.0D;
@@ -105,7 +104,7 @@ public class LatexCreativeExtranalbodyCraftingCategory implements IRecipeCategor
                 String.format(java.util.Locale.ROOT, "Time [s]: %.1f", seconds),
                 4,
                 74,
-                0x8AE8CB,
+                MachineGuiStyle.LABEL,
                 false
         );
     }

@@ -41,6 +41,12 @@ public final class MachineGuiStyle {
         graphics.fill(x + fill - 1, y, x + fill, y + height, shade(color, 1.35F));
     }
 
+    /** Fill that loops once per recipe duration, for JEI pages where there is no live progress. */
+    public static void loopingBar(GuiGraphics graphics, int x, int y, int width, int height, int periodTicks, int color) {
+        long period = Math.max(20, periodTicks) * 50L;
+        bar(graphics, x, y, width, height, System.currentTimeMillis() % period, period, color);
+    }
+
     public static void fluid(GuiGraphics graphics, FluidStack fluid, int capacity, int x, int y, int width, int height) {
         if (!fluid.isEmpty() && capacity > 0) {
             var properties = IClientFluidTypeExtensions.of(fluid.getFluid());

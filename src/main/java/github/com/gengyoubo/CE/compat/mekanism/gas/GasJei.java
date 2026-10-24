@@ -1,5 +1,6 @@
 package github.com.gengyoubo.CE.compat.mekanism.gas;
 
+import github.com.gengyoubo.CE.LP.world.Screen.MachineGuiStyle;
 import mekanism.client.jei.MekanismJEI;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -13,11 +14,13 @@ import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public final class GasJei implements IRecipeCategory<ReversingRecipe> {
     public static final RecipeType<ReversingRecipe> TYPE = RecipeType.create("changede", "reversing", ReversingRecipe.class);
+    private static final ResourceLocation BACKGROUND = MachineGuiStyle.texture("jei_reversing");
     private final IDrawable background, icon;
-    private GasJei(IGuiHelper helper) { background = helper.createBlankDrawable(170, 85); icon = helper.createDrawableItemStack(GasCompat.REVERSER.getItemStack()); }
+    private GasJei(IGuiHelper helper) { background = helper.createBlankDrawable(170, 91); icon = helper.createDrawableItemStack(GasCompat.REVERSER.getItemStack()); }
     public static void categories(IRecipeCategoryRegistration registration) { registration.addRecipeCategories(new GasJei(registration.getJeiHelpers().getGuiHelper())); }
     public static void recipes(IRecipeRegistration registration) {
         var world = Minecraft.getInstance().level;
@@ -35,8 +38,9 @@ public final class GasJei implements IRecipeCategory<ReversingRecipe> {
         builder.addSlot(RecipeIngredientRole.OUTPUT, 136, 8).addIngredients(MekanismJEI.TYPE_GAS, recipe.getOutputDefinition());
     }
     @Override public void draw(ReversingRecipe recipe, IRecipeSlotsView ignored, GuiGraphics graphics, double mouseX, double mouseY) {
+        MachineGuiStyle.panel(graphics, BACKGROUND, 0, 0, 170, 91);
+        MachineGuiStyle.loopingBar(graphics, 42, 13, 84, 6, recipe.ticks(), 0xFF85B54D);
         var font = Minecraft.getInstance().font;
-        graphics.drawString(font, "→", 80, 12, 0x666666, false);
         var input = recipe.getInput().getRepresentations().get(0);
         graphics.drawString(font, input.getAmount() + " mB", 6, 29, 0x444444, false);
         graphics.drawString(font, recipe.getOutputDefinition().get(0).getAmount() + " mB", 130, 29, 0x444444, false);

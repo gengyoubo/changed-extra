@@ -1,6 +1,7 @@
 package github.com.gengyoubo.CE.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -9,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 @Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
 public final class LatexSkillScreenEvents {
@@ -23,8 +25,12 @@ public final class LatexSkillScreenEvents {
         if (!(screen instanceof InventoryScreen) && !(screen instanceof CreativeModeInventoryScreen)) return;
         int panelWidth = screen instanceof CreativeModeInventoryScreen ? 195 : 176;
         int panelHeight = screen instanceof CreativeModeInventoryScreen ? 136 : 166;
-        event.addListener(Button.builder(Component.translatable("screen.changede.skills.button"), button ->
-                Minecraft.getInstance().setScreen(new LatexSkillScreen(screen)))
-                .bounds(Math.max(4, (screen.width - panelWidth) / 2 - 40), (screen.height - panelHeight) / 2 + 34, 34, 20).build());
+        event.addListener(new Button(Math.max(4, (screen.width - panelWidth) / 2 - 40), (screen.height - panelHeight) / 2 + 34, 34, 22,
+                Component.translatable("screen.changede.skills.button"), button -> Minecraft.getInstance().setScreen(new LatexSkillScreen(screen)),
+                narration -> narration.get()) {
+            @Override protected void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+                PlayerAttributePanelEvents.renderTab(graphics, Minecraft.getInstance().font, getX(), getY(), getMessage(), isHoveredOrFocused(), false);
+            }
+        });
     }
 }

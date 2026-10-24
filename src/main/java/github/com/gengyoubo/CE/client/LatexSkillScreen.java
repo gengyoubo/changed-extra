@@ -1,11 +1,19 @@
 package github.com.gengyoubo.CE.client;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import github.com.gengyoubo.CE.LP.network.CENetwork;
 import github.com.gengyoubo.CE.skill.SkillTreePacket;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,12 +22,17 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import java.util.*;
 
 /** One continuous graph retains learned history across form changes. */
 public final class LatexSkillScreen extends Screen {
     private static final int COLUMN = 150, ROW = 64, TOP = 36;
+    /** Node frames from tools/generate_machine_gui.py: greyscale frames plus white accents tinted per state. */
+    private static final ResourceLocation NODES = ResourceLocation.fromNamespaceAndPath("changede", "textures/gui/skill_nodes.png");
+    private static final int ATLAS_W = 296, ATLAS_H = 164, SMALL_W = 40, SMALL_H = 32, KEY_W = 148, KEY_H = 44;
+    private static final List<String> MOTIFS = List.of("grid", "latex", "wings");
     private final Screen parent;
     private CompoundTag data = new CompoundTag();
     private double panX, panY, zoom = 0.85;
@@ -69,7 +82,10 @@ public final class LatexSkillScreen extends Screen {
             var layout=SkillBranchLayout.arrange(visible.stream().map(n->new SkillBranchLayout.Node(
                     n.getString("id"),n.getString("tree"),n.getDouble("x"),n.getDouble("y"),
                     n.getString("scope").equals("global"))).toList(),SkillVisuals.branchPadding());
-            layoutNodes=visible.stream().map(n->{
+            // Lay out every applicable node, then drop hidden ones, so revealing a node never moves the rest.
+            Map<String, CompoundTag> all = new HashMap<>();
+            allNodes().forEach(n -> all.put(n.getString("id"), n));
+            layoutNodes=visible.stream().filter(n -> revealed(n, all)).map(n->{
                 CompoundTag positioned=n.copy();
                 positioned.putDouble("x",layout.nodes().get(n.getString("id")).x());
                 return positioned;
@@ -80,6 +96,18 @@ public final class LatexSkillScreen extends Screen {
         }
         return layoutNodes;
     }
+
+    /** Like TC4 research, a node stays hidden until every prerequisite node has been learned. */
+    private static boolean revealed(CompoundTag node, Map<String, CompoundTag> all) {
+        if (learned(node)) return true;
+        for (Tag id : node.getList("parents", Tag.TAG_STRING)) {
+            CompoundTag parent = all.get(id.getAsString());
+            if (parent == null || !learned(parent)) return false;
+        }
+        return true;
+    }
+
+    private static boolean learned(CompoundTag node) { return node.getBoolean("unlocked") || node.getBoolean("active"); }
 
     private void cancelPress() { dragging=false; pressedNode=null; }
 
@@ -235,21 +263,69 @@ public final class LatexSkillScreen extends Screen {
         });
     }
 
-    private void line(GuiGraphics graphics, int x1, int y1, int x2, int y2, String state) {
-        int steps = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+    /**
+     * Thaumonomicon-style link from (x1, y1) to (x2, y2), drawn between fractions {@code from} and {@code to}:
+     * a soft-edged ribbon whose colour follows the regions it crosses. Learned links glow, available ones
+     * pulse, and locked ones wiggle like TC4's unresearched lines, pinned at both ends.
+     */
+    private void line(BufferBuilder buffer, Matrix4f pose, int x1, int y1, int x2, int y2, double from, double to,
+                      String state, float time) {
+        double dx = x2 - x1, dy = y2 - y1, length = Math.hypot(dx, dy);
+        if (length < 1 || to <= from) return;
+        float nx = (float) (-dy / length), ny = (float) (dx / length);
+        float alpha = switch (state) {
+            case "active" -> 1F;
+            case "dormant" -> 0.8F;
+            case "available" -> 0.6F + 0.4F * Mth.sin(time / 6F);
+            default -> 0.45F;
+        };
+        float core = switch (state) {
+            case "active" -> 1.6F;
+            case "available" -> 1.4F;
+            case "dormant" -> 1.2F;
+            default -> 0.9F;
+        };
+        boolean glow = state.equals("active") || state.equals("available"), wiggle = state.equals("locked");
+        int samples = Math.max(1, (int) (length * (to - from) / 2));
+        float px = 0, py = 0;
         int color = 0;
-        String motif = "grid";
-        for (int i = 0; i <= steps; i++) {
-            double t = steps == 0 ? 0 : (double) i / steps;
-            int x = (int) Math.round(x1 + (x2 - x1) * t), y = (int) Math.round(y1 + (y2 - y1) * t);
-            if (i % 16 == 0) {
-                var weights = SkillVisuals.weights(layoutRegions, x / (double) COLUMN, y / (double) ROW, viewedType);
-                color = stateColor(weights, state);
-                motif = SkillVisuals.theme(SkillVisuals.dominant(weights)).motif();
+        for (int i = 0; i <= samples; i++) {
+            double t = from + (to - from) * i / samples, along = t * length;
+            double offset = wiggle ? Math.sin(Math.PI * t) * (Math.sin(along / 14 - time / 7) * 2.2 + Math.sin(along / 9 + time / 5)) : 0;
+            float x = (float) (x1 + dx * t + nx * offset), y = (float) (y1 + dy * t + ny * offset);
+            if (i % 8 == 0) color = stateColor(SkillVisuals.weights(layoutRegions, x / COLUMN, y / ROW, viewedType), state);
+            if (i > 0) {
+                if (glow) ribbon(buffer, pose, px, py, x, y, nx, ny, core * 2.6F, 0F, color, alpha * 0.18F);
+                ribbon(buffer, pose, px, py, x, y, nx, ny, core, 1.2F, color, alpha);
             }
-            graphics.fill(x, y, x + (motif.equals("latex") ? 3 : 2), y + 2, color);
-            if (motif.equals("wings") && i % 16 < 8) graphics.fill(x + 4, y, x + 5, y + 1, color);
+            px = x;
+            py = y;
         }
+    }
+
+    /** One segment: a solid core of half-width {@code core} with edges fading to clear over {@code feather}. */
+    private static void ribbon(BufferBuilder buffer, Matrix4f pose, float ax, float ay, float bx, float by,
+                               float nx, float ny, float core, float feather, int color, float alpha) {
+        float r = ((color >> 16) & 255) / 255F, g = ((color >> 8) & 255) / 255F, b = (color & 255) / 255F;
+        float out = core + feather;
+        quad(buffer, pose, ax, ay, bx, by, nx, ny, -core, core, r, g, b, alpha, alpha);
+        if (feather <= 0) return;
+        quad(buffer, pose, ax, ay, bx, by, nx, ny, core, out, r, g, b, alpha, 0F);
+        quad(buffer, pose, ax, ay, bx, by, nx, ny, -core, -out, r, g, b, alpha, 0F);
+    }
+
+    private static void quad(BufferBuilder buffer, Matrix4f pose, float ax, float ay, float bx, float by, float nx, float ny,
+                             float near, float far, float r, float g, float b, float nearAlpha, float farAlpha) {
+        buffer.vertex(pose, ax + nx * near, ay + ny * near, 0).color(r, g, b, nearAlpha).endVertex();
+        buffer.vertex(pose, ax + nx * far, ay + ny * far, 0).color(r, g, b, farAlpha).endVertex();
+        buffer.vertex(pose, bx + nx * far, by + ny * far, 0).color(r, g, b, farAlpha).endVertex();
+        buffer.vertex(pose, bx + nx * near, by + ny * near, 0).color(r, g, b, nearAlpha).endVertex();
+    }
+
+    private static void sprite(GuiGraphics graphics, int x, int y, int u, int v, int width, int height, int tint) {
+        graphics.setColor(((tint >> 16) & 255) / 255F, ((tint >> 8) & 255) / 255F, (tint & 255) / 255F, 1F);
+        graphics.blit(NODES, x, y, u, v, width, height, ATLAS_W, ATLAS_H);
+        graphics.setColor(1F, 1F, 1F, 1F);
     }
 
     private static void circle(GuiGraphics graphics, int x, int y, int radius, int color) {
@@ -348,6 +424,16 @@ public final class LatexSkillScreen extends Screen {
         graphics.pose().scale((float) zoom, (float) zoom, 1);
         LatexSkillBackground.render(graphics, panX, panY, zoom,
                 4, TOP, width - 4, height - 32, COLUMN, ROW, viewedType, layoutRegions);
+        // Links are one batched ribbon mesh; flush first so queued background fills stay underneath.
+        graphics.flush();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableCull();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        BufferBuilder buffer = Tesselator.getInstance().getBuilder();
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        Matrix4f pose = graphics.pose().last().pose();
+        float time = (Util.getMillis() % 3_600_000L) / 50F;
         for (CompoundTag node : nodes) for (Tag parentId : node.getList("parents", Tag.TAG_STRING)) {
             CompoundTag prerequisite = byId.get(parentId.getAsString());
             if (prerequisite == null) continue;
@@ -365,9 +451,10 @@ public final class LatexSkillScreen extends Screen {
                 double a = (low[axis] - from[axis]) / delta[axis], b = (high[axis] - from[axis]) / delta[axis];
                 start = Math.max(start, Math.min(a, b)); end = Math.min(end, Math.max(a, b));
             }
-            if (start <= end) line(graphics, (int) (x1 + delta[0] * start), (int) (y1 + delta[1] * start),
-                    (int) (x1 + delta[0] * end), (int) (y1 + delta[1] * end), state(node));
+            if (start <= end) line(buffer, pose, x1, y1, x2, y2, start, end, state(node), time);
         }
+        BufferUploader.drawWithShader(buffer.end());
+        RenderSystem.enableCull();
         for (CompoundTag node : nodes) {
             int x = (int)Math.round(node.getDouble("x") * COLUMN), y = node.getInt("y") * ROW;
             if (x * zoom + panX < -100 || x * zoom + panX > width + 100
@@ -376,16 +463,11 @@ public final class LatexSkillScreen extends Screen {
             String state = state(node), motif = SkillVisuals.theme(SkillVisuals.dominant(weights)).motif();
             int color = stateColor(weights, state), surface = SkillVisuals.color(weights, SkillVisuals.Theme::surface);
             Component label = Component.translatable(node.getString("title"));
+            int frame = Math.max(0, MOTIFS.indexOf(motif));
             if (node.getBoolean("key")) {
-                graphics.fill(x - 62, y - 16, x + 62, y + 16, color);
-                graphics.fill(x - 60, y - 14, x + 60, y + 14, surface);
-                if (motif.equals("wings")) {
-                    diamond(graphics, x - 66, y, 7, color);
-                    diamond(graphics, x + 66, y, 7, color);
-                } else if (motif.equals("latex")) {
-                    circle(graphics, x - 62, y, 5, color);
-                    circle(graphics, x + 62, y, 5, color);
-                }
+                graphics.fill(x - 61, y - 15, x + 61, y + 15, surface);
+                sprite(graphics, x - KEY_W / 2, y - 18, 0, SMALL_H + frame * KEY_H, KEY_W, KEY_H, 0xFFFFFF);
+                sprite(graphics, x - KEY_W / 2, y - 18, KEY_W, SMALL_H + frame * KEY_H, KEY_W, KEY_H, color);
                 var lines = font.split(label, 116);
                 for (int i = 0; i < Math.min(lines.size(), 2); i++) {
                     var text = lines.get(i);
@@ -393,15 +475,10 @@ public final class LatexSkillScreen extends Screen {
                             state.equals("dormant") ? color : 0xFFFFFF, false);
                 }
             } else {
-                if (motif.equals("wings")) {
-                    diamond(graphics, x, y, 14, color);
-                    diamond(graphics, x, y, 11, surface);
-                    graphics.fill(x - 19, y - 4, x - 15, y - 2, color);
-                    graphics.fill(x + 16, y - 4, x + 20, y - 2, color);
-                } else {
-                    circle(graphics, x, y, 12, color);
-                    circle(graphics, x, y, motif.equals("latex") ? 8 : 10, surface);
-                }
+                if (motif.equals("wings")) diamond(graphics, x, y, 11, surface);
+                else circle(graphics, x, y, 10, surface);
+                sprite(graphics, x - SMALL_W / 2, y - SMALL_H / 2, frame * SMALL_W, 0, SMALL_W, SMALL_H, 0xFFFFFF);
+                sprite(graphics, x - SMALL_W / 2, y - SMALL_H / 2, (frame + 3) * SMALL_W, 0, SMALL_W, SMALL_H, color);
                 graphics.renderItem(icon(node), x - 8, y - 8);
             }
             // Filled, hollow and star markers distinguish states even in monochrome packs.
