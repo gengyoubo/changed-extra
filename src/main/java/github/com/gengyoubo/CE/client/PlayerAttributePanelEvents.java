@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
@@ -94,15 +95,12 @@ public final class PlayerAttributePanelEvents {
         return !(screen instanceof InventoryScreen) && !(screen instanceof CreativeModeInventoryScreen);
     }
 
-    private static Layout layout(Screen screen) {
-        int vanillaPanelWidth = screen instanceof CreativeModeInventoryScreen ? 195 : 176;
-        int vanillaPanelHeight = screen instanceof CreativeModeInventoryScreen ? 136 : 166;
-        int vanillaLeft = (screen.width - vanillaPanelWidth) / 2;
-        int vanillaTop = (screen.height - vanillaPanelHeight) / 2;
-        int buttonX = Math.max(4, vanillaLeft - Layout.BUTTON_WIDTH - 6);
-        int buttonY = vanillaTop + 8;
+    static Layout layout(Screen screen) {
+        AbstractContainerScreen<?> inventory = (AbstractContainerScreen<?>) screen;
+        int buttonX = Math.max(4, inventory.getGuiLeft() - Layout.BUTTON_WIDTH - 6);
+        int buttonY = inventory.getGuiTop() + 8;
         int panelX = Math.max(4, buttonX - Layout.PANEL_WIDTH - 6);
-        int panelY = vanillaTop + 8;
+        int panelY = buttonY;
         return new Layout(buttonX, buttonY, panelX, panelY);
     }
 
@@ -139,9 +137,10 @@ public final class PlayerAttributePanelEvents {
         }
     }
 
-    private record Layout(int buttonX, int buttonY, int panelX, int panelY) {
+    record Layout(int buttonX, int buttonY, int panelX, int panelY) {
         static final int BUTTON_WIDTH = 34;
         static final int BUTTON_HEIGHT = 22;
+        static final int TAB_SPACING = 26;
         private static final int PANEL_WIDTH = 98;
         private static final int PANEL_HEIGHT = 140;
     }

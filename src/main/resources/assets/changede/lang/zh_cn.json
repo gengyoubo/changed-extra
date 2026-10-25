@@ -1306,5 +1306,15 @@
   "gas.changede.dark_latex_gas": "黑胶气体",
   "gas.changede.skunk_gas": "臭鼬兽化气体",
   "gas.changede.tiger_gas": "老虎兽化气体",
-  "gas.changede.wolf_gas": "狼兽化气体"
+  "gas.changede.wolf_gas": "狼兽化气体",
+  "curios.identifier.face": "面部",
+  "curios.identifier.body": "身体",
+  "curios.identifier.head": "头部",
+  "curios.identifier.hands": "双手",
+  "curios.identifier.neck": "颈部",
+  "curios.identifier.necklace": "颈部",
+  "curios.identifier.full_body": "全身",
+  "curios.identifier.legs": "腿部",
+  "curios.identifier.lower_body": "下半身",
+  "curios.identifier.lower_body_side": "下半身侧部"
 }

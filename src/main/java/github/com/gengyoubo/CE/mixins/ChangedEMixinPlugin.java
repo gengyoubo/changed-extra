@@ -54,6 +54,14 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (mixinClassName.equals("github.com.gengyoubo.CE.mixins.AccessoryLayerCuriosMixin")) {
+            return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("curios");
+        }
+        if (mixinClassName.equals("github.com.gengyoubo.CE.mixins.AccessorySlotsCuriosMixin")
+                || mixinClassName.equals("github.com.gengyoubo.CE.mixins.CuriosSlotManagerAccessor")
+                || mixinClassName.equals("github.com.gengyoubo.CE.mixins.CuriosEntityManagerAccessor")) {
+            return isModLoaded("curios");
+        }
         if (mixinClassName.equals("github.com.gengyoubo.CE.mixins.JerIntegrationServerMixin")) {
             return FMLEnvironment.dist == Dist.DEDICATED_SERVER && isModLoaded("jerintegration");
         }

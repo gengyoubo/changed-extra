@@ -1306,5 +1306,10 @@
   "gas.changede.dark_latex_gas": "Dark Latex Gas",
   "gas.changede.skunk_gas": "Skunk Transfur Gas",
   "gas.changede.tiger_gas": "Tiger Transfur Gas",
-  "gas.changede.wolf_gas": "Wolf Transfur Gas"
+  "gas.changede.wolf_gas": "Wolf Transfur Gas",
+  "curios.identifier.face": "Face",
+  "curios.identifier.full_body": "Full Body",
+  "curios.identifier.legs": "Legs",
+  "curios.identifier.lower_body": "Lower Body",
+  "curios.identifier.lower_body_side": "Lower Body Side"
 }
