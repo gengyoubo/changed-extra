@@ -1,6 +1,6 @@
 {
   "parent": "changede:block/fission_thermoelectric_module",
   "textures": {
-    "panel": "minecraft:block/cracked_deepslate_tiles"
+    "panel": "changede:block/fission_thermoelectric_module_fused"
   }
 }
