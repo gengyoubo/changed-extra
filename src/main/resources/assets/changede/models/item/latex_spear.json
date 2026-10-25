@@ -1,4 +1,20 @@
 {
+  "loader": "forge:separate_transforms",
+  "gui_light": "front",
+  "base": {
+    "parent": "changede:item/latex_spear_base"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "changede:item/latex_spear_icon"
+    },
+    "ground": {
+      "parent": "changede:item/latex_spear_icon"
+    },
+    "fixed": {
+      "parent": "changede:item/latex_spear_icon"
+    }
+  },
   "overrides": [
     {
       "model": "changede:item/latex_spear_charging",
@@ -18,6 +34,5 @@
         "changede:charging": 3
       }
     }
-  ],
-  "parent": "changede:item/latex_spear_base"
+  ]
 }
