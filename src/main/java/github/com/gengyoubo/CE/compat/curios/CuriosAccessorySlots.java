@@ -77,7 +77,9 @@ public final class CuriosAccessorySlots extends AccessorySlots {
 
     @Override public boolean moveToSlot(AccessorySlotType type, ItemStack stack) {
         if (type == null || stack.isEmpty() || !stack.is(type.getItemTag())) return false;
-        ItemStack remaining = stack;
+        // ItemStackHandler may keep the supplied instance on a full insertion. Keep
+        // the caller's stack separate before consuming it, or the equipped copy empties too.
+        ItemStack remaining = stack.copy();
         for (var entry : handlersFor(type)) {
             var stacks = entry.getValue().getStacks();
             for (int index = 0; index < stacks.getSlots() && !remaining.isEmpty(); index++) {
