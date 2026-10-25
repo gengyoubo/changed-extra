@@ -1,7 +1,7 @@
 {
   "parent": "changede:block/energy_pipe_arm",
   "textures": {
-    "all": "minecraft:block/black_concrete",
-    "particle": "minecraft:block/black_concrete"
+    "all": "changede:block/dlp_pipe",
+    "particle": "changede:block/dlp_pipe"
   }
 }

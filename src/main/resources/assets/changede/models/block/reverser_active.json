@@ -1,6 +1,6 @@
 {
   "parent": "changede:block/reverser",
   "textures": {
-    "panel": "minecraft:block/sea_lantern"
+    "front": "changede:block/reverser_front_on"
   }
 }

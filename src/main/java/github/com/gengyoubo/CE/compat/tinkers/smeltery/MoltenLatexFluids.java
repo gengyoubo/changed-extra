@@ -26,8 +26,8 @@ public final class MoltenLatexFluids {
     private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, "changede");
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
-    public static final Entry DARK = new Entry("molten_dark_latex", 0xFF393345);
-    public static final Entry WHITE = new Entry("molten_white_latex", 0xFFFFF4DE);
+    public static final Entry DARK = new Entry("molten_dark_latex");
+    public static final Entry WHITE = new Entry("molten_white_latex");
     private MoltenLatexFluids() {}
     public static void initialize(IEventBus bus) {
         TYPES.register(bus); FLUIDS.register(bus); BLOCKS.register(bus); ITEMS.register(bus);
@@ -40,14 +40,14 @@ public final class MoltenLatexFluids {
         public final RegistryObject<Fluid> source, flowing;
         public final RegistryObject<LiquidBlock> block;
         public final RegistryObject<Item> bucket;
-        private Entry(String name, int color) {
+        private Entry(String name) {
             type = TYPES.register(name, () -> new FluidType(FluidType.Properties.create().descriptionId("fluid.changede." + name).temperature(2273).density(3000)
                     .viscosity(6000).lightLevel(8).canSwim(false).canDrown(false)) {
                 @Override public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {
-                        @Override public ResourceLocation getStillTexture() { return ResourceLocation.parse("minecraft:block/lava_still"); }
-                        @Override public ResourceLocation getFlowingTexture() { return ResourceLocation.parse("minecraft:block/lava_flow"); }
-                        @Override public int getTintColor() { return color; }
+                        // Recoloured lava frames (tools/generate_terrain.py), so no tint.
+                        @Override public ResourceLocation getStillTexture() { return ResourceLocation.fromNamespaceAndPath("changede", "block/" + name + "_still"); }
+                        @Override public ResourceLocation getFlowingTexture() { return ResourceLocation.fromNamespaceAndPath("changede", "block/" + name + "_flow"); }
                     });
                 }
             });
