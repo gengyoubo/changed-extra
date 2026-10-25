@@ -1,61 +1,78 @@
 package github.com.gengyoubo.CE.compat.mekanism.gas;
 
+import github.com.gengyoubo.CE.LP.LatexEnergyType;
 import github.com.gengyoubo.CE.LP.world.Screen.MachineGuiStyle;
-import mekanism.api.chemical.gas.GasStack;
+import mekanism.client.gui.GuiMekanismTile;
+import mekanism.client.gui.IGuiWrapper;
+import mekanism.client.gui.element.GuiInnerScreen;
+import mekanism.client.gui.element.bar.GuiBar;
+import mekanism.client.gui.element.button.TranslationButton;
+import mekanism.client.gui.element.gauge.GaugeType;
+import mekanism.client.gui.element.gauge.GuiGasGauge;
+import mekanism.client.gui.element.progress.GuiProgress;
+import mekanism.client.gui.element.progress.IProgressInfoHandler;
+import mekanism.client.gui.element.progress.ProgressType;
+import mekanism.client.gui.element.tab.GuiEnergyTab;
+import mekanism.client.gui.element.tab.window.GuiSideConfigurationTab;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 import java.util.Locale;
 
-public final class ReverserScreen extends AbstractContainerScreen<ReverserMenu> {
-    private static final ResourceLocation TEXTURE = MachineGuiStyle.texture("reverser");
-    public ReverserScreen(ReverserMenu menu, Inventory inventory, Component title) { super(menu, inventory, title); imageWidth = 176; imageHeight = 204; inventoryLabelY = 110; }
-    @Override protected void init() {
-        super.init();
-        addRenderableWidget(Button.builder(Component.translatable("gui.changede.reverser.drain"), button -> minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 0))
-                .bounds(leftPos + 121, topPos + 4, 48, 16).tooltip(Tooltip.create(Component.translatable("gui.changede.reverser.drain_hint"))).build());
+/**
+ * A Mekanism machine screen: Mekanism's gauges, arrow, inner screen and buttons, plus its side tabs
+ * (redstone mode, security, side configuration and an energy tab for WLP/DLP use).
+ */
+public final class ReverserScreen extends GuiMekanismTile<ReverserBlockEntity, ReverserContainer> {
+    private static final int TOP = 18, BAR_HEIGHT = 58;
+    private GuiSideConfigurationTab<ReverserBlockEntity> sideConfigTab;
+
+    public ReverserScreen(ReverserContainer container, Inventory inventory, Component title) {
+        super(container, inventory, title);
+        imageHeight += 12;
+        inventoryLabelY = imageHeight - 94;
+        dynamicSlots = true;
     }
-    @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(graphics); super.render(graphics, mouseX, mouseY, partialTick); renderTooltip(graphics, mouseX, mouseY);
-        for (boolean output : new boolean[]{false, true}) {
-            if (isHovering(output ? 130 : 24, 31, 22, 44, mouseX, mouseY)) {
-                GasStack gas = menu.gas(output);
-                graphics.renderComponentTooltip(font, List.of(gas.getTextComponent(), Component.literal(gas.getAmount() + " / 10000 mB")), mouseX, mouseY);
-            }
+    @Override protected void addGuiElements() {
+        super.addGuiElements();
+        sideConfigTab = addRenderableWidget(new GuiSideConfigurationTab<>(this, tile, () -> sideConfigTab));
+        addRenderableWidget(new GuiEnergyTab(this, () -> List.of(Component.literal(tile.whiteRate() + " WLP/s"), Component.literal(tile.darkRate() + " DLP/s"))));
+        addRenderableWidget(new LatexBar(this, () -> tile.getTypedEnergyStored(LatexEnergyType.WLP), "WLP", 8, TOP + 1, 0xFFF0F0E8, 0xFFFFFFFF));
+        addRenderableWidget(new GuiGasGauge(() -> tile.inputTank, () -> tile.getGasTanks(null), GaugeType.STANDARD, this, 22, TOP));
+        addRenderableWidget(new GuiProgress((IProgressInfoHandler) () -> tile.processTicks() == 0 ? 0 : tile.progress() / (double) tile.processTicks(),
+                ProgressType.LARGE_RIGHT, this, 64, 30));
+        addRenderableWidget(new GuiInnerScreen(this, 46, 44, 84, 16, () -> List.of(Component.translatable(
+                "state.changede.reverser." + tile.status().name().toLowerCase(Locale.ROOT)))).centerY());
+        addRenderableWidget(new TranslationButton(this, 64, 64, 48, 16, () -> "gui.changede.reverser.drain",
+                () -> minecraft.gameMode.handleInventoryButtonClick(menu.containerId, ReverserContainer.DRAIN_BUTTON),
+                (element, graphics, mouseX, mouseY) -> displayTooltips(graphics, mouseX, mouseY, Component.translatable("gui.changede.reverser.drain_hint")), null));
+        addRenderableWidget(new GuiGasGauge(() -> tile.outputTank, () -> tile.getGasTanks(null), GaugeType.STANDARD, this, 136, TOP));
+        addRenderableWidget(new LatexBar(this, () -> tile.getTypedEnergyStored(LatexEnergyType.DLP), "DLP", 162, TOP + 1, 0xFF3A3446, 0xFF6A6280));
+    }
+    @Override protected void drawForegroundText(GuiGraphics graphics, int mouseX, int mouseY) {
+        renderTitleText(graphics);
+        drawString(graphics, playerInventoryTitle, inventoryLabelX, inventoryLabelY, titleTextColor());
+        super.drawForegroundText(graphics, mouseX, mouseY);
+    }
+
+    /** A Mekanism vertical bar holding WLP or DLP: its frame, filled from the bottom in that latex's colour. */
+    private static final class LatexBar extends GuiBar<GuiBar.IBarInfoHandler> {
+        private final int color, lit;
+        LatexBar(IGuiWrapper gui, java.util.function.IntSupplier stored, String unit, int x, int y, int color, int lit) {
+            super(BAR, gui, new IBarInfoHandler() {
+                @Override public double getLevel() { return stored.getAsInt() / (double) ReverserBlockEntity.ENERGY_CAPACITY; }
+                @Override public Component getTooltip() { return MachineGuiStyle.amount(stored.getAsInt(), ReverserBlockEntity.ENERGY_CAPACITY, unit); }
+            }, x, y, 4, BAR_HEIGHT, false);
+            this.color = color;
+            this.lit = lit;
         }
-        if (isHovering(61, 44, 54, 8, mouseX, mouseY)) graphics.renderTooltip(font, Component.translatable("gui.changede.reverser.progress",
-                String.format(Locale.ROOT, "%.1f", menu.value(2) / 20.0), String.format(Locale.ROOT, "%.1f", menu.value(3) / 20.0)), mouseX, mouseY);
-        if (isHovering(8, 84, 160, 5, mouseX, mouseY)) graphics.renderComponentTooltip(font, List.of(
-                MachineGuiStyle.amount(menu.value(0), ReverserBlockEntity.ENERGY_CAPACITY, "WLP"), Component.literal(menu.value(4) + " WLP/s")), mouseX, mouseY);
-        if (isHovering(8, 97, 160, 5, mouseX, mouseY)) graphics.renderComponentTooltip(font, List.of(
-                MachineGuiStyle.amount(menu.value(1), ReverserBlockEntity.ENERGY_CAPACITY, "DLP"), Component.literal(menu.value(5) + " DLP/s")), mouseX, mouseY);
-    }
-    @Override protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        MachineGuiStyle.panel(graphics, TEXTURE, leftPos, topPos, imageWidth, imageHeight);
-        for (boolean output : new boolean[]{false, true}) {
-            int x = leftPos + (output ? 130 : 24), y = topPos + 31;
-            GasStack gas = menu.gas(output);
-            int height = (int) (44 * gas.getAmount() / ReverserBlockEntity.TANK_CAPACITY);
-            if (height > 0) graphics.fill(x, y + 44 - height, x + 22, y + 44, 0xFF000000 | gas.getType().getTint());
+        @Override protected void renderBarOverlay(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks, double level) {
+            int height = calculateScaled(level, BAR_HEIGHT);
+            if (height <= 0) return;
+            int x = getX() + 1, bottom = getY() + 1 + BAR_HEIGHT;
+            graphics.fill(x, bottom - height, x + 4, bottom, color);
+            graphics.fill(x, bottom - height, x + 1, bottom, lit);
         }
-        MachineGuiStyle.bar(graphics, leftPos + 61, topPos + 44, 54, 8, menu.value(2), menu.value(3), 0xFF85B54D);
-        MachineGuiStyle.bar(graphics, leftPos + 8, topPos + 84, 160, 5, menu.value(0), ReverserBlockEntity.ENERGY_CAPACITY, MachineGuiStyle.WLP);
-        MachineGuiStyle.bar(graphics, leftPos + 8, topPos + 97, 160, 5, menu.value(1), ReverserBlockEntity.ENERGY_CAPACITY, MachineGuiStyle.DLP);
-    }
-    @Override protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(font, title, 8, 7, MachineGuiStyle.TITLE, false);
-        var inputLabel = Component.translatable("gui.changede.reverser.input");
-        var outputLabel = Component.translatable("gui.changede.reverser.output");
-        graphics.drawString(font, inputLabel, 35 - font.width(inputLabel) / 2, 19, MachineGuiStyle.LABEL, false);
-        graphics.drawString(font, outputLabel, 141 - font.width(outputLabel) / 2, 19, MachineGuiStyle.LABEL, false);
-        int status = Math.max(0, Math.min(ReverserBlockEntity.Status.values().length - 1, menu.value(10)));
-        var state = Component.translatable("state.changede.reverser." + ReverserBlockEntity.Status.values()[status].name().toLowerCase(Locale.ROOT));
-        graphics.drawString(font, state, 88 - font.width(state) / 2, 60, MachineGuiStyle.LABEL, false);
-        graphics.drawString(font, playerInventoryTitle, 8, inventoryLabelY, MachineGuiStyle.LABEL, false);
     }
 }

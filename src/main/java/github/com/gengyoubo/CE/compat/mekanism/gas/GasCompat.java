@@ -19,8 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,7 +33,7 @@ public final class GasCompat {
     private static final TileEntityTypeDeferredRegister TILES = new TileEntityTypeDeferredRegister("changede");
     private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, "changede");
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, "changede");
-    private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changede");
+    private static final ContainerTypeDeferredRegister CONTAINERS = new ContainerTypeDeferredRegister("changede");
     public static final Map<String, GasRegistryObject<Gas>> BASIC_GASES = new LinkedHashMap<>();
     static {
         BASIC_GASES.put("white_latex_gas", GASES.register("white_latex_gas", 0xF2F1E9));
@@ -46,7 +44,8 @@ public final class GasCompat {
     }
     public static final BlockTypeTile<ReverserBlockEntity> REVERSER_TYPE = BlockTypeTile.BlockTileBuilder
             .<ReverserBlockEntity>createBlock(() -> GasCompat.REVERSER_TILE, () -> "tooltip.changede.reverser")
-            .with(new AttributeStateFacing(), Attributes.ACTIVE, Attributes.REDSTONE).build();
+            .withGui(() -> GasCompat.REVERSER_CONTAINER)
+            .with(new AttributeStateFacing(), Attributes.ACTIVE, Attributes.REDSTONE, Attributes.SECURITY).build();
     public static final BlockRegistryObject<ReverserBlock, BlockItem> REVERSER = BLOCKS.register("reverser", ReverserBlock::new);
     public static final TileEntityTypeRegistryObject<ReverserBlockEntity> REVERSER_TILE = TILES.register(REVERSER, ReverserBlockEntity::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
     public static final BlockRegistryObject<GasPipeBlock, ItemBlockPressurizedTube> GAS_PIPE = BLOCKS.register("basic_gas_pipe", GasPipeBlock::new, ItemBlockPressurizedTube::new);
@@ -55,10 +54,10 @@ public final class GasCompat {
             .serverTicker(mekanism.common.tile.transmitter.TileEntityTransmitter::tickServer).build();
     public static final RegistryObject<RecipeType<ReversingRecipe>> REVERSING_TYPE = RECIPE_TYPES.register("reversing", () -> RecipeType.simple(ResourceLocation.parse("changede:reversing")));
     public static final RegistryObject<RecipeSerializer<ReversingRecipe>> REVERSING_SERIALIZER = SERIALIZERS.register("reversing", ReversingRecipe.Serializer::new);
-    public static final RegistryObject<MenuType<ReverserMenu>> MENU = MENUS.register("reverser", () -> IForgeMenuType.create(ReverserMenu::new));
+    public static final ContainerTypeRegistryObject<ReverserContainer> REVERSER_CONTAINER = CONTAINERS.register(REVERSER, ReverserBlockEntity.class, ReverserContainer::new);
 
     public static void initialize(IEventBus bus) {
-        GASES.register(bus); BLOCKS.register(bus); TILES.register(bus); SERIALIZERS.register(bus); RECIPE_TYPES.register(bus); MENUS.register(bus);
+        GASES.register(bus); BLOCKS.register(bus); TILES.register(bus); SERIALIZERS.register(bus); RECIPE_TYPES.register(bus); CONTAINERS.register(bus);
         bus.addListener((BuildCreativeModeTabContentsEvent event) -> {
             if (event.getTabKey().location().equals(ResourceLocation.parse("changede:extra"))) { event.accept(REVERSER.asItem()); event.accept(GAS_PIPE.asItem()); }
         });

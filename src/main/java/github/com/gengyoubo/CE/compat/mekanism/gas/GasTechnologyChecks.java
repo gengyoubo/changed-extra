@@ -26,7 +26,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 
@@ -92,7 +91,7 @@ public final class GasTechnologyChecks {
                         + ", rear=" + machine.getCapability(Capabilities.GAS_HANDLER, Direction.SOUTH).isPresent() + ", accepts=" + machine.acceptsGas(MekanismGases.SPENT_NUCLEAR_WASTE.get()) + ")");
                 // Native networks retain a buffer; isolate the following exact machine accounting from transport timing.
                 level.removeBlock(BASE.south(), false);
-                machine.inputTank.setStack(MekanismGases.SPENT_NUCLEAR_WASTE.getStack(100));
+                machine.inputTank.setStack(MekanismGases.SPENT_NUCLEAR_WASTE.getStack(1500));
                 var infuser = (mekanism.common.tile.machine.TileEntityChemicalInfuser) level.getBlockEntity(BASE.east(12));
                 check(infuser.leftTank.isEmpty() && infuser.rightTank.isEmpty() && infuser.centerTank.getStored() == 20, "Real chemical infuser synthesizes wolf gas without increasing total volume");
                 var rotary = (mekanism.common.tile.machine.TileEntityRotaryCondensentrator) level.getBlockEntity(BASE.east(14));
@@ -124,29 +123,30 @@ public final class GasTechnologyChecks {
             }
             if (phase == 285) {
                 var target = level.getBlockEntity(BASE.north(3)).getCapability(Capabilities.GAS_HANDLER, null).resolve().orElseThrow();
-                check(target.getChemicalInTank(0).isTypeEqual(MekanismGases.FISSILE_FUEL.getStack(1)) && target.getChemicalInTank(0).getAmount() == 1,
+                check(target.getChemicalInTank(0).isTypeEqual(MekanismGases.FISSILE_FUEL.getStack(1)) && target.getChemicalInTank(0).getAmount() == 1000,
                         "Reversed fuel passes through CE and native Mek tubes into a native tank");
-                check(machine.inputTank.getStored() == 90, "One complete batch consumes exactly ten waste");
-                check(machine.getTypedEnergyStored(LatexEnergyType.WLP) == 0 && machine.getTypedEnergyStored(LatexEnergyType.DLP) == 0, "10 seconds consumes exactly 2000 WLP and 2000 DLP");
+                check(machine.inputTank.getStored() == 500, "One complete batch consumes exactly 1000 waste");
+                check(machine.getTypedEnergyStored(LatexEnergyType.WLP) == 1980 && machine.getTypedEnergyStored(LatexEnergyType.DLP) == 1980, "One 1-second batch consumes exactly 20 WLP and 20 DLP");
                 int progress = machine.progress(); machine.process(); machine.process();
                 check(machine.progress() == progress, "Same world tick cannot process twice");
                 BlockPos resume = BASE.east(8);
                 level.setBlockAndUpdate(resume, GasCompat.REVERSER.getBlock().defaultBlockState());
                 var worker = (ReverserBlockEntity) level.getBlockEntity(resume);
-                worker.inputTank.setStack(MekanismGases.SPENT_NUCLEAR_WASTE.getStack(10));
-                worker.receiveTypedEnergy(LatexEnergyType.WLP, 2000, null); worker.receiveTypedEnergy(LatexEnergyType.DLP, 2000, null);
+                // Exactly one batch of input and energy, so a reload that duplicated or forgave anything would show.
+                worker.inputTank.setStack(MekanismGases.SPENT_NUCLEAR_WASTE.getStack(1000));
+                worker.receiveTypedEnergy(LatexEnergyType.WLP, 20, null); worker.receiveTypedEnergy(LatexEnergyType.DLP, 20, null);
             }
-            if (phase == 335) {
+            if (phase == 295) {
                 BlockPos resume = BASE.east(8);
                 var worker = (ReverserBlockEntity) level.getBlockEntity(resume);
-                check(worker.progress() == 50, "Independent work order advances exactly 50 ticks");
+                check(worker.progress() == 10, "Independent work order advances exactly 10 ticks");
                 var loaded = (ReverserBlockEntity) worker.getType().create(resume, worker.getBlockState()); loaded.load(worker.saveWithFullMetadata());
                 level.setBlockEntity(loaded);
-                check(loaded.progress() == 50 && loaded.getTypedEnergyStored(LatexEnergyType.WLP) == 1500, "Chunk-style block entity replacement restores progress and charged energy");
+                check(loaded.progress() == 10 && loaded.getTypedEnergyStored(LatexEnergyType.WLP) == 10, "Chunk-style block entity replacement restores progress and charged energy mid-batch");
             }
             if (phase == 510) {
                 var worker = (ReverserBlockEntity) level.getBlockEntity(BASE.east(8));
-                check(worker.inputTank.isEmpty() && worker.outputTank.getStored() == 1, "Reloaded work order completes exactly one 10:1 conversion");
+                check(worker.inputTank.isEmpty() && worker.outputTank.getStored() == 1000, "Reloaded work order completes exactly one 1000:1000 conversion");
                 check(worker.getTypedEnergyStored(LatexEnergyType.WLP) == 0 && worker.getTypedEnergyStored(LatexEnergyType.DLP) == 0, "Reload neither duplicates nor forgives energy costs");
                 persistence(level, machine);
                 finish(null);
@@ -163,7 +163,7 @@ public final class GasTechnologyChecks {
         for (String base : new String[]{"white_latex_gas", "dark_latex_gas"}) for (String species : new String[]{"skunk_gas", "tiger_gas", "wolf_gas"})
             check(manager.byKey(ResourceLocation.parse("changede:gas/infusing/" + species + "_from_" + base)).isPresent(), "Gas synthesis recipe: " + base + "/" + species);
         var recipe = (ReversingRecipe) manager.byKey(ResourceLocation.parse("changede:reversing/spent_nuclear_waste_to_fissile_fuel")).orElseThrow();
-        check(recipe.ticks() == 200 && recipe.whiteRate() == 200 && recipe.darkRate() == 200, "Approved reverse defaults loaded from JSON");
+        check(recipe.ticks() == 20 && recipe.whiteRate() == 20 && recipe.darkRate() == 20, "Approved reverse defaults loaded from JSON");
         check(!recipe.getInput().testType(MekanismGases.NUCLEAR_WASTE.get()), "Ordinary nuclear waste cannot bypass upstream processing");
         var buffer = new FriendlyByteBuf(Unpooled.buffer());
         try {
@@ -175,12 +175,17 @@ public final class GasTechnologyChecks {
     }
     private static void persistence(ServerLevel level, ReverserBlockEntity source) {
         source.receiveTypedEnergy(LatexEnergyType.WLP, 90_000, null); source.receiveTypedEnergy(LatexEnergyType.DLP, 80_000, null);
+        int white = source.getTypedEnergyStored(LatexEnergyType.WLP), dark = source.getTypedEnergyStored(LatexEnergyType.DLP);
         var saved = source.saveWithFullMetadata();
         var restored = (ReverserBlockEntity) source.getType().create(BASE, source.getBlockState()); restored.load(saved);
-        check(restored.getTypedEnergyStored(LatexEnergyType.WLP) == 90_000 && restored.getTypedEnergyStored(LatexEnergyType.DLP) == 80_000, "NBT preserves independent typed buffers beyond short range");
+        check(white > Short.MAX_VALUE && restored.getTypedEnergyStored(LatexEnergyType.WLP) == white && restored.getTypedEnergyStored(LatexEnergyType.DLP) == dark,
+                "NBT preserves independent typed buffers beyond short range");
         check(restored.inputTank.getStored() == source.inputTank.getStored(), "NBT preserves radioactive gas");
-        var menu = new ReverserMenu(1, FakePlayerFactory.getMinecraft(level).getInventory(), BASE);
-        check(menu.value(0) == 90_000 && menu.value(1) == 80_000, "Menu splits 32-bit energy values correctly");
+        var gasConfig = restored.getConfig().getConfig(mekanism.common.lib.transmitter.TransmissionType.GAS);
+        check(gasConfig.getDataType(mekanism.api.RelativeSide.BACK) == mekanism.common.tile.component.config.DataType.INPUT
+                && gasConfig.getDataType(mekanism.api.RelativeSide.FRONT) == mekanism.common.tile.component.config.DataType.OUTPUT
+                && gasConfig.getDataType(mekanism.api.RelativeSide.LEFT) == mekanism.common.tile.component.config.DataType.NONE,
+                "Default side config: gas in at the back, out at the front, none on the power sides");
         source.outputTank.setStack(MekanismGases.FISSILE_FUEL.getStack(5));
         var drops = Block.getDrops(source.getBlockState(), level, BASE, source);
         check(drops.size() == 1 && drops.get(0).is(GasCompat.REVERSER.asItem()), "Native block drops own machine");
@@ -190,7 +195,7 @@ public final class GasTechnologyChecks {
         mekanism.api.DataHandlerUtils.readContainers(droppedTile.getGasTanks(null), data.getList(mekanism.api.NBTConstants.GAS_TANKS, net.minecraft.nbt.Tag.TAG_COMPOUND));
         check(droppedTile.inputTank.isEmpty(), "Radioactive waste is removed from survival drops by native Mek rules");
         check(droppedTile.outputTank.getStored() == 5, "Nonradioactive fuel is preserved in survival drops");
-        check(droppedTile.getTypedEnergyStored(LatexEnergyType.WLP) == 90_000, "Survival drop preserves stored WLP");
+        check(droppedTile.getTypedEnergyStored(LatexEnergyType.WLP) == white, "Survival drop preserves stored WLP");
         double before = IRadiationManager.INSTANCE.getRadiationLevel(new Coord4D(BASE, level));
         level.removeBlock(BASE, false);
         check(IRadiationManager.INSTANCE.getRadiationLevel(new Coord4D(BASE, level)) > before, "Actual dismantling releases stored waste radiation");

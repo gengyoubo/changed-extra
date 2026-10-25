@@ -6,7 +6,6 @@ import github.com.gengyoubo.CE.LP.TypedLatexEnergyStorage;
 import github.com.gengyoubo.CE.LP.energy.DualEnergyProcess;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Set;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
@@ -16,15 +15,24 @@ import mekanism.api.chemical.attribute.ChemicalAttributeValidator;
 import mekanism.api.chemical.gas.*;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
+import mekanism.common.inventory.container.MekanismContainer;
+import mekanism.common.inventory.container.sync.SyncableInt;
+import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.base.TileEntityMekanism;
+import mekanism.common.tile.component.TileComponentConfig;
+import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.tile.component.config.ConfigInfo;
+import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.interfaces.ISideConfiguration;
 import mekanism.common.tile.interfaces.ISustainedData;
 import mekanism.common.util.ChemicalUtil;
+import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
-public final class ReverserBlockEntity extends TileEntityMekanism implements ILatexMultiEnergyHandler, ISustainedData {
+public final class ReverserBlockEntity extends TileEntityMekanism implements ILatexMultiEnergyHandler, ISustainedData, ISideConfiguration {
     public static final int TANK_CAPACITY = 10_000, ENERGY_CAPACITY = 100_000;
     public enum Status { IDLE, RUNNING, INPUT_LOW, WHITE_LOW, DARK_LOW, OUTPUT_FULL, REDSTONE, DRAINING }
     private final TypedLatexEnergyStorage white = new TypedLatexEnergyStorage(LatexEnergyType.WLP, ENERGY_CAPACITY);
@@ -35,17 +43,30 @@ public final class ReverserBlockEntity extends TileEntityMekanism implements ILa
     private long lastProcessTick = Long.MIN_VALUE;
     private Status status = Status.IDLE;
     private boolean draining;
+    private final TileComponentConfig configComponent;
+    private final TileComponentEjector ejectorComponent;
 
-    public ReverserBlockEntity(BlockPos pos, BlockState state) { super(GasCompat.REVERSER, pos, state); }
+    public ReverserBlockEntity(BlockPos pos, BlockState state) {
+        super(GasCompat.REVERSER, pos, state);
+        // Mekanism side config for the gas ports. Defaults match the block's LEDs: in at the back, out at the front;
+        // the sides carry WLP/DLP (outside Mekanism's config) and start with no gas port.
+        configComponent = new TileComponentConfig(this, TransmissionType.GAS);
+        ConfigInfo gas = configComponent.setupIOConfig(TransmissionType.GAS, inputTank, outputTank, RelativeSide.FRONT);
+        gas.setDataType(DataType.NONE, RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.TOP, RelativeSide.BOTTOM);
+        gas.setEjecting(true);
+        ejectorComponent = new TileComponentEjector(this).setOutputData(configComponent, TransmissionType.GAS);
+    }
+    @Override public TileComponentConfig getConfig() { return configComponent; }
+    @Override public TileComponentEjector getEjector() { return ejectorComponent; }
     @Override public IChemicalTankHolder<Gas, GasStack, IGasTank> getInitialGasTanks(IContentsListener listener) {
-        // A holder without a side config exposes only each tank's explicit physical port.
-        var sided = ChemicalTankHelper.<Gas, GasStack, IGasTank>forSide(this::getDirection);
+        // Built before the config exists, so the holder reads it lazily.
+        var sided = ChemicalTankHelper.forSideGasWithConfig(this::getDirection, this::getConfig);
         inputTank = ChemicalTankBuilder.GAS.create(TANK_CAPACITY,
                 (gas, automation) -> automation != AutomationType.EXTERNAL || draining,
                 (gas, automation) -> automation == AutomationType.INTERNAL || !draining,
                 this::acceptsGas, ChemicalAttributeValidator.ALWAYS_ALLOW, listener);
         outputTank = ChemicalTankBuilder.GAS.output(TANK_CAPACITY, listener);
-        sided.addTank(inputTank, RelativeSide.BACK); sided.addTank(outputTank, RelativeSide.FRONT);
+        sided.addTank(inputTank); sided.addTank(outputTank);
         return sided.build();
     }
     public boolean acceptsGas(Gas gas) {
@@ -69,10 +90,10 @@ public final class ReverserBlockEntity extends TileEntityMekanism implements ILa
     public void process() {
         if (level == null || level.isClientSide || isRemoved() || lastProcessTick == level.getGameTime()) return;
         lastProcessTick = level.getGameTime();
-        ChemicalUtil.emit(Set.of(getDirection()), outputTank, this, 1000);
+        // Output leaves through the ejector on whichever sides the config marks as output.
         if (draining) {
             pause(Status.DRAINING);
-            ChemicalUtil.emit(Set.of(getDirection().getOpposite()), inputTank, this, 1000);
+            ChemicalUtil.emit(configComponent.getConfig(TransmissionType.GAS).getSidesForData(DataType.INPUT), inputTank, this, 1000);
             return;
         }
         ReversingRecipe recipe = level.getRecipeManager().getAllRecipesFor(GasCompat.REVERSING_TYPE.get()).stream()
@@ -81,7 +102,7 @@ public final class ReverserBlockEntity extends TileEntityMekanism implements ILa
         if (recipe == null) { reset(); pause(Status.IDLE); return; }
         if (!recipe.signature().equals(runningSignature)) { reset(); runningSignature = recipe.signature(); markForSave(); }
         processTicks = recipe.ticks(); whiteRate = recipe.whiteRate(); darkRate = recipe.darkRate();
-        if (level.hasNeighborSignal(worldPosition)) { pause(Status.REDSTONE); return; }
+        if (!MekanismUtils.canFunction(this)) { pause(Status.REDSTONE); return; }
         if (!recipe.test(inputTank.getStack())) { pause(Status.INPUT_LOW); return; }
         GasStack result = recipe.getOutput(inputTank.getStack());
         if (!outputTank.insert(result, Action.SIMULATE, AutomationType.INTERNAL).isEmpty()) { pause(Status.OUTPUT_FULL); return; }
@@ -96,6 +117,18 @@ public final class ReverserBlockEntity extends TileEntityMekanism implements ILa
             progress = 0; whiteRemainder = darkRemainder = 0;
         }
         status = Status.RUNNING; setActive(true); markForSave();
+    }
+    /** Everything the GUI shows beyond the tanks, which Mekanism's container already syncs. */
+    @Override public void addContainerTrackers(MekanismContainer container) {
+        super.addContainerTrackers(container);
+        container.track(SyncableInt.create(white::getEnergyStored, white::setEnergy));
+        container.track(SyncableInt.create(dark::getEnergyStored, dark::setEnergy));
+        container.track(SyncableInt.create(() -> progress, value -> progress = value));
+        container.track(SyncableInt.create(() -> processTicks, value -> processTicks = value));
+        container.track(SyncableInt.create(() -> whiteRate, value -> whiteRate = value));
+        container.track(SyncableInt.create(() -> darkRate, value -> darkRate = value));
+        container.track(SyncableInt.create(() -> status.ordinal(), value -> status = Status.values()[value]));
+        container.track(SyncableInt.create(() -> draining ? 1 : 0, value -> draining = value != 0));
     }
     @Override public boolean supportsTypedEnergy(LatexEnergyType type, Direction side) {
         if (type == LatexEnergyType.LP) return false;
