@@ -124,7 +124,8 @@ public final class GasTechnologyChecks {
             if (phase == 285) {
                 var target = level.getBlockEntity(BASE.north(3)).getCapability(Capabilities.GAS_HANDLER, null).resolve().orElseThrow();
                 check(target.getChemicalInTank(0).isTypeEqual(MekanismGases.FISSILE_FUEL.getStack(1)) && target.getChemicalInTank(0).getAmount() == 1000,
-                        "Reversed fuel passes through CE and native Mek tubes into a native tank");
+                        "Reversed fuel passes through CE and native Mek tubes into a native tank (tank=" + target.getChemicalInTank(0).getAmount()
+                        + ", output=" + machine.outputTank.getStored() + ", input=" + machine.inputTank.getStored() + ", status=" + machine.status() + ")");
                 check(machine.inputTank.getStored() == 500, "One complete batch consumes exactly 1000 waste");
                 check(machine.getTypedEnergyStored(LatexEnergyType.WLP) == 1980 && machine.getTypedEnergyStored(LatexEnergyType.DLP) == 1980, "One 1-second batch consumes exactly 20 WLP and 20 DLP");
                 int progress = machine.progress(); machine.process(); machine.process();

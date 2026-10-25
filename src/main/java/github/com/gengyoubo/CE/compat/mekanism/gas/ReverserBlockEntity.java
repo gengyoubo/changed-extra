@@ -85,7 +85,12 @@ public final class ReverserBlockEntity extends TileEntityMekanism implements ILa
         runningSignature = ""; progress = whiteRemainder = darkRemainder = processTicks = whiteRate = darkRate = 0;
     }
     private void pause(Status reason) { status = reason; setActive(false); }
-    @Override protected void onUpdateServer() { super.onUpdateServer(); process(); }
+    @Override protected void onUpdateServer() {
+        super.onUpdateServer();
+        // Mekanism machines drive their own ejector; the base tile only ticks frequency, upgrade and chunk components.
+        ejectorComponent.tickServer();
+        process();
+    }
     /** Public for the opt-in dedicated-server regression fixture; normal ticking is provided by Mek. */
     public void process() {
         if (level == null || level.isClientSide || isRemoved() || lastProcessTick == level.getGameTime()) return;
