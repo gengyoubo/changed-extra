@@ -124,6 +124,14 @@ repositories {
     mavenLocal()
 }
 dependencies {
+    // Opt-in reproduction of issue #40; these mods are not dependencies of Changed: Extra.
+    if (providers.gradleProperty('verifyIssue40').getOrElse('false').toBoolean()) {
+        runtimeOnly fg.deobf('maven.modrinth:apprentices-codex:XpTr9v4v')
+        runtimeOnly fg.deobf('maven.modrinth:irons-spells-n-spellbooks:hZaEegS9')
+        runtimeOnly fg.deobf('maven.modrinth:irons-lib:IptroA3L')
+        runtimeOnly fg.deobf('maven.modrinth:geckolib:aC5KMoNg')
+        runtimeOnly fg.deobf('maven.modrinth:playeranimator:xe2EVE6q')
+    }
     //原版
     minecraft "net.minecraftforge:forge:1.20.1-47.4.10"
     //前置
@@ -232,10 +240,15 @@ minecraft {
             }
         }
         server {
+            def issue40Checks = providers.gradleProperty('verifyIssue40').getOrElse('false').toBoolean()
             def fissionChecks = providers.gradleProperty('verifyFission').getOrElse('false').toBoolean()
             def gasChecks = providers.gradleProperty('verifyGasTechnology').getOrElse('false').toBoolean()
             def gasWorld = providers.gradleProperty('omitMekanismForChecks').getOrElse('false').toBoolean() ? 'build/gas-optional-server' : 'build/gas-technology-server'
-            workingDirectory project.file(gasChecks ? gasWorld : fissionChecks ? 'build/thermoelectric-server' : 'run')
+            workingDirectory project.file(issue40Checks ? 'build/issue40-server' : gasChecks ? gasWorld : fissionChecks ? 'build/thermoelectric-server' : 'run')
+            if (issue40Checks) {
+                property 'changede.verifySpear', 'true'
+                jvmArgs '-Xms512M', '-Xmx4G'
+            }
             if (gasChecks) {
                 property 'changede.verifyGasTechnology', 'true'
                 jvmArgs '-Xms512M', '-Xmx2G'
@@ -274,6 +287,16 @@ if (providers.gradleProperty('verifyGasTechnology').getOrElse('false').toBoolean
         doLast {
             if (!gasReport.exists() || !gasReport.text.startsWith('PASS:'))
                 throw new GradleException(gasReport.exists() ? gasReport.text : 'Gas verification did not produce a report')
+        }
+    }
+}
+if (providers.gradleProperty('verifyIssue40').getOrElse('false').toBoolean()) {
+    tasks.matching { it.name == 'runServer' }.configureEach {
+        doLast {
+            def log = file('build/issue40-server/logs/latest.log')
+            if (!log.exists() || !log.getText('UTF-8').contains('ALL SPEAR SERVER CHECKS PASSED')) {
+                throw new GradleException('Issue #40 spear checks did not finish; inspect build/issue40-server/logs/latest.log')
+            }
         }
     }
 }
@@ -351,6 +374,13 @@ tasks.register('verifyMixinRefmap') {
         def artifact = tasks.named('jar', Jar).get().archiveFile.get().asFile
         new java.util.zip.ZipFile(artifact).withCloseable { zip ->
             def json = new groovy.json.JsonSlurper()
+            def shieldClass = zip.getEntry('github/com/gengyoubo/CE/mixins/LatexSpearShieldMixin.class')
+            if (shieldClass == null) throw new GradleException('Missing spear shield mixin')
+            def shieldConstants = new String(zip.getInputStream(shieldClass).bytes, java.nio.charset.StandardCharsets.ISO_8859_1)
+            if (shieldConstants.contains('Lorg/spongepowered/asm/mixin/injection/Redirect;')
+                    || !shieldConstants.contains('Lorg/spongepowered/asm/mixin/injection/Inject;')) {
+                throw new GradleException('Spear shield mixin must not redirect the shield check (issue #40)')
+            }
             def configs = zip.entries().findAll { !it.directory && it.name.startsWith('mixins/') && it.name.endsWith('.mixins.json') }
             if (configs.empty) throw new GradleException("No Mixin configs packaged in ${artifact.name}")
             configs.each { entry ->

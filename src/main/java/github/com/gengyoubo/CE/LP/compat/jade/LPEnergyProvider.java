@@ -39,7 +39,8 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
         if (blockEntity instanceof ItemPipeBlockEntity itemPipe) {
             var contents = itemPipe.getNetworkContents();
             if (!contents.isEmpty()) {
-                data.putString(ITEM_NAME_KEY, contents.getHoverName().getString());
+                // Preserve translatable components and custom names until the client renders them.
+                data.putString(ITEM_NAME_KEY, Component.Serializer.toJson(contents.getHoverName()));
                 data.putInt(ITEM_COUNT_KEY, contents.getCount());
             }
         }
@@ -112,8 +113,11 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
         // Each buffer occupies its own text row, including empty buffers.
         energyLines(data).forEach(tooltip::add);
         if (data.contains(ITEM_NAME_KEY) && data.contains(ITEM_COUNT_KEY)) {
-            tooltip.add(Component.translatable("tooltip.changede.pipe_items",
-                    data.getString(ITEM_NAME_KEY), data.getInt(ITEM_COUNT_KEY)));
+            Component itemName = Component.Serializer.fromJson(data.getString(ITEM_NAME_KEY));
+            if (itemName != null) {
+                tooltip.add(Component.translatable("tooltip.changede.pipe_items",
+                        itemName, data.getInt(ITEM_COUNT_KEY)));
+            }
         }
     }
 
