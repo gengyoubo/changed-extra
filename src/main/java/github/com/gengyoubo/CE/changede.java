@@ -141,7 +141,11 @@ public class changede {
         github.com.gengyoubo.CE.skill.SkillAttributes.REGISTRY.register(bus);
         CENetwork.register();
         if (ModList.get().isLoaded("curios")) {
-            github.com.gengyoubo.CE.compat.curios.CuriosAccessoryCompat.initialize(bus);
+            if (github.com.gengyoubo.CE.compat.curios.SynergyCuriosClothing.present()) {
+                LOGGER.info("Changed: Synergy provides Curios slots for Changed accessories; skipping Changed Extra's own");
+            } else {
+                github.com.gengyoubo.CE.compat.curios.CuriosAccessoryCompat.initialize(bus);
+            }
         }
         if (ModList.get().isLoaded("twilightforest")) {
             github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossCompat.initialize(bus);

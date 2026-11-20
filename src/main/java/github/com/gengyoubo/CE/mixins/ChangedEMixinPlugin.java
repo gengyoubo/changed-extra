@@ -54,11 +54,14 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        // Changed: Synergy 1.1.5+ already backs Changed accessories with its own Curios slots.
         if (mixinClassName.equals("github.com.gengyoubo.CE.mixins.AccessoryLayerCuriosMixin")) {
-            return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("curios");
+            return FMLEnvironment.dist == Dist.CLIENT && isModLoaded("curios") && !hasSynergyCuriosClothing();
         }
-        if (mixinClassName.equals("github.com.gengyoubo.CE.mixins.AccessorySlotsCuriosMixin")
-                || mixinClassName.equals("github.com.gengyoubo.CE.mixins.CuriosSlotManagerAccessor")
+        if (mixinClassName.equals("github.com.gengyoubo.CE.mixins.AccessorySlotsCuriosMixin")) {
+            return isModLoaded("curios") && !hasSynergyCuriosClothing();
+        }
+        if (mixinClassName.equals("github.com.gengyoubo.CE.mixins.CuriosSlotManagerAccessor")
                 || mixinClassName.equals("github.com.gengyoubo.CE.mixins.CuriosEntityManagerAccessor")) {
             return isModLoaded("curios");
         }
@@ -161,6 +164,17 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+    }
+
+    /** Kept in sync with compat.curios.SynergyCuriosClothing; duplicated to avoid loading game classes here. */
+    private static boolean hasSynergyCuriosClothing() {
+        try {
+            var file = LoadingModList.get().getModFileById("changed_synergy");
+            return file != null && java.nio.file.Files.exists(file.getFile()
+                    .findResource("net/parkabird/changedsynergy/compat/curios/NativeClothingInventory.class"));
+        } catch (Throwable ignored) {
+            return false;
+        }
     }
 
     private static boolean isModLoaded(String modId) {

@@ -140,7 +140,7 @@ dependencies {
     //changed类
     implementation fg.deobf("curse.maven:changed-addon-plus-711303:8515645")
     implementation fg.deobf("curse.maven:changed-minecraft-mod-661527:8217446")
-    implementation fg.deobf("curse.maven:changed-synergy-1670037:9005974")//可选依赖
+    implementation fg.deobf("curse.maven:changed-synergy-1670037:9588529")//可选依赖
     implementation fg.deobf("curse.maven:touhou-little-maid-355044:8061847")//changed-synergy的额外可选依赖
     //模组外扩展
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
@@ -183,29 +183,25 @@ dependencies {
         implementation fg.deobf('maven.modrinth:mekanism-generators:10.4.16.80')
     }
     //AE2
-    implementation fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
-    implementation fg.deobf("curse.maven:guideme-1173950:7127447")
-    implementation fg.deobf("curse.maven:ae2-wcwt-1546802:9036216")
-    implementation fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:7251206")
+    compileOnly fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
+    compileOnly fg.deobf("curse.maven:guideme-1173950:7127447")
+    compileOnly fg.deobf("curse.maven:ae2-wcwt-1546802:9036216")
+    compileOnly fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:7251206")
     //热力系列
     //runtimeOnly fg.deobf("curse.maven:cofh-core-69162:5374122")
     //runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:5443583")
     //runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:5372749")
     compileOnly fg.deobf("curse.maven:thermal-dynamics-227443:5372747")
     //匠魂
-    implementation fg.deobf("curse.maven:mantle-74924:8809819")
-    if (providers.gradleProperty('omitTinkersForChecks').getOrElse('false').toBoolean()) {
-        compileOnly fg.deobf("curse.maven:tinkers-construct-74072:8944121")
-    } else {
-        implementation fg.deobf("curse.maven:tinkers-construct-74072:8944121")
-    }
+    compileOnly fg.deobf("curse.maven:mantle-74924:8809819")
+    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:8944121")
     //JEI系列
     implementation fg.deobf("curse.maven:jei-238222:9205046")
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:5057220")
     implementation fg.deobf("curse.maven:jer-integration-506948:5281932")
     //其他模组
     //runtimeOnly  fg.deobf("curse.maven:inventory-sort-1317144:7724308")
-    implementation fg.deobf("curse.maven:bakeries-1191781:8041836")
+    compileOnly fg.deobf("curse.maven:bakeries-1191781:8041836")
     //拍摄
     //runtimeOnly fg.deobf("github.com.gengyoubo.replayneo:RePlay:1.0.4")
     //正版
