@@ -8,5 +8,5 @@ import top.theillusivec4.curios.common.data.CuriosSlotManager;
 
 @Mixin(value = CuriosSlotManager.class, remap = false)
 public interface CuriosSlotManagerAccessor {
-    @Accessor("slots") void changede$setSlots(Map<String, ISlotType> slots);
+    @Accessor("slots") void changed_extra$setSlots(Map<String, ISlotType> slots);
 }

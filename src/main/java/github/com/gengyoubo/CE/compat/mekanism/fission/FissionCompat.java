@@ -28,9 +28,9 @@ import net.minecraftforge.registries.RegistryObject;
 /** Loaded only when Mekanism Generators is present. AE2 classes are isolated in FissionMeInterface. */
 @SuppressWarnings("removal")
 public final class FissionCompat {
-    private static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister("changede");
-    private static final TileEntityTypeDeferredRegister ENTITIES = new TileEntityTypeDeferredRegister("changede");
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
+    private static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister("changed_extra");
+    private static final TileEntityTypeDeferredRegister ENTITIES = new TileEntityTypeDeferredRegister("changed_extra");
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changed_extra");
     public static final RegistryObject<Item> HEAT_EXCHANGE_CORE = ITEMS.register("fission_heat_exchange_core", () -> new Item(new Item.Properties()));
     public static final EnumMap<FissionUpgrade, BlockRegistryObject<FissionUpgradeBlock, BlockItem>> UPGRADES = new EnumMap<>(FissionUpgrade.class);
     public static final EnumMap<FissionUpgrade, TileEntityTypeRegistryObject<TileEntityFissionReactorCasing>> TILES = new EnumMap<>(FissionUpgrade.class);
@@ -49,9 +49,9 @@ public final class FissionCompat {
         BLOCKS.register(bus);
         ENTITIES.register(bus);
         ITEMS.register(bus);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, FissionConfig.SPEC, "changede-fission-server.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, FissionConfig.SPEC, "changed_extra-fission-server.toml");
         bus.addListener((BuildCreativeModeTabContentsEvent event) -> {
-            if (event.getTabKey().location().equals(ResourceLocation.parse("changede:extra"))) {
+            if (event.getTabKey().location().equals(ResourceLocation.parse("changed_extra:extra"))) {
                 UPGRADES.values().forEach(block -> event.accept(block.asItem()));
                 event.accept(HEAT_EXCHANGE_CORE.get());
             }
@@ -60,15 +60,15 @@ public final class FissionCompat {
             if (event.getPackType() != PackType.SERVER_DATA) return;
             for (String name : new String[]{"fission_upgrades", "fission_me"}) {
                 if (name.equals("fission_me") && !ModList.get().isLoaded("ae2")) continue;
-                var path = ModList.get().getModFileById("changede").getFile().findResource("resourcepacks", name);
-                var pack = Pack.readMetaAndCreate("changede:" + name, Component.literal("Changed Extra " + name), true,
+                var path = ModList.get().getModFileById("changed_extra").getFile().findResource("resourcepacks", name);
+                var pack = Pack.readMetaAndCreate("changed_extra:" + name, Component.literal("Changed Extra " + name), true,
                         id -> new PathPackResources(id, true, path), PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
                 if (pack != null) event.addRepositorySource(output -> output.accept(pack));
             }
         });
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT)
             FissionClient.initialize(bus);
-        if (Boolean.getBoolean("changede.verifyFission")) {
+        if (Boolean.getBoolean("changed_extra.verifyFission")) {
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(FissionRegressionChecks::started);
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(FissionRegressionChecks::tick);
         }

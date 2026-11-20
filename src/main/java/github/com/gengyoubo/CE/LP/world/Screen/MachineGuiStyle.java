@@ -23,7 +23,7 @@ public final class MachineGuiStyle {
     private MachineGuiStyle() { }
 
     public static ResourceLocation texture(String name) {
-        return ResourceLocation.fromNamespaceAndPath("changede", "textures/gui/" + name + ".png");
+        return ResourceLocation.fromNamespaceAndPath("changed_extra", "textures/gui/" + name + ".png");
     }
 
     /** Panels are exported at their exact size, so the texture is width x height. */

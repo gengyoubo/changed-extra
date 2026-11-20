@@ -9,7 +9,7 @@ public final class LatexSmelteryClient {
     public static void initialize(IEventBus bus) {
         bus.addListener((EntityRenderersEvent.RegisterRenderers event) ->
                 event.registerBlockEntityRenderer(LatexSmelteryCompat.TANK_ENTITY.get(), TankBlockEntityRenderer::new));
-        if (Boolean.getBoolean("changede.verifyLatexTinkersClient"))
+        if (Boolean.getBoolean("changed_extra.verifyLatexTinkersClient"))
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(LatexSmelteryClientChecks::tick);
     }
 }

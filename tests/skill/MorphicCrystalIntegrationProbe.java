@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.skill;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import github.com.gengyoubo.CE.init.*;
 import github.com.gengyoubo.CE.LP.init.CELPBlock;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.BasicAlloyFurnaceBlockEntity;
@@ -65,9 +65,9 @@ public final class MorphicCrystalIntegrationProbe {
         check(crafted.assemble(grid,level.registryAccess()).is(CEItem.MORPHIC_CRYSTAL_CORE.get()),"cross-shaped core recipe");
         grid.setItem(0,new ItemStack(CEItem.MORPHIC_CRYSTAL_ALLOY.get()));
         check(level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING,grid,level).isEmpty(),"empty corners required");
-        var feature=level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(ResourceLocation.parse("changede:ore_morphic_crystal_small"));
+        var feature=level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(ResourceLocation.parse("changed_extra:ore_morphic_crystal_small"));
         check(feature!=null && !feature.place(level,level.getChunkSource().getGenerator(),random,pos),"dimension guard rejects overworld");
-        var latex=server.getLevel(ResourceKey.create(Registries.DIMENSION,ResourceLocation.parse("changede:latex_space")));
+        var latex=server.getLevel(ResourceKey.create(Registries.DIMENSION,ResourceLocation.parse("changed_extra:latex_space")));
         check(latex!=null,"latex dimension loaded");
         // A contiguous climate sample can contain only one substrate. Exercise both targets directly.
         for(boolean dark:List.of(false,true)) {
@@ -87,7 +87,7 @@ public final class MorphicCrystalIntegrationProbe {
         report.put("overworld",overworld);report.put("latex_space",morphic);report.put("morphic_to_diamond_ratio",ratio);
         java.nio.file.Files.writeString(java.nio.file.Path.of("morphic-worldgen-sample.json"),new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report));
         check(ratio>.5 && ratio<1.75,"morphic block density should remain comparable to diamonds: "+ratio);
-        changede.LOGGER.info("MORPHIC_INTEGRATION_PASS: drops, iron gate, Silk/Fortune, XP, LP processing, crafting, strict dimension and 512-chunk density ratio={}",ratio);
+        changed_extra.LOGGER.info("MORPHIC_INTEGRATION_PASS: drops, iron gate, Silk/Fortune, XP, LP processing, crafting, strict dimension and 512-chunk density ratio={}",ratio);
     }
     private static Map<String,Integer> sample(ServerLevel level,boolean latex) {
         int morphic=0,diamond=0,dark=0,white=0,hosts=0;
@@ -104,7 +104,7 @@ public final class MorphicCrystalIntegrationProbe {
                     if(state.is(Blocks.STONE) || state.is(Blocks.DEEPSLATE) || state.is(CEBlock.DARK_LATEX_STONE.get()) || state.is(CEBlock.WHITE_LATEX_STONE.get()))hosts++;
                 }
             }
-            if((i+1)%32==0)changede.LOGGER.info("MORPHIC_SAMPLE {} {}/512 chunks; morphic={}, diamond={}",latex ? "latex" : "overworld",i+1,morphic,diamond);
+            if((i+1)%32==0)changed_extra.LOGGER.info("MORPHIC_SAMPLE {} {}/512 chunks; morphic={}, diamond={}",latex ? "latex" : "overworld",i+1,morphic,diamond);
         }
         return Map.of("morphic",morphic,"diamond",diamond,"dark",dark,"white",white,"remaining_host_blocks",hosts);
     }

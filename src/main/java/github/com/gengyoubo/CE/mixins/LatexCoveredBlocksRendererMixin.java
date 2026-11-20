@@ -40,7 +40,7 @@ public abstract class LatexCoveredBlocksRendererMixin {
     public abstract RenderType getRenderType(LatexCoverState coverState);
 
     @Inject(method = "wrappedTesselate", at = @At("HEAD"), cancellable = true, remap = false)
-    private void changede$ensureThreadLocalCleanup(
+    private void changed_extra$ensureThreadLocalCleanup(
             BlockAndTintGetter level,
             LatexCoverGetter latexCoverGetter,
             BlockPos blockPos,

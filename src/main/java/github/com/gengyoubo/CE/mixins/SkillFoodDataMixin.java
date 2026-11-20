@@ -22,28 +22,28 @@ public abstract class SkillFoodDataMixin implements SkillFoodData {
     @Shadow private int tickTimer;
     @Shadow private int foodLevel;
     @Shadow private float saturationLevel;
-    @Unique private Player changede$owner;
-    @Unique private double changede$regenRemainder;
-    @Unique private double changede$previousCapacity;
-    @Override public void changede$setOwner(Player player) { changede$owner = player; }
-    @Unique private double changede$attribute(Attribute attribute, double fallback) {
-        if (changede$owner == null || changede$owner.level().isClientSide) return fallback;
-        var instance = changede$owner.getAttribute(attribute);
+    @Unique private Player changed_extra$owner;
+    @Unique private double changed_extra$regenRemainder;
+    @Unique private double changed_extra$previousCapacity;
+    @Override public void changed_extra$setOwner(Player player) { changed_extra$owner = player; }
+    @Unique private double changed_extra$attribute(Attribute attribute, double fallback) {
+        if (changed_extra$owner == null || changed_extra$owner.level().isClientSide) return fallback;
+        var instance = changed_extra$owner.getAttribute(attribute);
         return instance == null ? fallback : instance.getValue();
     }
     @ModifyVariable(method = "addExhaustion", at = @At("HEAD"), argsOnly = true)
-    private float changede$slowExhaustion(float amount) {
-        return SkillNutrition.exhaustion(amount, changede$attribute(SkillAttributes.EXHAUSTION_REDUCTION.get(), 0));
+    private float changed_extra$slowExhaustion(float amount) {
+        return SkillNutrition.exhaustion(amount, changed_extra$attribute(SkillAttributes.EXHAUSTION_REDUCTION.get(), 0));
     }
     // Keep the eat(IF) invocation intact for SSC/Apoli redirects. FoodData only reads
     // nutrition and saturation from this local; normal eating effects still come from the item.
     // This three-argument overload is added by Forge and has no vanilla obfuscation mapping.
     @ModifyVariable(method = "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V",
             at = @At("STORE"), ordinal = 0, remap = false)
-    private FoodProperties changede$diet(FoodProperties original, Item item, ItemStack stack, LivingEntity entity) {
+    private FoodProperties changed_extra$diet(FoodProperties original, Item item, ItemStack stack, LivingEntity entity) {
         if (original == null || !(entity instanceof ServerPlayer player) || !SkillDiets.matches(player, stack))
             return original;
-        changede$setOwner(player);
+        changed_extra$setOwner(player);
         var meal = SkillNutrition.dietMeal(original.getNutrition(), original.getSaturationModifier());
         var builder = new FoodProperties.Builder().nutrition(meal.nutrition()).saturationMod(meal.saturationModifier());
         if (original.isMeat()) builder.meat();
@@ -53,28 +53,28 @@ public abstract class SkillFoodDataMixin implements SkillFoodData {
         return builder.build();
     }
     @ModifyVariable(method = "eat(IF)V", at = @At("HEAD"), argsOnly = true)
-    private float changede$mealSaturation(float modifier) {
-        return SkillNutrition.foodSaturation(modifier, changede$attribute(SkillAttributes.FOOD_SATURATION.get(), 1));
+    private float changed_extra$mealSaturation(float modifier) {
+        return SkillNutrition.foodSaturation(modifier, changed_extra$attribute(SkillAttributes.FOOD_SATURATION.get(), 1));
     }
     @Redirect(method = "eat(IF)V", at = @At(value = "INVOKE", target = "Ljava/lang/Math;min(FF)F"))
-    private float changede$mealCapacity(float saturation, float vanillaCap) {
+    private float changed_extra$mealCapacity(float saturation, float vanillaCap) {
         return Math.min(saturation, SkillNutrition.saturationCap(vanillaCap,
-                changede$attribute(SkillAttributes.SATURATION_CAPACITY.get(), 0)));
+                changed_extra$attribute(SkillAttributes.SATURATION_CAPACITY.get(), 0)));
     }
     @Inject(method = "tick", at = @At("HEAD"))
-    private void changede$naturalGrowth(Player player, CallbackInfo ci) {
-        changede$setOwner(player);
+    private void changed_extra$naturalGrowth(Player player, CallbackInfo ci) {
+        changed_extra$setOwner(player);
         if (player.level().isClientSide) return;
-        double capacity = changede$attribute(SkillAttributes.SATURATION_CAPACITY.get(), 0);
-        if (capacity > 0 || changede$previousCapacity > 0 || saturationLevel > 20)
+        double capacity = changed_extra$attribute(SkillAttributes.SATURATION_CAPACITY.get(), 0);
+        if (capacity > 0 || changed_extra$previousCapacity > 0 || saturationLevel > 20)
             saturationLevel = Math.min(saturationLevel, SkillNutrition.saturationCap(foodLevel, capacity));
-        changede$previousCapacity = capacity;
+        changed_extra$previousCapacity = capacity;
         boolean regeneration = player.level().getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);
         if (SkillNutrition.canRegenerate(regeneration, player.isHurt(), foodLevel)) {
-            changede$regenRemainder += SkillNutrition.regenerationBonus(changede$attribute(SkillAttributes.REGENERATION_SPEED.get(), 1));
-            int extraTicks = SkillNutrition.wholeBonusTicks(changede$regenRemainder);
+            changed_extra$regenRemainder += SkillNutrition.regenerationBonus(changed_extra$attribute(SkillAttributes.REGENERATION_SPEED.get(), 1));
+            int extraTicks = SkillNutrition.wholeBonusTicks(changed_extra$regenRemainder);
             tickTimer += extraTicks;
-            changede$regenRemainder = Math.max(0, changede$regenRemainder - extraTicks);
-        } else changede$regenRemainder = 0;
+            changed_extra$regenRemainder = Math.max(0, changed_extra$regenRemainder - extraTicks);
+        } else changed_extra$regenRemainder = 0;
     }
 }

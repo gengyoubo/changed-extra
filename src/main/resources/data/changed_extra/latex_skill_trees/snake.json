@@ -1,0 +1,148 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_snake"
+  ],
+  "nodes": [
+    {
+      "id": "changed_extra:snake_core",
+      "title": "skill.changed_extra.snake_core",
+      "description": "skill.changed_extra.snake_core.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:common_strength_2"
+      ],
+      "x": 11,
+      "y": 11,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "meat_diet",
+          "value": 1
+        }
+      ],
+      "research": "race"
+    },
+    {
+      "id": "changed_extra:snake_stride_1",
+      "title": "skill.changed_extra.snake_stride_1",
+      "description": "skill.changed_extra.snake_stride_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:snake_core"
+      ],
+      "x": 12,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.02,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:snake_stride_2",
+      "title": "skill.changed_extra.snake_stride_2",
+      "description": "skill.changed_extra.snake_stride_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:snake_stride_1"
+      ],
+      "x": 11,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.02,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:snake_balance_1",
+      "title": "skill.changed_extra.snake_balance_1",
+      "description": "skill.changed_extra.snake_balance_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:snake_core"
+      ],
+      "x": 12,
+      "y": 14,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:snake_balance_2",
+      "title": "skill.changed_extra.snake_balance_2",
+      "description": "skill.changed_extra.snake_balance_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:snake_balance_1"
+      ],
+      "x": 11,
+      "y": 15,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "amount": 0.025,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:snake_health_1",
+      "title": "skill.changed_extra.snake_health_1",
+      "description": "skill.changed_extra.snake_health_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:snake_core"
+      ],
+      "x": 12,
+      "y": 16,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:snake_health_2",
+      "title": "skill.changed_extra.snake_health_2",
+      "description": "skill.changed_extra.snake_health_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:snake_health_1"
+      ],
+      "x": 11,
+      "y": 17,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

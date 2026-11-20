@@ -1,0 +1,6 @@
+{
+  "parent": "changed_extra:block/fission_thermoelectric_module",
+  "textures": {
+    "panel": "changed_extra:block/fission_thermoelectric_module_fused"
+  }
+}

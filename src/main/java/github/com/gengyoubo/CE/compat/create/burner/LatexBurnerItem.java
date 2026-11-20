@@ -21,12 +21,12 @@ public final class LatexBurnerItem extends BlockItem {
     @Override public void registerBlocks(Map<net.minecraft.world.level.block.Block, Item> map, Item item) {
         if (filled) super.registerBlocks(map, item);
     }
-    @Override public String getDescriptionId() { return filled ? "block.changede.latex_burner" : "item.changede.empty_latex_burner"; }
+    @Override public String getDescriptionId() { return filled ? "block.changed_extra.latex_burner" : "item.changed_extra.empty_latex_burner"; }
     @Override public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         return filled ? InteractionResult.PASS : LatexBurnerCapture.capture(stack, player, target, hand);
     }
     @Override public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
-        if (!filled) { lines.add(Component.translatable("changede.latex_burner.capture_hint")); return; }
+        if (!filled) { lines.add(Component.translatable("changed_extra.latex_burner.capture_hint")); return; }
         var data = stack.getTagElement("BlockEntityTag");
         if (data != null) LatexBurnerBlockEntity.itemSummary(data).forEach(lines::add);
     }

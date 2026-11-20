@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "changed_extra:item/white_latex_hanging_sign"
+  }
+}

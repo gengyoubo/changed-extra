@@ -13,10 +13,10 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class MimicSirenTailEvents {
     private static final UUID SWIM_MODIFIER = UUID.fromString("c01d7435-9b60-40f7-9d23-a43c503868dc");
-    private static final String GRAVITY_TAG = "changede_mimic_siren_tail_no_gravity";
+    private static final String GRAVITY_TAG = "changed_extra_mimic_siren_tail_no_gravity";
 
     private MimicSirenTailEvents() {
     }

@@ -22,12 +22,12 @@ import twilightforest.world.components.structures.finalcastle.FinalCastleBossGaz
 public abstract class TwilightFinalCastleArenaMixin extends TFStructureComponentOld {
     protected TwilightFinalCastleArenaMixin(StructurePieceType type, CompoundTag tag) { super(type, tag); }
     @Inject(method = "<init>(ILtwilightforest/world/components/structures/TFStructureComponentOld;III)V", at = @At("RETURN"))
-    private void changede$expandArena(int index, TFStructureComponentOld keep, int x, int y, int z, CallbackInfo ci) {
+    private void changed_extra$expandArena(int index, TFStructureComponentOld keep, int x, int y, int z, CallbackInfo ci) {
         var box = keep.getBoundingBox();
         this.boundingBox = new BoundingBox(box.minX() + 2, box.maxY() + 2, box.minZ() + 2, box.maxX() - 2, box.maxY() + 26, box.maxZ() - 2);
     }
     @Inject(method = "postProcess", at = @At("HEAD"), cancellable = true, remap = true)
-    private void changede$finishArena(WorldGenLevel world, StructureManager manager, ChunkGenerator generator,
+    private void changed_extra$finishArena(WorldGenLevel world, StructureManager manager, ChunkGenerator generator,
                                      RandomSource random, BoundingBox bounds, ChunkPos chunk, BlockPos origin, CallbackInfo ci) {
         var wall = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
         var floor = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState();

@@ -18,32 +18,32 @@ import org.spongepowered.asm.mixin.Unique;
 /** Purifier inherits these capability methods, so there is no local injection target. */
 @Mixin(value = PurifierBlockEntity.class, remap = false)
 public abstract class PurifierMekanismEnergyMixin extends BaseContainerBlockEntity {
-    @Unique private LazyOptional<IStrictEnergyHandler> changede$strictEnergy = changede$newStrictEnergy();
+    @Unique private LazyOptional<IStrictEnergyHandler> changed_extra$strictEnergy = changed_extra$newStrictEnergy();
 
     protected PurifierMekanismEnergyMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
     @Unique
-    private LazyOptional<IStrictEnergyHandler> changede$newStrictEnergy() {
+    private LazyOptional<IStrictEnergyHandler> changed_extra$newStrictEnergy() {
         return LazyOptional.of(() -> new WorkbenchMekanismEnergyHandler((WorkbenchEnergyHolder) (Object) this));
     }
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (cap == Capabilities.STRICT_ENERGY) return changede$strictEnergy.cast();
+        if (cap == Capabilities.STRICT_ENERGY) return changed_extra$strictEnergy.cast();
         return super.getCapability(cap, side);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        changede$strictEnergy.invalidate();
+        changed_extra$strictEnergy.invalidate();
     }
 
     @Override
     public void reviveCaps() {
         super.reviveCaps();
-        changede$strictEnergy = changede$newStrictEnergy();
+        changed_extra$strictEnergy = changed_extra$newStrictEnergy();
     }
 }

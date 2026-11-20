@@ -1,7 +1,7 @@
 package github.com.gengyoubo.CE.compat.synergy;
 
 import com.mojang.authlib.GameProfile;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.minecraft.nbt.CompoundTag;
@@ -42,12 +42,12 @@ public final class InventoryBackupRegressionChecks {
             creature.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
             CompoundTag snapshot = CreatureInventoryBackup.capture(creature);
             CreatureInventoryBackup.checkpoint(creature, "test_snapshot");
-            CompoundTag expectedHistory = creature.getPersistentData().getCompound("changede_inventory_backup").copy();
+            CompoundTag expectedHistory = creature.getPersistentData().getCompound("changed_extra_inventory_backup").copy();
             // Wipe real storage and equipment, then verify empty states cannot erase recovery history.
             creature.getInventory().clearContent();
             new net.parkabird.changedsynergy.world.inventory.BondedCreatureInventory(creature).clearContent();
             for (int i = 0; i < 10; i++) CreatureInventoryBackup.checkpoint(creature, "test_empty");
-            check(creature.getPersistentData().getCompound("changede_inventory_backup").getList("History", Tag.TAG_COMPOUND)
+            check(creature.getPersistentData().getCompound("changed_extra_inventory_backup").getList("History", Tag.TAG_COMPOUND)
                     .equals(expectedHistory.getList("History", Tag.TAG_COMPOUND)), "Empty snapshots retain nonempty history");
             creature.getInventory().selected = 0;
             check(CreatureInventoryBackup.restore(creature, snapshot) > 0, "Empty native and CS slots can be recovered");
@@ -68,23 +68,23 @@ public final class InventoryBackupRegressionChecks {
 
             AbstractDarkLatexEntity reloaded = create(level);
             reloaded.load(creature.saveWithoutId(new CompoundTag()));
-            check(reloaded.getPersistentData().getCompound("changede_inventory_backup")
-                    .equals(creature.getPersistentData().getCompound("changede_inventory_backup")), "Backups survive entity save/load");
+            check(reloaded.getPersistentData().getCompound("changed_extra_inventory_backup")
+                    .equals(creature.getPersistentData().getCompound("changed_extra_inventory_backup")), "Backups survive entity save/load");
             reloaded.setUUID(UUID.randomUUID());
             net.parkabird.changedsynergy.ai.CreatureMorphContinuity.transferForced(creature, reloaded);
-            check(!reloaded.getPersistentData().getCompound("changede_inventory_backup").getList("History", Tag.TAG_COMPOUND).isEmpty(),
+            check(!reloaded.getPersistentData().getCompound("changed_extra_inventory_backup").getList("History", Tag.TAG_COMPOUND).isEmpty(),
                     "Morph continuity carries recovery history");
-            creature.getPersistentData().getCompound("changede_inventory_backup").getList("History", Tag.TAG_COMPOUND).clear();
-            check(!reloaded.getPersistentData().getCompound("changede_inventory_backup").getList("History", Tag.TAG_COMPOUND).isEmpty(),
+            creature.getPersistentData().getCompound("changed_extra_inventory_backup").getList("History", Tag.TAG_COMPOUND).clear();
+            check(!reloaded.getPersistentData().getCompound("changed_extra_inventory_backup").getList("History", Tag.TAG_COMPOUND).isEmpty(),
                     "Transferred history does not share mutable NBT with the old body");
             reloaded.discard();
             for (int i = 1; i <= 8; i++) {
                 creature.getInventory().setItem(10, new ItemStack(Items.COPPER_INGOT, i));
                 CreatureInventoryBackup.checkpoint(creature, "test_history_limit");
             }
-            check(creature.getPersistentData().getCompound("changede_inventory_backup").getList("History", Tag.TAG_COMPOUND).size() == 5,
+            check(creature.getPersistentData().getCompound("changed_extra_inventory_backup").getList("History", Tag.TAG_COMPOUND).size() == 5,
                     "Recovery history is bounded at five records");
-            changede.LOGGER.info("INVENTORY BACKUP REGRESSION CHECKS PASSED");
+            changed_extra.LOGGER.info("INVENTORY BACKUP REGRESSION CHECKS PASSED");
         } finally {
             creature.discard();
             event.getServer().halt(false);
@@ -99,6 +99,6 @@ public final class InventoryBackupRegressionChecks {
 
     private static void check(boolean result, String message) {
         if (!result) throw new AssertionError(message);
-        changede.LOGGER.info("Inventory backup PASS: {}", message);
+        changed_extra.LOGGER.info("Inventory backup PASS: {}", message);
     }
 }

@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.LP.compat;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +34,7 @@ final class OptionalSpaceTowerBlockEntities {
             }
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException | LinkageError exception) {
-            changede.LOGGER.warn("Failed to create optional space tower block entity {}", className, exception);
+            changed_extra.LOGGER.warn("Failed to create optional space tower block entity {}", className, exception);
         }
         return null;
     }

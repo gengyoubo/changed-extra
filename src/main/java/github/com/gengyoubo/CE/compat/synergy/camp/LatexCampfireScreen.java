@@ -22,7 +22,7 @@ public final class LatexCampfireScreen extends AbstractContainerScreen<LatexCamp
     public LatexCampfireScreen(LatexCampfireMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title); imageWidth = 400; imageHeight = 266;
     }
-    private static Component tr(String key, Object... arguments) { return Component.translatable("camp.changede." + key, arguments); }
+    private static Component tr(String key, Object... arguments) { return Component.translatable("camp.changed_extra." + key, arguments); }
     @Override protected void init() {
         super.init();
         uiScale = Math.min(1, Math.min(width / 416.0F, height / 282.0F));

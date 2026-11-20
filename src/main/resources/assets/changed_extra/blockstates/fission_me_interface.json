@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "changed_extra:block/fission_me_interface"
+    }
+  }
+}

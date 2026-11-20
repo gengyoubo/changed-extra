@@ -16,15 +16,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = DarkLatexWolfPup.class, remap = false)
 public class DarkLatexWolfPupSupportMixin {
     @Inject(method = {"doHurtTarget", "m_7327_"}, at = @At("HEAD"), cancellable = true)
-    private void changede$directAttackWhenUnsupported(Entity target, CallbackInfoReturnable<Boolean> cir) {
+    private void changed_extra$directAttackWhenUnsupported(Entity target, CallbackInfoReturnable<Boolean> cir) {
         DarkLatexWolfPup pup = (DarkLatexWolfPup)(Object)this;
         if (!DarkLatexWolfPupSupportEvents.hasNonPupDarkLatexSupport(pup)) {
-            cir.setReturnValue(changede$doDirectMeleeAttack(pup, target));
+            cir.setReturnValue(changed_extra$doDirectMeleeAttack(pup, target));
         }
     }
 
     @Unique
-    private boolean changede$doDirectMeleeAttack(DarkLatexWolfPup pup, Entity target) {
+    private boolean changed_extra$doDirectMeleeAttack(DarkLatexWolfPup pup, Entity target) {
         float damage = (float)pup.getAttributeValue(Attributes.ATTACK_DAMAGE);
         float knockback = (float)pup.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 

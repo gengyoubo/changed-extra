@@ -68,7 +68,7 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
         ImageButton back = new ImageButton(mainX() - 19, topPos + 9, 13, 13,
                 127, 0, 14, TASK, ignored ->
                 CENetwork.sendToServer(new MaidWorkSwitchPacket(menu.creatureId(), false)));
-        back.setTooltip(Tooltip.create(Component.translatable("screen.changede.maid_work.back")));
+        back.setTooltip(Tooltip.create(Component.translatable("screen.changed_extra.maid_work.back")));
         addRenderableWidget(previous);
         addRenderableWidget(next);
         addRenderableWidget(back);
@@ -85,7 +85,7 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
             addRenderableWidget(button);
         }
 
-        addRenderableWidget(Button.builder(Component.translatable("screen.changede.maid_work.stop"),
+        addRenderableWidget(Button.builder(Component.translatable("screen.changed_extra.maid_work.stop"),
                         ignored -> selectTask(menu.tasks().size()))
                 .bounds(mainX() + 5, topPos + 187, 70, 20).build());
     }
@@ -120,7 +120,7 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
         graphics.blit(MAIN, mainX() + 80, topPos + 166, 80, 166, 176, 90);
         graphics.blit(TASK, taskX(), topPos + 5, 0, 0, 92, 251);
 
-        graphics.drawString(font, Component.translatable("screen.changede.maid_work.main_hand"),
+        graphics.drawString(font, Component.translatable("screen.changed_extra.maid_work.main_hand"),
                 mainX() + 23, topPos + 211, 0x333333, false);
         graphics.fill(mainX() + 29, topPos + 223, mainX() + 51, topPos + 245, 0xFF373737);
         graphics.fill(mainX() + 30, topPos + 224, mainX() + 50, topPos + 244, 0xFFB8B8B8);
@@ -157,7 +157,7 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
         ItemStack icon = selected >= 0 && selected < tasks.size()
                 ? tasks.get(selected).getIcon() : new ItemStack(Items.FEATHER);
         Component name = selected >= 0 && selected < tasks.size()
-                ? tasks.get(selected).getName() : Component.translatable("screen.changede.maid_work.idle");
+                ? tasks.get(selected).getName() : Component.translatable("screen.changed_extra.maid_work.idle");
         graphics.renderItem(icon, mainX() + 6, topPos + 161);
         var lines = font.split(name, 42);
         if (!lines.isEmpty()) {
@@ -181,10 +181,10 @@ public final class MaidWorkScreen extends AbstractContainerScreen<MaidWorkMenu> 
                 && mouseY >= topPos + 113 && mouseY < topPos + 155) {
             int row = (mouseY - topPos - 113) / 11;
             String key = switch (row) {
-                case 0 -> "screen.changede.maid_work.health";
-                case 1 -> "screen.changede.maid_work.armor";
-                case 2 -> "screen.changede.maid_work.familiarity";
-                default -> "screen.changede.maid_work.work_status";
+                case 0 -> "screen.changed_extra.maid_work.health";
+                case 1 -> "screen.changed_extra.maid_work.armor";
+                case 2 -> "screen.changed_extra.maid_work.familiarity";
+                default -> "screen.changed_extra.maid_work.work_status";
             };
             graphics.renderTooltip(font, Component.translatable(key), mouseX, mouseY);
         }

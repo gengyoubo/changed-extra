@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "changed_extra:dark_latex_log",
+    "changed_extra:dark_latex_wood",
+    "changed_extra:dark_latex_stripped_log",
+    "changed_extra:dark_latex_stripped_wood"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanismgenerators"
+    }
+  ],
+  "pattern": [
+    "ILI",
+    "ACA",
+    "ILI"
+  ],
+  "key": {
+    "I": {
+      "item": "changed_extra:iridium_ingot"
+    },
+    "L": {
+      "item": "changed_extra:latex_ingot"
+    },
+    "A": {
+      "item": "mekanism:elite_control_circuit"
+    },
+    "C": {
+      "item": "mekanismgenerators:fission_reactor_casing"
+    }
+  },
+  "result": {
+    "item": "changed_extra:advanced_uranium_processor_x"
+  }
+}

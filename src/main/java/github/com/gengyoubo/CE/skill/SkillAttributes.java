@@ -8,9 +8,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 
 /** Physical traits exposed as attributes; these do not grant active abilities or flight permission. */
-@Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = "changed_extra", bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class SkillAttributes {
-    public static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, "changede");
+    public static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, "changed_extra");
     public static final RegistryObject<Attribute> FLIGHT_CONTROL = trait("flight_control");
     public static final RegistryObject<Attribute> LANDING_RESISTANCE = trait("landing_resistance");
     public static final RegistryObject<Attribute> DAMAGE_VS_WHITE = trait("damage_vs_white");
@@ -26,14 +26,14 @@ public final class SkillAttributes {
     public static final RegistryObject<Attribute> WEAPON_ADAPTATION = growthTrait("weapon_adaptation", 0, 100);
     public static final RegistryObject<Attribute> LATEX_WEAPON_DAMAGE = growthTrait("latex_weapon_damage", 0, 100);
     private static RegistryObject<Attribute> growthTrait(String id, double base, double maximum) {
-        return REGISTRY.register(id, () -> new RangedAttribute("attribute.changede." + id, base, 0, maximum).setSyncable(true));
+        return REGISTRY.register(id, () -> new RangedAttribute("attribute.changed_extra." + id, base, 0, maximum).setSyncable(true));
     }
     public static boolean isUniversalGrowth(net.minecraft.resources.ResourceLocation id) {
-        return id.getNamespace().equals("changede") && java.util.Set.of("regeneration_speed", "exhaustion_reduction",
+        return id.getNamespace().equals("changed_extra") && java.util.Set.of("regeneration_speed", "exhaustion_reduction",
                 "food_saturation", "saturation_capacity").contains(id.getPath());
     }
     private static RegistryObject<Attribute> trait(String id) {
-        return REGISTRY.register(id, () -> new RangedAttribute("attribute.changede." + id, 0, 0, 1).setSyncable(true));
+        return REGISTRY.register(id, () -> new RangedAttribute("attribute.changed_extra." + id, 0, 0, 1).setSyncable(true));
     }
     @SubscribeEvent public static void add(EntityAttributeModificationEvent event) {
         for (var attribute : REGISTRY.getEntries()) event.add(EntityType.PLAYER, attribute.get());

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = AccessorySlots.class, priority = 900, remap = false)
 public abstract class AccessorySlotsCuriosMixin {
     @Inject(method = "getForEntity", at = @At("RETURN"), cancellable = true)
-    private static void changede$useCuriosForPlayers(LivingEntity entity, CallbackInfoReturnable<Optional<AccessorySlots>> cir) {
+    private static void changed_extra$useCuriosForPlayers(LivingEntity entity, CallbackInfoReturnable<Optional<AccessorySlots>> cir) {
         CuriosAccessorySlots.forEntity(entity, false).ifPresent(slots -> cir.setReturnValue(Optional.of(slots)));
     }
 }

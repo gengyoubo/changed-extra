@@ -39,7 +39,7 @@ public final class TwilightCastleUpgrade extends SavedData {
         if (!level.hasChunk(nearest.getX() >> 4, nearest.getZ() >> 4)) return;
         var start = LandmarkUtil.locateNearestLandmarkStart(level, TFStructures.FINAL_CASTLE, event.player.blockPosition());
         if (start.isEmpty() || start.get() instanceof twilightforest.world.components.structures.start.TFStructureStart castle && castle.isConquered()) return;
-        var data = level.getDataStorage().computeIfAbsent(TwilightCastleUpgrade::load, TwilightCastleUpgrade::new, "changede_final_castle_upgrades");
+        var data = level.getDataStorage().computeIfAbsent(TwilightCastleUpgrade::load, TwilightCastleUpgrade::new, "changed_extra_final_castle_upgrades");
         for (var piece : start.get().getPieces()) {
             if (!(piece instanceof FinalCastleBossGazeboComponent)) continue;
             var bounds = piece.getBoundingBox();

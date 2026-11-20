@@ -20,7 +20,7 @@ public abstract class ContainerListenerSafetyMixin {
     private List<ContainerListener> containerListeners;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void changede$useStableListenerSnapshots(CallbackInfo ci) {
+    private void changed_extra$useStableListenerSnapshots(CallbackInfo ci) {
         // Writes are rare; slot and data broadcasts can iterate without copying or locking.
         // The current notification finishes its snapshot; changes apply to later notifications.
         containerListeners = new CopyOnWriteArrayList<>(containerListeners);

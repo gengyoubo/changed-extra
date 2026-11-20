@@ -24,5 +24,5 @@ public enum FissionThermoelectricJade implements IBlockComponentProvider, IServe
             if (component != null) tooltip.add(component);
         }
     }
-    @Override public ResourceLocation getUid() { return ResourceLocation.parse("changede:fission_thermoelectric"); }
+    @Override public ResourceLocation getUid() { return ResourceLocation.parse("changed_extra:fission_thermoelectric"); }
 }

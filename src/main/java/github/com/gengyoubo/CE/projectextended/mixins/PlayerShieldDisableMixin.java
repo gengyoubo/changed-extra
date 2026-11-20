@@ -23,11 +23,11 @@ public class PlayerShieldDisableMixin {
                     target = "Lnet/minecraft/world/entity/player/Player;disableShield(Z)V"
             )
     )
-    private void changede$skipDisableShieldForRedMatter(Player player, boolean strongAttack) {
+    private void changed_extra$skipDisableShieldForRedMatter(Player player, boolean strongAttack) {
         ItemStack shieldStack = player.getUseItem();
         if (shieldStack.getItem() instanceof CEShield shield && shield.isRedMatter()) {
             if (player instanceof ServerPlayer serverPlayer) {
-                changed_extra$awardAdvancement(serverPlayer, ResourceLocation.fromNamespaceAndPath("changede", "shield_disable_fail"));
+                changed_extra$awardAdvancement(serverPlayer, ResourceLocation.fromNamespaceAndPath("changed_extra", "shield_disable_fail"));
             }
             return;
         }

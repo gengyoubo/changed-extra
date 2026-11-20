@@ -4,7 +4,7 @@ import com.github.tartaricacid.touhoulittlemaid.api.event.MaidDeathEvent;
 import com.github.tartaricacid.touhoulittlemaid.api.event.MaidTombstoneEvent;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.mojang.authlib.GameProfile;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.parkabird.changedsynergy.world.inventory.BondedCreatureInventory;
@@ -125,7 +125,7 @@ public final class MaidLifecycleRegressionChecks {
             check(inventory.getItem(2).getCount() == 7 && diamondDrops.get() == 0, "Nonfatal proxy damage cannot duplicate loot");
             maid.getHideInv().insertItem(0, new ItemStack(Items.EMERALD, 3), false);
             maid.getTaskInv().insertItem(1, new ItemStack(Items.EMERALD, 4), false);
-            check(body.getPersistentData().getCompound("changede_maid_work_buffers").getCompound("hand")
+            check(body.getPersistentData().getCompound("changed_extra_maid_work_buffers").getCompound("hand")
                             .getCompound("0").getByte("Count") == 3,
                     "Temporary work items are saved on the body, never on the maid proxy");
 
@@ -152,7 +152,7 @@ public final class MaidLifecycleRegressionChecks {
                     "Body death drops exactly the original plus gathered items once (drops="
                             + diamondDrops.get() + ", remaining=" + inventory.getItem(2).getCount() + ")");
             check(maid.getMaidInv().getStackInSlot(2).isEmpty(), "Dead workers expose no usable inventory");
-            check(emeraldDrops.get() == 7 && !body.getPersistentData().contains("changede_maid_work_buffers"),
+            check(emeraldDrops.get() == 7 && !body.getPersistentData().contains("changed_extra_maid_work_buffers"),
                     "Real death releases temporary work items once and consumes their saved state");
             check(retainedStorage.extractItem(2, 64, false).isEmpty()
                             && retainedCapability.insertItem(8, new ItemStack(Items.DIAMOND, 64), false).getCount() == 64,
@@ -204,14 +204,14 @@ public final class MaidLifecycleRegressionChecks {
             maid.getHideInv().insertItem(0, new ItemStack(Items.EMERALD, 3), false);
             body.discard();
             check(maid.isRemoved() && !workers.containsKey(body.getUUID()), "World removal immediately retires the worker");
-            CompoundTag unloaded = body.getPersistentData().getCompound("changede_maid_work_buffers").copy();
+            CompoundTag unloaded = body.getPersistentData().getCompound("changed_extra_maid_work_buffers").copy();
             check(!unloaded.isEmpty() && emeraldDrops.get() == 7, "Unloading preserves temporary items in body NBT");
             body = create(level, player.getUUID(), bodies);
-            body.getPersistentData().put("changede_maid_work_buffers", unloaded);
+            body.getPersistentData().put("changed_extra_maid_work_buffers", unloaded);
             maid = new LatexMaidCompat.SyntheticMaid(level, body, player);
             proxies.add(maid);
             check(count(body.getInventory(), Items.EMERALD) == 3
-                            && !body.getPersistentData().contains("changede_maid_work_buffers"),
+                            && !body.getPersistentData().contains("changed_extra_maid_work_buffers"),
                     "A reloaded body's interrupted work items return once to its own storage");
             var storage = new BondedCreatureInventory(body);
             storage.setItem(2, new ItemStack(Items.DIAMOND, 4));
@@ -235,8 +235,8 @@ public final class MaidLifecycleRegressionChecks {
             workers.put(body.getUUID(), maid);
             var replacement = create(level, player.getUUID(), bodies);
             LatexMaidCompat.transferWorkState(body, replacement);
-            check(maid.isRemoved() && !body.getPersistentData().contains("changede_maid_work_buffers")
-                            && replacement.getPersistentData().contains("changede_maid_work_buffers"),
+            check(maid.isRemoved() && !body.getPersistentData().contains("changed_extra_maid_work_buffers")
+                            && replacement.getPersistentData().contains("changed_extra_maid_work_buffers"),
                     "Species replacement moves temporary item ownership and retires the previous worker");
             maid = new LatexMaidCompat.SyntheticMaid(level, replacement, player);
             proxies.add(maid);
@@ -252,7 +252,7 @@ public final class MaidLifecycleRegressionChecks {
             regular.hurt(regular.damageSources().genericKill(), Float.MAX_VALUE);
             check(realMaidTombstones.get() == 1, "Ordinary TLM maids retain their normal tombstone behavior");
             MaidEnvironmentRegressionChecks.verify(level, player);
-            changede.LOGGER.info("MAID LIFECYCLE REGRESSION CHECKS PASSED");
+            changed_extra.LOGGER.info("MAID LIFECYCLE REGRESSION CHECKS PASSED");
         } catch (ReflectiveOperationException exception) {
             throw new AssertionError("Could not inspect the work proxy cache", exception);
         } finally {
@@ -284,7 +284,7 @@ public final class MaidLifecycleRegressionChecks {
 
     private static void check(boolean condition, String message) {
         if (!condition) throw new AssertionError(message);
-        changede.LOGGER.info("Maid lifecycle PASS: {}", message);
+        changed_extra.LOGGER.info("Maid lifecycle PASS: {}", message);
     }
 
     private static int count(net.minecraft.world.Container inventory, net.minecraft.world.item.Item item) {

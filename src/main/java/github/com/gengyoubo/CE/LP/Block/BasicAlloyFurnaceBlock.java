@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BasicAlloyFurnaceBlock extends BaseEntityBlock implements EntityBlock {
-    private static final Component TITLE = Component.translatable("block.changede.basic_alloy_furnace");
+    private static final Component TITLE = Component.translatable("block.changed_extra.basic_alloy_furnace");
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     /** Burning front; toggled by the block entity while it works. */
     public static final BooleanProperty LIT = BlockStateProperties.LIT;

@@ -59,7 +59,7 @@ public class ChangedEntitiesMixin {
             ),
             remap = false
     )
-    private static void changede$preSizeEntityCollections(CallbackInfo ci) {
+    private static void changed_extra$preSizeEntityCollections(CallbackInfo ci) {
         Map<ResourceLocation, Pair<Integer, Integer>> entityColorMap = new HashMap<>(CHANGEDE$ENTITY_COLLECTION_CAPACITY);
         entityColorMap.putAll(ENTITY_COLOR_MAP);
         ENTITY_COLOR_MAP = entityColorMap;

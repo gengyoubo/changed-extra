@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.events;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import moze_intel.projecte.api.ProjectEAPI;
 import moze_intel.projecte.api.imc.CustomEMCRegistration;
 import moze_intel.projecte.api.imc.IMCMethods;
@@ -70,11 +70,11 @@ public class addEMCEvents {
             {"changed_addon:laethin_syringe",1504},
             {"changed_addon:luminar_crystal_shard_hearted",160},
             // changed extra
-            {"changede:peach",128}
+            {"changed_extra:peach",128}
     };
 
     public static void registerCustomEMC(InterModEnqueueEvent event) {
-        if (!changede.PROJECTE) {
+        if (!changed_extra.PROJECTE) {
             return;
         }
 
@@ -84,13 +84,13 @@ public class addEMCEvents {
     }
 
     private static void registerItemEMC(String itemId, long emc) {
-        changede.getItem(itemId).filter(item -> item != Items.AIR).ifPresentOrElse(item ->
+        changed_extra.getItem(itemId).filter(item -> item != Items.AIR).ifPresentOrElse(item ->
                 InterModComms.sendTo(
                         ProjectEAPI.PROJECTE_MODID,
                         IMCMethods.REGISTER_CUSTOM_EMC,
                         () -> new CustomEMCRegistration(NSSItem.createItem(item), emc)
                 ),
-                () -> changede.LOGGER.warn("Skipping ProjectE EMC registration for missing item {}", itemId)
+                () -> changed_extra.LOGGER.warn("Skipping ProjectE EMC registration for missing item {}", itemId)
         );
     }
 }

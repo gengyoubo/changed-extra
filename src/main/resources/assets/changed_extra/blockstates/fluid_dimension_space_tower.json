@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "changed_extra:block/space_tower"
+    },
+    "facing=up": {
+      "model": "changed_extra:block/space_tower"
+    },
+    "facing=north": {
+      "model": "changed_extra:block/space_tower"
+    },
+    "facing=south": {
+      "model": "changed_extra:block/space_tower",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed_extra:block/space_tower",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "changed_extra:block/space_tower",
+      "y": 90
+    }
+  }
+}

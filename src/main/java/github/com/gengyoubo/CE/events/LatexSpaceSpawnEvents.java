@@ -19,7 +19,7 @@ public class LatexSpaceSpawnEvents {
 
     private static final ResourceKey<Level> LATEX_SPACE = ResourceKey.create(
             net.minecraft.core.registries.Registries.DIMENSION,
-            ResourceLocation.fromNamespaceAndPath("changede", "latex_space")
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "latex_space")
     );
 
     private static final Set<ResourceKey<Biome>> LAND_BIOMES = Set.of(
@@ -101,7 +101,7 @@ public class LatexSpaceSpawnEvents {
     private static ResourceKey<Biome> biome(String path) {
         return ResourceKey.create(
                 net.minecraft.core.registries.Registries.BIOME,
-                ResourceLocation.fromNamespaceAndPath("changede", path)
+                ResourceLocation.fromNamespaceAndPath("changed_extra", path)
         );
     }
 

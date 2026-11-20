@@ -28,7 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /** Real Forge/JEI checks in an opt-in disposable world; never touches a user's save. */
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT)
 public final class JerCompatibilityClientChecks {
     private static int stage;
     private static boolean finished;
@@ -40,7 +40,7 @@ public final class JerCompatibilityClientChecks {
 
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent event) {
-        if (!Boolean.getBoolean("changede.verifyJerCompat") || finished || event.phase != TickEvent.Phase.END) return;
+        if (!Boolean.getBoolean("changed_extra.verifyJerCompat") || finished || event.phase != TickEvent.Phase.END) return;
         Minecraft minecraft = Minecraft.getInstance();
         try {
             if (stage == 0 && minecraft.getOverlay() == null && minecraft.screen != null
@@ -52,13 +52,13 @@ public final class JerCompatibilityClientChecks {
                 }
                 String world = "jer-check-" + System.currentTimeMillis();
                 var pack = minecraft.getLevelSource().getBaseDir().resolve(world).resolve("datapacks/jer-regression");
-                Files.createDirectories(pack.resolve("data/changede/worldgen/configured_feature"));
-                Files.createDirectories(pack.resolve("data/changede/worldgen/placed_feature"));
+                Files.createDirectories(pack.resolve("data/changed_extra/worldgen/configured_feature"));
+                Files.createDirectories(pack.resolve("data/changed_extra/worldgen/placed_feature"));
                 Files.writeString(pack.resolve("pack.mcmeta"), "{\"pack\":{\"pack_format\":15,\"description\":\"JER dormant-feature regression\"}}");
-                Files.writeString(pack.resolve("data/changede/worldgen/configured_feature/jer_check_dormant.json"),
-                        "{\"type\":\"minecraft:ore\",\"config\":{\"size\":32,\"discard_chance_on_air_exposure\":0,\"targets\":[{\"target\":{\"predicate_type\":\"minecraft:tag_match\",\"tag\":\"minecraft:stone_ore_replaceables\"},\"state\":{\"Name\":\"changede:dark_latex_morphic_crystal_ore\"}}]}}");
-                Files.writeString(pack.resolve("data/changede/worldgen/placed_feature/jer_check_dormant.json"),
-                        "{\"feature\":\"changede:jer_check_dormant\",\"placement\":[{\"type\":\"minecraft:count\",\"count\":99},{\"type\":\"minecraft:in_square\"},{\"type\":\"minecraft:height_range\",\"height\":{\"type\":\"minecraft:uniform\",\"min_inclusive\":{\"absolute\":40},\"max_inclusive\":{\"absolute\":40}}},{\"type\":\"minecraft:biome\"}]}");
+                Files.writeString(pack.resolve("data/changed_extra/worldgen/configured_feature/jer_check_dormant.json"),
+                        "{\"type\":\"minecraft:ore\",\"config\":{\"size\":32,\"discard_chance_on_air_exposure\":0,\"targets\":[{\"target\":{\"predicate_type\":\"minecraft:tag_match\",\"tag\":\"minecraft:stone_ore_replaceables\"},\"state\":{\"Name\":\"changed_extra:dark_latex_morphic_crystal_ore\"}}]}}");
+                Files.writeString(pack.resolve("data/changed_extra/worldgen/placed_feature/jer_check_dormant.json"),
+                        "{\"feature\":\"changed_extra:jer_check_dormant\",\"placement\":[{\"type\":\"minecraft:count\",\"count\":99},{\"type\":\"minecraft:in_square\"},{\"type\":\"minecraft:height_range\",\"height\":{\"type\":\"minecraft:uniform\",\"min_inclusive\":{\"absolute\":40},\"max_inclusive\":{\"absolute\":40}}},{\"type\":\"minecraft:biome\"}]}");
                 var settings = new LevelSettings("JER compatibility check", GameType.CREATIVE, false,
                         Difficulty.PEACEFUL, true, new GameRules(), WorldDataConfiguration.DEFAULT);
                 minecraft.options.renderDistance().set(2);
@@ -81,7 +81,7 @@ public final class JerCompatibilityClientChecks {
                         .filter(category -> category.getRecipeType().getUid().getNamespace().equals("jeresources")).count();
                 check(categories == 6, "Expected all six JER categories, got " + categories);
                 for (String block : new String[]{"changed_addon:deepslate_iridium_ore", "changed_addon:deepslate_painite_ore",
-                        "changede:dark_latex_morphic_crystal_ore", "changede:white_latex_morphic_crystal_ore",
+                        "changed_extra:dark_latex_morphic_crystal_ore", "changed_extra:white_latex_morphic_crystal_ore",
                         "create:zinc_ore", "create:deepslate_zinc_ore"}) check(hasChart(runtime, block), "Missing JEI ore chart: " + block);
                 check(JerOreClientState.snapshot().stream().anyMatch(data -> data.block().getNamespace().equals("tconstruct")),
                         "Standard ore features from another mod must be discovered");
@@ -94,14 +94,14 @@ public final class JerCompatibilityClientChecks {
                     check(JerOreClientState.snapshot().stream().filter(data -> data.block().getNamespace().equals("mekanism"))
                             .allMatch(data -> data.dimension().toString().equals("minecraft:overworld")), "Mekanism ores must have their actual overworld restriction");
                 }
-                check(jeresources.util.TranslationHelper.tryDimensionTranslate("changede:latex_space")
-                        .equals(net.minecraft.network.chat.Component.translatable("dimension.changede.latex_space").getString()), "JER latex dimension title must translate");
+                check(jeresources.util.TranslationHelper.tryDimensionTranslate("changed_extra:latex_space")
+                        .equals(net.minecraft.network.chat.Component.translatable("dimension.changed_extra.latex_space").getString()), "JER latex dimension title must translate");
                 check(!jeresources.util.TranslationHelper.tryDimensionTranslate("twilightforest:twilight_forest")
                         .equals("twilightforest:twilight_forest"), "JER Twilight Forest title must translate");
-                check(JerOreClientState.snapshot().stream().noneMatch(data -> data.block().getNamespace().equals("changede")
+                check(JerOreClientState.snapshot().stream().noneMatch(data -> data.block().getNamespace().equals("changed_extra")
                         && data.dimension().toString().equals("minecraft:overworld")), "Dormant/unattached feature must not expose CE ores in the overworld");
                 check(minecraft.getSingleplayerServer().registryAccess().registryOrThrow(Registries.PLACED_FEATURE)
-                        .containsKey(ResourceLocation.parse("changede:jer_check_dormant")), "Dormant regression fixture must actually be loaded");
+                        .containsKey(ResourceLocation.parse("changed_extra:jer_check_dormant")), "Dormant regression fixture must actually be loaded");
                 initialCount = recipeCount(runtime);
                 initialSnapshotCount = JerOreClientState.snapshot().size();
                 stage = 2;
@@ -148,7 +148,7 @@ public final class JerCompatibilityClientChecks {
                     + ModList.get().isLoaded("jerintegration") + "; Mekanism=" + ModList.get().isLoaded("mekanism"));
         } catch (Throwable error) {
             finished = true;
-            LogManager.getLogger("changede-jer-checks").error("JER COMPATIBILITY CHECKS FAILED", error);
+            LogManager.getLogger("changed_extra-jer-checks").error("JER COMPATIBILITY CHECKS FAILED", error);
             try { Files.writeString(RESULT, "FAIL: " + error + "\n"); } catch (Exception ignored) {}
             minecraft.stop();
         }
@@ -176,7 +176,7 @@ public final class JerCompatibilityClientChecks {
     private static void finish(Minecraft minecraft, String result) throws Exception {
         finished = true;
         Files.writeString(RESULT, result + "\n");
-        LogManager.getLogger("changede-jer-checks").info(result);
+        LogManager.getLogger("changed_extra-jer-checks").info(result);
         minecraft.stop();
     }
 }

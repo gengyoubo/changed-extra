@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changede:dark_latex_pressure_plate",
-    "changede:white_latex_pressure_plate"
+    "changed_extra:dark_latex_pressure_plate",
+    "changed_extra:white_latex_pressure_plate"
   ]
 }

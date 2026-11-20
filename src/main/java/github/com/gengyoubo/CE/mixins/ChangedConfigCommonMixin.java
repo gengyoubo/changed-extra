@@ -17,7 +17,7 @@ public abstract class ChangedConfigCommonMixin {
             ),
             index = 1
     )
-    private boolean changede$disablePatreonByDefault(boolean originalValue) {
+    private boolean changed_extra$disablePatreonByDefault(boolean originalValue) {
         return false;
     }
 }

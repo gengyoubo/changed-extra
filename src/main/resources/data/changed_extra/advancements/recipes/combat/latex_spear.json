@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_latex_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed_extra:latex_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "changed_extra:latex_spear"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    ["has_latex_ingot", "has_the_recipe"]
+  ],
+  "rewards": {
+    "recipes": [
+      "changed_extra:latex_spear"
+    ]
+  }
+}

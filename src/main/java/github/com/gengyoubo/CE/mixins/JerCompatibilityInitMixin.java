@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class JerCompatibilityInitMixin {
     // Run before JERAPI.commit so the deferred entries are included in this JEI session.
     @Inject(method = "init", at = @At("HEAD"), remap = false)
-    private static void changede$registerIntegrations(CallbackInfo ci) {
+    private static void changed_extra$registerIntegrations(CallbackInfo ci) {
         CompatibilityHandler.init();
     }
 }

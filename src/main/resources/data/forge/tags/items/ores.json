@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changede:dark_latex_morphic_crystal_ore",
-    "changede:white_latex_morphic_crystal_ore"
+    "changed_extra:dark_latex_morphic_crystal_ore",
+    "changed_extra:white_latex_morphic_crystal_ore"
   ]
 }

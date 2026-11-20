@@ -1,0 +1,50 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "github.com.gengyoubo.CE.LP.mixins",
+  "plugin": "github.com.gengyoubo.CE.mixins.ChangedEMixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "changed_extra.refmap.json",
+  "mixins": [
+    "TwilightFinalHealthRangeMixin",
+    "TwilightFinalHealthLockMixin",
+    "TwilightFinal009Mixin",
+    "TwilightFinalLightningTargetMixin",
+    "TwilightFinalLightningFireMixin",
+    "TwilightFinalGuardianBufferMixin",
+    "TwilightFinalGuardianContainerMixin",
+    "TwilightFinalGuardianKnightMixin",
+    "TwilightFinalBossSpawnerMixin",
+    "TwilightFinalCastleArenaMixin",
+    "TinkersLatexFuelMixin",
+    "TinkersLatexMultitankMixin",
+    "TinkersLatexEntityMeltingMixin",
+    "LatexBurnerMixerMixin",
+    "ChangedBlockEnergyDropMixin",
+    "AddonIridiumHarvestMixin",
+    "InfuserEnergyBlockMixin",
+    "InfuserMenuEnergyMixin",
+    "InfuserOpenScreenMixin",
+    "InfuserResultSlotEnergyMixin",
+    "PurifierEnergyMixin",
+    "PurifierMenuPositionMixin",
+    "PurifierMenuServerPositionMixin",
+    "PurifierOpenScreenMixin",
+    "UnifuserEnergyMixin",
+    "CatalyzerEnergyMixin",
+    "InfuserMekanismEnergyMixin",
+    "PurifierMekanismEnergyMixin",
+    "AddonMekanismEnergyMixin"
+  ],
+  "client": [
+    "TinkersLatexFuelDisplayMixin",
+    "InfuserScreenEnergyMixin",
+    "PurifierScreenEnergyMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "conformVisibility": true
+  }
+}

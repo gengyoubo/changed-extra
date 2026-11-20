@@ -10,7 +10,7 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = "changed_extra", bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModCreativeTabEvents {
     private static final ResourceLocation BAKERIES_COMPAT_TAB = ResourceLocation.fromNamespaceAndPath("bakeries", "bakery_compat_tab");
 

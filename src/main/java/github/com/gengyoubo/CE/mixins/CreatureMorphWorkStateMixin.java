@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = CreatureMorphContinuity.class, remap = false)
 public abstract class CreatureMorphWorkStateMixin {
     @Inject(method = "transferInternal", at = @At("TAIL"))
-    private static void changede$transferWorkState(ChangedEntity previous, ChangedEntity replacement,
+    private static void changed_extra$transferWorkState(ChangedEntity previous, ChangedEntity replacement,
                                                     ServerLevel level, CallbackInfo ci) {
         LatexMaidCompat.transferWorkState(previous, replacement);
     }

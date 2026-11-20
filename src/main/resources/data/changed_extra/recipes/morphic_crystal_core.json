@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "changed_extra:morphic_crystal_alloy"
+    },
+    "Y": {
+      "item": "changed_extra:painite_ingot"
+    }
+  },
+  "result": {
+    "item": "changed_extra:morphic_crystal_core",
+    "count": 1
+  }
+}

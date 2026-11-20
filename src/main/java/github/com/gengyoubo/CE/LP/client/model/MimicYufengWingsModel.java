@@ -25,10 +25,10 @@ import java.util.WeakHashMap;
 
 public class MimicYufengWingsModel extends EntityModel<LivingEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
-            ResourceLocation.fromNamespaceAndPath("changede", "mimic_yufeng_wings"),
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "mimic_yufeng_wings"),
             "main"
     );
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("changede", "textures/item/mimic_yufeng_wings.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("changed_extra", "textures/item/mimic_yufeng_wings.png");
 
     private final ModelPart torso;
     private final ModelPart leftWingRoot;

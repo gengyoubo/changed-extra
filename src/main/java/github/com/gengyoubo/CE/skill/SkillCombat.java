@@ -15,9 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public final class SkillCombat {
-    public static final TagKey<Item> LATEX_WEAPONS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("changede", "latex_weapons"));
-    public static final TagKey<Item> WEAPONS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("changede", "skill_weapons"));
-    private static final String EQUIPMENT_SOURCE = "changede.equipment.armor_adaptation";
+    public static final TagKey<Item> LATEX_WEAPONS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("changed_extra", "latex_weapons"));
+    public static final TagKey<Item> WEAPONS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("changed_extra", "skill_weapons"));
+    private static final String EQUIPMENT_SOURCE = "changed_extra.equipment.armor_adaptation";
     private static final UUID EQUIPMENT_ID = UUID.nameUUIDFromBytes(EQUIPMENT_SOURCE.getBytes(StandardCharsets.UTF_8));
     private SkillCombat() { }
     public static LatexType latexType(Entity entity) {

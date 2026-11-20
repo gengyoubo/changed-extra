@@ -4,9 +4,9 @@ import slimeknights.mantle.block.entity.MantleBlockEntity;
 
 /** State shared by fuel rules, menu synchronization and the controller tooltip. */
 public interface LatexFuelAccess {
-    MantleBlockEntity changede$parent();
-    boolean changede$coreReady();
-    void changede$setCoreReady(boolean ready);
-    boolean changede$latexBatch();
-    void changede$setLatexBatch(boolean latex);
+    MantleBlockEntity changed_extra$parent();
+    boolean changed_extra$coreReady();
+    void changed_extra$setCoreReady(boolean ready);
+    boolean changed_extra$latexBatch();
+    void changed_extra$setLatexBatch(boolean latex);
 }

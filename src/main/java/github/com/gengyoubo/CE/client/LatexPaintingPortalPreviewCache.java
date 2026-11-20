@@ -19,7 +19,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT)
 public class LatexPaintingPortalPreviewCache {
     private static final long REQUEST_INTERVAL_TICKS = 200L;
     private static final long IDLE_TICKS = 1200L;

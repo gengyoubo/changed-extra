@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.events;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import github.com.gengyoubo.CE.fix.SpecialLatexFix.PatreonBenefitsFix;
 import github.com.gengyoubo.CE.init.CEGameRules;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -45,7 +45,7 @@ public class latexStartEvents {
         }
 
         if (ProcessTransfur.isPlayerTransfurred(player)) {
-            changede.LOGGER.info(
+            changed_extra.LOGGER.info(
                     "[LatexStart] join-skip already transfurred player={} variantTag={} humanLock={}",
                     player.getGameProfile().getName(),
                     data.contains(TAG_VARIANT) ? data.getString(TAG_VARIANT) : "<none>",
@@ -60,7 +60,7 @@ public class latexStartEvents {
         if (data.getBoolean(TAG_HUMAN_LOCK)) {
             // Explicit untf state: also clear remembered variant so later flow won't reuse stale form.
             data.remove(TAG_VARIANT);
-            changede.LOGGER.info(
+            changed_extra.LOGGER.info(
                     "[LatexStart] join-skip human-lock player={} variantTag={}",
                     player.getGameProfile().getName(),
                     data.contains(TAG_VARIANT) ? data.getString(TAG_VARIANT) : "<none>"
@@ -73,7 +73,7 @@ public class latexStartEvents {
             ResourceLocation id = ResourceLocation.parse(data.getString(TAG_VARIANT));
             variant = PatreonBenefitsFix.resolveVariant(id);
             if (variant == null) {
-                changede.LOGGER.warn("Saved latex_start_variant {} is unavailable, selecting fallback.", id);
+                changed_extra.LOGGER.warn("Saved latex_start_variant {} is unavailable, selecting fallback.", id);
                 variant = latexStartEvents.getRandomForm(player.getRandom());
             }
         } else {
@@ -87,7 +87,7 @@ public class latexStartEvents {
         boolean hadHumanLock = data.getBoolean(TAG_HUMAN_LOCK);
         data.putString(TAG_VARIANT, variant.getFormId().toString());
         data.remove(TAG_HUMAN_LOCK);
-        changede.LOGGER.warn(
+        changed_extra.LOGGER.warn(
                 "[LatexStart] forcing transfur on join player={} variant={} hadVariantTag={} humanLock={}",
                 player.getGameProfile().getName(),
                 variant.getFormId(),
@@ -95,7 +95,7 @@ public class latexStartEvents {
                 hadHumanLock
         );
         ProcessTransfur.setPlayerTransfurVariant(player, variant, (TransfurContext) null);
-        changede.LOGGER.debug("Assigned player variant: {}", variant.getFormId());
+        changed_extra.LOGGER.debug("Assigned player variant: {}", variant.getFormId());
     }
 
     public static void onPlayerClone(PlayerEvent.Clone event) {
@@ -135,7 +135,7 @@ public class latexStartEvents {
                 }
                 FORM_VARIANTS.add(variant);
             }
-            changede.LOGGER.info("Latex start variants prepared: usable={}, blacklisted={}", FORM_VARIANTS.size(), blacklistCount);
+            changed_extra.LOGGER.info("Latex start variants prepared: usable={}, blacklisted={}", FORM_VARIANTS.size(), blacklistCount);
         });
     }
 

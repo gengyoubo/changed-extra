@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import github.com.gengyoubo.CE.BlockEntity.LatexSkillResearchBlockEntity;
 import github.com.gengyoubo.CE.LP.LatexEnergyType;
 import github.com.gengyoubo.CE.init.CEBlock;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,21 +18,21 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.UUID;
 
 /** Inject only into an isolated test server with tests/skill/research-smoke.init.gradle. */
-@Mod.EventBusSubscriber(modid="changede")
+@Mod.EventBusSubscriber(modid="changed_extra")
 public final class ResearchIntegrationProbe {
     private static void check(boolean result,String message) { if(!result)throw new AssertionError(message); }
     @SubscribeEvent public static void started(ServerStartedEvent event) {
-        if(!Boolean.getBoolean("changede.integrationProbe") || !event.getServer().isDedicatedServer())return;
+        if(!Boolean.getBoolean("changed_extra.integrationProbe") || !event.getServer().isDedicatedServer())return;
         var server=event.getServer();var level=server.overworld();
         var player=FakePlayerFactory.get(level,new GameProfile(UUID.fromString("6bc0c52e-7b26-4f8c-ae5b-d71ea19861db"),"ResearchProbe"));
         try {
             MorphicCrystalIntegrationProbe.run(server);
-            ResourceLocation form=ResourceLocation.parse("changed:form_latex_blue_dragon"),id=ResourceLocation.parse("changede:dragon_core");
+            ResourceLocation form=ResourceLocation.parse("changed:form_latex_blue_dragon"),id=ResourceLocation.parse("changed_extra:dragon_core");
             var instance=ProcessTransfur.setPlayerTransfurVariantNamed(player,form);
             check(instance!=null && form.equals(LatexSkills.form(player)),"set test Form");
             // Seed the full common path as learned, preserving the production active-parent checks.
             CompoundTag tree=new CompoundTag();for(var n:LatexSkillTrees.all())if(n.scope().equals("global"))tree.putBoolean(n.id().toString(),true);
-            CompoundTag learned=new CompoundTag();learned.put("changede:common",tree);player.getPersistentData().put("changede_latex_skills",learned);
+            CompoundTag learned=new CompoundTag();learned.put("changed_extra:common",tree);player.getPersistentData().put("changed_extra_latex_skills",learned);
             BlockPos pos=new BlockPos(0,100,0),otherPos=new BlockPos(2,100,0);
             level.setBlockAndUpdate(pos,net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
             level.setBlockAndUpdate(otherPos,net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
@@ -60,7 +60,7 @@ public final class ResearchIntegrationProbe {
             SkillResearchAccounts.pause(player,id);station.receiveTypedEnergy(LatexEnergyType.WLP,1000);
             SkillResearchAccounts.paidSecond(player,id,station);check(station.getTypedEnergyStored()==1000,"manual pause does not charge");
             // Save/reload account and block, then bind a different station without materials.
-            CompoundTag saved=player.getPersistentData().copy();player.getPersistentData().put("changede_skill_research",saved.getCompound("changede_skill_research").copy());
+            CompoundTag saved=player.getPersistentData().copy();player.getPersistentData().put("changed_extra_skill_research",saved.getCompound("changed_extra_skill_research").copy());
             var savedStation=station.saveWithFullMetadata();station.load(savedStation);check(station.getTypedEnergyStored()==1000,"machine storage persistence");
             player.containerMenu=new LatexSkillResearchMenu(22,player.getInventory(),otherPos);
             SkillResearchAccounts.start(player,form,id,true);check(SkillResearchAccounts.bound(player,id,other),"resume at replacement station");
@@ -81,7 +81,7 @@ public final class ResearchIntegrationProbe {
             SkillResearchAccounts.clone(new PlayerEvent.Clone(clone,player,true));
             check(SkillResearchAccounts.job(clone,id).getInt("progress")==40,"death clone keeps progress");
             // Force the saved job to one second before completion to test the final atomic payment.
-            CompoundTag root=player.getPersistentData().getCompound("changede_skill_research");
+            CompoundTag root=player.getPersistentData().getCompound("changed_extra_skill_research");
             var job=root.getCompound("jobs").getCompound(id.toString());job.putInt("progress",job.getInt("duration")-20);
             SkillResearchAccounts.paidSecond(player,id,other);check(SkillResearchAccounts.researched(player,id),"completion grants qualification");
             check(SkillResearchAccounts.active(player).isEmpty(),"completion frees active slot");
@@ -89,9 +89,9 @@ public final class ResearchIntegrationProbe {
             check(!LatexSkills.unlocked(player).contains(id),"completion does not learn the skill or bypass XP");
             player.containerMenu=player.inventoryMenu;
             check(LatexSkills.requirements(player,node,LatexSkills.unlocked(player),java.util.Set.of())
-                    .stream().filter(r->r.type().equals("changede:research_table")).allMatch(r->r.current()==1),"qualification works away from station");
+                    .stream().filter(r->r.type().equals("changed_extra:research_table")).allMatch(r->r.current()==1),"qualification works away from station");
             // Old tasks paid the previous startup items. Never charge new cores on migration/resume.
-            ResourceLocation legacyId=ResourceLocation.parse("changede:feline_core");
+            ResourceLocation legacyId=ResourceLocation.parse("changed_extra:feline_core");
             CompoundTag legacy=new CompoundTag();legacy.putInt("duration",200);legacy.putInt("rate",17);
             legacy.putInt("progress",40);legacy.putLong("consumed",34);legacy.putBoolean("paused",true);
             root.getCompound("jobs").put(legacyId.toString(),legacy);
@@ -102,8 +102,8 @@ public final class ResearchIntegrationProbe {
             var continued=SkillResearchAccounts.job(player,legacyId);
             check(continued.getInt("duration")==200 && continued.getInt("rate")==17 && continued.getInt("progress")==60
                     && continued.getLong("consumed")==51,"old task keeps original duration/rate/progress");
-            changede.LOGGER.info("RESEARCH_INTEGRATION_PASS: materials, Form guards, WLP typing, exact second payment, pause, persistence, replacement binding, offline, death clone and permanent qualification");
-        } catch(Throwable e) { changede.LOGGER.error("RESEARCH_INTEGRATION_FAIL",e); }
+            changed_extra.LOGGER.info("RESEARCH_INTEGRATION_PASS: materials, Form guards, WLP typing, exact second payment, pause, persistence, replacement binding, offline, death clone and permanent qualification");
+        } catch(Throwable e) { changed_extra.LOGGER.error("RESEARCH_INTEGRATION_FAIL",e); }
         finally { server.halt(false); }
     }
 }

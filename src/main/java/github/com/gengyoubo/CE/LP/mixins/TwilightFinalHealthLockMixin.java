@@ -14,24 +14,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class TwilightFinalHealthLockMixin {
     @Inject(method = "canAttack(Lnet/minecraft/world/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
-    private void changede$avoidTwilightBosses(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
+    private void changed_extra$avoidTwilightBosses(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
         if ((Object) this instanceof Experiment009BossEntity boss && TwilightFinalEncounter.isFinal(boss)
                 && TwilightFinalEncounter.isTwilightBoss(target)) cir.setReturnValue(false);
     }
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
-    private void changede$block009Damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    private void changed_extra$block009Damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (TwilightFinalEncounter.blocksDamage((LivingEntity) (Object) this, source)) cir.setReturnValue(false);
     }
     @ModifyVariable(method = "setHealth", at = @At("HEAD"), argsOnly = true)
-    private float changede$clampCheckpoint(float health) {
+    private float changed_extra$clampCheckpoint(float health) {
         return (Object) this instanceof Experiment009BossEntity boss ? TwilightFinalEncounter.clamp(boss, health) : health;
     }
     @Inject(method = "setHealth", at = @At("RETURN"))
-    private void changede$startGuardianWave(float health, CallbackInfo ci) {
+    private void changed_extra$startGuardianWave(float health, CallbackInfo ci) {
         if ((Object) this instanceof Experiment009BossEntity boss) TwilightFinalEncounter.healthChanged(boss);
     }
     @Inject(method = "die", at = @At("HEAD"), cancellable = true)
-    private void changede$preventEarlyFinalDeath(DamageSource source, CallbackInfo ci) {
+    private void changed_extra$preventEarlyFinalDeath(DamageSource source, CallbackInfo ci) {
         if ((Object) this instanceof Experiment009BossEntity boss && TwilightFinalEncounter.isFinal(boss)
                 && (TwilightFinalEncounter.locked(boss) || TwilightFinalEncounter.stage(boss) < 6)) ci.cancel();
     }

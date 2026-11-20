@@ -86,7 +86,7 @@ public final class OreGenerationScanner {
 
     private static boolean allowedFeature(Feature<?> feature, ServerLevel level) {
         if (feature == Feature.ORE || feature == Feature.SCATTERED_ORE) return true;
-        if (feature instanceof MorphicCrystalOreFeature) return level.dimension().location().equals(ResourceLocation.parse("changede:latex_space"));
+        if (feature instanceof MorphicCrystalOreFeature) return level.dimension().location().equals(ResourceLocation.parse("changed_extra:latex_space"));
         if (feature instanceof TwilightOreFeature) return level.dimension().location().equals(ResourceLocation.parse("twilightforest:twilight_forest"));
         // These Addon implementations have additional dimension/game-rule gates beyond OreConfiguration.
         return switch (feature.getClass().getName()) {

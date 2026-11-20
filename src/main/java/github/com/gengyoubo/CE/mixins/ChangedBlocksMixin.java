@@ -83,7 +83,7 @@ public class ChangedBlocksMixin {
             remap = false,
             require = 0
     )
-    private static Object changede$cacheRegistryObjectGet(RegistryObject<?> registryObject) {
+    private static Object changed_extra$cacheRegistryObjectGet(RegistryObject<?> registryObject) {
         Object cached = CHANGEDE$REGISTRY_GET_CACHE.get(registryObject);
         if (cached != null) return cached;
 

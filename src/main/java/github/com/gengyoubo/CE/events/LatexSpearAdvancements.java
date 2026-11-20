@@ -21,12 +21,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class LatexSpearAdvancements {
     private static final ResourceLocation AERIAL_ASSASSIN =
-            ResourceLocation.fromNamespaceAndPath("changede", "aerial_assassin");
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "aerial_assassin");
     private static final ResourceLocation EXCUSE_ME =
-            ResourceLocation.fromNamespaceAndPath("changede", "excuse_me");
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "excuse_me");
     private static final Map<ServerPlayer, Charge> CHARGES = new WeakHashMap<>();
 
     private record Charge(TransfurVariantInstance<?> form, ItemStack stack,

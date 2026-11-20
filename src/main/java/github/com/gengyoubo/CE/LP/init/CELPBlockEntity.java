@@ -27,7 +27,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class CELPBlockEntity {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changede");
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changed_extra");
     public static final RegistryObject<BlockEntityType<github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.DimensionSpaceTowerBlockEntity>> DIMENSION_SPACE_TOWER =
             BLOCK_ENTITIES.register("dimension_space_tower", () -> BlockEntityType.Builder.of(
                     github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.DimensionSpaceTowerBlockEntity::new,

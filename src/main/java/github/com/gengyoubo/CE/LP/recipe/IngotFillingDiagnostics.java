@@ -2,7 +2,7 @@ package github.com.gengyoubo.CE.LP.recipe;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /** RecipeManager skips malformed recipes; keep their reasons available to the machine GUI. */
-@Mod.EventBusSubscriber(modid="changede")
+@Mod.EventBusSubscriber(modid="changed_extra")
 public final class IngotFillingDiagnostics extends SimpleJsonResourceReloadListener {
     private static volatile String display="";
     public IngotFillingDiagnostics() { super(new Gson(),"recipes"); }
@@ -25,12 +25,12 @@ public final class IngotFillingDiagnostics extends SimpleJsonResourceReloadListe
         for(var entry:resources.entrySet()) {
             if(!entry.getValue().isJsonObject())continue;
             var json=entry.getValue().getAsJsonObject();
-            if(!json.has("type") || !json.get("type").isJsonPrimitive() || !"changede:ingot_filling".equals(json.get("type").getAsString()))continue;
+            if(!json.has("type") || !json.get("type").isJsonPrimitive() || !"changed_extra:ingot_filling".equals(json.get("type").getAsString()))continue;
             try { CELPRecipes.INGOT_FILLING_SERIALIZER.get().fromJson(entry.getKey(),json); }
             catch(RuntimeException error) {
                 String reason=error.getMessage()==null ? error.getClass().getSimpleName() : error.getMessage();
                 errors.put(entry.getKey(),reason);
-                changede.LOGGER.error("Skipping ingot filling recipe {}: {}",entry.getKey(),reason);
+                changed_extra.LOGGER.error("Skipping ingot filling recipe {}: {}",entry.getKey(),reason);
             }
         }
         String text=errors.entrySet().stream().map(e->e.getKey()+": "+e.getValue()).collect(java.util.stream.Collectors.joining("\n"));

@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = TransfurVariant.class, remap = false)
 public class MaidWorkVariantIdentityMixin {
     @Inject(method = "getEntityVariant", at = @At("HEAD"), cancellable = true)
-    private static void changede$resolveWorkVariant(LivingEntity entity, CallbackInfoReturnable<TransfurVariant<?>> cir) {
+    private static void changed_extra$resolveWorkVariant(LivingEntity entity, CallbackInfoReturnable<TransfurVariant<?>> cir) {
         if (entity instanceof MaidWorkBody work && work.workBody() != null) cir.setReturnValue(work.workBody().getSelfVariant());
     }
 }

@@ -43,10 +43,10 @@ public final class ReverserScreen extends GuiMekanismTile<ReverserBlockEntity, R
         addRenderableWidget(new GuiProgress((IProgressInfoHandler) () -> tile.processTicks() == 0 ? 0 : tile.progress() / (double) tile.processTicks(),
                 ProgressType.LARGE_RIGHT, this, 64, 30));
         addRenderableWidget(new GuiInnerScreen(this, 46, 44, 84, 16, () -> List.of(Component.translatable(
-                "state.changede.reverser." + tile.status().name().toLowerCase(Locale.ROOT)))).centerY());
-        addRenderableWidget(new TranslationButton(this, 64, 64, 48, 16, () -> "gui.changede.reverser.drain",
+                "state.changed_extra.reverser." + tile.status().name().toLowerCase(Locale.ROOT)))).centerY());
+        addRenderableWidget(new TranslationButton(this, 64, 64, 48, 16, () -> "gui.changed_extra.reverser.drain",
                 () -> minecraft.gameMode.handleInventoryButtonClick(menu.containerId, ReverserContainer.DRAIN_BUTTON),
-                (element, graphics, mouseX, mouseY) -> displayTooltips(graphics, mouseX, mouseY, Component.translatable("gui.changede.reverser.drain_hint")), null));
+                (element, graphics, mouseX, mouseY) -> displayTooltips(graphics, mouseX, mouseY, Component.translatable("gui.changed_extra.reverser.drain_hint")), null));
         addRenderableWidget(new GuiGasGauge(() -> tile.outputTank, () -> tile.getGasTanks(null), GaugeType.STANDARD, this, 136, TOP));
         addRenderableWidget(new LatexBar(this, () -> tile.getTypedEnergyStored(LatexEnergyType.DLP), "DLP", 162, TOP + 1, 0xFF3A3446, 0xFF6A6280));
     }

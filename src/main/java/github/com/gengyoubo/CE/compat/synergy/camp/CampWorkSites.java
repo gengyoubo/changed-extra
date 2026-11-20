@@ -15,8 +15,8 @@ import java.util.*;
 
 @SuppressWarnings("deprecation")
 final class CampWorkSites {
-    static final TagKey<Block> FARMLAND = TagKey.create(Registries.BLOCK, ResourceLocation.parse("changede:camp_farmland"));
-    static final TagKey<Block> CRAFTING = TagKey.create(Registries.BLOCK, ResourceLocation.parse("changede:camp_crafting_workstations"));
+    static final TagKey<Block> FARMLAND = TagKey.create(Registries.BLOCK, ResourceLocation.parse("changed_extra:camp_farmland"));
+    static final TagKey<Block> CRAFTING = TagKey.create(Registries.BLOCK, ResourceLocation.parse("changed_extra:camp_crafting_workstations"));
     private record Key(String dimension, BlockPos pos) {}
     private record Claim(UUID worker, long until) {}
     private record Sites(ServerLevel level, long scanned, List<BlockPos> crops, List<BlockPos> kitchens,

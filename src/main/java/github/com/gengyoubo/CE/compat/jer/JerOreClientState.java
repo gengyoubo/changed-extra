@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT)
 public final class JerOreClientState {
     private static final List<OreGenerationData> pending = new ArrayList<>();
     private static List<OreGenerationData> snapshot = List.of();

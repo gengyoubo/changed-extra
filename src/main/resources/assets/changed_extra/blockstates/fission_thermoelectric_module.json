@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "fused=false,lit=false": {
+      "model": "changed_extra:block/fission_thermoelectric_module"
+    },
+    "fused=false,lit=true": {
+      "model": "changed_extra:block/fission_thermoelectric_module_active"
+    },
+    "fused=true": {
+      "model": "changed_extra:block/fission_thermoelectric_module_fused"
+    }
+  }
+}

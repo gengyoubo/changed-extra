@@ -45,7 +45,7 @@ public final class LatexSkillResearchTableBlock extends HorizontalDirectionalBlo
     @Override public InteractionResult use(BlockState state,Level level,BlockPos pos,Player player,InteractionHand hand,BlockHitResult hit) {
         if(!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
             NetworkHooks.openScreen(serverPlayer,new SimpleMenuProvider((id,inventory,p)->
-                    new LatexSkillResearchMenu(id,inventory,pos),Component.translatable("block.changede.latex_skill_research_table")),pos);
+                    new LatexSkillResearchMenu(id,inventory,pos),Component.translatable("block.changed_extra.latex_skill_research_table")),pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

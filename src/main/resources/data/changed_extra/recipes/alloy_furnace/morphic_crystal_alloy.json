@@ -1,0 +1,15 @@
+{
+  "type": "changed_extra:alloy_furnace",
+  "X": {
+    "item": "changed_extra:morphic_crystal"
+  },
+  "Y": {
+    "item": "changed_extra:latex_ingot"
+  },
+  "time": 10,
+  "lp_per_second": 200,
+  "result": {
+    "item": "changed_extra:morphic_crystal_alloy",
+    "count": 1
+  }
+}

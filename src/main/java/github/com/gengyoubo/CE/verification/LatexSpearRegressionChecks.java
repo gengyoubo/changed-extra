@@ -18,14 +18,14 @@ import org.apache.logging.log4j.LogManager;
 import java.util.UUID;
 
 /** Opt-in isolated server check; never runs in normal games. */
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class LatexSpearRegressionChecks {
     private static void check(boolean passed, String message) {
         if (!passed) throw new AssertionError(message);
-        LogManager.getLogger("changede-spear-check").info("PASS: {}", message);
+        LogManager.getLogger("changed_extra-spear-check").info("PASS: {}", message);
     }
     @SubscribeEvent public static void verify(ServerStartedEvent event) {
-        if (!Boolean.getBoolean("changede.verifySpear")) return;
+        if (!Boolean.getBoolean("changed_extra.verifySpear")) return;
         ServerLevel level = event.getServer().overworld();
         var player = FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "SpearTest"));
         LatexSpearItem spear = (LatexSpearItem) CEItem.LATEX_SPEAR.get();
@@ -74,7 +74,7 @@ public final class LatexSpearRegressionChecks {
                     chargeThroughPlayerTicks(level, spear, hand, distance, true);
                 }
             }
-            LogManager.getLogger("changede-spear-check").info("ALL SPEAR SERVER CHECKS PASSED");
+            LogManager.getLogger("changed_extra-spear-check").info("ALL SPEAR SERVER CHECKS PASSED");
         } finally { event.getServer().halt(false); }
     }
     private static void chargeThroughPlayerTicks(ServerLevel level, LatexSpearItem spear,

@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import github.com.gengyoubo.CE.ability.LaunchGlideAbility;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -178,7 +178,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
     }
 
     public static void logRepositoryMode() {
-        changede.LOGGER.info(
+        changed_extra.LOGGER.info(
                 "Patreon special repository mode={}, primary={}, sources={}",
                 isUsingLocalRepository() ? "local-dev" : "remote",
                 getPrimaryRepositoryBase(),
@@ -299,9 +299,9 @@ public class PatreonBenefitsFix extends PatreonBenefits {
             CACHED_SPECIAL_FORMS.put(form.playerUUID, form);
             count.getAndIncrement();
             ResourceLocation id = getSpecialFormId(form.playerUUID);
-            changede.LOGGER.debug("Loaded special form {}", id);
+            changed_extra.LOGGER.debug("Loaded special form {}", id);
         });
-        changede.LOGGER.info("Updated {} patreon special forms from {}", count.get(), REPO_BASE);
+        changed_extra.LOGGER.info("Updated {} patreon special forms from {}", count.get(), REPO_BASE);
     }
 
     public static void registerOnlineTexture(ResourceLocation location) {
@@ -313,7 +313,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
             DynamicClient.lateRegisterOnlineTexture(location, uri);
             return;
         }
-        changede.LOGGER.warn("Skip online texture registration due to invalid image payload. location={} triedBases={}", location, candidateFormsBases());
+        changed_extra.LOGGER.warn("Skip online texture registration due to invalid image payload. location={} triedBases={}", location, candidateFormsBases());
     }
 
     @Nullable
@@ -498,12 +498,12 @@ public class PatreonBenefitsFix extends PatreonBenefits {
                     if (repo.equals(primary)) {
                         primaryLoaded = true;
                     }
-                    changede.LOGGER.info("Patreon special data merged source {}", repo);
+                    changed_extra.LOGGER.info("Patreon special data merged source {}", repo);
                 } catch (InterruptedException ex) {
                     throw ex;
                 } catch (Exception ex) {
                     lastError = ex;
-                    changede.LOGGER.warn("Failed loading special data from {}", repo, ex);
+                    changed_extra.LOGGER.warn("Failed loading special data from {}", repo, ex);
                 }
             }
 
@@ -512,7 +512,7 @@ public class PatreonBenefitsFix extends PatreonBenefits {
                     CURRENT_VERSION = mergedVersion;
                 }
                 applyRepoBase(primaryLoaded ? primary : OFFICIAL_REPO_BASE);
-                changede.LOGGER.info(
+                changed_extra.LOGGER.info(
                         "Patreon special data merged from {} source(s), levels={}, forms={}, activeRepo={}",
                         successCount,
                         CACHED_LEVELS.size(),

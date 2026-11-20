@@ -40,7 +40,7 @@ public class MachineStatusScreen extends AbstractContainerScreen<MachineStatusMe
         redstone.visible = menu.getValue(9) == 1;
         var modes = github.com.gengyoubo.CE.LP.BlockEntity.RedstoneMode.values();
         int mode = Math.max(0, Math.min(modes.length - 1, menu.getValue(10)));
-        redstone.setMessage(Component.translatable("gui.changede.redstone." + modes[mode].name().toLowerCase(java.util.Locale.ROOT)));
+        redstone.setMessage(Component.translatable("gui.changed_extra.redstone." + modes[mode].name().toLowerCase(java.util.Locale.ROOT)));
     }
 
     @Override protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
@@ -56,7 +56,7 @@ public class MachineStatusScreen extends AbstractContainerScreen<MachineStatusMe
     @Override protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
         graphics.drawString(font, title, 8, 6, MachineGuiStyle.TITLE, false);
         graphics.drawString(font, playerInventoryTitle, 8, inventoryLabelY, MachineGuiStyle.LABEL, false);
-        if (menu.getValue(9) == 0) graphics.drawString(font, Component.translatable("gui.changede.machine.passive_pump"), 8, 27, MachineGuiStyle.LABEL, false);
+        if (menu.getValue(9) == 0) graphics.drawString(font, Component.translatable("gui.changed_extra.machine.passive_pump"), 8, 27, MachineGuiStyle.LABEL, false);
     }
 
     @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
@@ -68,7 +68,7 @@ public class MachineStatusScreen extends AbstractContainerScreen<MachineStatusMe
             graphics.renderTooltip(font, MachineGuiStyle.amount(menu.getValue(0), menu.getValue(1), "LP"), mouseX, mouseY);
         if (isHovering(8, 48, 108, 8, mouseX, mouseY)) {
             if (menu.getValue(3) > 0) graphics.renderTooltip(font, MachineGuiStyle.amount(menu.getValue(2), menu.getValue(3), kind == 2 ? "WLP" : "DLP"), mouseX, mouseY);
-            if (kind == 4) graphics.renderComponentTooltip(font, List.of(Component.translatable("gui.changede.machine.production"),
+            if (kind == 4) graphics.renderComponentTooltip(font, List.of(Component.translatable("gui.changed_extra.machine.production"),
                     Component.literal(AmountFormat.format(menu.getValue(7), menu.getValue(8)))), mouseX, mouseY);
         }
         if (menu.getValue(5) > 0 && isHovering(138, 27, 20, 56, mouseX, mouseY)) {

@@ -22,7 +22,7 @@ import java.util.List;
 
 /** Laid out like Mekanism's own JEI pages: gauges for the gases, bars for WLP and DLP, its arrow between. */
 public final class GasJei implements IRecipeCategory<ReversingRecipe> {
-    public static final RecipeType<ReversingRecipe> TYPE = RecipeType.create("changede", "reversing", ReversingRecipe.class);
+    public static final RecipeType<ReversingRecipe> TYPE = RecipeType.create("changed_extra", "reversing", ReversingRecipe.class);
     private static final ResourceLocation BAR = mekanism("bar/base.png"), PROGRESS = mekanism("progress/large_right.png"),
             TICKS = mekanism("gauge/standard.png"), GAUGE_INPUT = mekanism("gauge/red.png"), GAUGE_OUTPUT = mekanism("gauge/blue.png");
     private static final int WIDTH = 150, HEIGHT = 60, INPUT_X = 10, OUTPUT_X = 122, WLP_X = 0, DLP_X = 144, ARROW_X = 51, ARROW_Y = 26;
@@ -37,12 +37,12 @@ public final class GasJei implements IRecipeCategory<ReversingRecipe> {
     public static void recipes(IRecipeRegistration registration) {
         var world = Minecraft.getInstance().level;
         if (world != null) registration.addRecipes(TYPE, world.getRecipeManager().getAllRecipesFor(GasCompat.REVERSING_TYPE.get()).stream().filter(recipe -> !recipe.isIncomplete()).toList());
-        registration.addItemStackInfo(GasCompat.GAS_PIPE.getItemStack(), Component.translatable("jei.changede.gas.pipe"));
-        registration.addItemStackInfo(GasCompat.REVERSER.getItemStack(), Component.translatable("tooltip.changede.reverser"), Component.translatable("tooltip.changede.reverser.ports"));
+        registration.addItemStackInfo(GasCompat.GAS_PIPE.getItemStack(), Component.translatable("jei.changed_extra.gas.pipe"));
+        registration.addItemStackInfo(GasCompat.REVERSER.getItemStack(), Component.translatable("tooltip.changed_extra.reverser"), Component.translatable("tooltip.changed_extra.reverser.ports"));
     }
     public static void catalysts(IRecipeCatalystRegistration registration) { registration.addRecipeCatalyst(GasCompat.REVERSER.getItemStack(), TYPE); }
     @Override public RecipeType<ReversingRecipe> getRecipeType() { return TYPE; }
-    @Override public Component getTitle() { return Component.translatable("block.changede.reverser"); }
+    @Override public Component getTitle() { return Component.translatable("block.changed_extra.reverser"); }
     @Override public IDrawable getBackground() { return background; }
     @Override public IDrawable getIcon() { return icon; }
     @Override public void setRecipe(IRecipeLayoutBuilder builder, ReversingRecipe recipe, IFocusGroup focuses) {
@@ -75,12 +75,12 @@ public final class GasJei implements IRecipeCategory<ReversingRecipe> {
     @Override public List<Component> getTooltipStrings(ReversingRecipe recipe, IRecipeSlotsView view, double mouseX, double mouseY) {
         if (mouseY < 0 || mouseY >= HEIGHT) return List.of();
         if (mouseX >= ARROW_X && mouseX < ARROW_X + 48 && mouseY >= ARROW_Y && mouseY < ARROW_Y + 8)
-            return List.of(Component.translatable("gui.changede.reverser.progress", 0, recipe.ticks() / 20.0));
+            return List.of(Component.translatable("gui.changed_extra.reverser.progress", 0, recipe.ticks() / 20.0));
         boolean white = mouseX >= WLP_X && mouseX < WLP_X + 6, dark = mouseX >= DLP_X && mouseX < DLP_X + 6;
         if (!white && !dark) return List.of();
         long whiteTotal = ((long) recipe.whiteRate() * recipe.ticks() + 19) / 20;
         long darkTotal = ((long) recipe.darkRate() * recipe.ticks() + 19) / 20;
         return List.of(Component.literal(white ? recipe.whiteRate() + " WLP/s" : recipe.darkRate() + " DLP/s"),
-                Component.translatable("jei.changede.gas.energy", whiteTotal, darkTotal));
+                Component.translatable("jei.changed_extra.gas.energy", whiteTotal, darkTotal));
     }
 }

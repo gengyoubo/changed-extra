@@ -18,8 +18,8 @@ import slimeknights.tconstruct.library.recipe.entitymelting.EntityMeltingRecipe;
 public abstract class TinkersLatexEntityMeltingMixin {
     @Shadow @Final private ResourceLocation id;
     @Inject(method = "getOutput(Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraftforge/fluids/FluidStack;", at = @At("HEAD"), cancellable = true)
-    private void changede$latexOutput(LivingEntity entity, CallbackInfoReturnable<FluidStack> cir) {
-        if (!id.equals(ResourceLocation.parse("changede:smeltery/entity_melting/latex"))) return;
+    private void changed_extra$latexOutput(LivingEntity entity, CallbackInfoReturnable<FluidStack> cir) {
+        if (!id.equals(ResourceLocation.parse("changed_extra:smeltery/entity_melting/latex"))) return;
         boolean dark;
         if (entity instanceof ChangedEntity latex && latex.getLatexType() == ChangedLatexTypes.DARK_LATEX.get()) dark = true;
         else if (entity instanceof ChangedEntity latex && latex.getLatexType() == ChangedLatexTypes.WHITE_LATEX.get()) dark = false;

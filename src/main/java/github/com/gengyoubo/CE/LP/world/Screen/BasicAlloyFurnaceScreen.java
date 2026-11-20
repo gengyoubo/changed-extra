@@ -28,11 +28,11 @@ public class BasicAlloyFurnaceScreen extends AbstractContainerScreen<BasicAlloyF
         renderTooltip(graphics, mouseX, mouseY);
         if (isHovering(8, 62, 160, 4, mouseX, mouseY)) graphics.renderComponentTooltip(font, List.of(
                 MachineGuiStyle.amount(menu.getEnergyStored(), menu.getMaxEnergyStored(), "LP"),
-                Component.translatable("gui.changede.alloy_furnace.power", menu.getLpPerSecond())), mouseX, mouseY);
+                Component.translatable("gui.changed_extra.alloy_furnace.power", menu.getLpPerSecond())), mouseX, mouseY);
         if (isHovering(85, 38, 24, 6, mouseX, mouseY)) {
             String progress = AmountFormat.format(String.format(Locale.ROOT, "%.1f", menu.getProgress() / 20.0),
                     String.format(Locale.ROOT, "%.1f", menu.getProcessTicks() / 20.0));
-            graphics.renderTooltip(font, Component.translatable("gui.changede.alloy_furnace.time", progress), mouseX, mouseY);
+            graphics.renderTooltip(font, Component.translatable("gui.changed_extra.alloy_furnace.time", progress), mouseX, mouseY);
         }
     }
     @Override protected void renderBg(@NotNull GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {

@@ -10,7 +10,7 @@ import java.util.function.BooleanSupplier;
 
 /** TLM's temporary hand/task slots belong to the body, including across chunk unloads. */
 final class BodyWorkBuffer extends ItemStackHandler {
-    private static final String DATA_KEY = "changede_maid_work_buffers";
+    private static final String DATA_KEY = "changed_extra_maid_work_buffers";
     private final ChangedEntity body;
     private final String name;
     private final BooleanSupplier active;

@@ -38,9 +38,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /** White biomes use fog; only dark biome columns receive the black latex rain sheets. */
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class LatexSpaceEffects extends DimensionSpecialEffects.OverworldEffects {
-    private static final ResourceLocation RAIN = ResourceLocation.fromNamespaceAndPath("changede", "textures/environment/dark_latex_rain.png");
+    private static final ResourceLocation RAIN = ResourceLocation.fromNamespaceAndPath("changed_extra", "textures/environment/dark_latex_rain.png");
     private static final ResourceLocation DARK_LATEX_BLOCK = ResourceLocation.fromNamespaceAndPath("changed", "dark_latex_block");
     private int rainSoundTime;
 

@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changede:dark_latex_cobblestone",
-    "changede:white_latex_cobblestone"
+    "changed_extra:dark_latex_cobblestone",
+    "changed_extra:white_latex_cobblestone"
   ]
 }

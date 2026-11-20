@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ChangedEMixinPlugin implements IMixinConfigPlugin {
-    private static final Logger LOGGER = LogManager.getLogger("changede-mixin-plugin");
+    private static final Logger LOGGER = LogManager.getLogger("changed_extra-mixin-plugin");
     private static final String PROJECT_EXTENDED_PREFIX = "github.com.gengyoubo.CE.projectextended.mixins.";
     private static final Set<String> ADDON_CLIENT_MIXINS = Set.of(
             "github.com.gengyoubo.CE.mixins.AccessorySlotsSafetyMixin",
@@ -32,7 +32,7 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
             "github.com.gengyoubo.CE.LP.mixins.InfuserMekanismEnergyMixin",
             "github.com.gengyoubo.CE.LP.mixins.AddonMekanismEnergyMixin"
     );
-    private static final boolean ADDON_LIGHT_MODE = Boolean.parseBoolean(System.getProperty("changede.mixin.addonLight", "false"));
+    private static final boolean ADDON_LIGHT_MODE = Boolean.parseBoolean(System.getProperty("changed_extra.mixin.addonLight", "false"));
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -89,8 +89,8 @@ public class ChangedEMixinPlugin implements IMixinConfigPlugin {
         }
         // Only the explicitly enabled disposable ore comparison may load Addon's original harvest method.
         if ("github.com.gengyoubo.CE.LP.mixins.AddonIridiumHarvestMixin".equals(mixinClassName)
-                && Boolean.getBoolean("changede.verifyAddonOre")
-                && Boolean.getBoolean("changede.verifyAddonOreOriginal")) return false;
+                && Boolean.getBoolean("changed_extra.verifyAddonOre")
+                && Boolean.getBoolean("changed_extra.verifyAddonOreOriginal")) return false;
         if (mixinClassName.startsWith("github.com.gengyoubo.CE.LP.mixins.TinkersLatex")) return isModLoaded("tconstruct");
         if (mixinClassName.startsWith("github.com.gengyoubo.CE.LP.mixins.TwilightFinal"))
             return isModLoaded("twilightforest") && isModLoaded("changed_addon");

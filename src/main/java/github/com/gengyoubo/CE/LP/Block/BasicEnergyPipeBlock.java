@@ -92,7 +92,7 @@ public class BasicEnergyPipeBlock extends BaseEntityBlock {
 
         NetworkHooks.openScreen(serverPlayer, new net.minecraft.world.SimpleMenuProvider(
                 (containerId, inventory, openingPlayer) -> new PipeConfigMenu(containerId, inventory, pos),
-                Component.translatable("screen.changede.pipe_config")), pos);
+                Component.translatable("screen.changed_extra.pipe_config")), pos);
         return InteractionResult.CONSUME;
     }
 

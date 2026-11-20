@@ -16,9 +16,9 @@ public final class LatexBurnerCapture {
         if (entity instanceof TamableAnimal animal && (animal.isTame() || animal.getOwnerUUID() != null)) return true;
         if (entity.isPassenger() || entity.isVehicle()) return true;
         CompoundTag data = entity.getPersistentData();
-        if (data.hasUUID("changede_camp_resident") || data.hasUUID("changede_camp_visitor")
-                || data.hasUUID("changede_camp_raider") || data.hasUUID("changede_maid_work_owner")
-                || !data.getString("changede_maid_work_task").isEmpty()) return true;
+        if (data.hasUUID("changed_extra_camp_resident") || data.hasUUID("changed_extra_camp_visitor")
+                || data.hasUUID("changed_extra_camp_raider") || data.hasUUID("changed_extra_maid_work_owner")
+                || !data.getString("changed_extra_maid_work_task").isEmpty()) return true;
         CompoundTag social = data.getCompound("ChangedSynergySocial");
         if (social.hasUUID("PetOwner") || !social.getCompound("BondedPlayers").isEmpty()) return true;
         CompoundTag memories = data.getCompound("ChangedSynergyPersonality").getCompound("PlayerMemories");
@@ -29,7 +29,7 @@ public final class LatexBurnerCapture {
         if (!(target instanceof ChangedEntity creature) || !target.isAlive() || target.isRemoved()
                 || !player.mayBuild() || !player.level().mayInteract(player, target.blockPosition())) return InteractionResult.PASS;
         if (protectedCreature(target)) {
-            if (!player.level().isClientSide) player.displayClientMessage(Component.translatable("changede.latex_burner.protected"), true);
+            if (!player.level().isClientSide) player.displayClientMessage(Component.translatable("changed_extra.latex_burner.protected"), true);
             return InteractionResult.FAIL;
         }
         if (LatexBurnerProfiles.find(creature) == null) return InteractionResult.PASS;

@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.LP.item;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import github.com.gengyoubo.CE.player.Perseverance;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public abstract class MimicItem extends ArmorItem {
-    private static final String ROOT_TAG = "changede_mimic_items";
+    private static final String ROOT_TAG = "changed_extra_mimic_items";
     private static final String WILL_TRANSFUR_TAG = "will_transfur";
 
     protected MimicItem(Properties properties) {
@@ -68,6 +68,6 @@ public abstract class MimicItem extends ArmorItem {
     protected abstract void transfur(ServerPlayer player, ItemStack stack);
 
     protected void warnMissingVariant(ServerPlayer player, ResourceLocation mimicId) {
-        changede.LOGGER.warn("Mimic item {} could not find a transfur variant for player {}", mimicId, player.getGameProfile().getName());
+        changed_extra.LOGGER.warn("Mimic item {} could not find a transfur variant for player {}", mimicId, player.getGameProfile().getName());
     }
 }

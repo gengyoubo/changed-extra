@@ -28,8 +28,8 @@ import static github.com.gengyoubo.CE.compat.synergy.camp.LatexSettlementData.*;
 @SuppressWarnings("deprecation")
 public final class LatexSettlementService {
     @SubscribeEvent public static void stopped(net.minecraftforge.event.server.ServerStoppedEvent event) { CampWorkSites.clear(); }
-    static final String MEMBER = "changede_camp_resident", VISITOR = "changede_camp_visitor", RAIDER = "changede_camp_raider";
-    static final String FROZEN = "changede_camp_expedition_flags";
+    static final String MEMBER = "changed_extra_camp_resident", VISITOR = "changed_extra_camp_visitor", RAIDER = "changed_extra_camp_raider";
+    static final String FROZEN = "changed_extra_camp_expedition_flags";
     private LatexSettlementService() {}
     static long now(ServerLevel level) { return level.getServer().overworld().getGameTime(); }
     static ServerLevel level(net.minecraft.server.MinecraftServer server, Settlement camp) {
@@ -72,7 +72,7 @@ public final class LatexSettlementService {
             if ("claimed".equals(result)) {
                 net.parkabird.changedsynergy.advancement.SynergyAdvancements.grant(owner, "player_camp");
             } else if (!"disabled".equals(result)) {
-                owner.displayClientMessage(Component.translatable("camp.changede.outpost_bind_failed." + result), true);
+                owner.displayClientMessage(Component.translatable("camp.changed_extra.outpost_bind_failed." + result), true);
             }
         } catch (LinkageError error) {
             // Older CS builds without this player camp API keep the CE settlement working alone.
@@ -111,7 +111,7 @@ public final class LatexSettlementService {
         ServerLevel level = player.serverLevel();
         if (resolve(level, core) == null) return;
         NetworkHooks.openScreen(player, new SimpleMenuProvider((id, inventory, p) -> new LatexCampfireMenu(id, inventory,
-                core.getBlockPos(), core.settlementId), Component.translatable("block.changede.latex_campfire")),
+                core.getBlockPos(), core.settlementId), Component.translatable("block.changed_extra.latex_campfire")),
                 buf -> { buf.writeBlockPos(core.getBlockPos()); buf.writeUUID(core.settlementId); });
     }
     static void deactivate(ServerLevel level, LatexCampfireBlockEntity core) {
@@ -137,7 +137,7 @@ public final class LatexSettlementService {
     static boolean eligible(ChangedEntity mob, Settlement camp, ServerPlayer player) {
         return mob.isAlive() && !mob.isNoAi() && !mob.isPassenger() && !mob.isVehicle()
                 && !mob.getPersistentData().hasUUID(MEMBER) && !mob.getPersistentData().hasUUID(VISITOR)
-                && !mob.getPersistentData().hasUUID(RAIDER) && mob.getPersistentData().getString("changede_maid_work_task").isEmpty()
+                && !mob.getPersistentData().hasUUID(RAIDER) && mob.getPersistentData().getString("changed_extra_maid_work_task").isEmpty()
                 && PlayerOutpostData.get(player.server).byMember(mob.getUUID()).isEmpty()
                 && PlayerOutpostService.authorized(mob, player)
                 && mob.blockPosition().distSqr(camp.core) <= 32 * 32;
@@ -340,7 +340,7 @@ public final class LatexSettlementService {
                 && level.getDifficulty() != Difficulty.PEACEFUL && level.random.nextFloat() < camp.threat / 150) {
             camp.raid = Raid.PREPARING; camp.raidEnds = time + 2400;
             for (ServerPlayer player : level.players()) if (player.blockPosition().distSqr(camp.core) < 64 * 64)
-                player.displayClientMessage(Component.translatable("camp.changede.raid_warning"), false);
+                player.displayClientMessage(Component.translatable("camp.changed_extra.raid_warning"), false);
         }
     }
     static void endRaid(ServerLevel level, Settlement camp, boolean victory) {

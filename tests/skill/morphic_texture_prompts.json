@@ -10,7 +10,7 @@
         "dark_latex_stone.png"
       ],
       "generatedFile": "exec-91fc988e-b0f6-47a6-8101-2cc4f48d520d.png",
-      "savedPath": "src/main/resources/assets/changede/textures/block/dark_latex_morphic_crystal_ore.png"
+      "savedPath": "src/main/resources/assets/changed_extra/textures/block/dark_latex_morphic_crystal_ore.png"
     },
     {
       "name": "white_latex_morphic_crystal_ore",
@@ -20,7 +20,7 @@
         "white_latex_stone.png"
       ],
       "generatedFile": "exec-c1f6be73-2e2e-4945-8298-ac812edb0d05.png",
-      "savedPath": "src/main/resources/assets/changede/textures/block/white_latex_morphic_crystal_ore.png"
+      "savedPath": "src/main/resources/assets/changed_extra/textures/block/white_latex_morphic_crystal_ore.png"
     },
     {
       "name": "morphic_crystal",
@@ -29,7 +29,7 @@
         "amethyst_shard.png"
       ],
       "generatedFile": "exec-26421b13-890b-4868-9219-fb679dc16220.png",
-      "savedPath": "src/main/resources/assets/changede/textures/item/morphic_crystal.png"
+      "savedPath": "src/main/resources/assets/changed_extra/textures/item/morphic_crystal.png"
     },
     {
       "name": "morphic_crystal_alloy",
@@ -38,7 +38,7 @@
         "iron_ingot.png"
       ],
       "generatedFile": "exec-db1bb534-8dfd-4b24-9446-51fae7095ab1.png",
-      "savedPath": "src/main/resources/assets/changede/textures/item/morphic_crystal_alloy.png"
+      "savedPath": "src/main/resources/assets/changed_extra/textures/item/morphic_crystal_alloy.png"
     },
     {
       "name": "morphic_crystal_core",
@@ -47,7 +47,7 @@
         "heart_of_the_sea.png"
       ],
       "generatedFile": "exec-346c805b-65bf-4872-95c6-93c2a326bf23.png",
-      "savedPath": "src/main/resources/assets/changede/textures/item/morphic_crystal_core.png"
+      "savedPath": "src/main/resources/assets/changed_extra/textures/item/morphic_crystal_core.png"
     }
   ]
 }

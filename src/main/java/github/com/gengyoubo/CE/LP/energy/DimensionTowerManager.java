@@ -2,7 +2,7 @@ package github.com.gengyoubo.CE.LP.energy;
 
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.DimensionSpaceTowerBlockEntity;
 import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.FluidDimensionSpaceTowerBlockEntity;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = changede.MODID)
+@Mod.EventBusSubscriber(modid = changed_extra.MODID)
 public final class DimensionTowerManager {
     private static final Map<MinecraftServer, DimensionTowerChannels> NETWORKS = new IdentityHashMap<>();
     private static final Map<MinecraftServer, DimensionFluidChannels> FLUID_NETWORKS = new IdentityHashMap<>();

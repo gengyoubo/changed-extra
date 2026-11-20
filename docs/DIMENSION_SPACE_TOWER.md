@@ -1,6 +1,6 @@
 # 空间塔（维度模式）
 
-对应 #35。原 `changede:space_tower` 改名为空间塔（桥接模式），保留注册 ID、制作配方和转换行为，不申请区块加载。新 `changede:dimension_space_tower` 复用同一材质。单格合成支持桥接模式空间塔与维度模式空间塔双向转换，无额外材料。
+对应 #35。原 `changed_extra:space_tower` 改名为空间塔（桥接模式），保留注册 ID、制作配方和转换行为，不申请区块加载。新 `changed_extra:dimension_space_tower` 复用同一材质。单格合成支持桥接模式空间塔与维度模式空间塔双向转换，无额外材料。
 
 ## 使用
 

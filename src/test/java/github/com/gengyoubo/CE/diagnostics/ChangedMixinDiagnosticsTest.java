@@ -17,7 +17,7 @@ public class ChangedMixinDiagnosticsTest {
         return (T) Proxy.newProxyInstance(type.getClassLoader(), new Class[]{type}, (p, m, a) -> values.apply(m.getName()));
     }
     private static IMixinInfo info(String target) {
-        IMixinConfig config = proxy(IMixinConfig.class, name -> name.equals("getName") ? "mixins/changede-lp.mixins.json" : null);
+        IMixinConfig config = proxy(IMixinConfig.class, name -> name.equals("getName") ? "mixins/changed_extra-lp.mixins.json" : null);
         return proxy(IMixinInfo.class, name -> switch (name) {
             case "getConfig" -> config;
             case "getClassName" -> "github.com.gengyoubo.CE.LP.mixins.AddonMekanismEnergyMixin";
@@ -37,22 +37,22 @@ public class ChangedMixinDiagnosticsTest {
         return new InvalidInjectionException(selector, message);
     }
     public static void main(String[] args) {
-        var ce = new ChangedMixinDiagnostics.Source("changede", "Changed Extra");
-        var injection = failure(TARGET, "@Inject changede$exposeStrictEnergy could not find target getCapability");
+        var ce = new ChangedMixinDiagnostics.Source("changed_extra", "Changed Extra");
+        var injection = failure(TARGET, "@Inject changed_extra$exposeStrictEnergy could not find target getCapability");
         Throwable error = new MixinTransformerError(new MixinApplyError(injection));
         String message = injection.getMessage();
         StackTraceElement[] stack = injection.getStackTrace().clone();
         var result = ChangedMixinDiagnostics.inspect(error, "changed", (config, mixin) -> Optional.of(ce)).orElseThrow();
         check(result.target().equals(TARGET));
-        check(result.config().equals("mixins/changede-lp.mixins.json"));
+        check(result.config().equals("mixins/changed_extra-lp.mixins.json"));
         check(result.mixin().endsWith("AddonMekanismEnergyMixin"));
         check(result.source().equals(ce));
         check(result.rootType().equals(InvalidInjectionException.class.getName()));
         check(result.rootMessage().equals(message));
         check(result.report().contains("Affected Mod: Changed (changed)"));
-        check(result.distinction().contains("belongs to Changed Extra (changede)"));
+        check(result.distinction().contains("belongs to Changed Extra (changed_extra)"));
         check(result.ui().contains("Affected mod: Changed (changed)"));
-        check(result.ui().contains("Failing Mixin source: Changed Extra (changede)"));
+        check(result.ui().contains("Failing Mixin source: Changed Extra (changed_extra)"));
         check(result.ui().contains("Root cause: InvalidInjectionException: " + message));
         check(error.getCause().getCause() == injection && injection.getMessage().equals(message));
         check(Arrays.equals(injection.getStackTrace(), stack));
@@ -60,8 +60,8 @@ public class ChangedMixinDiagnosticsTest {
         check(ChangedMixinDiagnostics.inspect(error, "changed", (c,m) -> { throw new LinkageError(); }).orElseThrow().source() == null);
         check(ChangedMixinDiagnostics.inspect(error, "changed", (c,m) -> Optional.of(new ChangedMixinDiagnostics.Source("changed", "Changed")))
                 .orElseThrow().distinction().contains("owns this failing Mixin"));
-        check(ChangedMixinDiagnostics.inspect(error, "changede", (c,m) -> Optional.of(ce)).isEmpty());
-        check(ChangedMixinDiagnostics.inspect(new RuntimeException("MixinApplyError changede"), "changed", (c,m) -> Optional.of(ce)).isEmpty());
+        check(ChangedMixinDiagnostics.inspect(error, "changed_extra", (c,m) -> Optional.of(ce)).isEmpty());
+        check(ChangedMixinDiagnostics.inspect(new RuntimeException("MixinApplyError changed_extra"), "changed", (c,m) -> Optional.of(ce)).isEmpty());
         check(ChangedMixinDiagnostics.inspect(failure("other.mod.Target", "Invalid injection"), "changed", (c,m) -> Optional.of(ce)).isEmpty());
         check(ChangedMixinDiagnostics.inspect(null, "changed", (c,m) -> Optional.of(ce)).isEmpty());
         var handler = new ChangedMixinErrorHandler();

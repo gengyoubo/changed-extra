@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(WorldOpenFlows.class)
 public abstract class WorldOpenFlowsNoExperimentalWarningMixin {
     @Inject(method = "confirmWorldCreation", at = @At("HEAD"), cancellable = true)
-    private static void changede$skipExperimentalWorldCreationWarning(Minecraft minecraft, CreateWorldScreen screen,
+    private static void changed_extra$skipExperimentalWorldCreationWarning(Minecraft minecraft, CreateWorldScreen screen,
                                                                       Lifecycle lifecycle, Runnable createWorld,
                                                                       boolean skipWarnings, CallbackInfo ci) {
         if (!skipWarnings && lifecycle != Lifecycle.stable()) {

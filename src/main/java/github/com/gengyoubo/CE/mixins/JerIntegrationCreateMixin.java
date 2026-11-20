@@ -12,7 +12,7 @@ import jeresources.api.IWorldGenRegistry;
 @Mixin(targets = "fr.alasdiablo.jerintegration.compat.create.CreateWorldGen", remap = false)
 public abstract class JerIntegrationCreateMixin {
     @Inject(method = "registerWorldGen", at = @At("HEAD"), cancellable = true, remap = false)
-    private void changede$useServerVerifiedCreateFeatures(IWorldGenRegistry registry, CallbackInfo ci) {
+    private void changed_extra$useServerVerifiedCreateFeatures(IWorldGenRegistry registry, CallbackInfo ci) {
         // Create 6 uses datapack features. The generic bridge supplies its confirmed active features;
         // packaged defaults cannot prove what a server actually generates.
         if (AllConfigs.common().specification.getValues().get("worldgen.v2.zinc_ore.clusterSize") == null) ci.cancel();

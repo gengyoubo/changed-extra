@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /** Changed draws and handles its own radial menu, so these controls use screen events. */
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT)
 public final class AbilityRadialPagingEvents {
     private static final int CAPACITY = 8, SIZE = 24;
 
@@ -26,7 +26,7 @@ public final class AbilityRadialPagingEvents {
     @SubscribeEvent
     public static void render(ScreenEvent.Render.Post event) {
         if (!(event.getScreen() instanceof AbilityRadialScreen screen) || screen.getCount() <= CAPACITY) return;
-        int offset = ((AbilityRadialPagingAccessor) screen).changede$getViewOffset();
+        int offset = ((AbilityRadialPagingAccessor) screen).changed_extra$getViewOffset();
         GuiGraphics graphics = event.getGuiGraphics();
         var font = Minecraft.getInstance().font;
         for (boolean next : new boolean[]{false, true}) {
@@ -40,7 +40,7 @@ public final class AbilityRadialPagingEvents {
                 int start = next ? x + 8 : x + 16 - length;
                 graphics.fill(start, y + 12 + dy, start + length, y + 13 + dy, color);
             }
-            if (hovered) graphics.renderTooltip(font, Component.translatable("screen.changede.abilities." +
+            if (hovered) graphics.renderTooltip(font, Component.translatable("screen.changed_extra.abilities." +
                     (next ? "next" : "previous")), event.getMouseX(), event.getMouseY());
         }
         graphics.drawCenteredString(font, Component.literal((offset + 1) + "–" +
@@ -57,13 +57,13 @@ public final class AbilityRadialPagingEvents {
             // Consume even a disabled arrow: a click must never select an underlying ability.
             event.setCanceled(true);
             var accessor = (AbilityRadialPagingAccessor) screen;
-            int offset = accessor.changede$getViewOffset();
+            int offset = accessor.changed_extra$getViewOffset();
             int target = next ? Math.min(offset + CAPACITY, screen.getCount() - CAPACITY)
                     : Math.max(0, ((offset - 1) / CAPACITY) * CAPACITY);
             if (target == offset) return;
-            accessor.changede$setPreviousOffset(target);
-            accessor.changede$setViewOffset(target);
-            accessor.changede$setTransitionTicks(0);
+            accessor.changed_extra$setPreviousOffset(target);
+            accessor.changed_extra$setViewOffset(target);
+            accessor.changed_extra$setTransitionTicks(0);
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             return;
         }

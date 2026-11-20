@@ -22,7 +22,7 @@ public final class TwilightGuardianDeaths extends SavedData {
         return result;
     }
     public static TwilightGuardianDeaths get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(TwilightGuardianDeaths::load, TwilightGuardianDeaths::new, "changede_twilight_guardian_deaths");
+        return level.getDataStorage().computeIfAbsent(TwilightGuardianDeaths::load, TwilightGuardianDeaths::new, "changed_extra_twilight_guardian_deaths");
     }
     @Override public CompoundTag save(CompoundTag tag) {
         for (String key : new String[]{"dead", "lost"}) {

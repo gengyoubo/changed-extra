@@ -11,14 +11,14 @@ import org.spongepowered.asm.mixin.injection.*;
 @Mixin(LivingEntity.class)
 public abstract class SkillGlideMixin {
     @ModifyArg(method="travel",at=@At(value="INVOKE",target="Lnet/minecraft/world/entity/LivingEntity;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"),index=1)
-    private Vec3 changede$glideSpeed(Vec3 motion) {
+    private Vec3 changed_extra$glideSpeed(Vec3 motion) {
         if((Object)this instanceof Player player && player.isFallFlying() && !player.isCreative() && !player.isSpectator()
                 && SkillMechanics.value(player,"air_core")>0)
             return motion.multiply(SkillMechanics.flightMultiplier(player),1,SkillMechanics.flightMultiplier(player));
         return motion;
     }
     @Redirect(method="travel",at=@At(value="INVOKE",target="Lnet/minecraft/world/entity/LivingEntity;getLookAngle()Lnet/minecraft/world/phys/Vec3;"))
-    private Vec3 changede$glideSteering(LivingEntity entity) {
+    private Vec3 changed_extra$glideSteering(LivingEntity entity) {
         Vec3 look=entity.getLookAngle();
         if(entity instanceof Player player && player.isFallFlying() && SkillMechanics.value(player,"air_core")>0) {
             double response=SkillMechanics.flightMultiplier(player);

@@ -38,7 +38,7 @@ public class CELPItem {
     public static final RegistryObject<Item> DARK_LATEX_POWER_CONVERTER_ITEM;
     public static final RegistryObject<Item> ORANGE_PRODUCER_ITEM;
     static {
-        ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
+        ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changed_extra");
         MIMIC_YUFENG_WINGS = ITEMS.register("mimic_yufeng_wings",
                 () -> new MimicYufengWingsItem(new Item.Properties().durability(432).rarity(Rarity.RARE)));
         MIMIC_SIREN_TAIL = ITEMS.register("mimic_siren_tail",

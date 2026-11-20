@@ -23,15 +23,15 @@ public abstract class TransfurVariantInstanceFlySpeedMixin {
     @Shadow private Player host;
 
     @Unique
-    private float changede$defaultFlyingSpeed = Float.NaN;
+    private float changed_extra$defaultFlyingSpeed = Float.NaN;
 
     @ModifyArg(method="tickFlying",at=@At(value="INVOKE",target="Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V",remap=true),index=0)
-    private float changede$flightExhaustion(float amount) {
+    private float changed_extra$flightExhaustion(float amount) {
         return amount*(float)github.com.gengyoubo.CE.skill.SkillMechanics.flightFoodMultiplier(host);
     }
 
     @Inject(method="meetsCriteriaForFlying",at=@At("RETURN"),cancellable=true)
-    private void changede$hungryFlight(CallbackInfoReturnable<Boolean> ci) {
+    private void changed_extra$hungryFlight(CallbackInfoReturnable<Boolean> ci) {
         if(!host.isCreative()&&!host.isSpectator()&&github.com.gengyoubo.CE.skill.SkillMechanics.value(host,"air_core")>0&&host.getFoodData().getFoodLevel()<=6) {
             if(host.getAbilities().flying)host.startFallFlying();
             ci.setReturnValue(false);
@@ -39,19 +39,19 @@ public abstract class TransfurVariantInstanceFlySpeedMixin {
     }
 
     @Inject(method = "tickFlying", at = @At("HEAD"))
-    private void changede$applyVariantFlySpeed(CallbackInfo ci) {
+    private void changed_extra$applyVariantFlySpeed(CallbackInfo ci) {
         if (this.host == null) return;
 
         Abilities abilities = this.host.getAbilities();
-        if (Float.isNaN(this.changede$defaultFlyingSpeed)) {
-            this.changede$defaultFlyingSpeed = abilities.getFlyingSpeed();
+        if (Float.isNaN(this.changed_extra$defaultFlyingSpeed)) {
+            this.changed_extra$defaultFlyingSpeed = abilities.getFlyingSpeed();
         }
 
-        float targetSpeed = this.changede$defaultFlyingSpeed;
+        float targetSpeed = this.changed_extra$defaultFlyingSpeed;
         if (this.parent instanceof OldTransfurVariant<?> oldVariant) {
             float multiplier = oldVariant.flySpeed();
             if (multiplier > 0.0F) {
-                targetSpeed = this.changede$defaultFlyingSpeed * multiplier;
+                targetSpeed = this.changed_extra$defaultFlyingSpeed * multiplier;
             }
         }
 
@@ -64,8 +64,8 @@ public abstract class TransfurVariantInstanceFlySpeedMixin {
     }
 
     @Inject(method = "unhookAll", at = @At("HEAD"))
-    private void changede$restoreDefaultFlySpeed(Player player, CallbackInfo ci) {
-        if (player == null || Float.isNaN(this.changede$defaultFlyingSpeed)) return;
-        player.getAbilities().setFlyingSpeed(this.changede$defaultFlyingSpeed);
+    private void changed_extra$restoreDefaultFlySpeed(Player player, CallbackInfo ci) {
+        if (player == null || Float.isNaN(this.changed_extra$defaultFlyingSpeed)) return;
+        player.getAbilities().setFlyingSpeed(this.changed_extra$defaultFlyingSpeed);
     }
 }

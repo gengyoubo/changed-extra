@@ -13,13 +13,13 @@ public final class MorphicCrystalItem extends Item {
     public MorphicCrystalItem(String kind) { super(new Properties());this.kind=kind; }
     @Override public void appendHoverText(ItemStack stack,Level level,List<Component> tooltip,TooltipFlag flag) {
         super.appendHoverText(stack,level,tooltip,flag);
-        tooltip.add(Component.translatable("tooltip.changede.morphic_crystal."+kind).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.changed_extra.morphic_crystal."+kind).withStyle(ChatFormatting.GRAY));
     }
     public static BlockItem ore(Block block) {
         return new BlockItem(block,new Properties()) {
             @Override public void appendHoverText(ItemStack stack,Level level,List<Component> tooltip,TooltipFlag flag) {
                 super.appendHoverText(stack,level,tooltip,flag);
-                tooltip.add(Component.translatable("tooltip.changede.morphic_crystal.ore").withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("tooltip.changed_extra.morphic_crystal.ore").withStyle(ChatFormatting.GRAY));
             }
         };
     }

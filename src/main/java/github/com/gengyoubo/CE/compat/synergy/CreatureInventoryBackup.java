@@ -1,7 +1,7 @@
 package github.com.gengyoubo.CE.compat.synergy;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -22,8 +22,8 @@ import java.util.Optional;
 
 /** Persistent recovery checkpoints; ordinary item use never triggers automatic recovery. */
 public final class CreatureInventoryBackup {
-    private static final String BACKUP = "changede_inventory_backup";
-    private static final String PROMOTION = "changede_inventory_before_promotion";
+    private static final String BACKUP = "changed_extra_inventory_backup";
+    private static final String PROMOTION = "changed_extra_inventory_before_promotion";
     private static final String SYNERGY = "ChangedSynergyBondedInventory";
     private static final int HISTORY_SIZE = 5;
     private static final ClassValue<Optional<Method>> NATIVE_INVENTORY = new ClassValue<>() {
@@ -44,7 +44,7 @@ public final class CreatureInventoryBackup {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false,
                 LivingEvent.LivingTickEvent.class, CreatureInventoryBackup::onLivingTick);
         MinecraftForge.EVENT_BUS.addListener(CreatureInventoryBackup::registerCommands);
-        if (Boolean.getBoolean("changede.verifyInventoryBackup")) {
+        if (Boolean.getBoolean("changed_extra.verifyInventoryBackup")) {
             MinecraftForge.EVENT_BUS.addListener(InventoryBackupRegressionChecks::verify);
         }
     }
@@ -227,15 +227,15 @@ public final class CreatureInventoryBackup {
                 .then(Commands.literal("list").then(Commands.argument("target", EntityArgument.entity())
                         .executes(context -> {
                             if (!(EntityArgument.getEntity(context, "target") instanceof ChangedEntity creature)) {
-                                context.getSource().sendFailure(Component.translatable("command.changede.inventory_backup.creature_required"));
+                                context.getSource().sendFailure(Component.translatable("command.changed_extra.inventory_backup.creature_required"));
                                 return 0;
                             }
                             checkpoint(creature, "inspection");
                             ListTag history = creature.getPersistentData().getCompound(BACKUP).getList("History", Tag.TAG_COMPOUND);
-                            context.getSource().sendSuccess(() -> Component.translatable("command.changede.inventory_backup.count", history.size()), false);
+                            context.getSource().sendSuccess(() -> Component.translatable("command.changed_extra.inventory_backup.count", history.size()), false);
                             for (int index = 0; index < history.size(); index++) {
                                 CompoundTag record = history.getCompound(index);
-                                Component line = Component.translatable("command.changede.inventory_backup.record", index,
+                                Component line = Component.translatable("command.changed_extra.inventory_backup.record", index,
                                         record.getLong("Time"), record.getString("Reason"));
                                 context.getSource().sendSuccess(() -> line, false);
                             }
@@ -245,22 +245,22 @@ public final class CreatureInventoryBackup {
                         .then(Commands.argument("index", IntegerArgumentType.integer(0, HISTORY_SIZE - 1))
                                 .executes(context -> {
                                     if (!(EntityArgument.getEntity(context, "target") instanceof ChangedEntity creature)) {
-                                        context.getSource().sendFailure(Component.translatable("command.changede.inventory_backup.creature_required"));
+                                        context.getSource().sendFailure(Component.translatable("command.changed_extra.inventory_backup.creature_required"));
                                         return 0;
                                     }
                                     CompoundTag backup = creature.getPersistentData().getCompound(BACKUP);
                                     ListTag history = backup.getList("History", Tag.TAG_COMPOUND);
                                     int index = IntegerArgumentType.getInteger(context, "index");
                                     if (index >= history.size()) {
-                                        context.getSource().sendFailure(Component.translatable("command.changede.inventory_backup.missing"));
+                                        context.getSource().sendFailure(Component.translatable("command.changed_extra.inventory_backup.missing"));
                                         return 0;
                                     }
                                     int restored = restore(creature, history.getCompound(index).getCompound("State"));
                                     if (restored < 0) {
-                                        context.getSource().sendFailure(Component.translatable("command.changede.inventory_backup.native_unavailable"));
+                                        context.getSource().sendFailure(Component.translatable("command.changed_extra.inventory_backup.native_unavailable"));
                                         return 0;
                                     }
-                                    changede.LOGGER.info("{} recovered {} inventory slots for {} from checkpoint {}",
+                                    changed_extra.LOGGER.info("{} recovered {} inventory slots for {} from checkpoint {}",
                                             context.getSource().getTextName(), restored, creature.getUUID(), index);
                                     if (restored > 0) {
                                         // Keep other recovery versions; the same record cannot be replayed.
@@ -269,7 +269,7 @@ public final class CreatureInventoryBackup {
                                         backup.put("Current", capture(creature));
                                         creature.getPersistentData().put(BACKUP, backup);
                                     }
-                                    context.getSource().sendSuccess(() -> Component.translatable("command.changede.inventory_backup.restored", restored), true);
+                                    context.getSource().sendSuccess(() -> Component.translatable("command.changed_extra.inventory_backup.restored", restored), true);
                                     return restored;
                                 })))));
     }

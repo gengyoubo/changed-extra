@@ -17,7 +17,7 @@ public final class LatexSettlementData extends SavedData {
 
     public static LatexSettlementData get(MinecraftServer server) {
         return server.overworld().getDataStorage().computeIfAbsent(LatexSettlementData::load,
-                LatexSettlementData::new, "changede_latex_settlements");
+                LatexSettlementData::new, "changed_extra_latex_settlements");
     }
 
     static LatexSettlementData load(CompoundTag root) {

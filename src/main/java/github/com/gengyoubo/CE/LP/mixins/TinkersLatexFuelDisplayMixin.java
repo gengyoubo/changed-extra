@@ -18,7 +18,7 @@ public abstract class TinkersLatexFuelDisplayMixin {
     @Shadow private FuelModule.FuelInfo fuelInfo;
     @ModifyArg(method = "addTooltip", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V", remap = true), index = 1)
-    private List<Component> changede$latexFuelTooltip(List<Component> tooltip) {
+    private List<Component> changed_extra$latexFuelTooltip(List<Component> tooltip) {
         return LatexSmelteryRules.tooltip(fuelModule, fuelInfo, tooltip);
     }
 }

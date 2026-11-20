@@ -15,44 +15,44 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = FissionReactorMultiblockData.class, remap = false)
 public abstract class FissionReactorUpgradesMixin implements FissionUpgradeAccess {
-    @Unique private final FissionUpgradeState changede$upgrades = new FissionUpgradeState();
+    @Unique private final FissionUpgradeState changed_extra$upgrades = new FissionUpgradeState();
     @Shadow private double biomeAmbientTemp;
 
-    @Override public FissionUpgradeState changede$fissionUpgrades() { return changede$upgrades; }
+    @Override public FissionUpgradeState changed_extra$fissionUpgrades() { return changed_extra$upgrades; }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    private void changede$prepare(Level level, CallbackInfoReturnable<Boolean> cir) {
-        changede$upgrades.beforeTick((FissionReactorMultiblockData) (Object) this, level);
+    private void changed_extra$prepare(Level level, CallbackInfoReturnable<Boolean> cir) {
+        changed_extra$upgrades.beforeTick((FissionReactorMultiblockData) (Object) this, level);
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lmekanism/generators/common/content/fission/FissionReactorMultiblockData;handleCoolant()V"))
-    private void changede$thermalBeforeBoiling(Level level, CallbackInfoReturnable<Boolean> cir) {
-        changede$upgrades.thermal().beforeCoolant((FissionReactorMultiblockData) (Object) this, level, biomeAmbientTemp);
+    private void changed_extra$thermalBeforeBoiling(Level level, CallbackInfoReturnable<Boolean> cir) {
+        changed_extra$upgrades.thermal().beforeCoolant((FissionReactorMultiblockData) (Object) this, level, biomeAmbientTemp);
     }
 
     @Inject(method = "handleDamage", at = @At("TAIL"))
-    private void changede$thermalCriticalDamage(Level level, CallbackInfo ci) {
-        changede$upgrades.thermal().checkFuses((FissionReactorMultiblockData) (Object) this);
+    private void changed_extra$thermalCriticalDamage(Level level, CallbackInfo ci) {
+        changed_extra$upgrades.thermal().checkFuses((FissionReactorMultiblockData) (Object) this);
     }
 
     @Inject(method = "meltdownHappened", at = @At("HEAD"))
-    private void changede$thermalMeltdown(Level level, CallbackInfo ci) {
-        changede$upgrades.thermal().meltdown((FissionReactorMultiblockData) (Object) this, level);
+    private void changed_extra$thermalMeltdown(Level level, CallbackInfo ci) {
+        changed_extra$upgrades.thermal().meltdown((FissionReactorMultiblockData) (Object) this, level);
     }
 
     @Inject(method = "burnFuel", at = @At("HEAD"), cancellable = true)
-    private void changede$burn(Level level, CallbackInfo ci) {
-        if (changede$upgrades.has(FissionUpgrade.PROCESSOR_X) || changede$upgrades.has(FissionUpgrade.PROCESSOR_Y)) {
-            changede$upgrades.burn((FissionReactorMultiblockData) (Object) this, level);
+    private void changed_extra$burn(Level level, CallbackInfo ci) {
+        if (changed_extra$upgrades.has(FissionUpgrade.PROCESSOR_X) || changed_extra$upgrades.has(FissionUpgrade.PROCESSOR_Y)) {
+            changed_extra$upgrades.burn((FissionReactorMultiblockData) (Object) this, level);
             ci.cancel();
         }
     }
 
     @Inject(method = "handleCoolant", at = @At("HEAD"), cancellable = true)
-    private void changede$cool(CallbackInfo ci) {
+    private void changed_extra$cool(CallbackInfo ci) {
         var reactor = (FissionReactorMultiblockData) (Object) this;
-        if (changede$upgrades.has(FissionUpgrade.COOLING) && !reactor.fluidCoolantTank.isEmpty()) {
-            changede$upgrades.cool(reactor);
+        if (changed_extra$upgrades.has(FissionUpgrade.COOLING) && !reactor.fluidCoolantTank.isEmpty()) {
+            changed_extra$upgrades.cool(reactor);
             ci.cancel();
         }
     }

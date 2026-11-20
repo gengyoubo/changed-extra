@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "changed_extra:latex_ingot" },
+    { "item": "changed_extra:latex_ingot" }
+  ],
+  "result": {
+    "item": "changed_extra:pipe_wrench",
+    "count": 1
+  }
+}

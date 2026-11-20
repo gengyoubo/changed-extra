@@ -52,11 +52,11 @@ public final class FissionThermoelectricBlockEntity extends TileEntityFissionRea
         var reactor = getMultiblock();
         if (!fused) return false;
         if (!reactor.isFormed() || reactor.isActive() || reactor.heatCapacitor.getTemperature() >= ThermoelectricModel.START_TEMPERATURE) {
-            player.displayClientMessage(Component.translatable("message.changede.thermo.repair_unsafe"), true);
+            player.displayClientMessage(Component.translatable("message.changed_extra.thermo.repair_unsafe"), true);
             return false;
         }
         fused = false; status = Status.IDLE; markForSave(); updateVisual();
-        player.displayClientMessage(Component.translatable("message.changede.thermo.repaired"), true);
+        player.displayClientMessage(Component.translatable("message.changed_extra.thermo.repaired"), true);
         return true;
     }
     public void describe(Player player) {
@@ -65,12 +65,12 @@ public final class FissionThermoelectricBlockEntity extends TileEntityFissionRea
     public java.util.List<Component> summary() {
         var lines = new java.util.ArrayList<Component>();
         var reactor = getMultiblock();
-        lines.add(Component.translatable("message.changede.thermo.status", Component.translatable("state.changede.thermo." + status().name().toLowerCase(Locale.ROOT))));
-        lines.add(Component.translatable("message.changede.thermo.rates", number(lastHeat), number(ThermoelectricEnergy.toFE(lastElectricity)), number(lastPassive)));
-        lines.add(Component.translatable("message.changede.thermo.energy", number(energy.storedJoules()), number(FissionConfig.THERMO_CAPACITY.get())));
+        lines.add(Component.translatable("message.changed_extra.thermo.status", Component.translatable("state.changed_extra.thermo." + status().name().toLowerCase(Locale.ROOT))));
+        lines.add(Component.translatable("message.changed_extra.thermo.rates", number(lastHeat), number(ThermoelectricEnergy.toFE(lastElectricity)), number(lastPassive)));
+        lines.add(Component.translatable("message.changed_extra.thermo.energy", number(energy.storedJoules()), number(FissionConfig.THERMO_CAPACITY.get())));
         if (reactor.isFormed()) {
-            var thermal = ((FissionUpgradeAccess) reactor).changede$fissionUpgrades().thermal();
-            lines.add(Component.translatable("message.changede.thermo.modules", thermal.intactCount(), thermal.fusedCount()));
+            var thermal = ((FissionUpgradeAccess) reactor).changed_extra$fissionUpgrades().thermal();
+            lines.add(Component.translatable("message.changed_extra.thermo.modules", thermal.intactCount(), thermal.fusedCount()));
         }
         return lines;
     }

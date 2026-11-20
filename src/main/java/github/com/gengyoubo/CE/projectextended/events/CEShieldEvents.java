@@ -60,7 +60,7 @@ public class CEShieldEvents {
 
     private static void notifyReflectSuccess(LivingEntity blocker) {
         if (blocker instanceof ServerPlayer serverPlayer) {
-            awardAdvancement(serverPlayer, ResourceLocation.fromNamespaceAndPath("changede", "shield_rebound"));
+            awardAdvancement(serverPlayer, ResourceLocation.fromNamespaceAndPath("changed_extra", "shield_rebound"));
         }
     }
 

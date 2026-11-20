@@ -17,7 +17,7 @@ public class CEEnchantment {
             );
 
     public static final DeferredRegister<Enchantment> ENCHANTMENTS =
-            DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, "changede");
+            DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, "changed_extra");
     public static final RegistryObject<Enchantment> SALVAGE =
             ENCHANTMENTS.register("salvage", SalvageEnchantment::new);
     public static final RegistryObject<Enchantment> SCORCHINGHEAT =

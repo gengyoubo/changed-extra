@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.skill;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -17,7 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.*;
 
 /** Rebuild only after recipe loading and tag binding, never while a player is eating. */
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class SkillDiets {
     public enum Diet {
         FISH("fish"), DARK_LATEX("dark_latex"), WHITE_LATEX("white_latex"), ORANGE("orange"), MEAT("meat"), VEGETARIAN("vegetarian");
@@ -36,7 +36,7 @@ public final class SkillDiets {
     private static volatile Map<Diet, Set<Item>> foods = Map.of();
     private static MinecraftServer owner;
     private SkillDiets() { }
-    private static TagKey<Item> tag(String path) { return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("changede", path)); }
+    private static TagKey<Item> tag(String path) { return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("changed_extra", path)); }
     public static boolean matches(Diet diet, ItemStack stack) { return !stack.isEmpty() && foods.getOrDefault(diet, Set.of()).contains(stack.getItem()); }
     public static boolean matches(net.minecraft.world.entity.player.Player player, ItemStack stack) {
         return Arrays.stream(Diet.values()).anyMatch(diet -> SkillMechanics.value(player, diet.effect()) > 0 && matches(diet, stack));
@@ -86,7 +86,7 @@ public final class SkillDiets {
                 vegetarianRecipes.add(new SkillDietGraph.VegetarianRecipe<>(output.getItem(), unresolved ? List.of() : slots));
             } catch (RuntimeException ex) {
                 if (!output.isEmpty()) vegetarianRecipes.add(new SkillDietGraph.VegetarianRecipe<>(output.getItem(), List.of()));
-                changede.LOGGER.debug("Cannot infer skill diets from recipe {}", recipe.getId(), ex);
+                changed_extra.LOGGER.debug("Cannot infer skill diets from recipe {}", recipe.getId(), ex);
             }
         }
         Set<Item> excluded = tagged(EXCLUDED), neutral = tagged(NEUTRAL);
@@ -102,7 +102,7 @@ public final class SkillDiets {
                     var properties = item.getDefaultInstance().getFoodProperties(null);
                     if (properties != null && properties.isMeat()) seeds.add(item);
                 } catch (RuntimeException ex) {
-                    changede.LOGGER.debug("Cannot inspect food properties of {}", ForgeRegistries.ITEMS.getKey(item), ex);
+                    changed_extra.LOGGER.debug("Cannot inspect food properties of {}", ForgeRegistries.ITEMS.getKey(item), ex);
                 }
             }
             next.put(diet, SkillDietGraph.infer(seeds, recipes, blocked));
@@ -119,6 +119,6 @@ public final class SkillDiets {
         next.put(Diet.MEAT, Set.copyOf(animalFoods));
         foods = Map.copyOf(next);
         owner = server;
-        changede.LOGGER.info("Skill diets: {} categories across {} supported recipes", foods.size(), recipes.size());
+        changed_extra.LOGGER.info("Skill diets: {} categories across {} supported recipes", foods.size(), recipes.size());
     }
 }

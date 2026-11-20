@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["XXX", "XYX", "XXX"],
+  "key": {
+    "X": { "item": "changed_extra:latex_ingot" },
+    "Y": { "item": "changed:purifier" }
+  },
+  "result": { "item": "changed_extra:basic_latex_purifier", "count": 1 }
+}

@@ -18,7 +18,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT)
 public final class LatexSkillScreenEvents {
     private static final ResourceLocation ACCESSORY_ICON = ResourceLocation.fromNamespaceAndPath("changed", "textures/gui/basic_player_info.png");
     private static final boolean CURIOS = ModList.get().isLoaded("curios");
@@ -36,7 +36,7 @@ public final class LatexSkillScreenEvents {
         if (CURIOS) {
             for (var child : java.util.List.copyOf(screen.children())) {
                 if (child instanceof ImageButton button
-                        && ACCESSORY_ICON.equals(((ImageButtonAccessor) button).changede$getResourceLocation())) {
+                        && ACCESSORY_ICON.equals(((ImageButtonAccessor) button).changed_extra$getResourceLocation())) {
                     event.removeListener(child);
                 }
             }
@@ -61,7 +61,7 @@ public final class LatexSkillScreenEvents {
             if (child instanceof SkillButton button) {
                 button.setPosition(layout.buttonX(), layout.buttonY() + PlayerAttributePanelEvents.Layout.TAB_SPACING);
             } else if (child instanceof ImageButton button
-                    && ACCESSORY_ICON.equals(((ImageButtonAccessor) button).changede$getResourceLocation())) {
+                    && ACCESSORY_ICON.equals(((ImageButtonAccessor) button).changed_extra$getResourceLocation())) {
                 // Keep Changed's original action and creative-tab visibility, but share the side-tab layout.
                 button.setPosition(layout.buttonX() + (PlayerAttributePanelEvents.Layout.BUTTON_WIDTH - button.getWidth()) / 2,
                         layout.buttonY() + PlayerAttributePanelEvents.Layout.TAB_SPACING * 2);
@@ -72,7 +72,7 @@ public final class LatexSkillScreenEvents {
     private static final class SkillButton extends Button {
         private SkillButton(Screen screen) {
             super(0, 0, PlayerAttributePanelEvents.Layout.BUTTON_WIDTH, PlayerAttributePanelEvents.Layout.BUTTON_HEIGHT,
-                    Component.translatable("screen.changede.skills.button"),
+                    Component.translatable("screen.changed_extra.skills.button"),
                     button -> Minecraft.getInstance().setScreen(new LatexSkillScreen(screen)), narration -> narration.get());
         }
 

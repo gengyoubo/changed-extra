@@ -1,6 +1,0 @@
-{
-  "parent": "changede:block/fission_thermoelectric_module",
-  "textures": {
-    "panel": "changede:block/fission_thermoelectric_module_active"
-  }
-}

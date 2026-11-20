@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "fr.alasdiablo.jerintegration.compat.mekanism.MekanismWorldGen", remap = false)
 public abstract class JerIntegrationMekanismMixin {
     @Inject(method = "registerWorldGen", at = @At("HEAD"), cancellable = true, remap = false)
-    private void changede$useVerifiedMekanismFeatures(IWorldGenRegistry registry, CallbackInfo ci) {
+    private void changed_extra$useVerifiedMekanismFeatures(IWorldGenRegistry registry, CallbackInfo ci) {
         ci.cancel();
     }
 }

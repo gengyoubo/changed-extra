@@ -26,7 +26,7 @@ public class BasicPumpBlockEntity extends BlockEntity {
     private static final int TANK_CAPACITY = 16_000;
     private static final int PUMP_INTERVAL_TICKS = 20;
     private static final int AMOUNT_PER_PUMP = 1_000;
-    private static final ResourceLocation LATEX_SPACE = ResourceLocation.parse("changede:latex_space");
+    private static final ResourceLocation LATEX_SPACE = ResourceLocation.parse("changed_extra:latex_space");
     private static final ResourceLocation DARK_LATEX = ResourceLocation.parse("changed:dark_latex");
     private static final ResourceLocation WHITE_LATEX = ResourceLocation.parse("changed:white_latex");
     private final FluidTank tank = new FluidTank(TANK_CAPACITY) {

@@ -1,7 +1,7 @@
 package github.com.gengyoubo.CE.skill;
 
 import com.google.gson.*;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.*;
 import net.minecraft.util.GsonHelper;
@@ -14,7 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.*;
 
 /** Research costs are separate from the XP needed to learn a qualified skill. */
-@Mod.EventBusSubscriber(modid="changede")
+@Mod.EventBusSubscriber(modid="changed_extra")
 public final class SkillResearchDefinitions extends SimpleJsonResourceReloadListener {
     public record Material(Item item, int count) { }
     public record Definition(ResourceLocation id, int durationTicks, int wlpPerSecond, String tier, List<Material> materials) { }
@@ -45,7 +45,7 @@ public final class SkillResearchDefinitions extends SimpleJsonResourceReloadList
                 next.put(entry.getKey(),new Definition(entry.getKey(),ticks,rate,tier,List.copyOf(materials)));
             }
             definitions=Map.copyOf(next);
-            changede.LOGGER.info("Loaded {} skill research projects",definitions.size());
-        } catch(RuntimeException e) { changede.LOGGER.error("Rejected skill research reload; keeping previous definitions",e); }
+            changed_extra.LOGGER.info("Loaded {} skill research projects",definitions.size());
+        } catch(RuntimeException e) { changed_extra.LOGGER.error("Rejected skill research reload; keeping previous definitions",e); }
     }
 }

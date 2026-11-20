@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed_extra:block/ingot_filler"
+    },
+    "facing=east": {
+      "model": "changed_extra:block/ingot_filler",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed_extra:block/ingot_filler",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed_extra:block/ingot_filler",
+      "y": 270
+    }
+  }
+}

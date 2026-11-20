@@ -49,24 +49,24 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
         renderTooltip(guiGraphics, mouseX, mouseY);
         if (isHovering(11, 23, 208, 10, mouseX, mouseY)) guiGraphics.renderComponentTooltip(font, List.of(
                 MachineGuiStyle.amount(menu.getEnergyStored(), menu.getMaxEnergyStored(), "LP"),
-                Component.translatable("screen.changede.space_tower.joule_remainder", menu.getJouleBuffer())), mouseX, mouseY);
+                Component.translatable("screen.changed_extra.space_tower.joule_remainder", menu.getJouleBuffer())), mouseX, mouseY);
         if (isHovering(118, 128, 102, 6, mouseX, mouseY)) guiGraphics.renderComponentTooltip(font, List.of(
-                Component.translatable("screen.changede.space_tower.ce_cost", menu.getCeCostPerMinute()),
-                Component.translatable("screen.changede.space_tower.ce_storage",
+                Component.translatable("screen.changed_extra.space_tower.ce_cost", menu.getCeCostPerMinute()),
+                Component.translatable("screen.changed_extra.space_tower.ce_storage",
                         AmountFormat.format(formatSeconds(menu.getCeStoredSeconds()), formatSeconds(CE_STORAGE_SECONDS)))), mouseX, mouseY);
     }
 
     @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.title"), 10, 8, MachineGuiStyle.TITLE, false);
+        guiGraphics.drawString(font, Component.translatable("screen.changed_extra.space_tower.title"), 10, 8, MachineGuiStyle.TITLE, false);
 
         int rowY = 43;
         for (SpaceTowerEnergyType type : SpaceTowerEnergyType.values()) {
-            guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.energy." + type.name().toLowerCase()), 16, rowY, MachineGuiStyle.LABEL, false);
+            guiGraphics.drawString(font, Component.translatable("screen.changed_extra.space_tower.energy." + type.name().toLowerCase()), 16, rowY, MachineGuiStyle.LABEL, false);
             rowY += 18;
         }
 
-        guiGraphics.drawString(font, Component.translatable("screen.changede.space_tower.ce_settings"), 118, 43, MachineGuiStyle.LABEL, false);
+        guiGraphics.drawString(font, Component.translatable("screen.changed_extra.space_tower.ce_settings"), 118, 43, MachineGuiStyle.LABEL, false);
         guiGraphics.drawString(font, Component.literal("RPM:"), 118, 60, MachineGuiStyle.LABEL, false);
         guiGraphics.drawString(font, Component.literal("SU:"), 118, 82, MachineGuiStyle.LABEL, false);
     }
@@ -83,24 +83,24 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
                     .build();
             modeButtons.put(type, button);
             if (type == SpaceTowerEnergyType.RF || type == SpaceTowerEnergyType.J) {
-                button.setTooltip(Tooltip.create(Component.translatable("screen.changede.space_tower.tooltip." + type.name().toLowerCase())));
+                button.setTooltip(Tooltip.create(Component.translatable("screen.changed_extra.space_tower.tooltip." + type.name().toLowerCase())));
             }
             addRenderableWidget(button);
             rowY += 18;
         }
 
-        rpmInput = new EditBox(font, leftPos + 150, topPos + 55, 70, 18, Component.translatable("screen.changede.space_tower.rpm"));
+        rpmInput = new EditBox(font, leftPos + 150, topPos + 55, 70, 18, Component.translatable("screen.changed_extra.space_tower.rpm"));
         rpmInput.setFilter(SpaceTowerScreen::isNumericText);
         rpmInput.setMaxLength(9);
         addRenderableWidget(rpmInput);
 
-        suInput = new EditBox(font, leftPos + 150, topPos + 77, 70, 18, Component.translatable("screen.changede.space_tower.su"));
+        suInput = new EditBox(font, leftPos + 150, topPos + 77, 70, 18, Component.translatable("screen.changed_extra.space_tower.su"));
         suInput.setFilter(SpaceTowerScreen::isNumericText);
         suInput.setMaxLength(9);
         addRenderableWidget(suInput);
 
         Button applyButton = addRenderableWidget(Button.builder(
-                        Component.translatable("screen.changede.space_tower.apply"),
+                        Component.translatable("screen.changed_extra.space_tower.apply"),
                         ignored -> submitCeSettings()
                 )
                 .bounds(leftPos + 164, topPos + 99, 56, 18)
@@ -129,7 +129,7 @@ public class SpaceTowerScreen extends AbstractContainerScreen<SpaceTowerMenu> {
     private void updateButtons() {
         for (Map.Entry<SpaceTowerEnergyType, Button> entry : modeButtons.entrySet()) {
             IOType mode = menu.getMode(entry.getKey());
-            entry.getValue().setMessage(Component.translatable("screen.changede.space_tower.mode." + mode.name().toLowerCase()));
+            entry.getValue().setMessage(Component.translatable("screen.changed_extra.space_tower.mode." + mode.name().toLowerCase()));
         }
 
         if (rpmInput != null && !rpmInput.isFocused() && lastSyncedRpm != menu.getCeRpm()) {

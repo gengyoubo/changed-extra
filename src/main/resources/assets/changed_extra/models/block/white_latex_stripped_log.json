@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "changed_extra:block/white_latex_planks",
+    "side": "changed_extra:block/white_latex_planks"
+  }
+}

@@ -39,7 +39,7 @@ public final class IngotFillerBlock extends BaseEntityBlock {
         if(level.isClientSide)return InteractionResult.SUCCESS;
         if(FluidUtil.interactWithFluidHandler(player,hand,level,pos,hit.getDirection()))return InteractionResult.CONSUME;
         if(player instanceof ServerPlayer server)NetworkHooks.openScreen(server,new SimpleMenuProvider(
-                (id,inventory,p)->new IngotFillerMenu(id,inventory,pos),Component.translatable("block.changede.ingot_filler")),
+                (id,inventory,p)->new IngotFillerMenu(id,inventory,pos),Component.translatable("block.changed_extra.ingot_filler")),
                 buffer->{buffer.writeBlockPos(pos);buffer.writeUtf(IngotFillingDiagnostics.getDisplay());});
         return InteractionResult.CONSUME;
     }

@@ -1,4 +1,4 @@
 {
   "replace": false,
-  "values": ["changede:latex_weather", "changede:white_fog"]
+  "values": ["changed_extra:latex_weather", "changed_extra:white_fog"]
 }

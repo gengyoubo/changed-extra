@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = DarkLatexYufengQueenEntity.class, remap = false)
 public class DarkLatexYufengQueenBehaviorMixin {
     @Inject(method = "targetSelectorTest", at = @At("HEAD"), cancellable = true)
-    private void changede$doNotTargetDarkLatexAllies(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
+    private void changed_extra$doNotTargetDarkLatexAllies(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
         LatexType targetLatexType = LatexType.getEntityLatexType(target);
         if (targetLatexType == ChangedLatexTypes.DARK_LATEX.get()) {
             cir.setReturnValue(false);

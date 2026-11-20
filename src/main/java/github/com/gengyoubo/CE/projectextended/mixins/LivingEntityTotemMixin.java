@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.projectextended.mixins;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import github.com.gengyoubo.CE.projectextended.items.CETotemOfUndying;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -39,8 +39,8 @@ public abstract class LivingEntityTotemMixin {
     public abstract void changed_extra$addEffect(MobEffectInstance effect);
 
     @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
-    private void changede$useMatterTotem(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if(!changede.PROJECTE) {
+    private void changed_extra$useMatterTotem(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        if(!changed_extra.PROJECTE) {
             return;
         }
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
@@ -71,7 +71,7 @@ public abstract class LivingEntityTotemMixin {
             this.changed_extra$addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
             this.changed_extra$addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
             this.changed_extra$addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
-            this.changede$spawnActivationParticles(livingEntity, totem);
+            this.changed_extra$spawnActivationParticles(livingEntity, totem);
             livingEntity.level().broadcastEntityEvent(livingEntity, (byte) 35);
             cir.setReturnValue(true);
             return;
@@ -79,8 +79,8 @@ public abstract class LivingEntityTotemMixin {
     }
 
     @Unique
-    private void changede$spawnActivationParticles(LivingEntity livingEntity, CETotemOfUndying totem) {
-        if(changede.PROJECTE) {
+    private void changed_extra$spawnActivationParticles(LivingEntity livingEntity, CETotemOfUndying totem) {
+        if(changed_extra.PROJECTE) {
             return;
         }
         if (!(livingEntity.level() instanceof ServerLevel serverLevel) || !totem.isTrueMatterTotem()) {

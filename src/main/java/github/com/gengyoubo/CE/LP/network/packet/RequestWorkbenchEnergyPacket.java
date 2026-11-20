@@ -62,7 +62,7 @@ public class RequestWorkbenchEnergyPacket {
             return new EnergySnapshot(handler.getEnergyStored(), handler.getMaxEnergyStored());
         }
         if (blockEntity instanceof WorkbenchEnergyHolder holder) {
-            WorkbenchEnergyStorage storage = holder.changede$getWorkbenchEnergy();
+            WorkbenchEnergyStorage storage = holder.changed_extra$getWorkbenchEnergy();
             return new EnergySnapshot(storage.getEnergyStored(), storage.getMaxEnergyStored());
         }
         return null;

@@ -1,0 +1,16 @@
+{
+  "type": "changed_extra:ingot_filling",
+  "ingredient": {
+    "item": "changed_extra:latex_ingot"
+  },
+  "fluid": {
+    "fluid": "changed:white_latex",
+    "amount": 1000
+  },
+  "time": 10,
+  "lp_per_second": 200,
+  "result": {
+    "item": "changed_extra:white_latex_ingot",
+    "count": 1
+  }
+}

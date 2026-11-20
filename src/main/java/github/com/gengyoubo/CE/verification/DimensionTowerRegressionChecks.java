@@ -30,7 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /** Opt-in real server checks. Run only with the disposable runDimensionTowerServer world. */
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 @SuppressWarnings("deprecation")
 
 public final class DimensionTowerRegressionChecks {
@@ -49,16 +49,16 @@ public final class DimensionTowerRegressionChecks {
 
     private static void check(boolean passed, String message) {
         if (!passed) throw new AssertionError(message);
-        LogManager.getLogger("changede-dimension-check").info("PASS: {}", message);
+        LogManager.getLogger("changed_extra-dimension-check").info("PASS: {}", message);
     }
 
     @SubscribeEvent public static void started(ServerStartedEvent event) {
-        if (!Boolean.getBoolean("changede.verifyDimensionTower")) return;
+        if (!Boolean.getBoolean("changed_extra.verifyDimensionTower")) return;
         server = event.getServer();
         elapsed = 0;
-        restart = Boolean.getBoolean("changede.verifyDimensionTowerRestart");
+        restart = Boolean.getBoolean("changed_extra.verifyDimensionTowerRestart");
         remote = server.getLevel(ResourceKey.create(Registries.DIMENSION,
-                ResourceLocation.fromNamespaceAndPath("changede", "latex_space")));
+                ResourceLocation.fromNamespaceAndPath("changed_extra", "latex_space")));
         check(remote != null, "Latex dimension exists");
         check(server.getPlayerCount() == 0, "Test runs with no players");
         if (restart) {
@@ -155,7 +155,7 @@ public final class DimensionTowerRegressionChecks {
                 check(ticketCount(remote) == 0, "Removal after restart releases restored tickets");
                 server.overworld().setBlockAndUpdate(SOURCE, Blocks.AIR.defaultBlockState());
                 check(ticketCount(server.overworld()) == 0, "Source removal releases all tickets");
-                LogManager.getLogger("changede-dimension-check").info("ALL DIMENSION TOWER RESTART CHECKS PASSED");
+                LogManager.getLogger("changed_extra-dimension-check").info("ALL DIMENSION TOWER RESTART CHECKS PASSED");
             } else {
                 // Reset the source so the second run tests fresh transfer after ticket restoration.
                 CompoundTag tag = tower(server.overworld(), SOURCE).saveWithoutMetadata();
@@ -167,7 +167,7 @@ public final class DimensionTowerRegressionChecks {
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
-                LogManager.getLogger("changede-dimension-check").info("ALL DIMENSION TOWER SERVER CHECKS PASSED; RESTART FIXTURE SAVED");
+                LogManager.getLogger("changed_extra-dimension-check").info("ALL DIMENSION TOWER SERVER CHECKS PASSED; RESTART FIXTURE SAVED");
             }
         } finally {
             MinecraftServer finished = server;

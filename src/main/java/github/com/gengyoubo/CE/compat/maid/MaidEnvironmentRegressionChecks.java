@@ -1,7 +1,7 @@
 package github.com.gengyoubo.CE.compat.maid;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -110,7 +110,7 @@ final class MaidEnvironmentRegressionChecks {
             } finally {
                 regular.discard();
             }
-            changede.LOGGER.info("MAID ENVIRONMENT REGRESSION CHECKS PASSED");
+            changed_extra.LOGGER.info("MAID ENVIRONMENT REGRESSION CHECKS PASSED");
         } finally {
             level.setBlock(pos, previousFeet, 2);
             level.setBlock(pos.above(), previousHead, 2);
@@ -126,6 +126,6 @@ final class MaidEnvironmentRegressionChecks {
 
     private static void check(boolean condition, String message) {
         if (!condition) throw new AssertionError(message);
-        changede.LOGGER.info("Maid environment PASS: {}", message);
+        changed_extra.LOGGER.info("Maid environment PASS: {}", message);
     }
 }

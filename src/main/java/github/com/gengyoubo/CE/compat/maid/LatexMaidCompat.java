@@ -67,9 +67,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /** Optional TLM bridge. This class is only loaded when both companion mods are present. */
 @SuppressWarnings("deprecation")
 public final class LatexMaidCompat {
-    private static final String TASK_TAG = "changede_maid_work_task";
-    private static final String WORK_OWNER_TAG = "changede_maid_work_owner";
-    private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changede");
+    private static final String TASK_TAG = "changed_extra_maid_work_task";
+    private static final String WORK_OWNER_TAG = "changed_extra_maid_work_owner";
+    private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changed_extra");
     static final RegistryObject<MenuType<MaidWorkMenu>> WORK_MENU = MENUS.register("latex_maid_work", () -> IForgeMenuType.create(MaidWorkMenu::new));
     private static final Map<UUID, SyntheticMaid> WORKERS = new ConcurrentHashMap<>();
     private static final Set<UUID> FAILED_WORKERS = ConcurrentHashMap.newKeySet();
@@ -114,7 +114,7 @@ public final class LatexMaidCompat {
             WORKERS.clear();
             FAILED_WORKERS.clear();
         });
-        if (Boolean.getBoolean("changede.verifyMaidLifecycle")) {
+        if (Boolean.getBoolean("changed_extra.verifyMaidLifecycle")) {
             MinecraftForge.EVENT_BUS.addListener(MaidLifecycleRegressionChecks::verify);
         }
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false,
@@ -140,7 +140,7 @@ public final class LatexMaidCompat {
 
     private static void openWorkScreen(ServerPlayer player, ChangedEntity creature, boolean fromWheel) {
         MenuProvider provider = new MenuProvider() {
-            @Override public Component getDisplayName() { return Component.translatable("screen.changede.maid_work.title"); }
+            @Override public Component getDisplayName() { return Component.translatable("screen.changed_extra.maid_work.title"); }
             @Override public AbstractContainerMenu createMenu(int id, net.minecraft.world.entity.player.Inventory inventory, Player opener) {
                 return new MaidWorkMenu(id, inventory, creature.getId(), fromWheel);
             }
@@ -162,11 +162,11 @@ public final class LatexMaidCompat {
                     && inventory.getPet() == creature;
             if (!fromWheel && !fromInventory) return;
             if (!ChangedSynergyFeedApi.hasMaximumFamiliarity(creature, player)) {
-                player.displayClientMessage(Component.translatable("message.changede.maid_work.max_familiarity"), true);
+                player.displayClientMessage(Component.translatable("message.changed_extra.maid_work.max_familiarity"), true);
                 return;
             }
             if (isWorkBoundToOtherPlayer(creature, player)) {
-                player.displayClientMessage(Component.translatable("message.changede.maid_work.bound_other"), true);
+                player.displayClientMessage(Component.translatable("message.changed_extra.maid_work.bound_other"), true);
                 return;
             }
             // Tasks assigned before UUID binding was added are claimed by the next
@@ -237,7 +237,7 @@ public final class LatexMaidCompat {
                     current.setTask(task);
                 } catch (RuntimeException | LinkageError exception) {
                     if (FAILED_WORKERS.add(creature.getUUID())) {
-                        github.com.gengyoubo.CE.changede.LOGGER.warn("Could not start latex maid task {} for {}", taskId, creature.getType(), exception);
+                        github.com.gengyoubo.CE.changed_extra.LOGGER.warn("Could not start latex maid task {} for {}", taskId, creature.getType(), exception);
                     }
                     return null;
                 }
@@ -278,7 +278,7 @@ public final class LatexMaidCompat {
             releaseWorker(creature);
             restoreNativeAi(creature);
             if (FAILED_WORKERS.add(creature.getUUID())) {
-                github.com.gengyoubo.CE.changede.LOGGER.warn("Latex maid task {} failed for {}", taskId, creature.getType(), exception);
+                github.com.gengyoubo.CE.changed_extra.LOGGER.warn("Latex maid task {} failed for {}", taskId, creature.getType(), exception);
             }
         }
     }

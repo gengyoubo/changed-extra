@@ -1,0 +1,11 @@
+{
+  "duration_ticks": 24000,
+  "wlp_per_second": 200,
+  "tier": "rare",
+  "startup_materials": [
+    {
+      "item": "changed_extra:morphic_crystal_core",
+      "count": 8
+    }
+  ]
+}

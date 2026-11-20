@@ -12,10 +12,10 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.*;
 
 /** Player-owned, persistent work. A station binding grants one machine permission to advance it. */
-@Mod.EventBusSubscriber(modid="changede")
+@Mod.EventBusSubscriber(modid="changed_extra")
 @SuppressWarnings("deprecation")
 public final class SkillResearchAccounts {
-    private static final String TAG="changede_skill_research";
+    private static final String TAG="changed_extra_skill_research";
     private SkillResearchAccounts() { }
     private static CompoundTag account(Player player) { return player.getPersistentData().getCompound(TAG); }
     public static CompoundTag job(Player player,ResourceLocation id) { return account(player).getCompound("jobs").getCompound(id.toString()); }

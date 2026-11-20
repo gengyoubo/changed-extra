@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = AccessoryLayer.class, remap = false)
 public abstract class AccessoryLayerCuriosMixin {
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/ltxprogrammer/changed/data/AccessorySlots;getForEntity(Lnet/minecraft/world/entity/LivingEntity;)Ljava/util/Optional;"))
-    private Optional<AccessorySlots> changede$renderCuriosVisibilityAndCosmetics(LivingEntity entity) {
+    private Optional<AccessorySlots> changed_extra$renderCuriosVisibilityAndCosmetics(LivingEntity entity) {
         var curios = CuriosAccessorySlots.forEntity(entity, true);
         return curios.isPresent() ? curios : AccessorySlots.getForEntity(entity);
     }

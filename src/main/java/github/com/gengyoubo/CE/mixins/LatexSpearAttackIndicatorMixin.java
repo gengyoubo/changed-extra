@@ -15,20 +15,20 @@ import java.util.Comparator;
 
 @Mixin(Gui.class)
 public abstract class LatexSpearAttackIndicatorMixin {
-    @Unique private boolean changede$spearIndicator;
-    @Unique private Entity changede$spearTarget;
+    @Unique private boolean changed_extra$spearIndicator;
+    @Unique private Entity changed_extra$spearTarget;
     @Inject(method = "renderCrosshair", at = @At("HEAD"))
-    private void changede$findSpearTarget(GuiGraphics graphics, CallbackInfo ci) {
+    private void changed_extra$findSpearTarget(GuiGraphics graphics, CallbackInfo ci) {
         var player = Minecraft.getInstance().player;
-        changede$spearIndicator = player != null && !player.isSpectator()
+        changed_extra$spearIndicator = player != null && !player.isSpectator()
                 && player.getMainHandItem().getItem() instanceof LatexSpearItem;
-        changede$spearTarget = changede$spearIndicator ? LatexSpearItem.targets(player).stream()
+        changed_extra$spearTarget = changed_extra$spearIndicator ? LatexSpearItem.targets(player).stream()
                 .min(Comparator.comparingDouble(player::distanceToSqr)).orElse(null) : null;
     }
     @Redirect(method = "renderCrosshair", at = @At(value = "FIELD",
             target = "Lnet/minecraft/client/Minecraft;crosshairPickEntity:Lnet/minecraft/world/entity/Entity;"))
-    private Entity changede$spearIndicatorRange(Minecraft minecraft) {
+    private Entity changed_extra$spearIndicatorRange(Minecraft minecraft) {
         // MC-302677: only the attack indicator uses this ray; entity interactions retain native reach.
-        return changede$spearIndicator ? changede$spearTarget : minecraft.crosshairPickEntity;
+        return changed_extra$spearIndicator ? changed_extra$spearTarget : minecraft.crosshairPickEntity;
     }
 }

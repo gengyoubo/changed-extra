@@ -21,7 +21,7 @@ import java.util.List;
 
 public final class MimicSirenTailModel extends EntityModel<LivingEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
-            ResourceLocation.fromNamespaceAndPath("changede", "mimic_siren_tail"), "main");
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "mimic_siren_tail"), "main");
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("changed", "textures/latex_siren.png");
     private final ModelPart waist;
     private final ModelPart abdomen;

@@ -11,8 +11,8 @@ import java.util.*;
 
 /** Entity-owned, paid work materials. This common class has no CS dependency. */
 final class CampWorkBuffer {
-    static final String ROOT = "changede_camp_work";
-    private static final String ROD_LEASE = "changede_camp_rod_lease";
+    static final String ROOT = "changed_extra_camp_work";
+    private static final String ROD_LEASE = "changed_extra_camp_rod_lease";
     private CampWorkBuffer() {}
     private static CompoundTag root(ChangedEntity mob) {
         if (!mob.getPersistentData().contains(ROOT, Tag.TAG_COMPOUND)) mob.getPersistentData().put(ROOT, new CompoundTag());

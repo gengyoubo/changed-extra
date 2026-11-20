@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "changede:block/white_latex_morphic_crystal_ore"
-  }
-}

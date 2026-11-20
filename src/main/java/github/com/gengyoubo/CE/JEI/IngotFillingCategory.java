@@ -19,12 +19,12 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Locale;
 
 public final class IngotFillingCategory implements IRecipeCategory<IngotFillingRecipe> {
-    public static final RecipeType<IngotFillingRecipe> TYPE=RecipeType.create("changede","ingot_filling",IngotFillingRecipe.class);
+    public static final RecipeType<IngotFillingRecipe> TYPE=RecipeType.create("changed_extra","ingot_filling",IngotFillingRecipe.class);
     private static final ResourceLocation BACKGROUND=MachineGuiStyle.texture("jei_ingot_filling");
     private final IDrawable icon;
     public IngotFillingCategory(IGuiHelper helper) { icon=helper.createDrawableItemStack(new ItemStack(CELPBlock.INGOT_FILLER.get())); }
     @Override public RecipeType<IngotFillingRecipe> getRecipeType() { return TYPE; }
-    @Override public Component getTitle() { return Component.translatable("block.changede.ingot_filler"); }
+    @Override public Component getTitle() { return Component.translatable("block.changed_extra.ingot_filler"); }
     @Override public IDrawable getIcon() { return icon; }
     @Override public int getWidth() { return 150; }
     @Override public int getHeight() { return 72; }
@@ -39,7 +39,7 @@ public final class IngotFillingCategory implements IRecipeCategory<IngotFillingR
         MachineGuiStyle.loopingBar(graphics,70,13,32,6,(int)Math.round(recipe.getSeconds()*20),MachineGuiStyle.PROGRESS);
         var font=Minecraft.getInstance().font;
         graphics.drawString(font,Component.literal(recipe.getFluidAmount()+" mB · "+recipe.getFluidPerSecond()+" mB/s"),4,34,MachineGuiStyle.LABEL,false);
-        graphics.drawString(font,Component.translatable("gui.changede.alloy_furnace.time",String.format(Locale.ROOT,"%.1f",recipe.getSeconds())),4,46,MachineGuiStyle.LABEL,false);
-        graphics.drawString(font,Component.translatable("gui.changede.alloy_furnace.power",recipe.getLpPerSecond()),4,58,0xFF007878,false);
+        graphics.drawString(font,Component.translatable("gui.changed_extra.alloy_furnace.time",String.format(Locale.ROOT,"%.1f",recipe.getSeconds())),4,46,MachineGuiStyle.LABEL,false);
+        graphics.drawString(font,Component.translatable("gui.changed_extra.alloy_furnace.power",recipe.getLpPerSecond()),4,58,0xFF007878,false);
     }
 }

@@ -6,7 +6,7 @@ import net.minecraft.world.level.storage.ServerLevelData;
 
 /** Weather belongs to the latex dimension; the remaining world data stays shared. */
 public final class LatexSpaceWeatherData extends SavedData {
-    public static final String ID = "changede_latex_space_weather";
+    public static final String ID = "changed_extra_latex_space_weather";
     private int clearTime;
     private int rainTime;
     private int thunderTime;

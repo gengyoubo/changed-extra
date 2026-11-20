@@ -9,7 +9,7 @@ import github.com.gengyoubo.CE.client.renderer.LatexSkillResearchTableRenderer;
 import github.com.gengyoubo.CE.init.CEBlock;
 import github.com.gengyoubo.CE.init.CEBlockEntity;
 import github.com.gengyoubo.CE.init.CEEntity;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -70,7 +70,7 @@ public class CEScreen {
             Method addPlugin = findPonderAddPluginMethod(ponderIndexClass, ponderPluginClass);
             addPlugin.invoke(null, plugin);
         } catch (ReflectiveOperationException | LinkageError exception) {
-            changede.LOGGER.warn("Failed to register changede ponder plugin", exception);
+            changed_extra.LOGGER.warn("Failed to register changed_extra ponder plugin", exception);
         }
     }
 

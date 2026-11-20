@@ -14,7 +14,7 @@ import java.util.Optional;
 @Mixin(value = ProcessTransfur.class, remap = false)
 public class MaidWorkProcessIdentityMixin {
     @Inject(method = "getEntityVariant", at = @At("HEAD"), cancellable = true)
-    private static void changede$resolveWorkVariant(LivingEntity entity, CallbackInfoReturnable<Optional<TransfurVariant<?>>> cir) {
+    private static void changed_extra$resolveWorkVariant(LivingEntity entity, CallbackInfoReturnable<Optional<TransfurVariant<?>>> cir) {
         if (entity instanceof MaidWorkBody work && work.workBody() != null) cir.setReturnValue(Optional.ofNullable(work.workBody().getSelfVariant()));
     }
 }

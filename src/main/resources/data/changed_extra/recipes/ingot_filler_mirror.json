@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "AYB",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "changed_extra:iridium_ingot"
+    },
+    "Y": {
+      "item": "changed_extra:painite_ingot"
+    },
+    "A": {
+      "item": "changed_addon:unifuser"
+    },
+    "B": {
+      "item": "changed:infuser"
+    }
+  },
+  "result": {
+    "item": "changed_extra:ingot_filler",
+    "count": 1
+  }
+}

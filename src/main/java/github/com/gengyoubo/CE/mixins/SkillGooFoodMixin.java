@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Item.class)
 public abstract class SkillGooFoodMixin {
     @Inject(method = "getUseDuration", at = @At("HEAD"), cancellable = true)
-    private void changede$gooDuration(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+    private void changed_extra$gooDuration(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         if (SkillGooDiet.isGoo(stack)) cir.setReturnValue(32);
     }
     @Inject(method = "getUseAnimation", at = @At("HEAD"), cancellable = true)
-    private void changede$gooAnimation(ItemStack stack, CallbackInfoReturnable<UseAnim> cir) {
+    private void changed_extra$gooAnimation(ItemStack stack, CallbackInfoReturnable<UseAnim> cir) {
         if (SkillGooDiet.isGoo(stack)) cir.setReturnValue(UseAnim.EAT);
     }
 }

@@ -1,7 +1,7 @@
 package github.com.gengyoubo.CE.client;
 
 import com.google.gson.*;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.*;
 import net.minecraft.util.GsonHelper;
@@ -13,9 +13,9 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.*;
 
 /** Client resource-pack data; regions never participate in learning or form matching. */
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class SkillVisuals extends SimpleJsonResourceReloadListener {
-    public static final String LABORATORY = "changede:laboratory";
+    public static final String LABORATORY = "changed_extra:laboratory";
     public record Theme(ResourceLocation tile, ResourceLocation stripe, int tint, int active,
                         int available, int dormant, int locked, int surface, String motif) { }
     private static final Theme FALLBACK = new Theme(sprite("changed:block/wall_white"),
@@ -91,7 +91,7 @@ public final class SkillVisuals extends SimpleJsonResourceReloadListener {
                 for (var element : GsonHelper.getAsJsonArray(json, "regions", new JsonArray())) {
                     JsonObject r = element.getAsJsonObject();
                     String branch = r.has("branch") ? GsonHelper.getAsString(r,"branch") : "";
-                    if (!branch.isEmpty()) branch=sprite(branch.contains(":") ? branch : "changede:"+branch).toString();
+                    if (!branch.isEmpty()) branch=sprite(branch.contains(":") ? branch : "changed_extra:"+branch).toString();
                     String id = sprite(branch.isEmpty() ? GsonHelper.getAsString(r,"id")
                             : GsonHelper.getAsString(r,"id",branch+"_branch")).toString();
                     if (!regionIds.add(id)) throw new IllegalArgumentException("Duplicate region " + id);
@@ -123,7 +123,7 @@ public final class SkillVisuals extends SimpleJsonResourceReloadListener {
             branchRegions = List.copyOf(nextBranchRegions);
             revision++;
         } catch (RuntimeException ex) {
-            changede.LOGGER.error("Skill visual reload rejected; retaining previous visuals: {}", ex.getMessage());
+            changed_extra.LOGGER.error("Skill visual reload rejected; retaining previous visuals: {}", ex.getMessage());
         }
     }
 }

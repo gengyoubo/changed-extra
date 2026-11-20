@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class CEPonderPlugin implements PonderPlugin {
     @Override
     public @NotNull String getModId() {
-        return "changede";
+        return "changed_extra";
     }
 
     @Override

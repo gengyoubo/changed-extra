@@ -15,12 +15,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = SwitchTransfurModeAbility.class, remap = false)
 public abstract class TransfurModeNoticeMixin {
     @Inject(method = "startUsing", at = @At("RETURN"))
-    private void changede$explainMindlessAbsorption(IAbstractChangedEntity entity, CallbackInfo ci) {
+    private void changed_extra$explainMindlessAbsorption(IAbstractChangedEntity entity, CallbackInfo ci) {
         if (entity.getEntity() instanceof ServerPlayer
                 && entity.getTransfurMode() == TransfurMode.REPLICATION
                 && !ChangedSynergyConfig.COMMON.allowMindlessMobTransfur.get()) {
             // Keep Changed's mode selection in the action bar; put the rule explanation in chat.
-            entity.displayClientMessage(Component.translatable("ability.changede.switch_transfur_mode.mindless_notice")
+            entity.displayClientMessage(Component.translatable("ability.changed_extra.switch_transfur_mode.mindless_notice")
                     .withStyle(ChatFormatting.YELLOW), false);
         }
     }

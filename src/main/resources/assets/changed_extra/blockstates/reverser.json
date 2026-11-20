@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "active=false,facing=north": {
+      "model": "changed_extra:block/reverser",
+      "y": 0
+    },
+    "active=true,facing=north": {
+      "model": "changed_extra:block/reverser_active",
+      "y": 0
+    },
+    "active=false,facing=east": {
+      "model": "changed_extra:block/reverser",
+      "y": 90
+    },
+    "active=true,facing=east": {
+      "model": "changed_extra:block/reverser_active",
+      "y": 90
+    },
+    "active=false,facing=south": {
+      "model": "changed_extra:block/reverser",
+      "y": 180
+    },
+    "active=true,facing=south": {
+      "model": "changed_extra:block/reverser_active",
+      "y": 180
+    },
+    "active=false,facing=west": {
+      "model": "changed_extra:block/reverser",
+      "y": 270
+    },
+    "active=true,facing=west": {
+      "model": "changed_extra:block/reverser_active",
+      "y": 270
+    }
+  }
+}

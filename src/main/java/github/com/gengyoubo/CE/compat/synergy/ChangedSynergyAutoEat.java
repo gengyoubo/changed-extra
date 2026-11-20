@@ -30,8 +30,8 @@ import net.parkabird.changedsynergy.ai.RelationshipFavorService;
 public final class ChangedSynergyAutoEat {
     private static final long EAT_COOLDOWN_TICKS = 20L;
     private static final long RECOVERY_INTERVAL_TICKS = 100L;
-    private static final String NEXT_EAT = "changede_next_auto_eat";
-    private static final String NEXT_RECOVERY = "changede_next_companion_recovery";
+    private static final String NEXT_EAT = "changed_extra_next_auto_eat";
+    private static final String NEXT_RECOVERY = "changed_extra_next_companion_recovery";
 
     private ChangedSynergyAutoEat() {}
 
@@ -40,7 +40,7 @@ public final class ChangedSynergyAutoEat {
                 LivingEvent.LivingTickEvent.class, ChangedSynergyAutoEat::onLivingTick);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, false,
                 LivingDamageEvent.class, ChangedSynergyAutoEat::onDamage);
-        if (Boolean.getBoolean("changede.verifyCompanionRecovery")) {
+        if (Boolean.getBoolean("changed_extra.verifyCompanionRecovery")) {
             MinecraftForge.EVENT_BUS.addListener(CompanionRecoveryRegressionChecks::verify);
         }
     }

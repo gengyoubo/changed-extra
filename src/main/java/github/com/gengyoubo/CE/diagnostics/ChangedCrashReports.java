@@ -46,7 +46,7 @@ public final class ChangedCrashReports {
                     category.setDetail("Likely Source Mod", diagnostic.owner());
                     category.setDetail("Root Cause", diagnostic.rootType() + ": " + diagnostic.rootMessage());
                     category.setDetail("Attribution", diagnostic.distinction());
-                    ((CrashReportDetailsAccessor) report).changede$getDiagnosticCategories().add(category);
+                    ((CrashReportDetailsAccessor) report).changed_extra$getDiagnosticCategories().add(category);
                 }
             });
         } catch (Throwable ignored) { /* The original Forge report must still be saved. */ }

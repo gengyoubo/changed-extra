@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 final class SpaceTowerBlockInteraction {
-    private static final Component TITLE = Component.translatable("screen.changede.space_tower.title");
+    private static final Component TITLE = Component.translatable("screen.changed_extra.space_tower.title");
 
     private SpaceTowerBlockInteraction() {
     }

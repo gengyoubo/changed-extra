@@ -11,15 +11,15 @@ public final class FissionOptionalChecks {
     public static void started(ServerStartedEvent event) {
         try {
             for (String id : new String[]{"advanced_fission_cooling", "advanced_uranium_processor_x", "advanced_uranium_processor_y", "fission_emergency_scram", "fission_me_interface"}) {
-                var key = ResourceLocation.parse("changede:" + id);
+                var key = ResourceLocation.parse("changed_extra:" + id);
                 if (ForgeRegistries.BLOCKS.containsKey(key) || ForgeRegistries.ITEMS.containsKey(key)) throw new AssertionError("Optional block registered: " + id);
-                if (event.getServer().getRecipeManager().byKey(ResourceLocation.parse("changede:fission/" + id)).isPresent()) throw new AssertionError("Optional recipe loaded: " + id);
+                if (event.getServer().getRecipeManager().byKey(ResourceLocation.parse("changed_extra:fission/" + id)).isPresent()) throw new AssertionError("Optional recipe loaded: " + id);
             }
-            if (event.getServer().getPackRepository().getSelectedIds().contains("changede:fission_upgrades")
-                    || event.getServer().getPackRepository().getSelectedIds().contains("changede:fission_me")) throw new AssertionError("Optional pack loaded");
+            if (event.getServer().getPackRepository().getSelectedIds().contains("changed_extra:fission_upgrades")
+                    || event.getServer().getPackRepository().getSelectedIds().contains("changed_extra:fission_me")) throw new AssertionError("Optional pack loaded");
             Files.writeString(Path.of("fission-checks.txt"), "PASS: dedicated server without Mekanism Generators or AE2; no fission blocks, items, recipes or pack\n");
         } catch (Throwable error) {
-            github.com.gengyoubo.CE.changede.LOGGER.error("FISSION OPTIONAL CHECKS FAILED", error);
+            github.com.gengyoubo.CE.changed_extra.LOGGER.error("FISSION OPTIONAL CHECKS FAILED", error);
             try { Files.writeString(Path.of("fission-checks.txt"), "FAIL: " + error + "\n"); } catch (Exception ignored) { }
         } finally { event.getServer().execute(() -> event.getServer().halt(false)); }
     }

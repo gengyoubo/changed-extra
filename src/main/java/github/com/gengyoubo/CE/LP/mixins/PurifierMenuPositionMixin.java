@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = PurifierMenu.class, remap = false)
 public abstract class PurifierMenuPositionMixin {
     @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/network/FriendlyByteBuf;)V", at = @At("TAIL"))
-    private void changede$readBlockPos(int id, Inventory inventory, FriendlyByteBuf buffer, CallbackInfo ci) {
+    private void changed_extra$readBlockPos(int id, Inventory inventory, FriendlyByteBuf buffer, CallbackInfo ci) {
         if (buffer == null || buffer.readableBytes() < Long.BYTES) {
             return;
         }

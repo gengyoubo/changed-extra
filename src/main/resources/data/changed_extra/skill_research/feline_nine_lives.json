@@ -1,0 +1,11 @@
+{
+  "duration_ticks": 36000,
+  "wlp_per_second": 1000,
+  "tier": "core",
+  "startup_materials": [
+    {
+      "item": "changed_extra:morphic_crystal_core",
+      "count": 32
+    }
+  ]
+}

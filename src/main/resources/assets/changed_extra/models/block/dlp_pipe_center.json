@@ -1,0 +1,7 @@
+{
+  "parent": "changed_extra:block/energy_pipe_center",
+  "textures": {
+    "all": "changed_extra:block/dlp_pipe",
+    "particle": "changed_extra:block/dlp_pipe"
+  }
+}

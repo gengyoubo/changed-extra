@@ -11,7 +11,7 @@ public final class CELPRecipes {
     private CELPRecipes() {
     }
 
-    public static final String MOD_ID = "changede";
+    public static final String MOD_ID = "changed_extra";
     public static final String LATEX_CREATIVE_EXTRANALBODY_CRAFTING_ID = "latex_creative_extranalbody_crafting";
 
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =

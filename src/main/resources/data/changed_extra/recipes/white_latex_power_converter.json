@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ZZZ",
+    "XYX",
+    "ZZZ"
+  ],
+  "key": {
+    "X": {
+      "item": "changed_extra:wlp_pipe"
+    },
+    "Y": {
+      "item": "changed_extra:white_latex_ingot"
+    },
+    "Z": {
+      "item": "changed_extra:iridium_ingot"
+    }
+  },
+  "result": {
+    "item": "changed_extra:white_latex_power_converter",
+    "count": 1
+  }
+}

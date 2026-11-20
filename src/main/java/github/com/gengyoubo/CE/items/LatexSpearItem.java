@@ -198,8 +198,8 @@ public final class LatexSpearItem extends Item {
         return context != null && context.attacker == attacker && context.target == target;
     }
     @Override public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.changede.latex_spear.jab"));
-        tooltip.add(Component.translatable("tooltip.changede.latex_spear.charge"));
-        tooltip.add(Component.translatable("tooltip.changede.latex_spear.charge_ready"));
+        tooltip.add(Component.translatable("tooltip.changed_extra.latex_spear.jab"));
+        tooltip.add(Component.translatable("tooltip.changed_extra.latex_spear.charge"));
+        tooltip.add(Component.translatable("tooltip.changed_extra.latex_spear.charge_ready"));
     }
 }

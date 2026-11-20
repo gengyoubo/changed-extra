@@ -1,7 +1,7 @@
 package github.com.gengyoubo.CE.compat.synergy;
 
 import com.mojang.authlib.GameProfile;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import github.com.gengyoubo.CE.init.CEItem;
 import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
 import net.ltxprogrammer.changed.init.ChangedEntities;
@@ -89,7 +89,7 @@ public final class CompanionRecoveryRegressionChecks {
             level.players().remove(player);
             storage.clearContent();
             creature.getPersistentData().remove("ChangedSynergyBondedInventory");
-            creature.getPersistentData().remove("changede_next_companion_recovery");
+            creature.getPersistentData().remove("changed_extra_next_companion_recovery");
             level.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(true, event.getServer());
             creature.setHealth(creature.getMaxHealth() - 4);
             health = creature.getHealth();
@@ -124,7 +124,7 @@ public final class CompanionRecoveryRegressionChecks {
             ChangedSynergyAutoEat.tickCompanion(wild, 1800);
             ChangedSynergyAutoEat.tickCompanion(wild, 2000);
             check(wild.getHealth() == health, "Wild creatures receive no companion recovery");
-            changede.LOGGER.info("COMPANION RECOVERY REGRESSION CHECKS PASSED");
+            changed_extra.LOGGER.info("COMPANION RECOVERY REGRESSION CHECKS PASSED");
         } finally {
             player.containerMenu = player.inventoryMenu;
             level.players().remove(player);
@@ -144,6 +144,6 @@ public final class CompanionRecoveryRegressionChecks {
 
     private static void check(boolean result, String message) {
         if (!result) throw new AssertionError(message);
-        changede.LOGGER.info("Companion recovery PASS: {}", message);
+        changed_extra.LOGGER.info("Companion recovery PASS: {}", message);
     }
 }

@@ -1,0 +1,154 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_gas_skunk",
+    "changed:form_latex_deer",
+    "changed:form_latex_gnoll_taur",
+    "changed:form_latex_otter",
+    "changed:form_latex_pink_deer",
+    "changed:form_latex_rabbit/female",
+    "changed:form_latex_rabbit/male",
+    "changed:form_latex_raccoon",
+    "changed:form_latex_red_panda",
+    "changed:form_latex_squirrel",
+    "changed_addon:form_buny",
+    "changed_addon:form_latex_mongoose",
+    "changed_addon:form_pink_cyan_skunk"
+  ],
+  "nodes": [
+    {
+      "id": "changed_extra:other_mammal_core",
+      "title": "skill.changed_extra.other_mammal_core",
+      "description": "skill.changed_extra.other_mammal_core.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:common_strength_2"
+      ],
+      "x": -55,
+      "y": 11,
+      "key": true,
+      "rewards": [],
+      "research": "race"
+    },
+    {
+      "id": "changed_extra:other_mammal_health_1",
+      "title": "skill.changed_extra.other_mammal_health_1",
+      "description": "skill.changed_extra.other_mammal_health_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:other_mammal_core"
+      ],
+      "x": -56,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:other_mammal_health_2",
+      "title": "skill.changed_extra.other_mammal_health_2",
+      "description": "skill.changed_extra.other_mammal_health_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:other_mammal_health_1"
+      ],
+      "x": -55,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:other_mammal_stride_1",
+      "title": "skill.changed_extra.other_mammal_stride_1",
+      "description": "skill.changed_extra.other_mammal_stride_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:other_mammal_core"
+      ],
+      "x": -56,
+      "y": 14,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.02,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:other_mammal_stride_2",
+      "title": "skill.changed_extra.other_mammal_stride_2",
+      "description": "skill.changed_extra.other_mammal_stride_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:other_mammal_stride_1"
+      ],
+      "x": -55,
+      "y": 15,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.movement_speed",
+          "amount": 0.02,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:other_mammal_energy_1",
+      "title": "skill.changed_extra.other_mammal_energy_1",
+      "description": "skill.changed_extra.other_mammal_energy_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:other_mammal_core"
+      ],
+      "x": -56,
+      "y": 16,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:food_saturation",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:other_mammal_energy_2",
+      "title": "skill.changed_extra.other_mammal_energy_2",
+      "description": "skill.changed_extra.other_mammal_energy_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:other_mammal_energy_1"
+      ],
+      "x": -55,
+      "y": 17,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:food_saturation",
+          "amount": 0.1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

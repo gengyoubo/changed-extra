@@ -16,9 +16,9 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.List;
 
 public class DarkLatexYufengQueenEvents {
-    private static final String QUEEN_SUMMONED_TAG = "changede_dark_latex_yufeng_queen_summoned";
-    private static final String SUMMON_COOLDOWN_TAG = "changede_dark_latex_yufeng_queen_summon_cooldown";
-    private static final String WAS_IN_COMBAT_TAG = "changede_dark_latex_yufeng_queen_was_in_combat";
+    private static final String QUEEN_SUMMONED_TAG = "changed_extra_dark_latex_yufeng_queen_summoned";
+    private static final String SUMMON_COOLDOWN_TAG = "changed_extra_dark_latex_yufeng_queen_summon_cooldown";
+    private static final String WAS_IN_COMBAT_TAG = "changed_extra_dark_latex_yufeng_queen_was_in_combat";
     private static final int SUMMON_INTERVAL_TICKS = 200;
     private static final double SUMMON_LIMIT_RADIUS = 16.0D;
     private static final int MAX_SUMMONED_NEARBY = 5;

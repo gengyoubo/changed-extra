@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changede:dark_latex_planks",
-    "changede:white_latex_planks"
+    "changed_extra:dark_latex_planks",
+    "changed_extra:white_latex_planks"
   ]
 }

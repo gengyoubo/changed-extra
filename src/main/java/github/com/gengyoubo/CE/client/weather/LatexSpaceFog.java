@@ -17,7 +17,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /** Weather-driven white fog, blended across white biome borders. */
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LatexSpaceFog {
     private LatexSpaceFog() { }
 

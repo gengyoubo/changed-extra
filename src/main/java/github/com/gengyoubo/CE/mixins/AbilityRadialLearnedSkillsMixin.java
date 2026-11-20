@@ -14,34 +14,34 @@ import java.util.List;
 public abstract class AbilityRadialLearnedSkillsMixin {
     @Shadow @Final public List<AbstractAbility<?>> abilities;
     @Shadow @Final public AbilityRadialMenu menu;
-    @Unique private List<AbstractAbility<?>> changede$allAbilities;
-    @Unique private int changede$visibleMask = -1;
+    @Unique private List<AbstractAbility<?>> changed_extra$allAbilities;
+    @Unique private int changed_extra$visibleMask = -1;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void changede$captureCandidates(CallbackInfo ci) {
-        changede$allAbilities = List.copyOf(abilities);
-        changede$refreshLearned();
+    private void changed_extra$captureCandidates(CallbackInfo ci) {
+        changed_extra$allAbilities = List.copyOf(abilities);
+        changed_extra$refreshLearned();
     }
 
     @Inject(method = "getCount", at = @At("HEAD"))
-    private void changede$refreshCount(CallbackInfoReturnable<Integer> ci) { changede$refreshLearned(); }
+    private void changed_extra$refreshCount(CallbackInfoReturnable<Integer> ci) { changed_extra$refreshLearned(); }
 
-    @Unique private void changede$refreshLearned() {
-        if (changede$allAbilities == null) return;
+    @Unique private void changed_extra$refreshLearned() {
+        if (changed_extra$allAbilities == null) return;
         int mask = 0, index = 0;
-        for (AbstractAbility<?> ability : changede$allAbilities) if (ability instanceof YufengFlightAbility skill) {
+        for (AbstractAbility<?> ability : changed_extra$allAbilities) if (ability instanceof YufengFlightAbility skill) {
             if (skill.unlocked(menu.player)) mask |= 1 << index;
             index++;
         }
-        if (mask == changede$visibleMask) return;
-        changede$visibleMask = mask;
+        if (mask == changed_extra$visibleMask) return;
+        changed_extra$visibleMask = mask;
         abilities.clear();
-        for (AbstractAbility<?> ability : changede$allAbilities)
+        for (AbstractAbility<?> ability : changed_extra$allAbilities)
             if (!(ability instanceof YufengFlightAbility skill) || skill.unlocked(menu.player)) abilities.add(ability);
         var paging = (AbilityRadialPagingAccessor) this;
-        int offset = Math.min(paging.changede$getViewOffset(), Math.max(0, abilities.size() - 8));
-        paging.changede$setViewOffset(offset);
-        paging.changede$setPreviousOffset(offset);
-        paging.changede$setTransitionTicks(0);
+        int offset = Math.min(paging.changed_extra$getViewOffset(), Math.max(0, abilities.size() - 8));
+        paging.changed_extra$setViewOffset(offset);
+        paging.changed_extra$setPreviousOffset(offset);
+        paging.changed_extra$setTransitionTicks(0);
     }
 }

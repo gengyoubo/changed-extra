@@ -17,9 +17,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import java.util.*;
 
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class LatexSkills {
-    private static final String TAG = "changede_latex_skills";
+    private static final String TAG = "changed_extra_latex_skills";
     private static final Map<ServerPlayer, SkillTreePacket.FlightState> FLIGHT_STATES = new WeakHashMap<>();
     private static ResourceLocation clientForm;
     private static double clientFlightControl;
@@ -51,14 +51,14 @@ public final class LatexSkills {
         boolean unlocked = learned.contains(node.id());
         List<SkillBlockReason> reasons = new ArrayList<>(LatexSkillTrees.formRequirements(player, node));
         for (ResourceLocation parent : node.parents())
-            reasons.add(new SkillBlockReason(learned.contains(parent) && !active.contains(parent) ? "changede:inactive_parent" : "changede:parent",
+            reasons.add(new SkillBlockReason(learned.contains(parent) && !active.contains(parent) ? "changed_extra:inactive_parent" : "changed_extra:parent",
                     parent.toString(), active.contains(parent) ? 1 : 0, 1));
         if (!unlocked) {
-            if(node.research().requiresStation()) reasons.add(new SkillBlockReason("changede:research_table",node.research().id(),
+            if(node.research().requiresStation()) reasons.add(new SkillBlockReason("changed_extra:research_table",node.research().id(),
                     SkillResearchAccounts.researched(player,node.id()) ? 1 : 0,1));
-            if (!player.isAlive() || player.isSpectator()) reasons.add(new SkillBlockReason("changede:player_state", "", 0, 1));
+            if (!player.isAlive() || player.isSpectator()) reasons.add(new SkillBlockReason("changed_extra:player_state", "", 0, 1));
             int xp = experience(player);
-            reasons.add(new SkillBlockReason("changede:experience", "", player.isCreative() ? Math.max(xp, node.cost()) : xp, node.cost()));
+            reasons.add(new SkillBlockReason("changed_extra:experience", "", player.isCreative() ? Math.max(xp, node.cost()) : xp, node.cost()));
         }
         return List.copyOf(reasons);
     }

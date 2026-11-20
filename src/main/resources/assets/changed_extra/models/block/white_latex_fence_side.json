@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_side",
+  "textures": {
+    "texture": "changed_extra:block/white_latex_planks"
+  }
+}

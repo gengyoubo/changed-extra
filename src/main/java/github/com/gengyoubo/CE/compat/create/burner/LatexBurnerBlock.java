@@ -101,7 +101,7 @@ public final class LatexBurnerBlock extends BaseEntityBlock implements IWrenchab
     @Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         BlockEntity entity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         // A dynamic entry has no optional registry references when the loot table loads without Create.
-        builder.withDynamicDrop(ResourceLocation.parse("changede:latex_burner"), output -> {
+        builder.withDynamicDrop(ResourceLocation.parse("changed_extra:latex_burner"), output -> {
             if (entity instanceof LatexBurnerBlockEntity burner) output.accept(burner.carriedStack());
             else if (!state.getValue(OCCUPIED)) output.accept(new ItemStack(LatexBurnerCompat.EMPTY.get()));
         });

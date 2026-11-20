@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(HumanoidModel.class)
 public abstract class LatexSpearHumanoidModelMixin {
     @Inject(method = "setupAttackAnimation", at = @At("HEAD"), cancellable = true)
-    private void changede$skipSlash(LivingEntity entity, float ageInTicks, CallbackInfo ci) {
+    private void changed_extra$skipSlash(LivingEntity entity, float ageInTicks, CallbackInfo ci) {
         if (LatexSpearAnimations.jabProgress(entity, ageInTicks - entity.tickCount) >= 0) ci.cancel();
     }
 
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
-    private void changede$stabHand(LivingEntity entity, float limbSwing, float limbAmount, float ageInTicks,
+    private void changed_extra$stabHand(LivingEntity entity, float limbSwing, float limbAmount, float ageInTicks,
                                   float yaw, float pitch, CallbackInfo ci) {
         HumanoidModel<?> model = (HumanoidModel<?>) (Object) this;
         float partialTick = ageInTicks - entity.tickCount;

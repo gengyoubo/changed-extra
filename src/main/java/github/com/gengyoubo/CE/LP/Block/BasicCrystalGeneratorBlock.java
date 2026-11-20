@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BasicCrystalGeneratorBlock extends BasicGeneratorBlock {
-    private static final Component TITLE = Component.translatable("block.changede.basic_crystal_generator");
+    private static final Component TITLE = Component.translatable("block.changed_extra.basic_crystal_generator");
 
     public BasicCrystalGeneratorBlock(Properties properties) {
         super(properties);

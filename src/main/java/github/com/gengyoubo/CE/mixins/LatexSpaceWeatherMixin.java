@@ -32,13 +32,13 @@ public abstract class LatexSpaceWeatherMixin {
     // A constructor redirect avoids ModifyArgs' synthetic Args classes, which
     // cannot be resolved by the module class loader in this Forge environment.
     @Redirect(method = "createLevels", at = @At(value = "NEW", target = "net/minecraft/server/level/ServerLevel"))
-    private ServerLevel changede$installLatexWeather(MinecraftServer server, Executor executor,
+    private ServerLevel changed_extra$installLatexWeather(MinecraftServer server, Executor executor,
             LevelStorageSource.LevelStorageAccess storage, ServerLevelData original,
             ResourceKey<Level> dimension, LevelStem stem, ChunkProgressListener progress,
             boolean debug, long seed, List<CustomSpawner> spawners, boolean tickTime,
             RandomSequences randomSequences) {
         ServerLevelData data = original;
-        if (dimension.location().equals(ResourceLocation.fromNamespaceAndPath("changede", "latex_space"))) {
+        if (dimension.location().equals(ResourceLocation.fromNamespaceAndPath("changed_extra", "latex_space"))) {
             LatexSpaceWeatherData weather = overworld().getDataStorage().computeIfAbsent(
                     LatexSpaceWeatherData::load, () -> new LatexSpaceWeatherData(original), LatexSpaceWeatherData.ID);
             data = new LatexSpaceLevelData(getWorldData(), original, weather);

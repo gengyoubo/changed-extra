@@ -10,12 +10,12 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.*;
 
 /** Only ores observed in a newly generated chunk qualify. Existing worlds remain conservative. */
-@Mod.EventBusSubscriber(modid="changede")
+@Mod.EventBusSubscriber(modid="changed_extra")
 @SuppressWarnings("deprecation")
 public final class SkillOreProvenance extends SavedData {
     private final Map<Long,String> ores=new HashMap<>();
     public static SkillOreProvenance get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(SkillOreProvenance::load,SkillOreProvenance::new,"changede_skill_natural_ores");
+        return level.getDataStorage().computeIfAbsent(SkillOreProvenance::load,SkillOreProvenance::new,"changed_extra_skill_natural_ores");
     }
     private static SkillOreProvenance load(CompoundTag tag) {
         var data=new SkillOreProvenance();

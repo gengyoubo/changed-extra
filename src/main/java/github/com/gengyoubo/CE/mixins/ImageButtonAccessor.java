@@ -8,5 +8,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(ImageButton.class)
 public interface ImageButtonAccessor {
     @Accessor("resourceLocation")
-    ResourceLocation changede$getResourceLocation();
+    ResourceLocation changed_extra$getResourceLocation();
 }

@@ -45,17 +45,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Verifies actual survival mining and inventories in an explicitly enabled disposable server. */
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class TechBlockDropRegressionChecks {
     private TechBlockDropRegressionChecks() { }
 
     private static void check(boolean passed, String message) {
         if (!passed) throw new AssertionError(message);
-        LogManager.getLogger("changede-drop-check").info("PASS: {}", message);
+        LogManager.getLogger("changed_extra-drop-check").info("PASS: {}", message);
     }
 
     @SubscribeEvent public static void started(ServerStartedEvent event) {
-        if (!Boolean.getBoolean("changede.verifyTechBlockDrops")) return;
+        if (!Boolean.getBoolean("changed_extra.verifyTechBlockDrops")) return;
         ServerLevel level = event.getServer().overworld();
         verifyJadeEnergy();
         var player = FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "TechDropTest"));
@@ -72,7 +72,7 @@ public final class TechBlockDropRegressionChecks {
         int index = 0;
         var blocks = new ArrayList<Block>();
         CELPBlock.BLOCKS.getEntries().forEach(registered -> blocks.add(registered.get()));
-        for (String id : new String[]{"changede:latex_skill_research_table", "changed:infuser", "changed:purifier",
+        for (String id : new String[]{"changed_extra:latex_skill_research_table", "changed:infuser", "changed:purifier",
                 "changed_addon:unifuser", "changed_addon:advanced_unifuser", "changed_addon:catalyzer", "changed_addon:advanced_catalyzer"}) {
             Block block = ForgeRegistries.BLOCKS.getValue(ResourceLocation.parse(id));
             check(block != null && block != Blocks.AIR, id + " exists");
@@ -146,7 +146,7 @@ public final class TechBlockDropRegressionChecks {
                 check(level.getEntitiesOfClass(ItemEntity.class, area).isEmpty(), id + " restored machine inventory is empty");
             }
         }
-        LogManager.getLogger("changede-drop-check").info("ALL MACHINE DROP AND ENERGY CHECKS PASSED ({} blocks)", index);
+        LogManager.getLogger("changed_extra-drop-check").info("ALL MACHINE DROP AND ENERGY CHECKS PASSED ({} blocks)", index);
     }
 
     private static void verifyJadeEnergy() {

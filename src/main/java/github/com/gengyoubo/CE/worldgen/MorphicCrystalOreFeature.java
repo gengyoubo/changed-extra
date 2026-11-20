@@ -7,7 +7,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 
 /** Biome modifiers alone cannot enforce a dimension if another pack reuses a biome. */
 public final class MorphicCrystalOreFeature extends OreFeature {
-    private static final ResourceLocation LATEX_SPACE=ResourceLocation.fromNamespaceAndPath("changede","latex_space");
+    private static final ResourceLocation LATEX_SPACE=ResourceLocation.fromNamespaceAndPath("changed_extra","latex_space");
     public MorphicCrystalOreFeature() { super(OreConfiguration.CODEC); }
     @Override public boolean place(FeaturePlaceContext<OreConfiguration> context) {
         return context.level().getLevel().dimension().location().equals(LATEX_SPACE) && super.place(context);

@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT)
 public final class LatexSpearClient {
     @SubscribeEvent public static void attack(InputEvent.InteractionKeyMappingTriggered event) {
         var player = Minecraft.getInstance().player;
@@ -32,11 +32,11 @@ public final class LatexSpearClient {
             player.getCooldowns().addCooldown(CEItem.LATEX_SPEAR.get(), github.com.gengyoubo.CE.items.SpearCombatRules.JAB_COOLDOWN);
         }
     }
-    @Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static final class Models {
         @SubscribeEvent public static void setup(FMLClientSetupEvent event) {
             event.enqueueWork(() -> ItemProperties.register(CEItem.LATEX_SPEAR.get(),
-                    ResourceLocation.fromNamespaceAndPath("changede", "charging"),
+                    ResourceLocation.fromNamespaceAndPath("changed_extra", "charging"),
                     (stack, level, entity, seed) -> {
                         // MC-302895: the exact stack must be active, rather than either hand containing a spear.
                         if (entity == null || !entity.isUsingItem() || entity.getUseItem() != stack) return 0;

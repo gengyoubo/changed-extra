@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -47,14 +47,14 @@ public final class AddonOreRegressionChecks {
     private AddonOreRegressionChecks() { }
 
     public static void started(ServerStartedEvent event) {
-        if (!Boolean.getBoolean("changede.verifyAddonOre")) return;
+        if (!Boolean.getBoolean("changed_extra.verifyAddonOre")) return;
         try {
             var level = event.getServer().overworld();
             var player = FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "AddonOreTest"));
             player.setGameMode(GameType.SURVIVAL);
             player.setPos(POS.getX() + .5, POS.getY() + 1, POS.getZ() + .5);
             compareHarvest(level, player);
-            if (!Boolean.getBoolean("changede.verifyAddonOreOriginal")) {
+            if (!Boolean.getBoolean("changed_extra.verifyAddonOreOriginal")) {
             for (var tool : new net.minecraft.world.item.Item[]{Items.WOODEN_PICKAXE, Items.STONE_PICKAXE,
                     Items.IRON_PICKAXE, Items.GOLDEN_PICKAXE, Items.DIAMOND_PICKAXE, Items.NETHERITE_PICKAXE,
                     Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL}) {
@@ -89,7 +89,7 @@ public final class AddonOreRegressionChecks {
             }
             Files.writeString(Path.of("addon-ore-checks.txt"), "PASS: " + assertions + " assertions\n");
         } catch (Throwable error) {
-            changede.LOGGER.error("ADDON ORE CHECKS FAILED", error);
+            changed_extra.LOGGER.error("ADDON ORE CHECKS FAILED", error);
             try { Files.writeString(Path.of("addon-ore-checks.txt"), "FAIL: " + error + "\n"); }
             catch (Exception ignored) { }
         } finally { event.getServer().execute(() -> event.getServer().halt(false)); }
@@ -100,7 +100,7 @@ public final class AddonOreRegressionChecks {
     }
 
     private static void compareHarvest(ServerLevel level, FakePlayer player) throws Exception {
-        boolean original = Boolean.getBoolean("changede.verifyAddonOreOriginal");
+        boolean original = Boolean.getBoolean("changed_extra.verifyAddonOreOriginal");
         var report = new JsonObject();
         report.addProperty("original_addon_harvest", original);
         for (String mod : new String[]{"forge", "changed_addon", "tconstruct"})
@@ -173,7 +173,7 @@ public final class AddonOreRegressionChecks {
                         || blockCorrect != expectedBlock || loot.isEmpty() == expectedBlock || !level.getBlockState(POS).isAir())
                     failures.add(names[index] + " / " + block + " -> " + row);
                 else assertions++;
-                changede.LOGGER.info("ORE COMPARISON: {}", row);
+                changed_extra.LOGGER.info("ORE COMPARISON: {}", row);
             }
         }
         String file = original ? "addon-ore-comparison-original.json" : "addon-ore-comparison-fixed.json";
@@ -202,7 +202,7 @@ public final class AddonOreRegressionChecks {
         check(level.getBlockState(POS).isAir(), name + " breaks the ore, including tools that handle mining themselves");
         var drops = level.getEntitiesOfClass(ItemEntity.class, area);
         int xp = level.getEntitiesOfClass(ExperienceOrb.class, area).stream().mapToInt(ExperienceOrb::getValue).sum();
-        changede.LOGGER.info("ORE RESULT: tool={}, playerCorrect={}, harvest={}, drops={}, xp={}",
+        changed_extra.LOGGER.info("ORE RESULT: tool={}, playerCorrect={}, harvest={}, drops={}, xp={}",
                 name, playerCorrect, harvest, drops.stream().map(item -> item.getItem().toString()).toList(), xp);
         check(playerCorrect == correct && harvest == correct, name + " respects diamond mining requirements");
         if (!correct) check(drops.isEmpty(), name + " cannot harvest the ore");

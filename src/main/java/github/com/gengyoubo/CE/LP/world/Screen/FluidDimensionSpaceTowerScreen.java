@@ -32,7 +32,7 @@ public final class FluidDimensionSpaceTowerScreen extends AbstractContainerScree
     }
 
     private static Component text(String key, Object... args) {
-        return Component.translatable("screen.changede.fluid_dimension_tower." + key, args);
+        return Component.translatable("screen.changed_extra.fluid_dimension_tower." + key, args);
     }
 
     private void send(int action, int value) {
@@ -53,7 +53,7 @@ public final class FluidDimensionSpaceTowerScreen extends AbstractContainerScree
         channelInput.setFilter(value -> value.matches("[0-9]*"));
         channelInput.setTooltip(Tooltip.create(text("channel_help")));
         addRenderableWidget(channelInput);
-        addRenderableWidget(Button.builder(Component.translatable("screen.changede.space_tower.apply"), ignored -> {
+        addRenderableWidget(Button.builder(Component.translatable("screen.changed_extra.space_tower.apply"), ignored -> {
             String input = channelInput.getValue();
             int value = input.isEmpty() ? 0 : Integer.parseInt(input);
             if (value <= DimensionTowerChannels.MAX_CHANNEL) send(FluidDimensionTowerConfigPacket.SET_CHANNEL, value);
@@ -78,7 +78,7 @@ public final class FluidDimensionSpaceTowerScreen extends AbstractContainerScree
         }
         modeButton.setMessage(text("mode." + menu.getMode().name().toLowerCase(Locale.ROOT)));
         enabledButton.setMessage(text(menu.isEnabled() ? "enabled" : "disabled"));
-        redstoneButton.setMessage(Component.translatable("gui.changede.redstone." + menu.getRedstoneMode().name().toLowerCase(Locale.ROOT)));
+        redstoneButton.setMessage(Component.translatable("gui.changed_extra.redstone." + menu.getRedstoneMode().name().toLowerCase(Locale.ROOT)));
     }
 
     @Override protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {

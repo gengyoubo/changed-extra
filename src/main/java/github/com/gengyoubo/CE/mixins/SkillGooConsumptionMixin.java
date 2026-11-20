@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractLatexItem.class)
 public abstract class SkillGooConsumptionMixin {
     @Inject(method = "finishUsingItem", at = @At("HEAD"), cancellable = true)
-    private void changede$eatGoo(ItemStack stack, Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> cir) {
+    private void changed_extra$eatGoo(ItemStack stack, Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> cir) {
         if (!SkillGooDiet.isGoo(stack) || !(entity instanceof Player player)
                 || !SkillGooDiet.finishSkillMeal(player, stack)) return;
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) SkillGooDiet.consume(serverPlayer, stack);

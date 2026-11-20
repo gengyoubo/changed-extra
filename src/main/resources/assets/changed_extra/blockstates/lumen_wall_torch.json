@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=east": { "model": "changed_extra:block/lumen_wall_torch" },
+    "facing=north": { "model": "changed_extra:block/lumen_wall_torch", "y": 270 },
+    "facing=south": { "model": "changed_extra:block/lumen_wall_torch", "y": 90 },
+    "facing=west": { "model": "changed_extra:block/lumen_wall_torch", "y": 180 }
+  }
+}

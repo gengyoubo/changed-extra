@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button",
+  "textures": {
+    "texture": "changed_extra:block/white_latex_planks"
+  }
+}

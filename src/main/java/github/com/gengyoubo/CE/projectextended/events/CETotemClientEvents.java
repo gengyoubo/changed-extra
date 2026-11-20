@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.projectextended.events;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import github.com.gengyoubo.CE.projectextended.PTotemOfUndying;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -9,11 +9,11 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class CETotemClientEvents {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-        if (!changede.PROJECTE){
+        if (!changed_extra.PROJECTE){
             return;
         }
         event.register((stack, tintIndex) -> {

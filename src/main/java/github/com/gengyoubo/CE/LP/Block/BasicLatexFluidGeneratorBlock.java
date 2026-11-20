@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BasicLatexFluidGeneratorBlock extends BasicGeneratorBlock {
-    private static final Component TITLE = Component.translatable("block.changede.basic_latex_fluid_generator");
+    private static final Component TITLE = Component.translatable("block.changed_extra.basic_latex_fluid_generator");
 
     public BasicLatexFluidGeneratorBlock(BlockBehaviour.Properties properties) { super(properties); }
 

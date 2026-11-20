@@ -15,7 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class CEBlock {
     public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
+            DeferredRegister.create(ForgeRegistries.BLOCKS, "changed_extra");
     public static final RegistryObject<Block> LATEX_SKILL_RESEARCH_TABLE = BLOCKS.register("latex_skill_research_table",
             github.com.gengyoubo.CE.Block.LatexSkillResearchTableBlock::new);
     public static final RegistryObject<Block> DARK_LATEX_MORPHIC_CRYSTAL_ORE=BLOCKS.register("dark_latex_morphic_crystal_ore",

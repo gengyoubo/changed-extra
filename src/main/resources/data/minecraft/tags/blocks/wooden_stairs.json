@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changede:dark_latex_stairs",
-    "changede:white_latex_stairs"
+    "changed_extra:dark_latex_stairs",
+    "changed_extra:white_latex_stairs"
   ]
 }

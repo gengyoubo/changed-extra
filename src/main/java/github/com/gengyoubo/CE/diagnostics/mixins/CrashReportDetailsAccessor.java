@@ -9,5 +9,5 @@ import java.util.List;
 @Mixin(CrashReport.class)
 public interface CrashReportDetailsAccessor {
     @Accessor("details")
-    List<CrashReportCategory> changede$getDiagnosticCategories();
+    List<CrashReportCategory> changed_extra$getDiagnosticCategories();
 }

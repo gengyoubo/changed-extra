@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "changed_extra:dark_latex_sea",
+    "changed_extra:white_latex_sea",
+    "changed_extra:dark_latex_plains",
+    "changed_extra:dark_latex_forest",
+    "changed_extra:white_latex_plains",
+    "changed_extra:white_latex_forest",
+    "changed_extra:luminara_forest"
+  ]
+}

@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = Purifier.class, remap = false)
 public abstract class PurifierOpenScreenMixin {
     @Inject(method = {"use", "m_6227_"}, at = @At("HEAD"), cancellable = true)
-    private void changede$openWithBlockPos(BlockState state, Level level, BlockPos pos, Player player,
+    private void changed_extra$openWithBlockPos(BlockState state, Level level, BlockPos pos, Player player,
                                            InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
         if (level.isClientSide) {
             cir.setReturnValue(InteractionResult.SUCCESS);

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = AbstractDarkLatexEntity.class, remap = false)
 public class DarkLatexFriendlyFireMixin {
     @Inject(method = "onDamagedBy", at = @At("HEAD"), cancellable = true)
-    private void changede$ignoreDarkLatexAggroBroadcast(LivingEntity attacker, CallbackInfo ci) {
+    private void changed_extra$ignoreDarkLatexAggroBroadcast(LivingEntity attacker, CallbackInfo ci) {
         if (attacker instanceof AbstractDarkLatexEntity) {
             ci.cancel();
             return;

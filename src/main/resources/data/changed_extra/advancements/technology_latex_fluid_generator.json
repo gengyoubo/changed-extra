@@ -1,0 +1,12 @@
+{
+  "parent": "changed_extra:technology_generator",
+  "display": {
+    "icon": { "item": "changed_extra:basic_latex_fluid_generator" },
+    "title": { "translate": "advancements.changed_extra.technology_latex_fluid_generator.title" },
+    "description": { "translate": "advancements.changed_extra.technology_latex_fluid_generator.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": {
+    "basic_latex_fluid_generator": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changed_extra:basic_latex_fluid_generator"] }] } }
+  }
+}

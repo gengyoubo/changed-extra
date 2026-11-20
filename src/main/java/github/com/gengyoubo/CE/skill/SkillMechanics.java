@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.*;
 
 /** Passive mechanics are granted per reward source; removing one source preserves the others. */
-@Mod.EventBusSubscriber(modid="changede")
+@Mod.EventBusSubscriber(modid="changed_extra")
 @SuppressWarnings("deprecation")
 public final class SkillMechanics {
     private record Grant(String effect, double value) { }
@@ -37,9 +37,9 @@ public final class SkillMechanics {
     private static final Map<Player,ResourceLocation> GRANT_FORMS=new WeakHashMap<>();
     private static final Map<Player, Integer> RECOVERY = new WeakHashMap<>();
     private static final Set<Mob> FEAR_GOALS = Collections.newSetFromMap(new WeakHashMap<>());
-    private static final UUID HEALTH = UUID.nameUUIDFromBytes("changede.insect.health".getBytes(java.nio.charset.StandardCharsets.UTF_8));
-    private static final String LIVES="changede_nine_lives", PROTECTED="changede_life_protection";
-    private static final TagKey<Biome> FORESTS=TagKey.create(Registries.BIOME,ResourceLocation.tryParse("changede:skill_forests"));
+    private static final UUID HEALTH = UUID.nameUUIDFromBytes("changed_extra.insect.health".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    private static final String LIVES="changed_extra_nine_lives", PROTECTED="changed_extra_life_protection";
+    private static final TagKey<Biome> FORESTS=TagKey.create(Registries.BIOME,ResourceLocation.tryParse("changed_extra:skill_forests"));
     private static ResourceLocation clientForm;
     private static CompoundTag clientEffects=new CompoundTag();
     private static final Set<String> EFFECTS = Set.of("sea_core", "sea_guard", "sea_work", "sea_mining", "sea_thermal", "air_core",
@@ -75,20 +75,20 @@ public final class SkillMechanics {
         var attribute=player.getAttribute(Attributes.MAX_HEALTH);
         if(attribute==null)return;
         boolean half=value(player,"insect_core")>0;
-        if(half && attribute.getModifier(HEALTH)==null)attribute.addTransientModifier(new AttributeModifier(HEALTH,"changede.insect.health",-.5,AttributeModifier.Operation.MULTIPLY_TOTAL));
+        if(half && attribute.getModifier(HEALTH)==null)attribute.addTransientModifier(new AttributeModifier(HEALTH,"changed_extra.insect.health",-.5,AttributeModifier.Operation.MULTIPLY_TOTAL));
         if(!half && attribute.getModifier(HEALTH)!=null)attribute.removeModifier(HEALTH);
         if(player.getHealth()>player.getMaxHealth())player.setHealth(player.getMaxHealth());
     }
     public static int lives(Player player) { return player.getPersistentData().contains(LIVES) ? Math.max(0,Math.min(9,player.getPersistentData().getInt(LIVES))) : 9; }
     public static void migrate(ServerPlayer player) {
         CompoundTag data=player.getPersistentData();
-        if (!data.getBoolean("changede_skill_branches_v2")) {
-            CompoundTag root=data.getCompound("changede_latex_skills");
-            if (root.getCompound("changede:yufeng").getBoolean("changede:yufeng_gate")) {
-                CompoundTag air=root.getCompound("changede:air"); air.putBoolean("changede:air_core",true);
-                root.put("changede:air",air); data.put("changede_latex_skills",root);
+        if (!data.getBoolean("changed_extra_skill_branches_v2")) {
+            CompoundTag root=data.getCompound("changed_extra_latex_skills");
+            if (root.getCompound("changed_extra:yufeng").getBoolean("changed_extra:yufeng_gate")) {
+                CompoundTag air=root.getCompound("changed_extra:air"); air.putBoolean("changed_extra:air_core",true);
+                root.put("changed_extra:air",air); data.put("changed_extra_latex_skills",root);
             }
-            data.putBoolean("changede_skill_branches_v2",true);
+            data.putBoolean("changed_extra_skill_branches_v2",true);
         }
     }
     public static boolean feline(LivingEntity entity) {
@@ -133,7 +133,7 @@ public final class SkillMechanics {
     @SubscribeEvent public static void clone(PlayerEvent.Clone event) {
         var old=event.getOriginal().getPersistentData(); var next=event.getEntity().getPersistentData();
         if(old.contains(LIVES))next.putInt(LIVES,event.isWasDeath()?9:old.getInt(LIVES));
-        if(old.contains("changede_skill_branches_v2"))next.putBoolean("changede_skill_branches_v2",old.getBoolean("changede_skill_branches_v2"));
+        if(old.contains("changed_extra_skill_branches_v2"))next.putBoolean("changed_extra_skill_branches_v2",old.getBoolean("changed_extra_skill_branches_v2"));
     }
     @SubscribeEvent public static void mining(PlayerEvent.BreakSpeed event) {
         Player player=event.getEntity();
@@ -147,8 +147,8 @@ public final class SkillMechanics {
         if(event.phase!=TickEvent.Phase.END || !(event.player instanceof ServerPlayer player))return;
         // Reconcile on a form transition immediately, before any periodic effects or incoming combat.
         String form=Objects.toString(LatexSkills.form(player),"");
-        if(!form.equals(player.getPersistentData().getString("changede_skill_runtime_form"))) {
-            player.getPersistentData().putString("changede_skill_runtime_form",form); LatexSkills.refresh(player); RECOVERY.remove(player);
+        if(!form.equals(player.getPersistentData().getString("changed_extra_skill_runtime_form"))) {
+            player.getPersistentData().putString("changed_extra_skill_runtime_form",form); LatexSkills.refresh(player); RECOVERY.remove(player);
         }
         refreshHealth(player);
         if(!player.isAlive())return;

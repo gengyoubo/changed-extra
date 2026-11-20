@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(targets = {"net.foxyas.changedaddon.block.IridiumOreBlock", "net.foxyas.changedaddon.block.IridiumBlock"}, remap = false)
 public abstract class AddonIridiumHarvestMixin {
     @Inject(method = "canHarvestBlock", at = @At("HEAD"), cancellable = true)
-    private void changede$useStackHarvestTier(BlockState state, BlockGetter level, BlockPos pos, Player player,
+    private void changed_extra$useStackHarvestTier(BlockState state, BlockGetter level, BlockPos pos, Player player,
                                             CallbackInfoReturnable<Boolean> cir) {
         // Addon's extra TieredItem.getTier() check reads the item's fixed base tier rather
         // than its stack's actual tier. Forge already checks the tool, tier and harvest event.

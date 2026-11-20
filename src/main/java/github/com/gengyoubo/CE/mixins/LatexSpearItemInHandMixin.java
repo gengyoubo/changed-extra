@@ -20,13 +20,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class LatexSpearItemInHandMixin {
     @Redirect(method = "tick", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/player/LocalPlayer;getAttackStrengthScale(F)F"))
-    private float changede$keepSpearRaised(LocalPlayer player, float partialTick) {
+    private float changed_extra$keepSpearRaised(LocalPlayer player, float partialTick) {
         // Attack strength still drives gameplay/HUD; it must not lower the item during STAB.
         return player.getMainHandItem().getItem() instanceof LatexSpearItem ? 1 : player.getAttackStrengthScale(partialTick);
     }
 
     @Inject(method = "renderItem", at = @At("HEAD"))
-    private void changede$stabItem(LivingEntity entity, ItemStack stack, ItemDisplayContext display,
+    private void changed_extra$stabItem(LivingEntity entity, ItemStack stack, ItemDisplayContext display,
                                   boolean leftHand, PoseStack pose, MultiBufferSource buffers, int light, CallbackInfo ci) {
         LatexSpearAnimations.thirdPersonItem(entity, stack, display, pose, Minecraft.getInstance().getFrameTime());
     }

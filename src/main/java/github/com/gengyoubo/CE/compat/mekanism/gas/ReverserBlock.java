@@ -13,7 +13,7 @@ public final class ReverserBlock extends BlockTile<ReverserBlockEntity, BlockTyp
     @Override public void appendHoverText(net.minecraft.world.item.ItemStack stack, net.minecraft.world.level.BlockGetter level,
             java.util.List<Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(Component.translatable("tooltip.changede.reverser"));
-        tooltip.add(Component.translatable("tooltip.changede.reverser.ports"));
+        tooltip.add(Component.translatable("tooltip.changed_extra.reverser"));
+        tooltip.add(Component.translatable("tooltip.changed_extra.reverser.ports"));
     }
 }

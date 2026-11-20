@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class BasicLatexPurifierBlock extends BaseEntityBlock {
-    private static final Component TITLE = Component.translatable("block.changede.basic_latex_purifier");
+    private static final Component TITLE = Component.translatable("block.changed_extra.basic_latex_purifier");
 
     public BasicLatexPurifierBlock(Properties properties) {
         super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(1f, 10f));

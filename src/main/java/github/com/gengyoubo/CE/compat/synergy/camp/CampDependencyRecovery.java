@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /** Common-only recovery path: this class and the save model never reference CS classes or registries. */
 public final class CampDependencyRecovery {
-    private static final String FLAGS = "changede_camp_expedition_flags";
+    private static final String FLAGS = "changed_extra_camp_expedition_flags";
     public static void initialize() { MinecraftForge.EVENT_BUS.register(CampDependencyRecovery.class); }
     @SubscribeEvent public static void started(ServerStartedEvent event) {
         LatexSettlementData data = LatexSettlementData.get(event.getServer());
@@ -24,7 +24,7 @@ public final class CampDependencyRecovery {
     }
     @SubscribeEvent public static void join(EntityJoinLevelEvent event) {
         if (!(event.getEntity() instanceof ChangedEntity mob) || !(event.getLevel() instanceof ServerLevel)) return;
-        if (mob.getPersistentData().hasUUID("changede_camp_visitor") || mob.getPersistentData().hasUUID("changede_camp_raider")) {
+        if (mob.getPersistentData().hasUUID("changed_extra_camp_visitor") || mob.getPersistentData().hasUUID("changed_extra_camp_raider")) {
             event.setCanceled(true); return;
         }
         restore(mob);

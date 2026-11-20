@@ -15,11 +15,11 @@ import net.minecraftforge.registries.*;
 
 /** Loaded and registered only when Changed: Synergy is present. */
 public final class LatexCampfireCompat {
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
-    private static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changede");
-    private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changede");
-    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "changede");
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changed_extra");
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changed_extra");
+    private static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changed_extra");
+    private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changed_extra");
+    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "changed_extra");
     public static final RegistryObject<Block> CAMPFIRE = BLOCKS.register("latex_campfire", LatexCampfireBlock::new);
     public static final RegistryObject<Item> CAMPFIRE_ITEM = ITEMS.register("latex_campfire", () -> new BlockItem(CAMPFIRE.get(), new Item.Properties()));
     public static final RegistryObject<BlockEntityType<LatexCampfireBlockEntity>> CORE = ENTITIES.register("latex_campfire",
@@ -27,7 +27,7 @@ public final class LatexCampfireCompat {
     public static final RegistryObject<MenuType<LatexCampfireMenu>> MENU = MENUS.register("latex_campfire", () -> IForgeMenuType.create(LatexCampfireMenu::new));
     // Replace this single entry point when CS provides its own creative tab.
     public static final RegistryObject<CreativeModeTab> SYNERGY_TAB = TABS.register("synergy", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.changede.synergy"))
+            .title(Component.translatable("itemGroup.changed_extra.synergy"))
             .icon(() -> new ItemStack(CAMPFIRE_ITEM.get())).displayItems(LatexCampfireCompat::displaySynergyItems).build());
 
     private static void displaySynergyItems(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {

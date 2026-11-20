@@ -43,7 +43,7 @@ import java.nio.file.Path;
 
 /** Opt-in verification in a disposable world; never enabled in a normal game. */
 @SuppressWarnings("deprecation")
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class FluidDimensionTowerRegressionChecks {
     private static final BlockPos SOURCE = new BlockPos(6015, 160, 6015);
     private static final BlockPos TARGET = new BlockPos(8015, 160, 8015);
@@ -56,16 +56,16 @@ public final class FluidDimensionTowerRegressionChecks {
     private static void check(boolean passed, String message) {
         if (!passed) throw new AssertionError(message);
         assertions++;
-        LogManager.getLogger("changede-fluid-dimension-check").info("PASS: {}", message);
+        LogManager.getLogger("changed_extra-fluid-dimension-check").info("PASS: {}", message);
     }
 
     @SubscribeEvent public static void started(ServerStartedEvent event) {
-        if (!Boolean.getBoolean("changede.verifyFluidDimensionTower")) return;
+        if (!Boolean.getBoolean("changed_extra.verifyFluidDimensionTower")) return;
         server = event.getServer();
-        restart = Boolean.getBoolean("changede.verifyFluidDimensionTowerRestart");
+        restart = Boolean.getBoolean("changed_extra.verifyFluidDimensionTowerRestart");
         assertions = elapsed = 0;
         try {
-            remote = server.getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("changede:latex_space")));
+            remote = server.getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("changed_extra:latex_space")));
             check(remote != null && server.getPlayerCount() == 0, "Real latex dimension, no players");
             // Restart phase deliberately does not request either tower's chunk.
             if (restart) return;

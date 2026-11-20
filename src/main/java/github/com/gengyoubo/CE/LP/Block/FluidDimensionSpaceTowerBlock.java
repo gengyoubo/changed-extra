@@ -34,7 +34,7 @@ public final class FluidDimensionSpaceTowerBlock extends SpaceTowerBlock {
         if (player instanceof ServerPlayer serverPlayer) {
             NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
                     (id, inventory, accessPlayer) -> new FluidDimensionSpaceTowerMenu(id, inventory, pos),
-                    Component.translatable("block.changede.fluid_dimension_space_tower")), pos);
+                    Component.translatable("block.changed_extra.fluid_dimension_space_tower")), pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

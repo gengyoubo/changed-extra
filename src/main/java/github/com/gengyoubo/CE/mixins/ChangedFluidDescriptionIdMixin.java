@@ -27,7 +27,7 @@ public abstract class ChangedFluidDescriptionIdMixin {
             index = 0,
             remap = false
     )
-    private static String changede$qualifyFluidDescriptionId(String descriptionId) {
+    private static String changed_extra$qualifyFluidDescriptionId(String descriptionId) {
         return switch (descriptionId) {
             case "skunk_transfur_gas" -> "fluid.changed.skunk_gas";
             case "tiger_transfur_gas" -> "fluid.changed.tiger_gas";

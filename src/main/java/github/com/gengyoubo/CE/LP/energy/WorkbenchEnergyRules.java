@@ -24,7 +24,7 @@ public final class WorkbenchEnergyRules {
 
     public static boolean consume(Object owner, boolean simulate) {
         if (owner instanceof WorkbenchEnergyHolder holder) {
-            return holder.changede$getWorkbenchEnergy().consumeEnergy(costFor(owner), simulate);
+            return holder.changed_extra$getWorkbenchEnergy().consumeEnergy(costFor(owner), simulate);
         }
         return false;
     }
@@ -40,7 +40,7 @@ public final class WorkbenchEnergyRules {
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof WorkbenchEnergyHolder holder) {
-            return holder.changede$getWorkbenchEnergy().consumeEnergy(NORMAL_COST, simulate);
+            return holder.changed_extra$getWorkbenchEnergy().consumeEnergy(NORMAL_COST, simulate);
         }
         return false;
     }

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /** Samples before entity movement, independently of vanilla's per-tick reset of xo/yo/zo. */
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class SpearMovement {
     private record Sample(Vec3 position, Vec3 velocity, long tick, Object dimension) { }
     private static final Map<Entity, Sample> SAMPLES = new WeakHashMap<>();

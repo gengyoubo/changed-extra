@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class LatexCreativeExtranalbodyCraftingCategory implements IRecipeCategory<LatexCreativeExtranalbodyCraftingRecipe> {
     public static final RecipeType<LatexCreativeExtranalbodyCraftingRecipe> TYPE = RecipeType.create(
-            "changede",
+            "changed_extra",
             "latex_creative_extranalbody_crafting",
             LatexCreativeExtranalbodyCraftingRecipe.class
     );

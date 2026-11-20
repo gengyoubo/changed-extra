@@ -14,7 +14,7 @@ import twilightforest.loot.TFLootTables;
 @Mixin(value = TFLootTables.class, remap = false)
 public abstract class TwilightFinalGuardianContainerMixin {
     @Inject(method = "entityDropsIntoContainer", at = @At("HEAD"), cancellable = true)
-    private static void changede$skipGuardianContainer(LivingEntity boss, DamageSource source, BlockState chest, BlockPos pos, CallbackInfo ci) {
+    private static void changed_extra$skipGuardianContainer(LivingEntity boss, DamageSource source, BlockState chest, BlockPos pos, CallbackInfo ci) {
         if (boss.getPersistentData().getBoolean(TwilightFinalEncounter.GUARDIAN)) ci.cancel();
     }
 }

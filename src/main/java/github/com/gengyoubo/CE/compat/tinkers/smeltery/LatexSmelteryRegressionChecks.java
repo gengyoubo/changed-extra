@@ -56,7 +56,7 @@ public final class LatexSmelteryRegressionChecks {
     public static void run(ServerLevel level, BiConsumer<Boolean, String> checks) {
         verify = checks;
         for (String name : new String[]{"latex_combustion_core", "latex_fuel_tank"})
-            check(level.getRecipeManager().byKey(ResourceLocation.parse("changede:smeltery/" + name)).isPresent(), "Crafting recipe loads: " + name);
+            check(level.getRecipeManager().byKey(ResourceLocation.parse("changed_extra:smeltery/" + name)).isPresent(), "Crafting recipe loads: " + name);
         storage(level);
         for (boolean foundry : new boolean[]{false, true}) combustion(level, furnace(level, new BlockPos(foundry ? 72 : 48, 96, 48), foundry));
     }
@@ -98,23 +98,23 @@ public final class LatexSmelteryRegressionChecks {
         var access = (LatexFuelAccess) fuel;
         var tank = tank(level, furnace.tank()).getTank();
         tank.fill(new FluidStack(ChangedFluids.DARK_LATEX.get(), 8000), IFluidHandler.FluidAction.EXECUTE);
-        check(!access.changede$coreReady(), "No core is initially present");
+        check(!access.changed_extra$coreReady(), "No core is initially present");
         check(fuel.findFuel(false) == 0 && fuel.findFuel(true) == 0 && tank.getFluidAmount() == 8000, "Latex cannot burn without the core");
         var info = fuel.getFuelInfo();
         check(info.getTemperature() == 0 && info.getTotalAmount() == 8000 && info.getCapacity() == 8000, "Blocked fuel remains visible at 8 B with no usable temperature");
         var tooltip = LatexSmelteryRules.tooltip(fuel, info, List.of(Component.literal("fluid"), Component.literal("invalid")));
         check(tooltip.get(1).getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text
-                && text.getKey().equals("gui.changede.smeltery.requires_core"), "Controller tooltip explains the missing core");
+                && text.getKey().equals("gui.changed_extra.smeltery.requires_core"), "Controller tooltip explains the missing core");
         level.setBlockAndUpdate(furnace.core(), LatexSmelteryCompat.CORE.get().defaultBlockState()); reform(level, controller);
         check(controller.getStructure() != null && controller.getStructure().contains(furnace.core()), "Core belongs to the formed native furnace wall");
-        check(access.changede$coreReady(), "Connected core enables latex fuel");
+        check(access.changed_extra$coreReady(), "Connected core enables latex fuel");
         check(fuel.findFuel(false) == 1000 && tank.getFluidAmount() == 8000, "Fuel preview has lava temperature and consumes nothing");
         check(fuel.findFuel(true) == 1000 && tank.getFluidAmount() == 7950 && fuel.getFuel() == 100 && fuel.getRate() == 10,
                 "One burn matches lava: 50 mB, duration 100, rate 10, temperature 1000");
         check(fuel.getCount() == 9 && fuel.get(7) == 1 && fuel.get(8) == 1, "Menu data synchronizes core and latex-batch status");
         CompoundTag saved = fuel.writeToTag(new CompoundTag());
         var reloadedFuel = new MultitankFuelModule(controller, () -> controller.getStructure().getTanks()); reloadedFuel.readFromTag(saved);
-        check(((LatexFuelAccess) reloadedFuel).changede$latexBatch() && reloadedFuel.getFuel() == 100, "Burned fuel type and remaining time persist on reload");
+        check(((LatexFuelAccess) reloadedFuel).changed_extra$latexBatch() && reloadedFuel.getFuel() == 100, "Burned fuel type and remaining time persist on reload");
         level.setBlockAndUpdate(furnace.core(), furnace.brick().defaultBlockState());
         check(!fuel.hasFuel() && fuel.getFuel() == 0, "Removing the core immediately stops the current latex batch");
         check(!reloadedFuel.hasFuel(), "Reloaded latex batch also requires the core");
@@ -125,7 +125,7 @@ public final class LatexSmelteryRegressionChecks {
             level.setBlockAndUpdate(furnace.spare(), block("tconstruct:scorched_fuel_tank").defaultBlockState());
         reform(level, controller);
         tank(level, furnace.spare()).getTank().fill(new FluidStack(Fluids.LAVA, 4000), IFluidHandler.FluidAction.EXECUTE);
-        check(fuel.findFuel(true) == 1000 && fuel.getFuel() == 100 && !access.changede$latexBatch(), "Lava works without a core and gains no discarded latex time");
+        check(fuel.findFuel(true) == 1000 && fuel.getFuel() == 100 && !access.changed_extra$latexBatch(), "Lava works without a core and gains no discarded latex time");
         tank.drain(8000, IFluidHandler.FluidAction.EXECUTE);
         info = fuel.getFuelInfo();
         check(info.getFluid().getFluid() == Fluids.LAVA && info.getCapacity() == 4000, "Empty latex tank does not inflate the lava capacity display");
@@ -137,7 +137,7 @@ public final class LatexSmelteryRegressionChecks {
         check(info.getTotalAmount() == 7950 && info.getCapacity() == 12000 && info.getTemperature() == 1000, "Display includes empty native tanks capable of holding latex");
         var rows = LatexSmelteryRules.tooltip(fuel, info, List.of(Component.literal("fluid"), Component.literal("temperature")));
         check(rows.stream().anyMatch(row -> row.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text
-                && text.getKey().equals("gui.changede.smeltery.latex_amounts")), "Tooltip includes separate black and white latex totals");
+                && text.getKey().equals("gui.changed_extra.smeltery.latex_amounts")), "Tooltip includes separate black and white latex totals");
         var inventory = controller.getMeltingInventory();
         inventory.setStackInSlot(0, new ItemStack(net.minecraft.world.item.Items.IRON_INGOT));
         for (int tick = 0; tick < 300; tick++) HeatingStructureBlockEntity.SERVER_TICKER.tick(level, controller.getBlockPos(), controller.getBlockState(), controller);

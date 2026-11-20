@@ -1,0 +1,7 @@
+{
+  "type": "changed_extra:alloy_furnace",
+  "X": { "item": "changed_addon:iridium" },
+  "Y": { "item": "changed_extra:latex_ingot" },
+  "time": 10,
+  "result": { "item": "changed_extra:iridium_ingot", "count": 1 }
+}

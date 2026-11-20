@@ -13,7 +13,7 @@ import twilightforest.loot.TFLootTables;
 @Mixin(value = KnightPhantom.class, remap = false)
 public abstract class TwilightFinalGuardianKnightMixin {
     @Redirect(method = "die", at = @At(value = "INVOKE", target = "Ltwilightforest/loot/TFLootTables;generateChest(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Z)V", remap = false), remap = true)
-    private void changede$skipKnightReward(TFLootTables table, WorldGenLevel level, BlockPos pos, Direction direction, boolean trapped) {
+    private void changed_extra$skipKnightReward(TFLootTables table, WorldGenLevel level, BlockPos pos, Direction direction, boolean trapped) {
         if (!((KnightPhantom) (Object) this).getPersistentData().getBoolean(TwilightFinalEncounter.GUARDIAN)) table.generateChest(level, pos, direction, trapped);
     }
 }

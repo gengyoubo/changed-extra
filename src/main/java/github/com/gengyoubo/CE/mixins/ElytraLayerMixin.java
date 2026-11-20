@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ElytraLayer.class)
 public class ElytraLayerMixin<T extends LivingEntity, M extends EntityModel<T>> {
     @Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true, remap = false)
-    private void changede$renderMimicYufengWings(ItemStack stack, T entity, CallbackInfoReturnable<Boolean> cir) {
+    private void changed_extra$renderMimicYufengWings(ItemStack stack, T entity, CallbackInfoReturnable<Boolean> cir) {
         if (MimicYufengWingsItem.isMimicYufengWings(stack)) {
             cir.setReturnValue(true);
         }
@@ -27,7 +27,7 @@ public class ElytraLayerMixin<T extends LivingEntity, M extends EntityModel<T>> 
 
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
             at = @At("HEAD"), cancellable = true)
-    private void changede$renderMimicYufengWingsModel(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T entity,
+    private void changed_extra$renderMimicYufengWingsModel(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T entity,
                                                       float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
                                                       float netHeadYaw, float headPitch, CallbackInfo ci) {
         ItemStack stack = entity.getItemBySlot(EquipmentSlot.CHEST);

@@ -41,7 +41,7 @@ public final class FissionThermoelectricBlock extends FissionUpgradeBlock {
     @Override public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> lines, TooltipFlag flag) {
         super.appendHoverText(stack, level, lines, flag);
         if (ItemDataUtils.getCompound(stack, FissionThermoelectricBlockEntity.DATA).getBoolean("Fused"))
-            lines.add(Component.translatable("state.changede.thermo.fused").withStyle(net.minecraft.ChatFormatting.RED));
-        lines.add(Component.translatable("tooltip.changede.thermo.inspect"));
+            lines.add(Component.translatable("state.changed_extra.thermo.fused").withStyle(net.minecraft.ChatFormatting.RED));
+        lines.add(Component.translatable("tooltip.changed_extra.thermo.inspect"));
     }
 }

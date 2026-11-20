@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerSpecialVariantMixin {
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
-    private void changede$normalizeSpecialVariantBeforeRead(CompoundTag tag, CallbackInfo ci) {
+    private void changed_extra$normalizeSpecialVariantBeforeRead(CompoundTag tag, CallbackInfo ci) {
         if (!tag.contains("TransfurVariant")) {
             return;
         }
@@ -32,7 +32,7 @@ public abstract class ServerPlayerSpecialVariantMixin {
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
-    private void changede$queueSpecialVariantRestore(CompoundTag tag, CallbackInfo ci) {
+    private void changed_extra$queueSpecialVariantRestore(CompoundTag tag, CallbackInfo ci) {
         if (!tag.contains("TransfurVariant") && !tag.contains(PatreonBenefitsFix.PENDING_SPECIAL_FORM_ID_TAG)) {
             return;
         }

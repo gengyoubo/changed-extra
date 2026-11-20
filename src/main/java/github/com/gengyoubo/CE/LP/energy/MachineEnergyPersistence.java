@@ -14,7 +14,7 @@ import java.util.Set;
 
 /** Copies only energy state into BlockEntityTag, which vanilla restores when placing a BlockItem. */
 public final class MachineEnergyPersistence {
-    private static final Set<String> NAMESPACES = Set.of("changede", "changed", "changed_addon");
+    private static final Set<String> NAMESPACES = Set.of("changed_extra", "changed", "changed_addon");
     public static final List<String> ENERGY_KEYS = List.of("Energy", "PipeEnergy", "TypedEnergy", "LP", "WLP", "DLP",
             "LpEnergy", "JouleBuffer", "CeStoredLp", "CeInputAccumulator", "CeOutputDebt", WorkbenchEnergyRules.NBT_KEY);
     private static final List<String> CAPACITY_KEYS = List.of("CeRpm", "CeSu");

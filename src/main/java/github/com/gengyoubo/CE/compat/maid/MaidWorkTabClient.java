@@ -23,7 +23,7 @@ public final class MaidWorkTabClient {
         ChangedEntity creature = screen.getMenu().getPet();
         if (creature == null) return;
 
-        Button workTab = Button.builder(Component.translatable("screen.changede.maid_work.tab"), ignored ->
+        Button workTab = Button.builder(Component.translatable("screen.changed_extra.maid_work.tab"), ignored ->
                 CENetwork.sendToServer(new MaidWorkSwitchPacket(creature.getId(), true)))
                 .bounds(screen.getGuiLeft() + 158, screen.getGuiTop() - 20, 48, 16)
                 .build();

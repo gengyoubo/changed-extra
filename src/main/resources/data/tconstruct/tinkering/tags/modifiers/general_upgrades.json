@@ -1,11 +1,11 @@
 {
   "values": [
     {
-      "id": "changede:latex_plasticity",
+      "id": "changed_extra:latex_plasticity",
       "required": false
     },
     {
-      "id": "changede:latex_resilience",
+      "id": "changed_extra:latex_resilience",
       "required": false
     }
   ]

@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed_extra:block/latex_burner",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "changed_extra:block/latex_burner",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed_extra:block/latex_burner",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed_extra:block/latex_burner",
+      "y": 270
+    }
+  }
+}

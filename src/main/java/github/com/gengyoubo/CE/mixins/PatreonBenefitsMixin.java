@@ -27,7 +27,7 @@ public abstract class PatreonBenefitsMixin {
     @Shadow public static int currentVersion;
 
     @Unique
-    private static void changede$setRepoBase(String base) {
+    private static void changed_extra$setRepoBase(String base) {
         REPO_BASE = base;
         LINKS_DOCUMENT = REPO_BASE + "listing.json";
         VERSION_DOCUMENT = REPO_BASE + "version.txt";
@@ -36,7 +36,7 @@ public abstract class PatreonBenefitsMixin {
     }
 
     @Unique
-    private static void changede$loadLevels(HttpClient client) throws IOException, InterruptedException {
+    private static void changed_extra$loadLevels(HttpClient client) throws IOException, InterruptedException {
         JsonElement json = JsonParser.parseString(PatreonBenefitsFix.readText(client, URI.create(LINKS_DOCUMENT)));
         JsonArray links = json.getAsJsonObject().get("players").getAsJsonArray();
         links.forEach(element -> {
@@ -46,7 +46,7 @@ public abstract class PatreonBenefitsMixin {
     }
 
     @Unique
-    private static int changede$loadVersion(HttpClient client) throws IOException, InterruptedException {
+    private static int changed_extra$loadVersion(HttpClient client) throws IOException, InterruptedException {
         return Integer.parseInt(PatreonBenefitsFix.readText(client, URI.create(VERSION_DOCUMENT)).replace("\n", ""));
     }
 
@@ -56,7 +56,7 @@ public abstract class PatreonBenefitsMixin {
  */
 @Overwrite
     private static void updatePathStrings() {
-        changede$setRepoBase(PatreonBenefitsFix.getPrimaryRepositoryBase());
+        changed_extra$setRepoBase(PatreonBenefitsFix.getPrimaryRepositoryBase());
     }
 
     /**
@@ -80,10 +80,10 @@ public abstract class PatreonBenefitsMixin {
         boolean primaryLoaded = false;
         Exception lastError = null;
         for (String repo : repos) {
-            changede$setRepoBase(repo);
+            changed_extra$setRepoBase(repo);
             try {
-                changede$loadLevels(client);
-                mergedVersion = Math.max(mergedVersion, changede$loadVersion(client));
+                changed_extra$loadLevels(client);
+                mergedVersion = Math.max(mergedVersion, changed_extra$loadVersion(client));
                 successCount++;
                 if (repo.equals(primaryRepo)) {
                     primaryLoaded = true;
@@ -101,7 +101,7 @@ public abstract class PatreonBenefitsMixin {
             if (mergedVersion >= 0) {
                 currentVersion = mergedVersion;
             }
-            changede$setRepoBase(primaryLoaded ? primaryRepo : defaultRepo);
+            changed_extra$setRepoBase(primaryLoaded ? primaryRepo : defaultRepo);
             Changed.LOGGER.info(
                     "Patreon benefits merged from {} source(s), players={}, activeRepo={}",
                     successCount,

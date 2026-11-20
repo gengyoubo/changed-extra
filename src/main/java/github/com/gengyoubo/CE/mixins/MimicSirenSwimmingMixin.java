@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Player.class)
 public abstract class MimicSirenSwimmingMixin {
     @Inject(method = "updatePlayerPose", at = @At("HEAD"), cancellable = true)
-    private void changede$swimWithFishTail(CallbackInfo ci) {
+    private void changed_extra$swimWithFishTail(CallbackInfo ci) {
         Player player = (Player) (Object) this;
         if (player.getForcedPose() == null && MimicSirenTailItem.shouldSwimUnderwater(player)) {
             player.setPose(Pose.SWIMMING);

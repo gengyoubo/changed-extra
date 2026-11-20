@@ -68,6 +68,6 @@ public class PipeConfigScreen extends AbstractContainerScreen<PipeConfigMenu> {
     }
 
     private static Component modeLabel(PipeConnectionMode mode) {
-        return Component.translatable("message.changede.pipe_connection_mode." + mode.name().toLowerCase(java.util.Locale.ROOT));
+        return Component.translatable("message.changed_extra.pipe_connection_mode." + mode.name().toLowerCase(java.util.Locale.ROOT));
     }
 }

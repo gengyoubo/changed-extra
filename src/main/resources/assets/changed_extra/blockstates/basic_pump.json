@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "changed_extra:block/basic_pump" },
+    "facing=south": { "model": "changed_extra:block/basic_pump", "y": 180 },
+    "facing=west": { "model": "changed_extra:block/basic_pump", "y": 270 },
+    "facing=east": { "model": "changed_extra:block/basic_pump", "y": 90 }
+  }
+}

@@ -13,12 +13,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "jeresources.jei.JEIConfig", remap = false)
 public abstract class JerWorldGenRecipesMixin {
     @Inject(method = "registerRecipes", at = @At("TAIL"), remap = false)
-    private void changede$registerVerifiedOres(IRecipeRegistration registration, CallbackInfo ci) {
+    private void changed_extra$registerVerifiedOres(IRecipeRegistration registration, CallbackInfo ci) {
         JerWorldGenCompat.register(registration);
     }
 
     @Inject(method = "onRuntimeAvailable", at = @At("TAIL"), remap = false)
-    private void changede$enableOreUpdates(IJeiRuntime runtime, CallbackInfo ci) {
+    private void changed_extra$enableOreUpdates(IJeiRuntime runtime, CallbackInfo ci) {
         JerWorldGenCompat.runtimeAvailable(runtime);
     }
 }

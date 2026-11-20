@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 final class CampNetwork {
-    private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(ResourceLocation.parse("changede:latex_camp"),
+    private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(ResourceLocation.parse("changed_extra:latex_camp"),
             () -> "2", "2"::equals, "2"::equals);
     record Action(int menu, String action, UUID target, int index) {}
     record Snapshot(int menu, CompoundTag view) {}

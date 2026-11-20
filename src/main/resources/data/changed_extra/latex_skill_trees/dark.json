@@ -1,0 +1,311 @@
+{
+  "scope": "group",
+  "latex_type": "dark",
+  "nodes": [
+    {
+      "id": "changed_extra:dark_shell",
+      "title": "skill.changed_extra.dark_shell",
+      "description": "skill.changed_extra.dark_shell.description",
+      "cost": 0,
+      "parents": [
+        "changed_extra:common_strength_2"
+      ],
+      "x": -3,
+      "y": 11,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "white_latex_diet",
+          "value": 1
+        }
+      ],
+      "research": "race"
+    },
+    {
+      "id": "changed_extra:dark_white_nemesis_1",
+      "title": "skill.changed_extra.dark.white_nemesis.1",
+      "description": "skill.changed_extra.dark.white_nemesis.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:dark_shell"
+      ],
+      "x": -4,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:flat_damage_vs_white",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_white_resistance_1",
+      "title": "skill.changed_extra.dark.white_resistance.1",
+      "description": "skill.changed_extra.dark.white_resistance.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:dark_white_nemesis_1"
+      ],
+      "x": -3,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:white_latex_resistance",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_white_fog_resistance_1",
+      "title": "skill.changed_extra.dark.white_fog_resistance.1",
+      "description": "skill.changed_extra.dark.white_fog_resistance.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:dark_white_resistance_1"
+      ],
+      "x": -4,
+      "y": 14,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:white_fog_resistance",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_armor_adaptation_1",
+      "title": "skill.changed_extra.dark.armor_adaptation.1",
+      "description": "skill.changed_extra.dark.armor_adaptation.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:dark_white_fog_resistance_1"
+      ],
+      "x": -3,
+      "y": 15,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:armor_adaptation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_weapon_adaptation_1",
+      "title": "skill.changed_extra.dark.weapon_adaptation.1",
+      "description": "skill.changed_extra.dark.weapon_adaptation.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:dark_armor_adaptation_1"
+      ],
+      "x": -4,
+      "y": 16,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:weapon_adaptation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_latex_weapon_adaptation_1",
+      "title": "skill.changed_extra.dark.latex_weapon_adaptation.1",
+      "description": "skill.changed_extra.dark.latex_weapon_adaptation.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:dark_weapon_adaptation_1"
+      ],
+      "x": -3,
+      "y": 17,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:latex_weapon_damage",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_weapon_adaptation_2",
+      "title": "skill.changed_extra.dark.weapon_adaptation.2",
+      "description": "skill.changed_extra.dark.weapon_adaptation.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:dark_latex_weapon_adaptation_1"
+      ],
+      "x": -4,
+      "y": 18,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:weapon_adaptation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_white_resistance_2",
+      "title": "skill.changed_extra.dark.white_resistance.2",
+      "description": "skill.changed_extra.dark.white_resistance.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:dark_weapon_adaptation_2"
+      ],
+      "x": -3,
+      "y": 19,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:white_latex_resistance",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_white_nemesis_2",
+      "title": "skill.changed_extra.dark.white_nemesis.2",
+      "description": "skill.changed_extra.dark.white_nemesis.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:dark_white_resistance_2"
+      ],
+      "x": -4,
+      "y": 20,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:flat_damage_vs_white",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_weapon_adaptation_3",
+      "title": "skill.changed_extra.dark.weapon_adaptation.3",
+      "description": "skill.changed_extra.dark.weapon_adaptation.description",
+      "cost": 175,
+      "parents": [
+        "changed_extra:dark_white_nemesis_2"
+      ],
+      "x": -3,
+      "y": 21,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:weapon_adaptation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_latex_weapon_adaptation_2",
+      "title": "skill.changed_extra.dark.latex_weapon_adaptation.2",
+      "description": "skill.changed_extra.dark.latex_weapon_adaptation.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:dark_weapon_adaptation_3"
+      ],
+      "x": -4,
+      "y": 22,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:latex_weapon_damage",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_armor_adaptation_2",
+      "title": "skill.changed_extra.dark.armor_adaptation.2",
+      "description": "skill.changed_extra.dark.armor_adaptation.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:dark_latex_weapon_adaptation_2"
+      ],
+      "x": -3,
+      "y": 23,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:armor_adaptation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_latex_weapon_adaptation_3",
+      "title": "skill.changed_extra.dark.latex_weapon_adaptation.3",
+      "description": "skill.changed_extra.dark.latex_weapon_adaptation.description",
+      "cost": 175,
+      "parents": [
+        "changed_extra:dark_armor_adaptation_2"
+      ],
+      "x": -4,
+      "y": 24,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:latex_weapon_damage",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_latex_weapon_adaptation_4",
+      "title": "skill.changed_extra.dark.latex_weapon_adaptation.4",
+      "description": "skill.changed_extra.dark.latex_weapon_adaptation.description",
+      "cost": 225,
+      "parents": [
+        "changed_extra:dark_latex_weapon_adaptation_3"
+      ],
+      "x": -3,
+      "y": 25,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:latex_weapon_damage",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dark_white_nemesis_3",
+      "title": "skill.changed_extra.dark.white_nemesis.3",
+      "description": "skill.changed_extra.dark.white_nemesis.description",
+      "cost": 175,
+      "parents": [
+        "changed_extra:dark_latex_weapon_adaptation_4"
+      ],
+      "x": -4,
+      "y": 26,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:flat_damage_vs_white",
+          "amount": 1
+        }
+      ]
+    }
+  ]
+}

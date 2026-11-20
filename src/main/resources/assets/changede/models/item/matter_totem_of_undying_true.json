@@ -1,7 +1,0 @@
-{
-	"parent": "minecraft:item/generated",
-	"textures": {
-		"layer0": "changede:item/matter_totem_of_undying_true",
-		"layer1": "changede:item/matter_totem_of_undying_true"
-	}
-}

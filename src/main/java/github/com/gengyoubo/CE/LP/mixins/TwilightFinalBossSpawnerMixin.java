@@ -12,7 +12,7 @@ import twilightforest.block.entity.spawner.FinalBossSpawnerBlockEntity;
 @Mixin(value = FinalBossSpawnerBlockEntity.class, remap = false)
 public abstract class TwilightFinalBossSpawnerMixin {
     @Inject(method = "spawnMyBoss", at = @At("HEAD"), cancellable = true)
-    private void changede$spawnExperiment009(ServerLevelAccessor world, CallbackInfoReturnable<Boolean> cir) {
+    private void changed_extra$spawnExperiment009(ServerLevelAccessor world, CallbackInfoReturnable<Boolean> cir) {
         BlockPos pos = ((FinalBossSpawnerBlockEntity) (Object) this).getBlockPos();
         cir.setReturnValue(TwilightFinalBossCompat.spawn(world, pos));
     }

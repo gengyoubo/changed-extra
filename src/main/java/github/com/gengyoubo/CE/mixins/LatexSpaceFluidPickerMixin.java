@@ -34,7 +34,7 @@ import java.util.Set;
 @Mixin(NoiseBasedChunkGenerator.class)
 public abstract class LatexSpaceFluidPickerMixin {
     private static final ResourceKey<NoiseGeneratorSettings> LATEX_SPACE_SETTINGS = ResourceKey.create(
-            Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath("changede", "latex_space"));
+            Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath("changed_extra", "latex_space"));
     private static final Set<ResourceKey<Biome>> DARK_BIOMES = Set.of(
             biome("dark_latex_plains"), biome("dark_latex_forest"), biome("dark_latex_sea"));
     private static final ResourceLocation DARK_FLUID = ResourceLocation.fromNamespaceAndPath("changed", "dark_latex_fluid");
@@ -43,7 +43,7 @@ public abstract class LatexSpaceFluidPickerMixin {
     @Shadow @Final private Holder<NoiseGeneratorSettings> settings;
 
     @Inject(method = "createNoiseChunk", at = @At("HEAD"), cancellable = true)
-    private void changede$useBiomeFluid(ChunkAccess chunk, StructureManager structures, Blender blender,
+    private void changed_extra$useBiomeFluid(ChunkAccess chunk, StructureManager structures, Blender blender,
                                         RandomState randomState, CallbackInfoReturnable<NoiseChunk> result) {
         if (!settings.is(LATEX_SPACE_SETTINGS)) {
             return;
@@ -79,7 +79,7 @@ public abstract class LatexSpaceFluidPickerMixin {
     }
 
     private static ResourceKey<Biome> biome(String name) {
-        return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("changede", name));
+        return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("changed_extra", name));
     }
 
     private static BlockState fluidState(ResourceLocation id, BlockState fallback) {

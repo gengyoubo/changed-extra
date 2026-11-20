@@ -44,9 +44,9 @@ public final class Issue38SmelteryChecks {
         }
         var original = new ArrayList<>(level.getRecipeManager().getRecipes());
         var recipes = new ArrayList<>(original);
-        recipes.add(new MeltingRecipe(ResourceLocation.parse("changede:verify/blaze"), "", Ingredient.of(Items.STICK),
+        recipes.add(new MeltingRecipe(ResourceLocation.parse("changed_extra:verify/blaze"), "", Ingredient.of(Items.STICK),
                 FluidOutput.fromFluid(Fluids.WATER, 90), 1400, 1, List.of()));
-        recipes.add(new MeltingRecipe(ResourceLocation.parse("changede:verify/molten"), "", Ingredient.of(Items.PAPER),
+        recipes.add(new MeltingRecipe(ResourceLocation.parse("changed_extra:verify/molten"), "", Ingredient.of(Items.PAPER),
                 FluidOutput.fromFluid(Fluids.WATER, 90), 1800, 1, List.of()));
         level.getRecipeManager().replaceRecipes(recipes);
         try {
@@ -89,7 +89,7 @@ public final class Issue38SmelteryChecks {
                 var saved = fuel.writeToTag(new net.minecraft.nbt.CompoundTag());
                 var reloaded = new slimeknights.tconstruct.smeltery.block.entity.module.MultitankFuelModule(controller, () -> controller.getStructure().getTanks());
                 reloaded.readFromTag(saved);
-                check.accept(reloaded.getTemperature() == 2000 && ((LatexFuelAccess) reloaded).changede$latexBatch(), "Molten fuel batch survives NBT reload");
+                check.accept(reloaded.getTemperature() == 2000 && ((LatexFuelAccess) reloaded).changed_extra$latexBatch(), "Molten fuel batch survives NBT reload");
                 inventory.setStackInSlot(0, new ItemStack(net.ltxprogrammer.changed.init.ChangedItems.DARK_LATEX_GOO.get()));
                 var goo = inventory.getModule(0); var gooRecipe = level.getRecipeManager().getRecipeFor(
                         slimeknights.tconstruct.library.recipe.TinkerRecipeTypes.MELTING.get(), goo, level).orElseThrow();
@@ -100,7 +100,7 @@ public final class Issue38SmelteryChecks {
                         .anyMatch(s -> s.is(LatexSmelteryCompat.DYNAMIC_CORE_ITEM.get())), "Dynamic core has native block loot");
             }
         } finally { level.getRecipeManager().replaceRecipes(original); }
-        EntityMeltingRecipe recipe = (EntityMeltingRecipe) level.getRecipeManager().byKey(ResourceLocation.parse("changede:smeltery/entity_melting/latex")).orElseThrow();
+        EntityMeltingRecipe recipe = (EntityMeltingRecipe) level.getRecipeManager().byKey(ResourceLocation.parse("changed_extra:smeltery/entity_melting/latex")).orElseThrow();
         for (String id : new String[]{"changed:dark_latex_wolf_male", "changed:pure_white_latex_wolf", "changed_addon:experiment_009"}) {
             var type = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.parse(id));
             var entity = (LivingEntity) type.create(level);

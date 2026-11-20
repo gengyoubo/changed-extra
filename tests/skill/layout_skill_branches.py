@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RES = ROOT / 'src/main/resources'
-TREES = RES / 'data/changede/latex_skill_trees'
+TREES = RES / 'data/changed_extra/latex_skill_trees'
 # From the trunk outwards: each pair occupies matching left/right lanes.
 PAIRS = [
     ('dark', 'white'), ('biped', 'feral'), ('taur', 'snake'),
@@ -47,10 +47,10 @@ def arrange():
         assert definitions[name] == [{k: v for k, v in n.items() if k != 'x'}
                                      for n in tree['nodes']], name
         save(TREES / (name + '.json'), tree)
-    visual_path = RES / 'assets/changede/latex_skill_visuals/default.json'
+    visual_path = RES / 'assets/changed_extra/latex_skill_visuals/default.json'
     visual = json.loads(visual_path.read_text(encoding='utf-8'))
     for region in visual['regions']:
-        name = region['id'].removeprefix('changede:').removesuffix('_branch')
+        name = region['id'].removeprefix('changed_extra:').removesuffix('_branch')
         if name not in centers:
             continue
         if 'branch' in region:

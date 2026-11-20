@@ -37,7 +37,7 @@ import java.util.Set;
 
 @JeiPlugin
 public class CEJeiPlugin implements IModPlugin {
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath("changede", "jei_plugin");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath("changed_extra", "jei_plugin");
     private static final RecipeType<InfuserRecipe> CHANGED_INFUSER_RECIPE = RecipeType.create(
             "changed",
             "infuser_recipe",
@@ -158,13 +158,13 @@ public class CEJeiPlugin implements IModPlugin {
         foods.forEach((item, diets) -> {
             List<Component> description = new ArrayList<>();
             if (oranges.contains(item)) {
-                description.add(Component.translatable("jei.changede.latex_food.orange"));
+                description.add(Component.translatable("jei.changed_extra.latex_food.orange"));
             }
             if (item == enchantedOrange) {
-                description.add(Component.translatable("jei.changede.latex_food.enchanted_orange"));
+                description.add(Component.translatable("jei.changed_extra.latex_food.enchanted_orange"));
             }
             if (latexDrinks.contains(item)) {
-                description.add(Component.translatable("jei.changede.latex_food.latex_drink"));
+                description.add(Component.translatable("jei.changed_extra.latex_food.latex_drink"));
             }
             if (!diets.isEmpty()) {
                 MutableComponent dietNames = Component.empty();
@@ -176,7 +176,7 @@ public class CEJeiPlugin implements IModPlugin {
                     dietNames.append(Component.translatable(diet.translationKey));
                     first = false;
                 }
-                description.add(Component.translatable("jei.changede.latex_food.accepted_by", dietNames));
+                description.add(Component.translatable("jei.changed_extra.latex_food.accepted_by", dietNames));
             }
 
             registration.addItemStackInfo(new ItemStack(item), description.toArray(Component[]::new));
@@ -191,14 +191,14 @@ public class CEJeiPlugin implements IModPlugin {
     }
 
     private enum LatexDiet {
-        AQUATIC("aquatic_diet_list", "jei.changede.latex_food.diet.aquatic"),
-        SHARK("shark_diet_list", "jei.changede.latex_food.diet.shark"),
-        CAT("cat_diet_list", "jei.changede.latex_food.diet.cat"),
-        DRAGON("dragon_diet_list", "jei.changede.latex_food.diet.dragon"),
-        FOX("fox_diet_list", "jei.changede.latex_food.diet.fox"),
-        SWEET_TOOTH("sweet_tooth_list", "jei.changede.latex_food.diet.sweet_tooth"),
-        WOLF("wolf_diet_list", "jei.changede.latex_food.diet.wolf"),
-        SPECIAL("special_diet_list", "jei.changede.latex_food.diet.special");
+        AQUATIC("aquatic_diet_list", "jei.changed_extra.latex_food.diet.aquatic"),
+        SHARK("shark_diet_list", "jei.changed_extra.latex_food.diet.shark"),
+        CAT("cat_diet_list", "jei.changed_extra.latex_food.diet.cat"),
+        DRAGON("dragon_diet_list", "jei.changed_extra.latex_food.diet.dragon"),
+        FOX("fox_diet_list", "jei.changed_extra.latex_food.diet.fox"),
+        SWEET_TOOTH("sweet_tooth_list", "jei.changed_extra.latex_food.diet.sweet_tooth"),
+        WOLF("wolf_diet_list", "jei.changed_extra.latex_food.diet.wolf"),
+        SPECIAL("special_diet_list", "jei.changed_extra.latex_food.diet.special");
 
         private final String itemTag;
         private final String translationKey;

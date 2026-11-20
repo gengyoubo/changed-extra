@@ -33,7 +33,7 @@ public class ElectricFurnaceScreen extends AbstractContainerScreen<ElectricFurna
         if (isHovering(70, 38, 36, 6, mouseX, mouseY)) {
             String time = AmountFormat.format(String.format(Locale.ROOT, "%.1f", this.menu.getProgress() / 20.0),
                     String.format(Locale.ROOT, "%.1f", this.menu.getMaxProgress() / 20.0));
-            guiGraphics.renderTooltip(this.font, Component.translatable("gui.changede.alloy_furnace.time", time), mouseX, mouseY);
+            guiGraphics.renderTooltip(this.font, Component.translatable("gui.changed_extra.alloy_furnace.time", time), mouseX, mouseY);
         }
     }
 

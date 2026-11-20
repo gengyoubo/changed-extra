@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changede:dark_latex_log",
-    "changede:white_latex_log"
+    "changed_extra:dark_latex_log",
+    "changed_extra:white_latex_log"
   ]
 }

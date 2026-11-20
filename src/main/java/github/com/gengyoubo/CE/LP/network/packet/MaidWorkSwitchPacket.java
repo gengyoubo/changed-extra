@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.LP.network.packet;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.ModList;
@@ -33,7 +33,7 @@ public record MaidWorkSwitchPacket(int creatureId, boolean openWork) {
                 switchMenu.invoke(null, player, packet.creatureId, packet.openWork);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
                      | InvocationTargetException | LinkageError exception) {
-                changede.LOGGER.warn("Could not switch latex maid work menu", exception);
+                changed_extra.LOGGER.warn("Could not switch latex maid work menu", exception);
             }
         });
         context.setPacketHandled(true);

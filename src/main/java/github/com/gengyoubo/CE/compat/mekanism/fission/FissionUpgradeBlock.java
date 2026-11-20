@@ -37,7 +37,7 @@ public class FissionUpgradeBlock extends BlockTile<TileEntityFissionReactorCasin
     @Override
     public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> lines, TooltipFlag flag) {
         super.appendHoverText(stack, level, lines, flag);
-        lines.add(Component.translatable("tooltip.changede.fission_casing_upgrade"));
-        lines.add(Component.translatable("tooltip.changede." + upgrade.id));
+        lines.add(Component.translatable("tooltip.changed_extra.fission_casing_upgrade"));
+        lines.add(Component.translatable("tooltip.changed_extra." + upgrade.id));
     }
 }

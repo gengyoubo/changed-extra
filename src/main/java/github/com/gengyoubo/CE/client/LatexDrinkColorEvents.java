@@ -6,7 +6,7 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class LatexDrinkColorEvents {
     private static final int DARK_LATEX_COFFEE_COLOR = 0x303030;
 

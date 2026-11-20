@@ -58,7 +58,7 @@ public final class LatexBurnerPonder {
         text(scene, util, pos, "empty");
     }
     private static void text(CreateSceneBuilder scene, SceneBuildingUtil util, BlockPos pos, String key) {
-        scene.overlay().showText(100).text(I18n.get("changede.ponder.latex_burner." + key)).pointAt(util.vector().topOf(pos)).placeNearTarget();
+        scene.overlay().showText(100).text(I18n.get("changed_extra.ponder.latex_burner." + key)).pointAt(util.vector().topOf(pos)).placeNearTarget();
         scene.idle(110);
     }
 }

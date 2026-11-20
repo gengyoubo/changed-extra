@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changede:dark_latex_fence_gate",
-    "changede:white_latex_fence_gate"
+    "changed_extra:dark_latex_fence_gate",
+    "changed_extra:white_latex_fence_gate"
   ]
 }

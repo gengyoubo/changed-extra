@@ -2,11 +2,11 @@
   "replace": false,
   "values": [
     {
-      "id": "changede:reverser",
+      "id": "changed_extra:reverser",
       "required": false
     },
     {
-      "id": "changede:basic_gas_pipe",
+      "id": "changed_extra:basic_gas_pipe",
       "required": false
     }
   ]

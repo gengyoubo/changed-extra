@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class MimicSirenTailItem extends MimicItem implements ExtendedItemProperties {
-    private static final ResourceLocation MIMIC_ID = ResourceLocation.fromNamespaceAndPath("changede", "mimic_siren_tail");
+    private static final ResourceLocation MIMIC_ID = ResourceLocation.fromNamespaceAndPath("changed_extra", "mimic_siren_tail");
 
     public MimicSirenTailItem(Properties properties) {
         super(Type.BOOTS, properties);
@@ -87,8 +87,8 @@ public class MimicSirenTailItem extends MimicItem implements ExtendedItemPropert
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(Component.translatable("item.changede.mimic_siren_tail.desc"));
-        tooltip.add(Component.translatable("item.changede.mimic_siren_tail.risk"));
+        tooltip.add(Component.translatable("item.changed_extra.mimic_siren_tail.desc"));
+        tooltip.add(Component.translatable("item.changed_extra.mimic_siren_tail.risk"));
     }
 
     @Override

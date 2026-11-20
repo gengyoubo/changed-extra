@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "pattern": [
+    "IEI",
+    "WCD",
+    "IMI"
+  ],
+  "key": {
+    "I": {
+      "item": "changed_extra:iridium_ingot"
+    },
+    "E": {
+      "item": "mekanism:elite_control_circuit"
+    },
+    "W": {
+      "item": "changed_extra:white_latex_power_converter"
+    },
+    "D": {
+      "item": "changed_extra:dark_latex_power_converter"
+    },
+    "C": {
+      "item": "mekanism:steel_casing"
+    },
+    "M": {
+      "item": "changed_extra:morphic_crystal_core"
+    }
+  },
+  "result": {
+    "item": "changed_extra:reverser",
+    "count": 1
+  }
+}

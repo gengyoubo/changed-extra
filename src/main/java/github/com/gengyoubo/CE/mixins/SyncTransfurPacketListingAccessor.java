@@ -8,17 +8,17 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(targets = "net.ltxprogrammer.changed.network.packet.SyncTransfurPacket$Listing", remap = false)
 public interface SyncTransfurPacketListingAccessor {
     @Accessor("form")
-    int changede$getForm();
+    int changed_extra$getForm();
 
     @Accessor("cause")
-    TransfurCause changede$getCause();
+    TransfurCause changed_extra$getCause();
 
     @Accessor("progress")
-    float changede$getProgress();
+    float changed_extra$getProgress();
 
     @Accessor("temporaryFromSuit")
-    boolean changede$isTemporaryFromSuit();
+    boolean changed_extra$isTemporaryFromSuit();
 
     @Accessor("data")
-    CompoundTag changede$getData();
+    CompoundTag changed_extra$getData();
 }

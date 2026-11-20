@@ -48,7 +48,7 @@ public class CELPBlock {
     public static final RegistryObject<Block> ORANGE_PRODUCER;
 
     static {
-        BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
+        BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changed_extra");
 
         WIRE_BLOCKS = BLOCKS;
         BASIC_WIRE = BLOCKS.register("basic_wire",

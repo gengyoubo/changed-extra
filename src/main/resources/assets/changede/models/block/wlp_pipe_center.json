@@ -1,7 +1,0 @@
-{
-  "parent": "changede:block/energy_pipe_center",
-  "textures": {
-    "all": "changede:block/wlp_pipe",
-    "particle": "changede:block/wlp_pipe"
-  }
-}

@@ -36,14 +36,14 @@ public class LatexPaintingPortalBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final ResourceKey<Level> LATEX_SPACE = ResourceKey.create(
             Registries.DIMENSION,
-            ResourceLocation.fromNamespaceAndPath("changede", "latex_space")
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "latex_space")
     );
 
-    private static final String COOLDOWN_TAG = "changede_latex_painting_portal_cooldown";
+    private static final String COOLDOWN_TAG = "changed_extra_latex_painting_portal_cooldown";
     private static final ResourceLocation ENTER_LATEX_SPACE_ADVANCEMENT =
-            ResourceLocation.fromNamespaceAndPath("changede", "enter_latex_space_through_painting");
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "enter_latex_space_through_painting");
     private static final ResourceLocation WONDERFUL_ART_ADVANCEMENT =
-            ResourceLocation.fromNamespaceAndPath("changede", "wonderful_art");
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "wonderful_art");
     private static final int PORTAL_COOLDOWN_TICKS = 60;
     private static final double RETURN_PORTAL_SEARCH_RADIUS = 16.0D;
     private static final int SAFE_TARGET_SEARCH_RADIUS = 8;

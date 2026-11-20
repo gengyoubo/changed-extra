@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = InfuserMenu.class, remap = false)
 public abstract class InfuserMenuEnergyMixin {
     @Inject(method = {"slotsChanged", "m_6199_"}, at = @At("TAIL"))
-    private void changede$hideResultWithoutEnergy(Container container, CallbackInfo ci) {
+    private void changed_extra$hideResultWithoutEnergy(Container container, CallbackInfo ci) {
         InfuserMenu menu = (InfuserMenu) (Object) this;
         if (!WorkbenchEnergyRules.consumeInfuserCraft(menu.world, new BlockPos(menu.x, menu.y, menu.z), true)) {
             Slot resultSlot = menu.getResultSlot();

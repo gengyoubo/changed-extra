@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Minecraft.class)
 public abstract class LatexSpearAttackInputMixin {
     @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
-    private void changede$jabOnPress(CallbackInfoReturnable<Boolean> ci) {
+    private void changed_extra$jabOnPress(CallbackInfoReturnable<Boolean> ci) {
         var player = Minecraft.getInstance().player;
         if (player != null && player.getMainHandItem().getItem() instanceof LatexSpearItem) {
             LatexSpearClient.requestJab();

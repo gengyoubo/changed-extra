@@ -18,20 +18,20 @@ public final class WorkbenchMekanismEnergyHandler implements ISidedStrictEnergyH
     @Override public int getEnergyContainerCount(Direction side) { return 1; }
     @Override public FloatingLong getEnergy(int container, Direction side) {
         if (container != 0) return FloatingLong.ZERO;
-        return FloatingLong.create((long) holder.changede$getWorkbenchEnergy().getEnergyStored() * JOULES_PER_LP)
+        return FloatingLong.create((long) holder.changed_extra$getWorkbenchEnergy().getEnergyStored() * JOULES_PER_LP)
                 .add(fractionalJoules);
     }
     @Override public void setEnergy(int container, FloatingLong amount, Direction side) {
         if (container != 0) return;
         FloatingLong bounded = amount.max(FloatingLong.ZERO)
-                .min(FloatingLong.create((long) holder.changede$getWorkbenchEnergy().getMaxEnergyStored() * JOULES_PER_LP));
+                .min(FloatingLong.create((long) holder.changed_extra$getWorkbenchEnergy().getMaxEnergyStored() * JOULES_PER_LP));
         int wholeLp = bounded.divideToInt(FloatingLong.create(JOULES_PER_LP));
-        holder.changede$getWorkbenchEnergy().setEnergyStored(wholeLp);
+        holder.changed_extra$getWorkbenchEnergy().setEnergyStored(wholeLp);
         fractionalJoules = bounded.subtract(FloatingLong.create((long) wholeLp * JOULES_PER_LP));
     }
     @Override public FloatingLong getMaxEnergy(int container, Direction side) {
         if (container != 0) return FloatingLong.ZERO;
-        return FloatingLong.create((long) holder.changede$getWorkbenchEnergy().getMaxEnergyStored() * JOULES_PER_LP);
+        return FloatingLong.create((long) holder.changed_extra$getWorkbenchEnergy().getMaxEnergyStored() * JOULES_PER_LP);
     }
     @Override public FloatingLong getNeededEnergy(int container, Direction side) {
         if (container != 0) return FloatingLong.ZERO;
@@ -44,7 +44,7 @@ public final class WorkbenchMekanismEnergyHandler implements ISidedStrictEnergyH
         if (action.execute()) {
             FloatingLong total = fractionalJoules.add(accepted);
             int wholeLp = total.divideToInt(FloatingLong.create(JOULES_PER_LP));
-            int received = holder.changede$getWorkbenchEnergy().receiveEnergy(wholeLp, false);
+            int received = holder.changed_extra$getWorkbenchEnergy().receiveEnergy(wholeLp, false);
             fractionalJoules = total.subtract(FloatingLong.create((long) received * JOULES_PER_LP));
         }
         return amount.subtract(accepted);

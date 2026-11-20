@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "tag": "changed_extra:crystals/small"
+    },
+    "Y": {
+      "item": "changed:generator"
+    }
+  },
+  "result": {
+    "item": "changed_extra:basic_crystal_generator",
+    "count": 1
+  }
+}

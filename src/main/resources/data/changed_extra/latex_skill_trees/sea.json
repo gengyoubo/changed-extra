@@ -1,0 +1,207 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_benign_orca",
+    "changed:form_latex_eel",
+    "changed:form_latex_manta_ray/female",
+    "changed:form_latex_manta_ray/male",
+    "changed:form_latex_mermaid_shark/female",
+    "changed:form_latex_mermaid_shark/male",
+    "changed:form_latex_orca",
+    "changed:form_latex_otter",
+    "changed:form_latex_shark",
+    "changed:form_latex_shark/female",
+    "changed:form_latex_shark/male",
+    "changed:form_latex_shark_feral",
+    "changed:form_latex_squid_dog/female",
+    "changed:form_latex_squid_dog/male",
+    "changed:form_latex_tiger_shark",
+    "changed:special/form_8922cbbc-0c40-4262-b0b8-a153ec94ecdc",
+    "changed_addon:form_latex_dragon_snow_leopard_shark",
+    "changed_addon:form_latex_kayla_shark",
+    "changed_addon:form_latex_squid_tiger_shark"
+  ],
+  "nodes": [
+    {
+      "id": "changed_extra:sea_core",
+      "title": "skill.changed_extra.sea_core",
+      "description": "skill.changed_extra.sea_core.description",
+      "cost": 200,
+      "parents": [
+        "changed_extra:common_strength_2"
+      ],
+      "x": 15,
+      "y": 11,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "sea_core",
+          "value": 1
+        },
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "fish_diet",
+          "value": 1
+        }
+      ],
+      "research": "race"
+    },
+    {
+      "id": "changed_extra:sea_work_1",
+      "title": "skill.changed_extra.sea_work_1",
+      "description": "skill.changed_extra.sea_work_1.description",
+      "cost": 200,
+      "parents": [
+        "changed_extra:sea_core"
+      ],
+      "x": 15,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "sea_work",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:sea_work_2",
+      "title": "skill.changed_extra.sea_work_2",
+      "description": "skill.changed_extra.sea_work_2.description",
+      "cost": 250,
+      "parents": [
+        "changed_extra:sea_work_1"
+      ],
+      "x": 15,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "sea_mining",
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:sea_guard_1",
+      "title": "skill.changed_extra.sea_guard_1",
+      "description": "skill.changed_extra.sea_guard_1.description",
+      "cost": 200,
+      "parents": [
+        "changed_extra:sea_core"
+      ],
+      "x": 16,
+      "y": 14,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "sea_guard",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:sea_thermal_adaptation",
+      "title": "skill.changed_extra.sea_thermal_adaptation",
+      "description": "skill.changed_extra.sea_thermal_adaptation.description",
+      "cost": 250,
+      "parents": [
+        "changed_extra:sea_core"
+      ],
+      "x": 14,
+      "y": 15,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "sea_thermal",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:sea_swimming_1",
+      "title": "skill.changed_extra.sea_swimming_1",
+      "description": "skill.changed_extra.sea_swimming_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:sea_core"
+      ],
+      "x": 16,
+      "y": 16,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:sea_swimming_2",
+      "title": "skill.changed_extra.sea_swimming_2",
+      "description": "skill.changed_extra.sea_swimming_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:sea_swimming_1"
+      ],
+      "x": 15,
+      "y": 17,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "forge:swim_speed",
+          "amount": 0.05,
+          "operation": "multiply_base"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:sea_health_1",
+      "title": "skill.changed_extra.sea_health_1",
+      "description": "skill.changed_extra.sea_health_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:sea_core"
+      ],
+      "x": 16,
+      "y": 18,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:sea_health_2",
+      "title": "skill.changed_extra.sea_health_2",
+      "description": "skill.changed_extra.sea_health_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:sea_health_1"
+      ],
+      "x": 15,
+      "y": 19,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

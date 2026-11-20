@@ -20,7 +20,7 @@ public class TransfurVariantsInfoMixin {
             remap = false,
             require = 0
     )
-    private static MutableComponent changede$replaceLiteral(String text) {
+    private static MutableComponent changed_extra$replaceLiteral(String text) {
 
         return switch (text) {
             case "Not free for use, Unknown owner" -> Component.translatable("changed_addon.owner.unknown");

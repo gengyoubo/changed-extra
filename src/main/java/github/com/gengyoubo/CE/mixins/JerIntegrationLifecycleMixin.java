@@ -12,14 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Pseudo
 @Mixin(targets = "fr.alasdiablo.jerintegration.compat.CompatibilityHandler", remap = false)
 public abstract class JerIntegrationLifecycleMixin {
-    @Unique private static boolean changede$registered;
+    @Unique private static boolean changed_extra$registered;
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true, remap = false)
-    private static void changede$deferUntilWorldLoaded(CallbackInfo ci) {
-        if (Minecraft.getInstance().getConnection() == null || changede$registered) {
+    private static void changed_extra$deferUntilWorldLoaded(CallbackInfo ci) {
+        if (Minecraft.getInstance().getConnection() == null || changed_extra$registered) {
             ci.cancel();
         } else {
-            changede$registered = true;
+            changed_extra$registered = true;
         }
     }
 }

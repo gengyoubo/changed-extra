@@ -1,0 +1,292 @@
+{
+  "scope": "group",
+  "latex_type": "white",
+  "nodes": [
+    {
+      "id": "changed_extra:white_vitality",
+      "title": "skill.changed_extra.white_vitality",
+      "description": "skill.changed_extra.white_vitality.description",
+      "cost": 0,
+      "parents": [
+        "changed_extra:common_strength_2"
+      ],
+      "x": 3,
+      "y": 11,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "dark_latex_diet",
+          "value": 1
+        }
+      ],
+      "research": "race"
+    },
+    {
+      "id": "changed_extra:white_endurance",
+      "title": "skill.changed_extra.growth.health.1",
+      "description": "skill.changed_extra.growth.health.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:white_vitality"
+      ],
+      "x": 4,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_continuation",
+      "title": "skill.changed_extra.growth.armor.1",
+      "description": "skill.changed_extra.growth.armor.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:white_endurance"
+      ],
+      "x": 3,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_strength",
+      "title": "skill.changed_extra.growth.strength.1",
+      "description": "skill.changed_extra.growth.strength.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:white_continuation"
+      ],
+      "x": 4,
+      "y": 14,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_regeneration_1",
+      "title": "skill.changed_extra.growth.regen.1",
+      "description": "skill.changed_extra.growth.regen.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:white_strength"
+      ],
+      "x": 3,
+      "y": 15,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:regeneration_speed",
+          "amount": 0.2
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_hunger_x_1",
+      "title": "skill.changed_extra.growth.hunger_x.1",
+      "description": "skill.changed_extra.growth.hunger_x.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:white_regeneration_1"
+      ],
+      "x": 4,
+      "y": 16,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:exhaustion_reduction",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_hunger_y_1",
+      "title": "skill.changed_extra.growth.hunger_y.1",
+      "description": "skill.changed_extra.growth.hunger_y.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:white_hunger_x_1"
+      ],
+      "x": 3,
+      "y": 17,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:food_saturation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_hunger_z_1",
+      "title": "skill.changed_extra.growth.hunger_z.1",
+      "description": "skill.changed_extra.growth.hunger_z.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:white_hunger_y_1"
+      ],
+      "x": 4,
+      "y": 18,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:saturation_capacity",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_persistence",
+      "title": "skill.changed_extra.growth.health.2",
+      "description": "skill.changed_extra.growth.health.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:white_hunger_z_1"
+      ],
+      "x": 3,
+      "y": 19,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_constitution",
+      "title": "skill.changed_extra.growth.armor.2",
+      "description": "skill.changed_extra.growth.armor.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:white_persistence"
+      ],
+      "x": 4,
+      "y": 20,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_strength_2",
+      "title": "skill.changed_extra.growth.strength.2",
+      "description": "skill.changed_extra.growth.strength.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:white_constitution"
+      ],
+      "x": 3,
+      "y": 21,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.attack_damage",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_regeneration_2",
+      "title": "skill.changed_extra.growth.regen.2",
+      "description": "skill.changed_extra.growth.regen.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:white_strength_2"
+      ],
+      "x": 4,
+      "y": 22,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:regeneration_speed",
+          "amount": 0.2
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_hunger_x_2",
+      "title": "skill.changed_extra.growth.hunger_x.2",
+      "description": "skill.changed_extra.growth.hunger_x.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:white_regeneration_2"
+      ],
+      "x": 3,
+      "y": 23,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:exhaustion_reduction",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_hunger_y_2",
+      "title": "skill.changed_extra.growth.hunger_y.2",
+      "description": "skill.changed_extra.growth.hunger_y.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:white_hunger_x_2"
+      ],
+      "x": 4,
+      "y": 24,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:food_saturation",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:white_hunger_z_2",
+      "title": "skill.changed_extra.growth.hunger_z.2",
+      "description": "skill.changed_extra.growth.hunger_z.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:white_hunger_y_2"
+      ],
+      "x": 3,
+      "y": 25,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:saturation_capacity",
+          "amount": 1
+        }
+      ]
+    }
+  ]
+}

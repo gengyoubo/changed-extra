@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "changed_extra:item/hot_latex_half_latte"
+  }
+}

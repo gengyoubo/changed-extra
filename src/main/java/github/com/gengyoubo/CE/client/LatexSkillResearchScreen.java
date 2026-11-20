@@ -51,8 +51,8 @@ public final class LatexSkillResearchScreen extends AbstractContainerScreen<Late
         imageWidth=Math.min(420,width-16);imageHeight=Math.min(300,height-16);
         listWidth=(imageWidth-32)*42/100;rows=Math.max(1,(imageHeight-110)/24);
         super.init();
-        raceButton=addRenderableWidget(Button.builder(Component.translatable("screen.changede.research.race"),b->changeTab(false)).bounds(leftPos+10,topPos+28,92,20).build());
-        coreButton=addRenderableWidget(Button.builder(Component.translatable("screen.changede.research.core"),b->changeTab(true)).bounds(leftPos+106,topPos+28,80,20).build());
+        raceButton=addRenderableWidget(Button.builder(Component.translatable("screen.changed_extra.research.race"),b->changeTab(false)).bounds(leftPos+10,topPos+28,92,20).build());
+        coreButton=addRenderableWidget(Button.builder(Component.translatable("screen.changed_extra.research.core"),b->changeTab(true)).bounds(leftPos+106,topPos+28,80,20).build());
         previewButton=addRenderableWidget(Button.builder(Component.empty(),b->{previewAll=!previewAll;page=0;detailScroll=0;updateControls();}).bounds(leftPos+190,topPos+28,imageWidth-200,20).build());
         previous=addRenderableWidget(Button.builder(Component.literal("<"),b->{page--;selected="";detailScroll=0;updateControls();}).bounds(leftPos+10,topPos+imageHeight-35,24,20).build());
         next=addRenderableWidget(Button.builder(Component.literal(">"),b->{page++;selected="";detailScroll=0;updateControls();}).bounds(leftPos+listWidth-14,topPos+imageHeight-35,24,20).build());
@@ -66,7 +66,7 @@ public final class LatexSkillResearchScreen extends AbstractContainerScreen<Late
             else CENetwork.sendToServer(new SkillResearchPacket(menu.containerId,form,id,
                     job.getBoolean("started") ? SkillResearchPacket.Action.RESUME : SkillResearchPacket.Action.START));
         }).bounds(leftPos+listWidth+24,topPos+imageHeight-35,imageWidth-listWidth-96,20).build());
-        pause=addRenderableWidget(Button.builder(Component.translatable("screen.changede.research.pause"),b->{
+        pause=addRenderableWidget(Button.builder(Component.translatable("screen.changed_extra.research.pause"),b->{
             var id=ResourceLocation.tryParse(data.getString("active_research"));if(id==null || pending)return;
             pending=true;updateControls();
             CENetwork.sendToServer(new SkillResearchPacket(menu.containerId,ResourceLocation.tryParse(data.getString("form")),id,SkillResearchPacket.Action.PAUSE));
@@ -83,27 +83,27 @@ public final class LatexSkillResearchScreen extends AbstractContainerScreen<Late
         if(selectedNode()==null)selected=nodes.isEmpty() ? "" : nodes.get(Math.min(page*rows,nodes.size()-1)).getString("id");
         var n=selectedNode();
         raceButton.active=core;coreButton.active=!core;
-        previewButton.setMessage(Component.translatable(previewAll ? "screen.changede.research.all" : "screen.changede.research.matching"));
+        previewButton.setMessage(Component.translatable(previewAll ? "screen.changed_extra.research.all" : "screen.changed_extra.research.matching"));
         previous.active=page>0;next.active=page+1<pages;
         var job=n==null ? new CompoundTag() : n.getCompound("research_data");
         research.active=n!=null && !pending && !n.getBoolean("unlocked") && (job.getBoolean("completed")
                 ? n.getBoolean("purchasable") : job.getBoolean("started") ? job.getBoolean("can_resume") : job.getBoolean("can_start"));
-        research.setMessage(Component.translatable(pending ? "screen.changede.research.pending" : n!=null && n.getBoolean("unlocked")
-                ? "screen.changede.skills.learned" : job.getBoolean("completed") ? "screen.changede.research.learn"
-                : job.getBoolean("started") ? "screen.changede.research.resume" : "screen.changede.research.start"));
+        research.setMessage(Component.translatable(pending ? "screen.changed_extra.research.pending" : n!=null && n.getBoolean("unlocked")
+                ? "screen.changed_extra.skills.learned" : job.getBoolean("completed") ? "screen.changed_extra.research.learn"
+                : job.getBoolean("started") ? "screen.changed_extra.research.resume" : "screen.changed_extra.research.start"));
         if(pause!=null)pause.active=!pending && !data.getString("active_research").isEmpty();
     }
     @Override protected void containerTick() { super.containerTick();if(ticks++%20==0)request(); }
     private Component requirement(CompoundTag r,Map<String,CompoundTag> nodes) {
         String type=r.getString("type");Component text;
-        if(type.equals("changede:parent") || type.equals("changede:inactive_parent")) {
+        if(type.equals("changed_extra:parent") || type.equals("changed_extra:inactive_parent")) {
             var parent=nodes.get(r.getString("subject"));
-            text=Component.translatable("screen.changede.skills.reason."+(type.endsWith("inactive_parent") ? "inactive_parent" : "parent"),
-                    parent==null ? Component.translatable("screen.changede.research.parent") : Component.translatable(parent.getString("title")));
-        } else if(type.equals("changede:experience"))text=Component.translatable("screen.changede.skills.reason.experience",r.getInt("current"),r.getInt("required"));
-        else if(type.equals("changede:research_table") || type.equals("changede:player_state") || type.equals("changede:latex_form"))
-            text=Component.translatable("screen.changede.skills.reason."+type.substring(type.indexOf(':')+1));
-        else text=Component.translatable("screen.changede.research.form_match");
+            text=Component.translatable("screen.changed_extra.skills.reason."+(type.endsWith("inactive_parent") ? "inactive_parent" : "parent"),
+                    parent==null ? Component.translatable("screen.changed_extra.research.parent") : Component.translatable(parent.getString("title")));
+        } else if(type.equals("changed_extra:experience"))text=Component.translatable("screen.changed_extra.skills.reason.experience",r.getInt("current"),r.getInt("required"));
+        else if(type.equals("changed_extra:research_table") || type.equals("changed_extra:player_state") || type.equals("changed_extra:latex_form"))
+            text=Component.translatable("screen.changed_extra.skills.reason."+type.substring(type.indexOf(':')+1));
+        else text=Component.translatable("screen.changed_extra.research.form_match");
         return Component.literal(r.getBoolean("met") ? "✓ " : "✗ ").append(text).withStyle(r.getBoolean("met") ? ChatFormatting.GREEN : ChatFormatting.RED);
     }
     private List<FormattedCharSequence> details(CompoundTag n,int width) {
@@ -113,28 +113,28 @@ public final class LatexSkillResearchScreen extends AbstractContainerScreen<Late
         lines.addAll(font.split(Component.translatable(n.getString("description")),width));
         lines.add(FormattedCharSequence.EMPTY);
         var job=n.getCompound("research_data");
-        lines.addAll(font.split(Component.translatable("screen.changede.research.tier."+job.getString("tier")).withStyle(ChatFormatting.AQUA),width));
-        lines.addAll(font.split(Component.translatable("screen.changede.research.status."+job.getString("status")).withStyle(
+        lines.addAll(font.split(Component.translatable("screen.changed_extra.research.tier."+job.getString("tier")).withStyle(ChatFormatting.AQUA),width));
+        lines.addAll(font.split(Component.translatable("screen.changed_extra.research.status."+job.getString("status")).withStyle(
                 job.getString("status").equals("running") || job.getBoolean("completed") ? ChatFormatting.GREEN : ChatFormatting.GOLD),width));
-        lines.addAll(font.split(Component.translatable("screen.changede.research.duration",time(job.getInt("duration"))),width));
-        lines.addAll(font.split(Component.translatable("screen.changede.research.rate",job.getInt("rate")),width));
-        lines.addAll(font.split(Component.translatable("screen.changede.research.total",(long)job.getInt("duration")/20*job.getInt("rate")),width));
-        lines.addAll(font.split(Component.translatable("screen.changede.research.consumed",job.getLong("consumed")),width));
-        lines.addAll(font.split(Component.translatable(job.getBoolean("started") ? "screen.changede.research.materials_paid" : "screen.changede.research.materials"),width));
+        lines.addAll(font.split(Component.translatable("screen.changed_extra.research.duration",time(job.getInt("duration"))),width));
+        lines.addAll(font.split(Component.translatable("screen.changed_extra.research.rate",job.getInt("rate")),width));
+        lines.addAll(font.split(Component.translatable("screen.changed_extra.research.total",(long)job.getInt("duration")/20*job.getInt("rate")),width));
+        lines.addAll(font.split(Component.translatable("screen.changed_extra.research.consumed",job.getLong("consumed")),width));
+        lines.addAll(font.split(Component.translatable(job.getBoolean("started") ? "screen.changed_extra.research.materials_paid" : "screen.changed_extra.research.materials"),width));
         if(!job.getBoolean("started"))for(Tag input:job.getList("materials",Tag.TAG_COMPOUND)) {
             var material=(CompoundTag)input;
-            lines.addAll(font.split(Component.translatable("screen.changede.research.material",Component.translatable(material.getString("title")),
+            lines.addAll(font.split(Component.translatable("screen.changed_extra.research.material",Component.translatable(material.getString("title")),
                     material.getInt("current"),material.getInt("required")).withStyle(data.getBoolean("creative") || material.getInt("current")>=material.getInt("required")
                     ? ChatFormatting.GREEN : ChatFormatting.RED),width));
         }
-        if(job.getInt("duration")>0 && !data.getBoolean("station_available"))lines.addAll(font.split(Component.translatable("screen.changede.research.busy"),width));
+        if(job.getInt("duration")>0 && !data.getBoolean("station_available"))lines.addAll(font.split(Component.translatable("screen.changed_extra.research.busy"),width));
         if(job.getInt("duration")>0 && !data.getString("active_research").isEmpty() && !data.getString("active_research").equals(n.getString("id")))
-            lines.addAll(font.split(Component.translatable("screen.changede.research.one_project"),width));
+            lines.addAll(font.split(Component.translatable("screen.changed_extra.research.one_project"),width));
         lines.add(FormattedCharSequence.EMPTY);
-        lines.addAll(font.split(Component.translatable("screen.changede.skills.cost",n.getInt("cost")).withStyle(ChatFormatting.GOLD),width));
-        lines.addAll(font.split(Component.translatable("screen.changede.skills.requirements"),width));
+        lines.addAll(font.split(Component.translatable("screen.changed_extra.skills.cost",n.getInt("cost")).withStyle(ChatFormatting.GOLD),width));
+        lines.addAll(font.split(Component.translatable("screen.changed_extra.skills.requirements"),width));
         for(Tag r:n.getList("requirements",Tag.TAG_COMPOUND))lines.addAll(font.split(requirement((CompoundTag)r,nodes),width));
-        if(n.getBoolean("unlocked"))lines.addAll(font.split(Component.translatable(n.getBoolean("active") ? "screen.changede.skills.learned" : "screen.changede.skills.inactive"),width));
+        if(n.getBoolean("unlocked"))lines.addAll(font.split(Component.translatable(n.getBoolean("active") ? "screen.changed_extra.skills.learned" : "screen.changed_extra.skills.inactive"),width));
         return lines;
     }
     private static String time(int ticks) { int seconds=Math.max(0,ticks/20);return String.format(Locale.ROOT,"%02d:%02d",seconds/60,seconds%60); }
@@ -154,7 +154,7 @@ public final class LatexSkillResearchScreen extends AbstractContainerScreen<Late
             for(int i=0;i<Math.min(title.size(),2);i++)g.drawString(font,title.get(i),leftPos+14,y+i*9,color,false);
         }
         if(nodes.isEmpty()) {
-            var lines=font.split(Component.translatable("screen.changede.research.empty"),listWidth-10);
+            var lines=font.split(Component.translatable("screen.changed_extra.research.empty"),listWidth-10);
             for(int i=0;i<lines.size();i++)g.drawString(font,lines.get(i),leftPos+14,topPos+64+i*10,0x8DADB4,false);
         }
         var n=selectedNode();
@@ -165,7 +165,7 @@ public final class LatexSkillResearchScreen extends AbstractContainerScreen<Late
             g.fill(x,topPos+58,x+w,topPos+70,0xFF263F48);
             g.fill(x,topPos+58,x+(int)(w*ratio),topPos+70,0xFF2A977F);
             g.drawCenteredString(font,Component.literal((int)(ratio*100)+"%"),x+w/2,topPos+60,0xFFFFFF);
-            g.drawString(font,Component.translatable("screen.changede.research.remaining",time(duration-progress)),x,topPos+77,0xB1D6D5,false);
+            g.drawString(font,Component.translatable("screen.changed_extra.research.remaining",time(duration-progress)),x,topPos+77,0xB1D6D5,false);
             var lines=details(n,w);int visibleLines=Math.max(1,(bottom-topPos-94)/10);
             detailScroll=Math.max(0,Math.min(detailScroll,Math.max(0,lines.size()-visibleLines)));
             g.enableScissor(x,topPos+94,x+w,bottom);
@@ -178,11 +178,11 @@ public final class LatexSkillResearchScreen extends AbstractContainerScreen<Late
         allNodes().stream().filter(n->n.getString("id").equals(data.getString("active_research"))).findFirst().ifPresent(n->{
             var job=n.getCompound("research_data");int duration=job.getInt("duration");
             int percent=duration<=0 ? 0 : (int)(100L*job.getInt("progress")/duration);
-            var text=Component.translatable("screen.changede.research.current",Component.translatable(n.getString("title")),percent);
+            var text=Component.translatable("screen.changed_extra.research.current",Component.translatable(n.getString("title")),percent);
             g.drawCenteredString(font,font.plainSubstrByWidth(text.getString(),imageWidth-20),imageWidth/2,19,0xA8CFC9);
         });
         g.drawCenteredString(font,Component.literal((page+1)+" / "+Math.max(1,(catalog().size()+rows-1)/rows)),listWidth/2+10,imageHeight-29,0xABC7CD);
-        g.drawCenteredString(font,Component.translatable("screen.changede.research.energy",data.getInt("station_wlp"),data.getInt("station_capacity")),imageWidth/2,imageHeight-11,0x91D4C8);
+        g.drawCenteredString(font,Component.translatable("screen.changed_extra.research.energy",data.getInt("station_wlp"),data.getInt("station_capacity")),imageWidth/2,imageHeight-11,0x91D4C8);
     }
     @Override public void render(GuiGraphics g,int mouseX,int mouseY,float partialTick) { renderBackground(g);super.render(g,mouseX,mouseY,partialTick); }
     @Override public boolean mouseClicked(double x,double y,int button) {

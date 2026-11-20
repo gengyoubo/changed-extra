@@ -20,7 +20,7 @@ public class GooCoreBlockMixin {
             method = "appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/BlockGetter;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V",
             at = @At("TAIL"),
             cancellable = true)
-    private void changede$appendTooltip(ItemStack itemstack, @Nullable BlockGetter world, List<Component> list, TooltipFlag flag, CallbackInfo ci) {
+    private void changed_extra$appendTooltip(ItemStack itemstack, @Nullable BlockGetter world, List<Component> list, TooltipFlag flag, CallbackInfo ci) {
         list.add(Component.translatable("tooltip.goo_core_block.desc"));
         ci.cancel();
     }

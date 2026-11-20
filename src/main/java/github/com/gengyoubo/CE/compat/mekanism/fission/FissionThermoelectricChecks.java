@@ -46,7 +46,7 @@ final class FissionThermoelectricChecks {
         near(modules.stream().mapToDouble(FissionThermoelectricBlockEntity::lastHeat).sum(), 200_000, "native reactor tick executes thermal extraction before boiling");
         double remainingTemperature = 1100 - 200_000 / capacity;
         double steamHeat = reactor.getBoilEfficiency() * (remainingTemperature - HeatUtils.BASE_BOIL_TEMP) * capacity * .5;
-        var state = ((FissionUpgradeAccess) reactor).changede$fissionUpgrades();
+        var state = ((FissionUpgradeAccess) reactor).changed_extra$fissionUpgrades();
         long expectedSteam = (long) Math.min(steamHeat * HeatUtils.getSteamEnergyEfficiency() / HeatUtils.getWaterThermalEnthalpy(),
                 Math.floor(reactor.fluidCoolantTank.getCapacity() / state.waterUsage()));
         near(reactor.lastBoilRate, expectedSteam, "native boiling uses remaining heat, without double credit");

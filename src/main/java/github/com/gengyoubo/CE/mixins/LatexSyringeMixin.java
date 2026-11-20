@@ -35,7 +35,7 @@ public class LatexSyringeMixin {
             cancellable = true,
             require = 0
     )
-    private void changede$finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, CallbackInfoReturnable<ItemStack> cir) {
+    private void changed_extra$finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, CallbackInfoReturnable<ItemStack> cir) {
         Player player = entity instanceof Player ? (Player)entity : null;
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);

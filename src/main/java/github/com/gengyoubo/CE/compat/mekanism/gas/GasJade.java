@@ -19,9 +19,9 @@ public enum GasJade implements IBlockComponentProvider, IServerDataProvider<Bloc
     @Override public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
         var data = accessor.getServerData();
         if (data.contains("CEReverserState")) {
-            tooltip.add(Component.translatable("state.changede.reverser." + data.getString("CEReverserState")));
-            tooltip.add(Component.translatable("gui.changede.reverser.progress", data.getInt("CEReverserProgress") / 20.0, data.getInt("CEReverserTicks") / 20.0));
+            tooltip.add(Component.translatable("state.changed_extra.reverser." + data.getString("CEReverserState")));
+            tooltip.add(Component.translatable("gui.changed_extra.reverser.progress", data.getInt("CEReverserProgress") / 20.0, data.getInt("CEReverserTicks") / 20.0));
         }
     }
-    @Override public ResourceLocation getUid() { return ResourceLocation.parse("changede:reverser"); }
+    @Override public ResourceLocation getUid() { return ResourceLocation.parse("changed_extra:reverser"); }
 }

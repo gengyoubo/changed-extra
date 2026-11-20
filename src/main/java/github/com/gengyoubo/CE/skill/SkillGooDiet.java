@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /** Opposite-latex diets safely digest goo instead of triggering Changed's default assimilation. */
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class SkillGooDiet {
     private static final ResourceLocation DARK = ResourceLocation.parse("changed:dark_latex_goo");
     private static final ResourceLocation WHITE = ResourceLocation.parse("changed:white_latex_goo");
@@ -55,7 +55,7 @@ public final class SkillGooDiet {
     }
     public static void consume(ServerPlayer player, ItemStack stack) {
         if (!canEat(player, stack) || !player.canEat(false)) return;
-        if (player.getFoodData() instanceof SkillFoodData data) data.changede$setOwner(player);
+        if (player.getFoodData() instanceof SkillFoodData data) data.changed_extra$setOwner(player);
         var properties = stack.getFoodProperties(player);
         var meal = SkillNutrition.dietMeal(properties == null ? 2 : properties.getNutrition(),
                 properties == null ? 0.3F : properties.getSaturationModifier());

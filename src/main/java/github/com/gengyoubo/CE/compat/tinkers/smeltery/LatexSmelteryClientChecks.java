@@ -29,20 +29,20 @@ public final class LatexSmelteryClientChecks {
             data.set(8, 0);
             if (data.get(8) != 0) throw new AssertionError("Fuel data slot cannot reset");
             for (String name : new String[]{"latex_combustion_core", "latex_fuel_tank", "dynamic_fuel_core"}) {
-                var model = minecraft.getModelManager().getModel(new ModelResourceLocation(ResourceLocation.parse("changede:" + name), "inventory"));
+                var model = minecraft.getModelManager().getModel(new ModelResourceLocation(ResourceLocation.parse("changed_extra:" + name), "inventory"));
                 if (model == minecraft.getModelManager().getMissingModel()) throw new AssertionError("Missing item model: " + name);
-                if (Component.translatable("block.changede." + name).getString().equals("block.changede." + name)) throw new AssertionError("Missing translation: " + name);
+                if (Component.translatable("block.changed_extra." + name).getString().equals("block.changed_extra." + name)) throw new AssertionError("Missing translation: " + name);
             }
             for (String name : new String[]{"molten_dark_latex", "molten_white_latex"}) {
-                var model = minecraft.getModelManager().getModel(new ModelResourceLocation(ResourceLocation.parse("changede:" + name + "_bucket"), "inventory"));
+                var model = minecraft.getModelManager().getModel(new ModelResourceLocation(ResourceLocation.parse("changed_extra:" + name + "_bucket"), "inventory"));
                 if (model == minecraft.getModelManager().getMissingModel()) throw new AssertionError("Missing molten bucket model: " + name);
-                if (Component.translatable("fluid.changede." + name).getString().equals("fluid.changede." + name)) throw new AssertionError("Missing molten fluid translation: " + name);
+                if (Component.translatable("fluid.changed_extra." + name).getString().equals("fluid.changed_extra." + name)) throw new AssertionError("Missing molten fluid translation: " + name);
             }
             if (minecraft.getBlockEntityRenderDispatcher().getRenderer(new LatexFuelTankBlockEntity(BlockPos.ZERO, LatexSmelteryCompat.TANK.get().defaultBlockState())) == null)
                 throw new AssertionError("Tank fluid renderer not registered");
             Files.writeString(Path.of("latex-smeltery-client-checks.txt"), "PASS: native fuel GUI mixin transforms; ContainerData count/get/set inject; both item models bake; translations and tank fluid renderer register\n");
         } catch (Throwable error) {
-            github.com.gengyoubo.CE.changede.LOGGER.error("LATEX SMELTERY CLIENT CHECKS FAILED", error);
+            github.com.gengyoubo.CE.changed_extra.LOGGER.error("LATEX SMELTERY CLIENT CHECKS FAILED", error);
             try { Files.writeString(Path.of("latex-smeltery-client-checks.txt"), "FAIL: " + error + "\n"); } catch (Exception ignored) {}
         } finally { minecraft.stop(); }
     }

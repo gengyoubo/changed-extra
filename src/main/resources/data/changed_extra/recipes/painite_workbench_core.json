@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "changed_extra:painite_ingot"
+    },
+    "Y": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "result": {
+    "item": "changed_extra:painite_workbench_core",
+    "count": 1
+  }
+}

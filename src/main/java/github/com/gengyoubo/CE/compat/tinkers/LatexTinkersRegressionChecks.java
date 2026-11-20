@@ -35,7 +35,7 @@ public final class LatexTinkersRegressionChecks {
     private static void check(boolean result, String message) {
         if (!result) throw new AssertionError(message);
         assertions++;
-        github.com.gengyoubo.CE.changede.LOGGER.info("TINKERS PASS: {}", message);
+        github.com.gengyoubo.CE.changed_extra.LOGGER.info("TINKERS PASS: {}", message);
     }
     public static void started(ServerStartedEvent event) {
         boolean deferred = false;
@@ -44,7 +44,7 @@ public final class LatexTinkersRegressionChecks {
             ServerLevel level = event.getServer().overworld();
             recipes(level); effects(level);
             github.com.gengyoubo.CE.compat.tinkers.smeltery.LatexSmelteryRegressionChecks.run(level, LatexTinkersRegressionChecks::check);
-            if (Boolean.getBoolean("changede.verifyIssue38")) {
+            if (Boolean.getBoolean("changed_extra.verifyIssue38")) {
                 github.com.gengyoubo.CE.compat.tinkers.smeltery.Issue38SmelteryChecks.run(level, LatexTinkersRegressionChecks::check);
                 if (net.minecraftforge.fml.ModList.get().isLoaded("twilightforest")) {
                     github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossChecks.prepare(event.getServer());
@@ -56,7 +56,7 @@ public final class LatexTinkersRegressionChecks {
                             github.com.gengyoubo.CE.compat.twilight.TwilightFinalBossChecks.run(event.getServer(), LatexTinkersRegressionChecks::check);
                             Files.writeString(Path.of("latex-tinkers-checks.txt"), "PASS: " + assertions + " assertions\n");
                         } catch (Throwable error) {
-                            github.com.gengyoubo.CE.changede.LOGGER.error("TWILIGHT FINAL CHECKS FAILED", error);
+                            github.com.gengyoubo.CE.changed_extra.LOGGER.error("TWILIGHT FINAL CHECKS FAILED", error);
                             try { Files.writeString(Path.of("latex-tinkers-checks.txt"), "FAIL: " + error + "\n"); } catch (Exception ignored) {}
                         } finally { event.getServer().execute(() -> event.getServer().halt(false)); }
                     });
@@ -65,7 +65,7 @@ public final class LatexTinkersRegressionChecks {
             }
             if (!deferred) Files.writeString(Path.of("latex-tinkers-checks.txt"), "PASS: " + assertions + " assertions\n");
         } catch (Throwable error) {
-            github.com.gengyoubo.CE.changede.LOGGER.error("LATEX TINKERS CHECKS FAILED", error);
+            github.com.gengyoubo.CE.changed_extra.LOGGER.error("LATEX TINKERS CHECKS FAILED", error);
             try { Files.writeString(Path.of("latex-tinkers-checks.txt"), "FAIL: " + error + "\n"); } catch (Exception ignored) {}
         } finally { if (!deferred) event.getServer().execute(() -> event.getServer().halt(false)); }
     }
@@ -86,12 +86,12 @@ public final class LatexTinkersRegressionChecks {
     }
     private static void recipes(ServerLevel level) {
         for (String path : new String[]{"latex_plasticity", "latex_resilience"}) {
-            var id = ResourceLocation.parse("changede:tools/modifiers/" + path);
+            var id = ResourceLocation.parse("changed_extra:tools/modifiers/" + path);
             var recipe = (ModifierRecipe) level.getRecipeManager().byKey(id).orElseThrow();
             ItemStack input = new ItemStack(path.equals("latex_plasticity") ? ChangedItems.WHITE_LATEX_GOO.get() : ChangedItems.DARK_LATEX_GOO.get());
             check(recipe.getSlots() == null, "Modifier recipe has no upgrade-slot cost");
             check(!recipe.matches(new Station(new ItemStack(Items.IRON_PICKAXE), input), level), "Vanilla equipment is not treated as a Tinkers tool");
-            check(level.getRecipeManager().byKey(ResourceLocation.parse("changede:tools/modifiers/salvage/" + path)).isEmpty(), "No slot-refund salvage recipe is registered");
+            check(level.getRecipeManager().byKey(ResourceLocation.parse("changed_extra:tools/modifiers/salvage/" + path)).isEmpty(), "No slot-refund salvage recipe is registered");
             ToolStack tool = tool();
             tool.getPersistentData().setSlots(SlotType.UPGRADE, -tool.getVolatileData().getSlots(SlotType.UPGRADE));
             check(tool.getFreeSlots(SlotType.UPGRADE) == 0, "Test equipment has zero free upgrade slots");
@@ -103,7 +103,7 @@ public final class LatexTinkersRegressionChecks {
                 check(recipe.matches(station, level), "Native modifier recipe matches level " + stage + " of " + path);
                 var result = recipe.getValidatedResult(station, level.registryAccess());
                 check(result.isSuccess(), "Crafting succeeds without a player or latex-form condition");
-                check(tool.getUpgrades().getLevel(new ModifierId("changede", path)) == stage - 1, "Recipe preview leaves the input tool unchanged");
+                check(tool.getUpgrades().getLevel(new ModifierId("changed_extra", path)) == stage - 1, "Recipe preview leaves the input tool unchanged");
                 tool = result.getResult().getTool();
                 check(tool.getFreeSlots(SlotType.UPGRADE) == free, "Upgrading succeeds with zero slots and consumes no slots");
                 if (path.equals("latex_resilience"))
@@ -115,7 +115,7 @@ public final class LatexTinkersRegressionChecks {
             float saved = loaded.getStats().get(ToolStats.DURABILITY); loaded.rebuildStats(); loaded.rebuildStats();
             check(Math.abs(loaded.getStats().get(ToolStats.DURABILITY) - saved) < .01, "Save and repeated rebuild do not compound durability");
             check(!recipe.matches(new Station(tool.createStack(), new ItemStack(Items.DIAMOND)), level), "Unrelated ingredient rejected");
-            var modifierId = new ModifierId("changede", path);
+            var modifierId = new ModifierId("changed_extra", path);
             check(ModifierRecipeLookup.getSalvage(tool.createStack(), tool, modifierId, 5) == null, "Native salvage lookup cannot refund slots");
             var removal = level.getRecipeManager().getRecipes().stream().filter(ModifierRemovalRecipe.class::isInstance)
                     .map(ModifierRemovalRecipe.class::cast).findFirst().orElseThrow();

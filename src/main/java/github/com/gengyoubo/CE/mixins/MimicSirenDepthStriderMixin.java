@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EnchantmentHelper.class)
 public abstract class MimicSirenDepthStriderMixin {
     @Inject(method = "getDepthStrider", at = @At("RETURN"), cancellable = true)
-    private static void changede$sirenWaterEfficiency(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
+    private static void changed_extra$sirenWaterEfficiency(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
         if (MimicSirenTailItem.isWornBy(entity)) {
             cir.setReturnValue(Math.max(2, cir.getReturnValue()));
         }

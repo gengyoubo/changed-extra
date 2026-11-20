@@ -34,8 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 public class MimicYufengWingsItem extends MimicItem implements ExtendedItemProperties {
-    private static final String GRANTED_FLIGHT_TAG = "changede_mimic_yufeng_wings_granted_flight";
-    private static final ResourceLocation MIMIC_ID = ResourceLocation.fromNamespaceAndPath("changede", "mimic_yufeng_wings");
+    private static final String GRANTED_FLIGHT_TAG = "changed_extra_mimic_yufeng_wings_granted_flight";
+    private static final ResourceLocation MIMIC_ID = ResourceLocation.fromNamespaceAndPath("changed_extra", "mimic_yufeng_wings");
 
     public MimicYufengWingsItem(Properties properties) {
         super(properties);

@@ -34,7 +34,7 @@ public final class DimensionSpaceTowerBlock extends SpaceTowerBlock {
         if (player instanceof ServerPlayer serverPlayer) {
             NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
                     (id, inventory, accessPlayer) -> new DimensionSpaceTowerMenu(id, inventory, pos),
-                    Component.translatable("block.changede.dimension_space_tower")), pos);
+                    Component.translatable("block.changed_extra.dimension_space_tower")), pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

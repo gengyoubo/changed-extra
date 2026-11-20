@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class CEWoodEvents {
     @SubscribeEvent public static void strip(BlockEvent.BlockToolModificationEvent event) {
         if (event.getToolAction() != ToolActions.AXE_STRIP) return;
@@ -21,14 +21,14 @@ public final class CEWoodEvents {
                     .setValue(RotatedPillarBlock.AXIS, event.getState().getValue(RotatedPillarBlock.AXIS)));
         }
     }
-    @Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = "changed_extra", bus = Mod.EventBusSubscriber.Bus.MOD)
     public static final class Setup {
         @SubscribeEvent public static void setup(FMLCommonSetupEvent event) {
             event.enqueueWork(() -> {
                 var fire = (github.com.gengyoubo.CE.mixins.FireBlockAccessor) Blocks.FIRE;
                 for (var family : CEWoodFamilies.ALL) family.blocks.forEach((name, block) -> {
                     if (!name.contains("sign") && !name.equals("button") && !name.equals("pressure_plate"))
-                        fire.changede$setFlammable(block.get(), 5,
+                        fire.changed_extra$setFlammable(block.get(), 5,
                                 name.contains("wood") || name.contains("log") ? 5 : 20);
                 });
             });

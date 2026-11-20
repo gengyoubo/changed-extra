@@ -13,8 +13,8 @@ import java.util.function.Function;
 
 /** Only Attribute and None are registered in the natural-growth stage. */
 public final class SkillRewards {
-    private static final String PREFIX = "changede.skill.";
-    private static final ResourceLocation ATTRIBUTE = id("changede:attribute"), NONE = id("changede:none");
+    private static final String PREFIX = "changed_extra.skill.";
+    private static final ResourceLocation ATTRIBUTE = id("changed_extra:attribute"), NONE = id("changed_extra:none");
     private static final Map<ResourceLocation, Function<JsonObject, SkillReward>> TYPES = new LinkedHashMap<>();
     private record Source(ResourceLocation node, int index) { }
     private static final Map<Player, Map<Source, SkillReward>> APPLIED = new WeakHashMap<>();
@@ -36,7 +36,7 @@ public final class SkillRewards {
             return new AttributeReward(attribute, amount, op);
         });
         register(NONE, json -> new NoneReward());
-        register(id("changede:mechanic"), json -> {
+        register(id("changed_extra:mechanic"), json -> {
             String effect = GsonHelper.getAsString(json, "effect");
             double value = GsonHelper.getAsDouble(json, "value", 1);
             SkillMechanics.validate(effect, value);
@@ -100,7 +100,7 @@ public final class SkillRewards {
         }
     }
     public record MechanicReward(String effect, double value) implements SkillReward {
-        @Override public ResourceLocation type() { return id("changede:mechanic"); }
+        @Override public ResourceLocation type() { return id("changed_extra:mechanic"); }
         @Override public void apply(Player player, ResourceLocation node, int index) { SkillMechanics.grant(player, node + "." + index, effect, value); }
         @Override public void remove(Player player, ResourceLocation node, int index) { SkillMechanics.revoke(player, node + "." + index); }
         @Override public CompoundTag describe() {

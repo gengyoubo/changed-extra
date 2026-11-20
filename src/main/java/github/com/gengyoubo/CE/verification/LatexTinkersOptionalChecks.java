@@ -11,32 +11,32 @@ public final class LatexTinkersOptionalChecks {
         try {
             if (ModList.get().isLoaded("tconstruct")) throw new AssertionError("Tinkers must be absent in this check");
             if (!ModList.get().isLoaded("twilightforest")) {
-                if (event.getServer().getPackRepository().getSelectedIds().contains("changede:twilight_final")
-                        || event.getServer().getAdvancements().getAdvancement(ResourceLocation.parse("changede:twilight_final_boss")) != null)
+                if (event.getServer().getPackRepository().getSelectedIds().contains("changed_extra:twilight_final")
+                        || event.getServer().getAdvancements().getAdvancement(ResourceLocation.parse("changed_extra:twilight_final_boss")) != null)
                     throw new AssertionError("Final castle rewards must be absent without Twilight Forest");
             }
-            if (event.getServer().getPackRepository().getSelectedIds().contains("changede:latex_smeltery"))
+            if (event.getServer().getPackRepository().getSelectedIds().contains("changed_extra:latex_smeltery"))
                 throw new AssertionError("Optional smeltery loot pack must be absent");
             for (String name : new String[]{"latex_combustion_core", "latex_fuel_tank", "dynamic_fuel_core", "molten_dark_latex", "molten_white_latex", "molten_dark_latex_bucket", "molten_white_latex_bucket"}) {
-                if (net.minecraftforge.registries.ForgeRegistries.BLOCKS.containsKey(ResourceLocation.parse("changede:" + name))
-                        || net.minecraftforge.registries.ForgeRegistries.ITEMS.containsKey(ResourceLocation.parse("changede:" + name)))
+                if (net.minecraftforge.registries.ForgeRegistries.BLOCKS.containsKey(ResourceLocation.parse("changed_extra:" + name))
+                        || net.minecraftforge.registries.ForgeRegistries.ITEMS.containsKey(ResourceLocation.parse("changed_extra:" + name)))
                     throw new AssertionError("Optional smeltery block must not register: " + name);
             }
             for (String path : new String[]{"smeltery/latex_combustion_core", "smeltery/latex_fuel_tank", "smeltery/dynamic_fuel_core",
                     "smeltery/fuel/dark_latex", "smeltery/fuel/white_latex", "smeltery/fuel/molten_dark_latex", "smeltery/fuel/molten_white_latex",
                     "smeltery/melting/dark_latex_goo", "smeltery/melting/white_latex_goo", "smeltery/entity_melting/latex"})
-                if (event.getServer().getRecipeManager().byKey(ResourceLocation.parse("changede:" + path)).isPresent())
+                if (event.getServer().getRecipeManager().byKey(ResourceLocation.parse("changed_extra:" + path)).isPresent())
                     throw new AssertionError("Optional smeltery recipe must not load: " + path);
             for (String name : new String[]{"latex_plasticity", "latex_resilience"}) {
                 for (String prefix : new String[]{"tools/modifiers/", "tools/modifiers/salvage/"}) {
-                    if (event.getServer().getRecipeManager().byKey(ResourceLocation.parse("changede:" + prefix + name)).isPresent())
+                    if (event.getServer().getRecipeManager().byKey(ResourceLocation.parse("changed_extra:" + prefix + name)).isPresent())
                         throw new AssertionError("Conditional Tinkers recipe must be absent: " + prefix + name);
                 }
             }
             java.nio.file.Files.writeString(java.nio.file.Path.of("latex-tinkers-optional-checks.txt"), "PASS: dedicated server without Tinkers; latex modifier and salvage recipes absent\n");
-            github.com.gengyoubo.CE.changede.LOGGER.info("LATEX TINKERS OPTIONAL CHECKS PASSED");
+            github.com.gengyoubo.CE.changed_extra.LOGGER.info("LATEX TINKERS OPTIONAL CHECKS PASSED");
         } catch (Throwable error) {
-            github.com.gengyoubo.CE.changede.LOGGER.error("LATEX TINKERS OPTIONAL CHECKS FAILED", error);
+            github.com.gengyoubo.CE.changed_extra.LOGGER.error("LATEX TINKERS OPTIONAL CHECKS FAILED", error);
             try { java.nio.file.Files.writeString(java.nio.file.Path.of("latex-tinkers-optional-checks.txt"), "FAIL: " + error + "\n"); } catch (Exception ignored) {}
         } finally { event.getServer().execute(() -> event.getServer().halt(false)); }
     }

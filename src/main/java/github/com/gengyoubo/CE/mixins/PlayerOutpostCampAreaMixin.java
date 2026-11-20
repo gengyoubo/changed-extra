@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = PlayerOutpostData.class, remap = false)
 public abstract class PlayerOutpostCampAreaMixin {
     @Inject(method = "isAreaClaimed", at = @At("HEAD"), cancellable = true)
-    private static void changede$campArea(ServerLevel level, BlockPos pos, double radius, CallbackInfoReturnable<Boolean> ci) {
+    private static void changed_extra$campArea(ServerLevel level, BlockPos pos, double radius, CallbackInfoReturnable<Boolean> ci) {
         if (LatexSettlementService.isAreaClaimed(level, pos, radius)) ci.setReturnValue(true);
     }
 }

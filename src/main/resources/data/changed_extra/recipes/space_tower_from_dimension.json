@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "changed_extra:dimension_space_tower" }
+  ],
+  "result": { "item": "changed_extra:space_tower", "count": 1 }
+}

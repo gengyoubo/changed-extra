@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "changed_extra:block/spacetower",
+    "down": "changed_extra:block/spacetower_bottom",
+    "up": "changed_extra:block/spacetower",
+    "north": "changed_extra:block/spacetower",
+    "south": "changed_extra:block/spacetower",
+    "west": "changed_extra:block/spacetower",
+    "east": "changed_extra:block/spacetower"
+  }
+}

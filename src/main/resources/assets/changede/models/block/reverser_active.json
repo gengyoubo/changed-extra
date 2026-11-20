@@ -1,6 +1,0 @@
-{
-  "parent": "changede:block/reverser",
-  "textures": {
-    "front": "changede:block/reverser_front_on"
-  }
-}

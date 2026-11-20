@@ -40,7 +40,7 @@ public abstract class TransfurVariantSpecialLatexMixin {
     }
 
     @Inject(method = "generateForm", at = @At("RETURN"))
-    private void changede$bindSpecialFormOnGenerateForm(Player player, Level level, CallbackInfoReturnable<ChangedEntity> cir) {
+    private void changed_extra$bindSpecialFormOnGenerateForm(Player player, Level level, CallbackInfoReturnable<ChangedEntity> cir) {
         ChangedEntity entity = cir.getReturnValue();
         if (entity instanceof SpecialLatex specialLatex) {
             changed_extra$bindSpecialForm(specialLatex, ((TransfurVariant<?>)(Object)this).getFormId(), player.getUUID());
@@ -48,7 +48,7 @@ public abstract class TransfurVariantSpecialLatexMixin {
     }
 
     @Inject(method = "spawnAtEntity", at = @At("RETURN"))
-    private void changede$bindSpecialFormOnSpawnAtEntity(LivingEntity entity, CallbackInfoReturnable<ChangedEntity> cir) {
+    private void changed_extra$bindSpecialFormOnSpawnAtEntity(LivingEntity entity, CallbackInfoReturnable<ChangedEntity> cir) {
         ChangedEntity changedEntity = cir.getReturnValue();
         if (changedEntity instanceof SpecialLatex specialLatex) {
             UUID fallbackUuid = entity instanceof Player player ? player.getUUID() : null;

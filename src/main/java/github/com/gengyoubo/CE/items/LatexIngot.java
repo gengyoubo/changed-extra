@@ -19,6 +19,6 @@ public class LatexIngot extends Item{
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(Component.translatable("tooltip.changede.latex_ingot.sticky"));
+        tooltip.add(Component.translatable("tooltip.changed_extra.latex_ingot.sticky"));
     }
 }

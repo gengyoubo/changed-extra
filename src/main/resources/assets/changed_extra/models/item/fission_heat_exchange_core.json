@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "changed_extra:item/fission_heat_exchange_core"
+  }
+}

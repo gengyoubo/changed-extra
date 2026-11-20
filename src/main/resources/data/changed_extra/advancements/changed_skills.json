@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:book"
+    },
+    "title": {
+      "translate": "advancements.changed_extra.changed_skills.title"
+    },
+    "description": {
+      "translate": "advancements.changed_extra.changed_skills.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "background": "minecraft:textures/block/obsidian.png"
+  },
+  "criteria": {
+    "learned": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

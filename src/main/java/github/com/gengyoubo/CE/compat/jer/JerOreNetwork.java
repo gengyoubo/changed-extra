@@ -23,10 +23,10 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /** Optional channel: authoritative worldgen reaches JER clients on both local and dedicated servers. */
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class JerOreNetwork {
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.parse("changede:jer_ores"), () -> "1",
+            ResourceLocation.parse("changed_extra:jer_ores"), () -> "1",
             NetworkRegistry.acceptMissingOr("1"), NetworkRegistry.acceptMissingOr("1"));
     private static MinecraftServer cachedServer;
     private static List<OreGenerationData> cached;

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CEItem {
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
+            DeferredRegister.create(ForgeRegistries.ITEMS, "changed_extra");
     public static final RegistryObject<Item> INACTIVE_DARK_LATEX =
             ITEMS.register("inactive_dark_latex", InactiveDarkLatex::new);
     public static final RegistryObject<Item> INACTIVE_WHITE_LATEX =
@@ -53,7 +53,7 @@ public class CEItem {
                     CEBlock.LUMEN_WALL_TORCH.get(), new Item.Properties(), net.minecraft.core.Direction.DOWN) {
                 @Override public void appendHoverText(net.minecraft.world.item.ItemStack stack, net.minecraft.world.level.Level level,
                         List<net.minecraft.network.chat.Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
-                    tooltip.add(net.minecraft.network.chat.Component.translatable("tooltip.changede.lumen_torch")
+                    tooltip.add(net.minecraft.network.chat.Component.translatable("tooltip.changed_extra.lumen_torch")
                             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
                 }
             });

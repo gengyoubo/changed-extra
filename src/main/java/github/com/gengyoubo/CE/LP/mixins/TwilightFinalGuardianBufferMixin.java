@@ -17,11 +17,11 @@ import twilightforest.entity.boss.UrGhast;
 @Mixin(value = {Naga.class, Lich.class, UrGhast.class}, remap = false)
 public abstract class TwilightFinalGuardianBufferMixin {
     @Redirect(method = "die", at = @At(value = "INVOKE", target = "Ltwilightforest/entity/boss/IBossLootBuffer;saveDropsIntoBoss(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/storage/loot/LootParams;Lnet/minecraft/server/level/ServerLevel;)V", remap = false), remap = true)
-    private void changede$skipGuardianBuffer(LivingEntity boss, LootParams params, ServerLevel level) {
+    private void changed_extra$skipGuardianBuffer(LivingEntity boss, LootParams params, ServerLevel level) {
         if (!boss.getPersistentData().getBoolean(TwilightFinalEncounter.GUARDIAN)) IBossLootBuffer.saveDropsIntoBoss((LivingEntity & IBossLootBuffer) boss, params, level);
     }
     @Redirect(method = "remove", at = @At(value = "INVOKE", target = "Ltwilightforest/entity/boss/IBossLootBuffer;depositDropsIntoChest(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/server/level/ServerLevel;)V", remap = false), remap = true)
-    private void changede$skipGuardianChest(LivingEntity boss, BlockState chest, BlockPos pos, ServerLevel level) {
+    private void changed_extra$skipGuardianChest(LivingEntity boss, BlockState chest, BlockPos pos, ServerLevel level) {
         if (!boss.getPersistentData().getBoolean(TwilightFinalEncounter.GUARDIAN)) IBossLootBuffer.depositDropsIntoChest((LivingEntity & IBossLootBuffer) boss, chest, pos, level);
     }
 }

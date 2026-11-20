@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class CEEntity {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
-            DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, "changede");
+            DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, "changed_extra");
 
     public static final RegistryObject<EntityType<LatexPaintingPortalEntity>> LATEX_PAINTING_PORTAL =
             ENTITY_TYPES.register("latex_painting_portal", () ->

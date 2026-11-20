@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changede:dark_latex_leaves",
-    "changede:white_latex_leaves"
+    "changed_extra:dark_latex_leaves",
+    "changed_extra:white_latex_leaves"
   ]
 }

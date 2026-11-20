@@ -22,33 +22,33 @@ import java.util.List;
 @Mixin(value = BondedLatexScreen.class, remap = false)
 public abstract class BondedLatexWorkSlotMixin {
     private static final ResourceLocation CHANGEDE$WORK_ICON =
-            ResourceLocation.fromNamespaceAndPath("changede", "textures/gui/maid_work.png");
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "textures/gui/maid_work.png");
 
     @Shadow @Final private List<?> interactions;
 
-    private boolean changede$hasEmptySlot() {
+    private boolean changed_extra$hasEmptySlot() {
         return interactions.size() == 7;
     }
 
     @Inject(method = "getCount", at = @At("RETURN"), cancellable = true, remap = false)
-    private void changede$includeWorkSlot(CallbackInfoReturnable<Integer> cir) {
-        if (changede$hasEmptySlot()) cir.setReturnValue(8);
+    private void changed_extra$includeWorkSlot(CallbackInfoReturnable<Integer> cir) {
+        if (changed_extra$hasEmptySlot()) cir.setReturnValue(8);
     }
 
     @Inject(method = "tooltipsFor", at = @At("HEAD"), cancellable = true, remap = false)
-    private void changede$workTooltip(int section, CallbackInfoReturnable<List<Component>> cir) {
-        if (section != 7 || !changede$hasEmptySlot()) return;
+    private void changed_extra$workTooltip(int section, CallbackInfoReturnable<List<Component>> cir) {
+        if (section != 7 || !changed_extra$hasEmptySlot()) return;
         cir.setReturnValue(List.of(
-                Component.translatable("screen.changede.maid_work.title"),
-                Component.translatable("screen.changede.maid_work.unlock")
+                Component.translatable("screen.changed_extra.maid_work.title"),
+                Component.translatable("screen.changed_extra.maid_work.unlock")
         ));
     }
 
     @Inject(method = "renderSectionForeground", at = @At("HEAD"), cancellable = true, remap = false)
-    private void changede$renderWorkIcon(GuiGraphics graphics, int section, double x, double y,
+    private void changed_extra$renderWorkIcon(GuiGraphics graphics, int section, double x, double y,
                                         float scale, int mouseX, int mouseY,
                                         float red, float green, float blue, float alpha, CallbackInfo ci) {
-        if (section != 7 || !changede$hasEmptySlot()) return;
+        if (section != 7 || !changed_extra$hasEmptySlot()) return;
         BondedLatexScreen screen = (BondedLatexScreen) (Object) this;
         int drawX = screen.getGuiLeft() + (int) x - 24;
         int drawY = screen.getGuiTop() + (int) y - 24;
@@ -61,8 +61,8 @@ public abstract class BondedLatexWorkSlotMixin {
     }
 
     @Inject(method = "handleClicked", at = @At("HEAD"), cancellable = true, remap = false)
-    private void changede$openWorkScreen(int section, SingleRunnable onClose, CallbackInfoReturnable<Boolean> cir) {
-        if (section != 7 || !changede$hasEmptySlot()) return;
+    private void changed_extra$openWorkScreen(int section, SingleRunnable onClose, CallbackInfoReturnable<Boolean> cir) {
+        if (section != 7 || !changed_extra$hasEmptySlot()) return;
         ChangedEntity creature = ((BondedLatexScreen) (Object) this).getMenu().getPet();
         if (creature != null) {
             CENetwork.sendToServer(new MaidWorkSwitchPacket(creature.getId(), true));

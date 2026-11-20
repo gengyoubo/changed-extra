@@ -10,9 +10,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class BasicCrystalGeneratorBlockEntity extends GeneratorBlockEntity {
     private static final int CAPACITY = 50_000;
-    private static final ResourceLocation FRAGMENTS_TAG = ResourceLocation.parse("changede:crystals/fragments");
-    private static final ResourceLocation SMALL_CRYSTALS_TAG = ResourceLocation.parse("changede:crystals/small");
-    private static final ResourceLocation LARGE_CRYSTALS_TAG = ResourceLocation.parse("changede:crystals/large");
+    private static final ResourceLocation FRAGMENTS_TAG = ResourceLocation.parse("changed_extra:crystals/fragments");
+    private static final ResourceLocation SMALL_CRYSTALS_TAG = ResourceLocation.parse("changed_extra:crystals/small");
+    private static final ResourceLocation LARGE_CRYSTALS_TAG = ResourceLocation.parse("changed_extra:crystals/large");
 
     public BasicCrystalGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(CELPBlockEntity.BASIC_CRYSTAL_GENERATOR_BLOCK_ENTITY.get(), pos, state, CAPACITY);

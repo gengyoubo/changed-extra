@@ -28,9 +28,9 @@ import slimeknights.tconstruct.smeltery.block.entity.component.SmelteryComponent
 
 public final class LatexSmelteryCompat {
     public static final int CAPACITY = 8000;
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changede");
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changede");
-    private static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changede");
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "changed_extra");
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "changed_extra");
+    private static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changed_extra");
     public static final RegistryObject<Block> CORE = BLOCKS.register("latex_combustion_core", () -> new SearedBlock(properties(), true) {
         @Override public net.minecraft.world.level.block.entity.BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
             return new CoreBlockEntity(pos, state);
@@ -45,7 +45,7 @@ public final class LatexSmelteryCompat {
     public static final RegistryObject<Item> DYNAMIC_CORE_ITEM = ITEMS.register("dynamic_fuel_core", () -> new BlockItem(DYNAMIC_CORE.get(), new Item.Properties()) {
         @Override public void appendHoverText(net.minecraft.world.item.ItemStack stack, net.minecraft.world.level.Level level,
                                              java.util.List<Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
-            tooltip.add(Component.translatable("tooltip.changede.dynamic_fuel_core").withStyle(net.minecraft.ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.changed_extra.dynamic_fuel_core").withStyle(net.minecraft.ChatFormatting.GRAY));
         }
     });
     public static final RegistryObject<Item> CORE_ITEM = ITEMS.register("latex_combustion_core", () -> new BlockItem(CORE.get(), new Item.Properties()));
@@ -63,13 +63,13 @@ public final class LatexSmelteryCompat {
         BLOCKS.register(bus); ITEMS.register(bus); ENTITIES.register(bus);
         bus.addListener((AddPackFindersEvent event) -> {
             if (event.getPackType() != PackType.SERVER_DATA) return;
-            var path = ModList.get().getModFileById("changede").getFile().findResource("resourcepacks", "latex_smeltery");
-            var pack = Pack.readMetaAndCreate("changede:latex_smeltery", Component.literal("Changed Extra Latex Smeltery"), true,
+            var path = ModList.get().getModFileById("changed_extra").getFile().findResource("resourcepacks", "latex_smeltery");
+            var pack = Pack.readMetaAndCreate("changed_extra:latex_smeltery", Component.literal("Changed Extra Latex Smeltery"), true,
                     id -> new PathPackResources(id, true, path), PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
             if (pack != null) event.addRepositorySource(output -> output.accept(pack));
         });
         bus.addListener((BuildCreativeModeTabContentsEvent event) -> {
-            if (event.getTabKey().location().equals(ResourceLocation.parse("changede:extra"))) {
+            if (event.getTabKey().location().equals(ResourceLocation.parse("changed_extra:extra"))) {
                 event.accept(CORE_ITEM.get()); event.accept(TANK_ITEM.get()); event.accept(DYNAMIC_CORE_ITEM.get());
                 event.accept(MoltenLatexFluids.DARK.bucket.get()); event.accept(MoltenLatexFluids.WHITE.bucket.get());
             }

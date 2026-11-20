@@ -21,7 +21,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 /** Small voxel mascot; no world entity, entity inventory or AI is created for rendering. */
 @SuppressWarnings({"deprecation","removal"})
 public final class LatexBurnerClient implements BlockEntityRenderer<LatexBurnerBlockEntity> {
-    private static final ResourceLocation MATERIALS = ResourceLocation.parse("changede:textures/block/latex_burner_materials.png");
+    private static final ResourceLocation MATERIALS = ResourceLocation.parse("changed_extra:textures/block/latex_burner_materials.png");
     private static final float[][][] CUBE_FACES = {
             {{0,0,0}, {0,1,0}, {1,1,0}, {1,0,0}},
             {{1,0,0}, {1,1,0}, {1,1,1}, {1,0,1}},
@@ -36,7 +36,7 @@ public final class LatexBurnerClient implements BlockEntityRenderer<LatexBurnerB
         bus.addListener((EntityRenderersEvent.RegisterRenderers event) -> event.registerBlockEntityRenderer(LatexBurnerCompat.ENTITY.get(), LatexBurnerClient::new));
         bus.addListener((FMLClientSetupEvent event) -> event.enqueueWork(() -> {
             ItemBlockRenderTypes.setRenderLayer(LatexBurnerCompat.BLOCK.get(), RenderType.cutout());
-            ItemProperties.register(LatexBurnerCompat.FILLED.get(), ResourceLocation.parse("changede:dark_latex"), (stack, level, entity, seed) -> {
+            ItemProperties.register(LatexBurnerCompat.FILLED.get(), ResourceLocation.parse("changed_extra:dark_latex"), (stack, level, entity, seed) -> {
                 var tag = stack.getTagElement("BlockEntityTag");
                 if (tag == null) return 0;
                 var profile = LatexBurnerProfiles.find(tag.getCompound("Creature").getString("id"), tag.getString("RuntimeLatex"));

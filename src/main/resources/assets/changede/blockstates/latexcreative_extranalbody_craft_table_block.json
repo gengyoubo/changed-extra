@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "changede:block/latexcreative_extranalbody_craft_table_block" },
-    "facing=south": { "model": "changede:block/latexcreative_extranalbody_craft_table_block", "y": 180 },
-    "facing=west":  { "model": "changede:block/latexcreative_extranalbody_craft_table_block", "y": 270 },
-    "facing=east":  { "model": "changede:block/latexcreative_extranalbody_craft_table_block", "y": 90 }
-  }
-}

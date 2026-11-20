@@ -16,7 +16,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 public class CENetwork {
     private static final String PROTOCOL_VERSION = "12";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.fromNamespaceAndPath("changede", "main"),
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

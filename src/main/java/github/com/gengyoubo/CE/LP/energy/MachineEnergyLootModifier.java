@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 /** Enriches the existing block drop; never creates an additional drop or copies machine inventories. */
 public final class MachineEnergyLootModifier extends LootModifier {
     public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> SERIALIZERS =
-            DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, "changede");
+            DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, "changed_extra");
     public static final RegistryObject<Codec<MachineEnergyLootModifier>> CODEC = SERIALIZERS.register(
             "preserve_machine_energy", () -> RecordCodecBuilder.create(instance -> codecStart(instance).apply(instance, MachineEnergyLootModifier::new)));
 

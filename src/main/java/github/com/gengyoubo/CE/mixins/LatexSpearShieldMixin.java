@@ -13,7 +13,7 @@ public abstract class LatexSpearShieldMixin {
     @Inject(method = "blockUsingShield", at = @At(value = "INVOKE", target =
             "Lnet/minecraft/world/entity/LivingEntity;blockUsingShield(Lnet/minecraft/world/entity/LivingEntity;)V",
             shift = At.Shift.AFTER), cancellable = true)
-    private void changede$useActualWeapon(LivingEntity attacker, CallbackInfo ci) {
+    private void changed_extra$useActualWeapon(LivingEntity attacker, CallbackInfo ci) {
         // MC-304593: 1.20.1 asks about the main-hand axe even when the off-hand spear hit.
         // Keep shield knockback, then skip only the spear hit's main-hand weapon check.
         // Leave canDisableShield available to other mods' redirects (issue #40).

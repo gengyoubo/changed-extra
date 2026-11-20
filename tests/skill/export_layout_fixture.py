@@ -5,12 +5,12 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parents[2]
 trees = {p.stem: json.loads(p.read_text(encoding='utf-8'))
-         for p in (root/'src/main/resources/data/changede/latex_skill_trees').glob('*.json')}
+         for p in (root/'src/main/resources/data/changed_extra/latex_skill_trees').glob('*.json')}
 forms = json.loads((root/'FORM_AFFILIATIONS.json').read_text(encoding='utf-8'))['forms']
 lines = []
 for branch, tree in trees.items():
     for node in tree['nodes']:
-        lines.append('\t'.join(['node', node['id'], 'changede:'+branch, str(node['x']),
+        lines.append('\t'.join(['node', node['id'], 'changed_extra:'+branch, str(node['x']),
                                str(node['y']), str(tree['scope']=='global').lower()]))
 for form in forms:
     visible = []
@@ -21,7 +21,7 @@ for form in forms:
             continue
         if tree.get('forms') and form['form'] not in tree['forms']:
             continue
-        visible.append('changede:'+branch)
+        visible.append('changed_extra:'+branch)
     lines.append('\t'.join(['form', form['form'], ','.join(sorted(visible))]))
 output = Path(sys.argv[1])
 output.parent.mkdir(parents=True, exist_ok=True)

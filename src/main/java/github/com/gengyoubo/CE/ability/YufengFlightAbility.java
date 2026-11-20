@@ -17,10 +17,10 @@ public final class YufengFlightAbility extends SimpleAbility {
     public boolean unlocked(Player player) { return LatexSkills.hasActivePower(player, power()); }
 
     @Override public Component getAbilityName(IAbstractChangedEntity entity) {
-        return Component.translatable("skill.changede." + power());
+        return Component.translatable("skill.changed_extra." + power());
     }
     @Override public Collection<Component> getAbilityDescription(IAbstractChangedEntity entity) {
-        return List.of(Component.translatable("skill.changede." + power() + ".description"));
+        return List.of(Component.translatable("skill.changed_extra." + power() + ".description"));
     }
     @Override public int getCoolDown(IAbstractChangedEntity entity) { return takeoff ? 40 : 20; }
     @Override public boolean canUse(IAbstractChangedEntity entity) {

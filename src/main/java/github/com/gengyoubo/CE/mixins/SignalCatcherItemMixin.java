@@ -22,7 +22,7 @@ import java.util.List;
 public class SignalCatcherItemMixin {
 
     @Inject(method = "appendHoverText", at = @At("HEAD"), cancellable = true)
-    private void changede$appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag pIsAdvanced, CallbackInfo ci) {
+    private void changed_extra$appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag pIsAdvanced, CallbackInfo ci) {
         Player player = Minecraft.getInstance().player;
         if (player != null) {
             CompoundTag tag = stack.getOrCreateTag();

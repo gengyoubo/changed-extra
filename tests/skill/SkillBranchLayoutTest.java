@@ -6,9 +6,9 @@ public class SkillBranchLayoutTest {
     static void check(boolean condition) { if(!condition)throw new AssertionError(); }
     static void near(double a,double b) { check(Math.abs(a-b)<1e-8); }
     static SkillBranchLayout.Node node(String id,String branch,double x,double y) {
-        return new SkillBranchLayout.Node(id,"changede:"+branch,x,y,false);
+        return new SkillBranchLayout.Node(id,"changed_extra:"+branch,x,y,false);
     }
-    static final SkillBranchLayout.Node ROOT=new SkillBranchLayout.Node("root","changede:trunk",99,0,true);
+    static final SkillBranchLayout.Node ROOT=new SkillBranchLayout.Node("root","changed_extra:trunk",99,0,true);
     static SkillBranchLayout.Layout layout(List<SkillBranchLayout.Node> nodes) {
         return SkillBranchLayout.arrange(nodes,Map.of());
     }
@@ -65,17 +65,17 @@ public class SkillBranchLayoutTest {
         check(nested.groups().size()==2);
         near(nested.nodes().get("insect").x()-nested.nodes().get("arth").x(),3);
         near(nested.nodes().get("arachnid").x()-nested.nodes().get("arth").x(),-3);
-        check(layout(List.of(arth)).groups().get("changede:arthropod").width()<nested.groups().get("changede:arthropod").width());
+        check(layout(List.of(arth)).groups().get("changed_extra:arthropod").width()<nested.groups().get("changed_extra:arthropod").width());
         verify(List.of(ROOT,land,arth,insect,arachnid),nested);
-        var style=new SkillRegionTemplate("cat","changede:feline","dark",.6,10,.75,Map.of(),Set.of());
-        var region=style.resolve(added.branches().get("changede:feline"));
+        var style=new SkillRegionTemplate("cat","changed_extra:feline","dark",.6,10,.75,Map.of(),Set.of());
+        var region=style.resolve(added.branches().get("changed_extra:feline"));
         near(region.x(),added.nodes().get("cat").x()-.75);
         near(region.width(),1.5);near(region.height(),1.5);
         near(SkillRegionBlend.weights(List.of(region),"lab",added.nodes().get("cat").x(),11).get("dark"),1);
         check(!SkillRegionBlend.weights(List.of(region),"lab",cat.x(),11).containsKey("dark"));
-        var padded=SkillBranchLayout.arrange(List.of(cat),Map.of("changede:feline",2.0));
-        near(padded.groups().get("changede:feline").maxX(),-SkillBranchLayout.TRUNK_GAP);
-        check(!padded.branches().containsKey("changede:sea"));
+        var padded=SkillBranchLayout.arrange(List.of(cat),Map.of("changed_extra:feline",2.0));
+        near(padded.groups().get("changed_extra:feline").maxX(),-SkillBranchLayout.TRUNK_GAP);
+        check(!padded.branches().containsKey("changed_extra:sea"));
         if(args.length>0) {
             List<SkillBranchLayout.Node> all=new ArrayList<>();
             List<String[]> forms=new ArrayList<>();

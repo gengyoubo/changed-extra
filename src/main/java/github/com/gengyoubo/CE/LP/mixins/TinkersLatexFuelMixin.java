@@ -26,43 +26,43 @@ public abstract class TinkersLatexFuelMixin implements LatexFuelAccess {
     @Shadow protected int fuelQuality;
     @Shadow protected int temperature;
     @Shadow protected int rate;
-    @Unique private boolean changede$clientCoreReady;
-    @Unique private boolean changede$latexBatch;
-    @Unique private boolean changede$pendingLatex;
-    @Unique private BlockPos changede$core;
-    @Unique private Object changede$structure;
-    @Unique private long changede$checkedAt = Long.MIN_VALUE;
-    @Override public MantleBlockEntity changede$parent() { return parent; }
-    @Override public boolean changede$coreReady() {
+    @Unique private boolean changed_extra$clientCoreReady;
+    @Unique private boolean changed_extra$latexBatch;
+    @Unique private boolean changed_extra$pendingLatex;
+    @Unique private BlockPos changed_extra$core;
+    @Unique private Object changed_extra$structure;
+    @Unique private long changed_extra$checkedAt = Long.MIN_VALUE;
+    @Override public MantleBlockEntity changed_extra$parent() { return parent; }
+    @Override public boolean changed_extra$coreReady() {
         if (!(parent instanceof HeatingStructureBlockEntity controller) || parent.getLevel() == null) return false;
-        if (parent.getLevel().isClientSide) return changede$clientCoreReady;
+        if (parent.getLevel().isClientSide) return changed_extra$clientCoreReady;
         if (controller.getStructure() == null) return false;
-        if (changede$structure == controller.getStructure() && LatexSmelteryRules.coreAt(controller, changede$core)) return true;
+        if (changed_extra$structure == controller.getStructure() && LatexSmelteryRules.coreAt(controller, changed_extra$core)) return true;
         long now = parent.getLevel().getGameTime();
-        if (changede$structure != controller.getStructure() || now < changede$checkedAt || now - changede$checkedAt >= 20 || changede$core != null) {
-            changede$structure = controller.getStructure(); changede$checkedAt = now;
-            changede$core = LatexSmelteryRules.findCore(controller);
+        if (changed_extra$structure != controller.getStructure() || now < changed_extra$checkedAt || now - changed_extra$checkedAt >= 20 || changed_extra$core != null) {
+            changed_extra$structure = controller.getStructure(); changed_extra$checkedAt = now;
+            changed_extra$core = LatexSmelteryRules.findCore(controller);
         }
-        return changede$core != null;
+        return changed_extra$core != null;
     }
-    @Override public void changede$setCoreReady(boolean ready) { changede$clientCoreReady = ready; }
-    @Override public boolean changede$latexBatch() { return changede$latexBatch; }
-    @Override public void changede$setLatexBatch(boolean latex) { changede$latexBatch = latex; }
+    @Override public void changed_extra$setCoreReady(boolean ready) { changed_extra$clientCoreReady = ready; }
+    @Override public boolean changed_extra$latexBatch() { return changed_extra$latexBatch; }
+    @Override public void changed_extra$setLatexBatch(boolean latex) { changed_extra$latexBatch = latex; }
     @Inject(method = "findRecipe", at = @At("HEAD"), cancellable = true)
-    private void changede$requireCore(Fluid fluid, CallbackInfoReturnable<MeltingFuel> cir) {
-        if (LatexSmelteryRules.isLatex(fluid) && !changede$coreReady()) cir.setReturnValue(null);
+    private void changed_extra$requireCore(Fluid fluid, CallbackInfoReturnable<MeltingFuel> cir) {
+        if (LatexSmelteryRules.isLatex(fluid) && !changed_extra$coreReady()) cir.setReturnValue(null);
     }
     @Inject(method = "tryLiquidFuel", at = @At("HEAD"))
-    private void changede$rememberFluid(IFluidHandler handler, boolean consume, CallbackInfoReturnable<Integer> cir) {
-        changede$pendingLatex = LatexSmelteryRules.isLatex(handler.getFluidInTank(0).getFluid());
+    private void changed_extra$rememberFluid(IFluidHandler handler, boolean consume, CallbackInfoReturnable<Integer> cir) {
+        changed_extra$pendingLatex = LatexSmelteryRules.isLatex(handler.getFluidInTank(0).getFluid());
     }
     @Inject(method = "tryLiquidFuel", at = @At("RETURN"))
-    private void changede$trackBatch(IFluidHandler handler, boolean consume, CallbackInfoReturnable<Integer> cir) {
-        if (consume && cir.getReturnValue() > 0) changede$latexBatch = changede$pendingLatex;
+    private void changed_extra$trackBatch(IFluidHandler handler, boolean consume, CallbackInfoReturnable<Integer> cir) {
+        if (consume && cir.getReturnValue() > 0) changed_extra$latexBatch = changed_extra$pendingLatex;
     }
     @Inject(method = "hasFuel", at = @At("HEAD"), cancellable = true)
-    private void changede$stopDisabledBatch(CallbackInfoReturnable<Boolean> cir) {
-        if (changede$latexBatch && !changede$coreReady()) {
+    private void changed_extra$stopDisabledBatch(CallbackInfoReturnable<Boolean> cir) {
+        if (changed_extra$latexBatch && !changed_extra$coreReady()) {
             if (parent.getLevel() != null && !parent.getLevel().isClientSide && fuel > 0) {
                 fuel = 0; fuelQuality = 0; temperature = 0; rate = 0; parent.setChangedFast();
             }
@@ -70,11 +70,11 @@ public abstract class TinkersLatexFuelMixin implements LatexFuelAccess {
         }
     }
     @Inject(method = "getFuel", at = @At("HEAD"), cancellable = true)
-    private void changede$hideDisabledFlame(CallbackInfoReturnable<Integer> cir) {
-        if (changede$latexBatch && !changede$coreReady()) cir.setReturnValue(0);
+    private void changed_extra$hideDisabledFlame(CallbackInfoReturnable<Integer> cir) {
+        if (changed_extra$latexBatch && !changed_extra$coreReady()) cir.setReturnValue(0);
     }
     @Inject(method = "readFromTag", at = @At("RETURN"))
-    private void changede$loadBatch(CompoundTag tag, CallbackInfo ci) { changede$latexBatch = tag.getBoolean("changede_latex_batch"); }
+    private void changed_extra$loadBatch(CompoundTag tag, CallbackInfo ci) { changed_extra$latexBatch = tag.getBoolean("changed_extra_latex_batch"); }
     @Inject(method = "writeToTag", at = @At("RETURN"))
-    private void changede$saveBatch(CompoundTag tag, CallbackInfoReturnable<CompoundTag> cir) { cir.getReturnValue().putBoolean("changede_latex_batch", changede$latexBatch); }
+    private void changed_extra$saveBatch(CompoundTag tag, CallbackInfoReturnable<CompoundTag> cir) { cir.getReturnValue().putBoolean("changed_extra_latex_batch", changed_extra$latexBatch); }
 }

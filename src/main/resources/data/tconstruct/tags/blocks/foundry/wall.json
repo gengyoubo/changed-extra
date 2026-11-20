@@ -1,11 +1,11 @@
 {
   "values": [
     {
-      "id": "changede:latex_combustion_core",
+      "id": "changed_extra:latex_combustion_core",
       "required": false
     },
     {
-      "id": "changede:dynamic_fuel_core",
+      "id": "changed_extra:dynamic_fuel_core",
       "required": false
     }
   ]

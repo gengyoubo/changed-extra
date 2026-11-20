@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "changed_extra:darklatex_watchtower",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1847203961,
+    "spacing": 28,
+    "separation": 10
+  }
+}

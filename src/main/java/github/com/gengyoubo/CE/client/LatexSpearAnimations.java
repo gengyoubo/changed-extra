@@ -26,7 +26,7 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 
 /** Client-only STAB state. Only accepted server jabs start an animation. */
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT)
 public final class LatexSpearAnimations {
     private static final Map<LivingEntity, Integer> JABS = new WeakHashMap<>();
 

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public class RequestLatexPaintingPortalPreviewPacket {
     private static final int RADIUS = 24;
     private static final int VERTICAL_ABOVE = 16;

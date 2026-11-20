@@ -40,7 +40,7 @@ public class BasicLatexPurifierScreen extends AbstractContainerScreen<BasicLatex
     }
 
     private Component time(int progress) {
-        return Component.translatable("gui.changede.alloy_furnace.time", AmountFormat.format(
+        return Component.translatable("gui.changed_extra.alloy_furnace.time", AmountFormat.format(
                 String.format(Locale.ROOT, "%.1f", progress / 20.0), String.format(Locale.ROOT, "%.1f", menu.getMaxProgress() / 20.0)));
     }
 
@@ -54,9 +54,9 @@ public class BasicLatexPurifierScreen extends AbstractContainerScreen<BasicLatex
 
     @Override protected void renderLabels(@NotNull GuiGraphics graphics, int mouseX, int mouseY) {
         graphics.drawString(font, title, 8, 6, MachineGuiStyle.TITLE, false);
-        graphics.drawString(font, Component.translatable("gui.changede.basic_latex_purifier.items"), 27, 17, MachineGuiStyle.LABEL, false);
-        graphics.drawString(font, Component.translatable("gui.changede.basic_latex_purifier.fluid"), 71, 17, MachineGuiStyle.LABEL, false);
-        graphics.drawString(font, Component.translatable("gui.changede.basic_latex_purifier.output"), 118, 17, MachineGuiStyle.LABEL, false);
+        graphics.drawString(font, Component.translatable("gui.changed_extra.basic_latex_purifier.items"), 27, 17, MachineGuiStyle.LABEL, false);
+        graphics.drawString(font, Component.translatable("gui.changed_extra.basic_latex_purifier.fluid"), 71, 17, MachineGuiStyle.LABEL, false);
+        graphics.drawString(font, Component.translatable("gui.changed_extra.basic_latex_purifier.output"), 118, 17, MachineGuiStyle.LABEL, false);
         graphics.drawString(font, playerInventoryTitle, 8, 80, MachineGuiStyle.LABEL, false);
     }
 

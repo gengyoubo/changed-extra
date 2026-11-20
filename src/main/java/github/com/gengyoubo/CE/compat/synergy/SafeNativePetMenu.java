@@ -23,7 +23,7 @@ public final class SafeNativePetMenu {
                         }
                     }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
                 } catch (java.io.IOException exception) {
-                    github.com.gengyoubo.CE.changede.LOGGER.warn("Cannot inspect native pet menu for {}", current.getName(), exception);
+                    github.com.gengyoubo.CE.changed_extra.LOGGER.warn("Cannot inspect native pet menu for {}", current.getName(), exception);
                 }
                 if (found[0]) return true;
             }
@@ -43,7 +43,7 @@ public final class SafeNativePetMenu {
                     }
                 }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
             } catch (java.io.IOException exception) {
-                github.com.gengyoubo.CE.changede.LOGGER.warn("Cannot inspect native inventory getter for {}", current.getName(), exception);
+                github.com.gengyoubo.CE.changed_extra.LOGGER.warn("Cannot inspect native inventory getter for {}", current.getName(), exception);
             }
             if (found[0]) return true;
         }

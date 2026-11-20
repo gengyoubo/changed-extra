@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "changed_extra:item/remote_riding_stick"
+  }
+}

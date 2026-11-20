@@ -1,0 +1,21 @@
+{
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "L": {
+      "item": "changed_extra:latex_ingot"
+    }
+  },
+  "pattern": [
+    "  L",
+    " S ",
+    "S  "
+  ],
+  "result": {
+    "item": "changed_extra:latex_spear",
+    "count": 1
+  },
+  "category": "equipment",
+  "type": "minecraft:crafting_shaped"
+}

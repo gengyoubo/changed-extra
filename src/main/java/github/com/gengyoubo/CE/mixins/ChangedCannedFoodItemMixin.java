@@ -13,20 +13,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Item.class)
 public class ChangedCannedFoodItemMixin {
     @Inject(method = "isEdible", at = @At("HEAD"), cancellable = true)
-    private void changede$makeChangedCansEdible(CallbackInfoReturnable<Boolean> cir) {
-        if (changede$isChangedCannedFood()) {
+    private void changed_extra$makeChangedCansEdible(CallbackInfoReturnable<Boolean> cir) {
+        if (changed_extra$isChangedCannedFood()) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "getFoodProperties", at = @At("HEAD"), cancellable = true)
-    private void changede$useBreadFoodValueForChangedCans(CallbackInfoReturnable<FoodProperties> cir) {
-        if (changede$isChangedCannedFood()) {
+    private void changed_extra$useBreadFoodValueForChangedCans(CallbackInfoReturnable<FoodProperties> cir) {
+        if (changed_extra$isChangedCannedFood()) {
             cir.setReturnValue(Foods.BREAD);
         }
     }
 
-    private boolean changede$isChangedCannedFood() {
+    private boolean changed_extra$isChangedCannedFood() {
         ResourceLocation id = ForgeRegistries.ITEMS.getKey((Item) (Object) this);
         return id != null && "changed".equals(id.getNamespace())
                 && ("canned_peaches".equals(id.getPath()) || "canned_soup".equals(id.getPath()));

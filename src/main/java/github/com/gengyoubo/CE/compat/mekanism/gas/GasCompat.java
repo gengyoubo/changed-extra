@@ -28,12 +28,12 @@ import net.minecraftforge.resource.PathPackResources;
 
 /** Optional Mek main-mod integration; independent of Generators and AE2. */
 public final class GasCompat {
-    private static final GasDeferredRegister GASES = new GasDeferredRegister("changede");
-    private static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister("changede");
-    private static final TileEntityTypeDeferredRegister TILES = new TileEntityTypeDeferredRegister("changede");
-    private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, "changede");
-    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, "changede");
-    private static final ContainerTypeDeferredRegister CONTAINERS = new ContainerTypeDeferredRegister("changede");
+    private static final GasDeferredRegister GASES = new GasDeferredRegister("changed_extra");
+    private static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister("changed_extra");
+    private static final TileEntityTypeDeferredRegister TILES = new TileEntityTypeDeferredRegister("changed_extra");
+    private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, "changed_extra");
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, "changed_extra");
+    private static final ContainerTypeDeferredRegister CONTAINERS = new ContainerTypeDeferredRegister("changed_extra");
     public static final Map<String, GasRegistryObject<Gas>> BASIC_GASES = new LinkedHashMap<>();
     static {
         BASIC_GASES.put("white_latex_gas", GASES.register("white_latex_gas", 0xF2F1E9));
@@ -43,7 +43,7 @@ public final class GasCompat {
         BASIC_GASES.put("wolf_gas", GASES.register("wolf_gas", 0x859BCC));
     }
     public static final BlockTypeTile<ReverserBlockEntity> REVERSER_TYPE = BlockTypeTile.BlockTileBuilder
-            .<ReverserBlockEntity>createBlock(() -> GasCompat.REVERSER_TILE, () -> "tooltip.changede.reverser")
+            .<ReverserBlockEntity>createBlock(() -> GasCompat.REVERSER_TILE, () -> "tooltip.changed_extra.reverser")
             .withGui(() -> GasCompat.REVERSER_CONTAINER)
             .with(new AttributeStateFacing(), Attributes.ACTIVE, Attributes.REDSTONE, Attributes.SECURITY).build();
     public static final BlockRegistryObject<ReverserBlock, BlockItem> REVERSER = BLOCKS.register("reverser", ReverserBlock::new);
@@ -52,24 +52,24 @@ public final class GasCompat {
     public static final TileEntityTypeRegistryObject<TileEntityPressurizedTube> GAS_PIPE_TILE = TILES.<TileEntityPressurizedTube>builder(GAS_PIPE,
             (pos, state) -> new TileEntityPressurizedTube(GAS_PIPE, pos, state))
             .serverTicker(mekanism.common.tile.transmitter.TileEntityTransmitter::tickServer).build();
-    public static final RegistryObject<RecipeType<ReversingRecipe>> REVERSING_TYPE = RECIPE_TYPES.register("reversing", () -> RecipeType.simple(ResourceLocation.parse("changede:reversing")));
+    public static final RegistryObject<RecipeType<ReversingRecipe>> REVERSING_TYPE = RECIPE_TYPES.register("reversing", () -> RecipeType.simple(ResourceLocation.parse("changed_extra:reversing")));
     public static final RegistryObject<RecipeSerializer<ReversingRecipe>> REVERSING_SERIALIZER = SERIALIZERS.register("reversing", ReversingRecipe.Serializer::new);
     public static final ContainerTypeRegistryObject<ReverserContainer> REVERSER_CONTAINER = CONTAINERS.register(REVERSER, ReverserBlockEntity.class, ReverserContainer::new);
 
     public static void initialize(IEventBus bus) {
         GASES.register(bus); BLOCKS.register(bus); TILES.register(bus); SERIALIZERS.register(bus); RECIPE_TYPES.register(bus); CONTAINERS.register(bus);
         bus.addListener((BuildCreativeModeTabContentsEvent event) -> {
-            if (event.getTabKey().location().equals(ResourceLocation.parse("changede:extra"))) { event.accept(REVERSER.asItem()); event.accept(GAS_PIPE.asItem()); }
+            if (event.getTabKey().location().equals(ResourceLocation.parse("changed_extra:extra"))) { event.accept(REVERSER.asItem()); event.accept(GAS_PIPE.asItem()); }
         });
         bus.addListener((AddPackFindersEvent event) -> {
             if (event.getPackType() != PackType.SERVER_DATA) return;
-            var path = ModList.get().getModFileById("changede").getFile().findResource("resourcepacks", "gas_technology");
-            var pack = Pack.readMetaAndCreate("changede:gas_technology", Component.literal("Changed Extra gas technology"), true,
+            var path = ModList.get().getModFileById("changed_extra").getFile().findResource("resourcepacks", "gas_technology");
+            var pack = Pack.readMetaAndCreate("changed_extra:gas_technology", Component.literal("Changed Extra gas technology"), true,
                     id -> new PathPackResources(id, true, path), PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
             if (pack != null) event.addRepositorySource(output -> output.accept(pack));
         });
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) GasClient.initialize(bus);
-        if (Boolean.getBoolean("changede.verifyGasTechnology")) {
+        if (Boolean.getBoolean("changed_extra.verifyGasTechnology")) {
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(GasTechnologyChecks::started);
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(GasTechnologyChecks::tick);
         }

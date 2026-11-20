@@ -17,10 +17,10 @@ public class CECreativeModeTab {
     public static final RegistryObject<CreativeModeTab> EE;
 
     static {
-        CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "changede");
+        CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "changed_extra");
                 BASIC = CREATIVE_MODE_TABS.register("basic", () ->
                                 CreativeModeTab.builder()
-                                        .title(Component.translatable("creativetab.changede1"))
+                                        .title(Component.translatable("creativetab.changed_extra1"))
                                         .icon(() -> new ItemStack(CEItem.LATEX_INGOT.get()))
                                         .displayItems((parameters, output) -> {
                                             output.accept(CEItem.INACTIVE_DARK_LATEX.get());
@@ -59,7 +59,7 @@ public class CECreativeModeTab {
                         );
                 EXTRA = CREATIVE_MODE_TABS.register("extra", () ->
                                 CreativeModeTab.builder()
-                                        .title(Component.translatable("creativetab.changede3"))
+                                        .title(Component.translatable("creativetab.changed_extra3"))
                                         .icon(() -> new ItemStack(CELPItem.ELECTRIC_FURNACE_ITEM.get()))
                                         .displayItems((parameters, output) -> {
                                             output.accept(CELPItem.BASIC_WIRE_ITEM.get());
@@ -93,7 +93,7 @@ public class CECreativeModeTab {
                         );
                 EE = CREATIVE_MODE_TABS.register("easter_egg", () ->
                                 CreativeModeTab.builder()
-                                        .title(Component.translatable("creativetab.changede2"))
+                                        .title(Component.translatable("creativetab.changed_extra2"))
                                         .icon(() -> new ItemStack(CEItem.PLATE.get()))
                                         .displayItems((parameters, output) -> {
                                             safeAccept(output, OptionalProjectEItems.resolveTotem("DARK_MATTER_TOTEM_OF_UNDYING"));

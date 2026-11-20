@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.compat.synergy;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.resources.ResourceLocation;
@@ -231,7 +231,7 @@ public final class ChangedSynergyFeedApi {
 
     private static void logApiFailure(String api, Throwable exception) {
         if (API_FAILURE_LOGGED.compareAndSet(false, true)) {
-            changede.LOGGER.warn("Could not call Changed: Synergy's {}", api, exception);
+            changed_extra.LOGGER.warn("Could not call Changed: Synergy's {}", api, exception);
         }
     }
 

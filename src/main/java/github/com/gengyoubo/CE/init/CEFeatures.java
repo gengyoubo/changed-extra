@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 public final class CEFeatures {
-    public static final DeferredRegister<Feature<?>> FEATURES=DeferredRegister.create(Registries.FEATURE,"changede");
+    public static final DeferredRegister<Feature<?>> FEATURES=DeferredRegister.create(Registries.FEATURE,"changed_extra");
     public static final RegistryObject<Feature<OreConfiguration>> MORPHIC_CRYSTAL_ORE=
             FEATURES.register("morphic_crystal_ore",MorphicCrystalOreFeature::new);
     public static final RegistryObject<Feature<OreConfiguration>> TWILIGHT_ORE =

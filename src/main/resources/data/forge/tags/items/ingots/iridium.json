@@ -1,5 +1,5 @@
 {
   "replace": false,
-  "values": ["changede:iridium_ingot"],
+  "values": ["changed_extra:iridium_ingot"],
   "remove": ["changed_addon:iridium"]
 }

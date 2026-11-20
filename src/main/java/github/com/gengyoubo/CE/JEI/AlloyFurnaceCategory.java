@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 public final class AlloyFurnaceCategory implements IRecipeCategory<AlloyFurnaceRecipe> {
-    public static final RecipeType<AlloyFurnaceRecipe> TYPE = RecipeType.create("changede", "alloy_furnace", AlloyFurnaceRecipe.class);
+    public static final RecipeType<AlloyFurnaceRecipe> TYPE = RecipeType.create("changed_extra", "alloy_furnace", AlloyFurnaceRecipe.class);
     private static final ResourceLocation BACKGROUND = MachineGuiStyle.texture("jei_alloy_furnace");
     private final IDrawable icon;
 
@@ -30,7 +30,7 @@ public final class AlloyFurnaceCategory implements IRecipeCategory<AlloyFurnaceR
         icon = helper.createDrawableItemStack(new ItemStack(CELPBlock.BASIC_ALLOY_FURNACE.get()));
     }
     @Override public @NotNull RecipeType<AlloyFurnaceRecipe> getRecipeType() { return TYPE; }
-    @Override public @NotNull Component getTitle() { return Component.translatable("block.changede.basic_alloy_furnace"); }
+    @Override public @NotNull Component getTitle() { return Component.translatable("block.changed_extra.basic_alloy_furnace"); }
     @Override public int getWidth() { return 150; }
     @Override public int getHeight() { return 72; }
     @Override public @NotNull IDrawable getIcon() { return icon; }
@@ -46,8 +46,8 @@ public final class AlloyFurnaceCategory implements IRecipeCategory<AlloyFurnaceR
         MachineGuiStyle.panel(graphics, BACKGROUND, 0, 0, getWidth(), getHeight());
         MachineGuiStyle.loopingBar(graphics, 62, 13, 34, 6, (int) Math.round(recipe.getSeconds() * 20), MachineGuiStyle.PROGRESS);
         var font = Minecraft.getInstance().font;
-        graphics.drawString(font, Component.translatable("gui.changede.alloy_furnace.time", String.format(Locale.ROOT, "%.1f", recipe.getSeconds())), 4, 34, MachineGuiStyle.LABEL, false);
-        graphics.drawString(font, Component.translatable("gui.changede.alloy_furnace.power", recipe.getLpPerSecond()), 4, 46, 0xFF007878, false);
-        graphics.drawString(font, Component.translatable("jei.changede.alloy_furnace.swappable"), 4, 58, MachineGuiStyle.LABEL, false);
+        graphics.drawString(font, Component.translatable("gui.changed_extra.alloy_furnace.time", String.format(Locale.ROOT, "%.1f", recipe.getSeconds())), 4, 34, MachineGuiStyle.LABEL, false);
+        graphics.drawString(font, Component.translatable("gui.changed_extra.alloy_furnace.power", recipe.getLpPerSecond()), 4, 46, 0xFF007878, false);
+        graphics.drawString(font, Component.translatable("jei.changed_extra.alloy_furnace.swappable"), 4, 58, MachineGuiStyle.LABEL, false);
     }
 }

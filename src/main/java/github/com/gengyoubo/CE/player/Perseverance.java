@@ -10,7 +10,7 @@ import java.util.UUID;
 public final class Perseverance {
     public static final int MIN_LEVEL = 0;
     public static final int MAX_LEVEL = 10;
-    private static final String LEVEL_TAG = "changede_perseverance_level";
+    private static final String LEVEL_TAG = "changed_extra_perseverance_level";
     private static final long SEED_SALT = 0x4D696D69634C6174L;
 
     private Perseverance() {

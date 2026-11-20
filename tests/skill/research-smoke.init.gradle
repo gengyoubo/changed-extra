@@ -11,6 +11,6 @@ gradle.beforeProject { project ->
         project.minecraft.runs.server.workingDirectory project.file('build/morphic-integration-run')
         project.minecraft.runs.server.jvmArgs '-Xmx4G'
         project.minecraft.runs.server.property 'forge.logging.console.level','info'
-        project.minecraft.runs.server.property 'changede.integrationProbe','true'
+        project.minecraft.runs.server.property 'changed_extra.integrationProbe','true'
     }
 }

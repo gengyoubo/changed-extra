@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = LatexHumanoidArmorLayer.class, remap = false)
 public abstract class MimicSirenLatexArmorLayerMixin {
     @Inject(method = "renderArmorPiece", at = @At("HEAD"), cancellable = true, remap = false)
-    private void changede$hideLeggings(PoseStack poses, MultiBufferSource buffers, ChangedEntity entity,
+    private void changed_extra$hideLeggings(PoseStack poses, MultiBufferSource buffers, ChangedEntity entity,
                                       EquipmentSlot slot, int light, LatexHumanoidArmorModel<?, ?> armor, CallbackInfo ci) {
         if (slot == EquipmentSlot.LEGS && MimicSirenTailItem.isWornBy(entity)) {
             ci.cancel();

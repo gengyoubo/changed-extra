@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class CEBlockEntity {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changede");
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "changed_extra");
 
     public static final RegistryObject<BlockEntityType<LatexSkillResearchBlockEntity>> LATEX_SKILL_RESEARCH =
             BLOCK_ENTITIES.register("latex_skill_research_table", () -> BlockEntityType.Builder.of(

@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BasicGeneratorBlock extends BaseEntityBlock implements EntityBlock {
-    private static final Component TITLE = Component.translatable("block.changede.basic_generator");
+    private static final Component TITLE = Component.translatable("block.changed_extra.basic_generator");
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     /** Burning front; toggled by the generator after each burst of fuel. */
     public static final BooleanProperty LIT = BlockStateProperties.LIT;

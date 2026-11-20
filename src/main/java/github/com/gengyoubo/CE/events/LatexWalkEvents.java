@@ -19,7 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.UUID;
 
 public final class LatexWalkEvents {
-    private static final String LATEX_WALK_GRACE_TAG = "changede_latex_walk_grace";
+    private static final String LATEX_WALK_GRACE_TAG = "changed_extra_latex_walk_grace";
     private static final int LATEX_WALK_JUMP_GRACE_TICKS = 20;
     private static final double LATEX_LIQUID_MAX_SINK_SPEED = -0.01D;
     private static final double LATEX_LIQUID_SURFACE_CHECK_OFFSET = 0.05D;

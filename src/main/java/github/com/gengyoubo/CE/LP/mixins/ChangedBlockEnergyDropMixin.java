@@ -18,7 +18,7 @@ import java.util.List;
 @Mixin(value = {ChangedBlock.class, Purifier.class}, remap = false)
 public abstract class ChangedBlockEnergyDropMixin {
     @Inject(method = {"getDrops", "m_49635_"}, at = @At("RETURN"))
-    private void changede$preserveEnergy(BlockState state, LootParams.Builder params,
+    private void changed_extra$preserveEnergy(BlockState state, LootParams.Builder params,
                                         CallbackInfoReturnable<List<ItemStack>> cir) {
         MachineEnergyPersistence.preserveDrops(cir.getReturnValue(), params.getOptionalParameter(LootContextParams.BLOCK_ENTITY));
     }

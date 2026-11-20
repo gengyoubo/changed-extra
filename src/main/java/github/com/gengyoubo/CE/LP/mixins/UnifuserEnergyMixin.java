@@ -24,34 +24,34 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = UnifuserBlockEntity.class, remap = false)
 public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILatexEnergyHandler {
-    @Unique private WorkbenchEnergyStorage changede$energy;
+    @Unique private WorkbenchEnergyStorage changed_extra$energy;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void changede$initEnergy(CallbackInfo ci) {
-        changede$ensureEnergy();
+    private void changed_extra$initEnergy(CallbackInfo ci) {
+        changed_extra$ensureEnergy();
     }
 
     @Unique
-    private WorkbenchEnergyStorage changede$ensureEnergy() {
-        if (changede$energy == null) {
-            changede$energy = new WorkbenchEnergyStorage(WorkbenchEnergyRules.capacityFor(this), this::changede$markEnergyChanged);
+    private WorkbenchEnergyStorage changed_extra$ensureEnergy() {
+        if (changed_extra$energy == null) {
+            changed_extra$energy = new WorkbenchEnergyStorage(WorkbenchEnergyRules.capacityFor(this), this::changed_extra$markEnergyChanged);
         }
-        return changede$energy;
+        return changed_extra$energy;
     }
 
     @Inject(method = {"load", "m_142466_"}, at = @At("TAIL"))
-    private void changede$loadEnergy(CompoundTag tag, CallbackInfo ci) {
-        changede$ensureEnergy().setEnergyStored(tag.getInt(WorkbenchEnergyRules.NBT_KEY));
+    private void changed_extra$loadEnergy(CompoundTag tag, CallbackInfo ci) {
+        changed_extra$ensureEnergy().setEnergyStored(tag.getInt(WorkbenchEnergyRules.NBT_KEY));
     }
 
     @Inject(method = {"saveAdditional", "m_183515_"}, at = @At("TAIL"))
-    private void changede$saveEnergy(CompoundTag tag, CallbackInfo ci) {
-        tag.putInt(WorkbenchEnergyRules.NBT_KEY, changede$ensureEnergy().getEnergyStored());
+    private void changed_extra$saveEnergy(CompoundTag tag, CallbackInfo ci) {
+        tag.putInt(WorkbenchEnergyRules.NBT_KEY, changed_extra$ensureEnergy().getEnergyStored());
     }
 
     @Inject(method = "serverTick", at = @At("HEAD"), cancellable = true)
-    private static void changede$requireEnergy(Level level, BlockPos pos, BlockState state, BlockEntity blockEntity, CallbackInfo ci) {
-        if (!level.isClientSide && blockEntity instanceof UnifuserBlockEntity unifuser && changede$willProgress(level, blockEntity, unifuser)) {
+    private static void changed_extra$requireEnergy(Level level, BlockPos pos, BlockState state, BlockEntity blockEntity, CallbackInfo ci) {
+        if (!level.isClientSide && blockEntity instanceof UnifuserBlockEntity unifuser && changed_extra$willProgress(level, blockEntity, unifuser)) {
             if (!WorkbenchEnergyRules.consume(unifuser, false)) {
                 ci.cancel();
             }
@@ -59,13 +59,13 @@ public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILat
     }
 
     @Override
-    public WorkbenchEnergyStorage changede$getWorkbenchEnergy() {
-        return changede$ensureEnergy();
+    public WorkbenchEnergyStorage changed_extra$getWorkbenchEnergy() {
+        return changed_extra$ensureEnergy();
     }
 
     @Override
     public int receiveEnergy(int amount, Direction from) {
-        return changede$ensureEnergy().receiveEnergy(Math.max(0, amount), false);
+        return changed_extra$ensureEnergy().receiveEnergy(Math.max(0, amount), false);
     }
 
     @Override
@@ -75,16 +75,16 @@ public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILat
 
     @Override
     public int getEnergyStored() {
-        return changede$ensureEnergy().getEnergyStored();
+        return changed_extra$ensureEnergy().getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored() {
-        return changede$ensureEnergy().getMaxEnergyStored();
+        return changed_extra$ensureEnergy().getMaxEnergyStored();
     }
 
     @Unique
-    private static boolean changede$willProgress(Level level, BlockEntity blockEntity, UnifuserBlockEntity unifuser) {
+    private static boolean changed_extra$willProgress(Level level, BlockEntity blockEntity, UnifuserBlockEntity unifuser) {
         WorkbenchRecipeProgress.Context context = WorkbenchRecipeProgress.context(
                 level,
                 blockEntity,
@@ -111,8 +111,8 @@ public abstract class UnifuserEnergyMixin implements WorkbenchEnergyHolder, ILat
     }
 
     @Unique
-    private void changede$markEnergyChanged() {
+    private void changed_extra$markEnergyChanged() {
         BlockEntity blockEntity = (BlockEntity) (Object) this;
-        WorkbenchEnergySync.markChangedAndSync(blockEntity, changede$ensureEnergy());
+        WorkbenchEnergySync.markChangedAndSync(blockEntity, changed_extra$ensureEnergy());
     }
 }

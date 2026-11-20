@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(RangedAttribute.class)
 public abstract class TwilightFinalHealthRangeMixin {
     @Inject(method = "sanitizeValue", at = @At("RETURN"), cancellable = true)
-    private void changede$allowFinalBossHealth(double value, CallbackInfoReturnable<Double> cir) {
+    private void changed_extra$allowFinalBossHealth(double value, CallbackInfoReturnable<Double> cir) {
         if ((Object) this == Attributes.MAX_HEALTH && Double.isFinite(value) && value > cir.getReturnValue()
                 && value <= TwilightFinalBossCompat.HEALTH) cir.setReturnValue(value);
     }

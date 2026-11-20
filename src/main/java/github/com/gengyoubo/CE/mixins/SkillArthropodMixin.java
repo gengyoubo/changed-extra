@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class SkillArthropodMixin {
     @Inject(method="getMobType",at=@At("RETURN"),cancellable=true)
-    private void changede$arthropod(CallbackInfoReturnable<MobType> ci) {
+    private void changed_extra$arthropod(CallbackInfoReturnable<MobType> ci) {
         if((Object)this instanceof Player player && SkillMechanics.value(player,"arthropod")>0)ci.setReturnValue(MobType.ARTHROPOD);
     }
 }

@@ -35,7 +35,7 @@ public final class FissionRegressionChecks {
     static void check(boolean value, String message) {
         if (!value) throw new AssertionError(message);
         assertions++;
-        github.com.gengyoubo.CE.changede.LOGGER.info("FISSION PASS: {}", message);
+        github.com.gengyoubo.CE.changed_extra.LOGGER.info("FISSION PASS: {}", message);
     }
     private static void near(double actual, double expected, String message) {
         check(Math.abs(actual - expected) < 1.0E-7, message + " (" + actual + ", expected " + expected + ")");
@@ -94,7 +94,7 @@ public final class FissionRegressionChecks {
             verifiedReactor = formed;
             check(formed.isFormed(), "Native validator forms reactor with all upgrade casings");
             check(formed instanceof FissionUpgradeAccess, "Generator multiblock has upgrade Mixin applied");
-            var state = ((FissionUpgradeAccess) formed).changede$fissionUpgrades();
+            var state = ((FissionUpgradeAccess) formed).changed_extra$fissionUpgrades();
             state.beforeTick(formed, level);
             for (FissionUpgrade type : FissionUpgrade.values())
                 check(state.count(type) == POSITIONS.getOrDefault(type, List.of()).size(), "Counts installed " + type);
@@ -108,11 +108,11 @@ public final class FissionRegressionChecks {
                 return; // Continue the finite-power throughput check over actual server ticks.
             }
             else {
-                check(!net.minecraftforge.registries.ForgeRegistries.BLOCKS.containsKey(net.minecraft.resources.ResourceLocation.parse("changede:fission_me_interface")),
+                check(!net.minecraftforge.registries.ForgeRegistries.BLOCKS.containsKey(net.minecraft.resources.ResourceLocation.parse("changed_extra:fission_me_interface")),
                         "ME port absent without AE2; other upgrades still work");
-                check(server.getRecipeManager().byKey(net.minecraft.resources.ResourceLocation.parse("changede:fission/fission_me_interface")).isEmpty(),
+                check(server.getRecipeManager().byKey(net.minecraft.resources.ResourceLocation.parse("changed_extra:fission/fission_me_interface")).isEmpty(),
                         "ME recipe absent without AE2");
-                check(!server.getPackRepository().getSelectedIds().contains("changede:fission_me"), "ME loot pack absent without AE2");
+                check(!server.getPackRepository().getSelectedIds().contains("changed_extra:fission_me"), "ME loot pack absent without AE2");
             }
             complete(level);
         } catch (Throwable error) { finish(error); }
@@ -123,7 +123,7 @@ public final class FissionRegressionChecks {
         // Keep the instance whose upgrades were verified; native revalidation may replace it
         // during the sustained ME check, especially after the interface removal check.
         var formed = verifiedReactor;
-        var state = ((FissionUpgradeAccess) formed).changede$fissionUpgrades();
+        var state = ((FissionUpgradeAccess) formed).changed_extra$fissionUpgrades();
         // Removal must invalidate native structure and remove the corresponding bonuses on reformation.
         BlockPos removed = POSITIONS.get(FissionUpgrade.COOLING).get(0);
         level.setBlockAndUpdate(removed, GeneratorsBlocks.FISSION_REACTOR_CASING.getBlock().defaultBlockState());
@@ -136,7 +136,7 @@ public final class FissionRegressionChecks {
     private static void recipesAndDrops(ServerLevel level) {
         for (var entry : FissionCompat.UPGRADES.entrySet()) {
             String id = entry.getKey().id;
-            check(server.getRecipeManager().byKey(net.minecraft.resources.ResourceLocation.parse("changede:fission/" + id)).isPresent(), "Recipe loaded: " + id);
+            check(server.getRecipeManager().byKey(net.minecraft.resources.ResourceLocation.parse("changed_extra:fission/" + id)).isPresent(), "Recipe loaded: " + id);
             var pos = POSITIONS.get(entry.getKey()).get(0);
             var drops = Block.getDrops(level.getBlockState(pos), level, pos, level.getBlockEntity(pos));
             check(drops.size() == 1 && drops.get(0).is(entry.getValue().asItem()), "Survival drop is upgrade item: " + id);
@@ -164,7 +164,7 @@ public final class FissionRegressionChecks {
         reactor.rateLimit = 1;
         reactor.fuelTank.setStack(MekanismGases.FISSILE_FUEL.getStack(1000));
         reactor.fluidCoolantTank.setStack(new FluidStack(Fluids.WATER, reactor.fluidCoolantTank.getCapacity()));
-        ((FissionUpgradeAccess) reactor).changede$fissionUpgrades().beforeTick(reactor, level);
+        ((FissionUpgradeAccess) reactor).changed_extra$fissionUpgrades().beforeTick(reactor, level);
         return reactor;
     }
 
@@ -205,14 +205,14 @@ public final class FissionRegressionChecks {
             refund.setActive(true); refund.tick(level);
             near(fuel(refund), 1000, "100% chance refunds only consumed fuel");
             near(waste(refund), 1.01, "Refund preserves X waste output");
-            near(((FissionUpgradeAccess) refund).changede$fissionUpgrades().returnChance(), 1, "Stacked return probability caps at one");
+            near(((FissionUpgradeAccess) refund).changed_extra$fissionUpgrades().returnChance(), 1, "Stacked return probability caps at one");
             refund.fuelTank.setStack(MekanismGases.FISSILE_FUEL.getStack(refund.fuelTank.getCapacity()));
             refund.burnRemaining = 0.5;
             refund.tick(level);
             near(fuel(refund), refund.fuelTank.getCapacity() + 0.5, "Refund preserves fractional balance at a full tank");
             FissionConfig.RETURN_CHANCE.set(0.01);
             var two = sample(level, 0, 0, 2, false);
-            near(((FissionUpgradeAccess) two).changede$fissionUpgrades().returnChance(), 0.02, "Two Y blocks provide two percentage points");
+            near(((FissionUpgradeAccess) two).changed_extra$fissionUpgrades().returnChance(), 0.02, "Two Y blocks provide two percentage points");
             var empty = sample(level, 0, 1, 1, false);
             empty.fuelTank.setEmpty(); empty.setActive(true); empty.tick(level);
             near(fuel(empty), 0, "Empty reactor cannot mint returned fuel");
@@ -222,7 +222,7 @@ public final class FissionRegressionChecks {
 
     private static void scram(ServerLevel level) {
         var r = sample(level, 1, 1, 0, true);
-        var state = ((FissionUpgradeAccess) r).changede$fissionUpgrades();
+        var state = ((FissionUpgradeAccess) r).changed_extra$fissionUpgrades();
         double demand = state.predictedWaterPerTick(r);
         check(demand > 0, "Predicts water demand on cold first activation");
         r.fluidCoolantTank.setStack(new FluidStack(Fluids.WATER, (int) Math.ceil(demand * 200)));
@@ -262,8 +262,8 @@ public final class FissionRegressionChecks {
         try {
             String report = error == null ? "PASS: " + assertions + " assertions\n" : "FAIL: " + error + "\n";
             Files.writeString(Path.of("fission-checks.txt"), report);
-            if (error == null) github.com.gengyoubo.CE.changede.LOGGER.info("FISSION CHECKS PASSED: {}", assertions);
-            else github.com.gengyoubo.CE.changede.LOGGER.error("FISSION CHECKS FAILED", error);
+            if (error == null) github.com.gengyoubo.CE.changed_extra.LOGGER.info("FISSION CHECKS PASSED: {}", assertions);
+            else github.com.gengyoubo.CE.changed_extra.LOGGER.error("FISSION CHECKS FAILED", error);
         } catch (Exception ignored) { }
         server.execute(() -> server.halt(false));
     }

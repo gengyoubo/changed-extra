@@ -34,8 +34,8 @@ import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 public final class LatexBurnerBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
-    public static final TagKey<Item> ITEM_FUELS = TagKey.create(Registries.ITEM, ResourceLocation.parse("changede:latex_burner_fuels"));
-    public static final TagKey<Fluid> FLUID_FUELS = TagKey.create(Registries.FLUID, ResourceLocation.parse("changede:latex_burner_fuels"));
+    public static final TagKey<Item> ITEM_FUELS = TagKey.create(Registries.ITEM, ResourceLocation.parse("changed_extra:latex_burner_fuels"));
+    public static final TagKey<Fluid> FLUID_FUELS = TagKey.create(Registries.FLUID, ResourceLocation.parse("changed_extra:latex_burner_fuels"));
     private CompoundTag creature = new CompoundTag();
     private String creatureType = "", runtimeLatex = "none", customName = "";
     private int itemBurnTicks, fluidBurnTicks;
@@ -179,23 +179,23 @@ public final class LatexBurnerBlockEntity extends SmartBlockEntity implements IH
         String id = tag.getCompound("Creature").getString("id");
         var profile = LatexBurnerProfiles.find(id, tag.getString("RuntimeLatex"));
         if (profile == null) return List.of();
-        return List.of(Component.translatable("changede.latex_burner.creature", creatureName(id, tag.getCompound("Creature").getString("CustomName"))),
-                Component.translatable("changede.latex_burner.speed", String.format(Locale.ROOT, "%.2f", profile.speed())));
+        return List.of(Component.translatable("changed_extra.latex_burner.creature", creatureName(id, tag.getCompound("Creature").getString("CustomName"))),
+                Component.translatable("changed_extra.latex_burner.speed", String.format(Locale.ROOT, "%.2f", profile.speed())));
     }
     public List<Component> summary() {
         List<Component> lines = new ArrayList<>();
-        if (!hasCreature()) { lines.add(Component.translatable("changede.latex_burner.capture_hint")); return lines; }
-        lines.add(Component.translatable("changede.latex_burner.creature", creatureName(creatureType, customName)));
+        if (!hasCreature()) { lines.add(Component.translatable("changed_extra.latex_burner.capture_hint")); return lines; }
+        lines.add(Component.translatable("changed_extra.latex_burner.creature", creatureName(creatureType, customName)));
         var profile = profile();
-        if (profile == null) { lines.add(Component.translatable("changede.latex_burner.unsupported")); return lines; }
+        if (profile == null) { lines.add(Component.translatable("changed_extra.latex_burner.unsupported")); return lines; }
         String grade = profile.speedUnits() < 4 ? "young" : profile.speedUnits() < 6 ? "basic" : profile.speedUnits() < 8 ? "advanced" : "elite";
-        lines.add(Component.translatable("changede.latex_burner.grade", Component.translatable("changede.latex_burner.grade." + grade)));
-        lines.add(Component.translatable("changede.latex_burner.speed", String.format(Locale.ROOT, "%.2f", profile.speed())));
-        lines.add(Component.translatable("changede.latex_burner.heat", Component.translatable("changede.latex_burner.heat." + heat().getSerializedName())));
-        lines.add(Component.translatable("changede.latex_burner.item_time", (itemBurnTicks + 19) / 20));
-        lines.add(Component.translatable("changede.latex_burner.fluid_time", (fluidBurnTicks + 19) / 20));
-        if (!items.getStackInSlot(0).isEmpty()) lines.add(Component.translatable("changede.latex_burner.items", items.getStackInSlot(0).getHoverName(), items.getStackInSlot(0).getCount()));
-        if (!tank.isEmpty()) lines.add(Component.translatable("changede.latex_burner.fluid", tank.getFluid().getDisplayName(), tank.getFluidAmount()));
+        lines.add(Component.translatable("changed_extra.latex_burner.grade", Component.translatable("changed_extra.latex_burner.grade." + grade)));
+        lines.add(Component.translatable("changed_extra.latex_burner.speed", String.format(Locale.ROOT, "%.2f", profile.speed())));
+        lines.add(Component.translatable("changed_extra.latex_burner.heat", Component.translatable("changed_extra.latex_burner.heat." + heat().getSerializedName())));
+        lines.add(Component.translatable("changed_extra.latex_burner.item_time", (itemBurnTicks + 19) / 20));
+        lines.add(Component.translatable("changed_extra.latex_burner.fluid_time", (fluidBurnTicks + 19) / 20));
+        if (!items.getStackInSlot(0).isEmpty()) lines.add(Component.translatable("changed_extra.latex_burner.items", items.getStackInSlot(0).getHoverName(), items.getStackInSlot(0).getCount()));
+        if (!tank.isEmpty()) lines.add(Component.translatable("changed_extra.latex_burner.fluid", tank.getFluid().getDisplayName(), tank.getFluidAmount()));
         return lines;
     }
     @Override public boolean addToGoggleTooltip(List<Component> tooltip, boolean sneaking) { tooltip.addAll(summary()); return true; }

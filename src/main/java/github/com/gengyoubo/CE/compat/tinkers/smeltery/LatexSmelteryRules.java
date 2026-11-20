@@ -84,7 +84,7 @@ public final class LatexSmelteryRules {
         return candidates.get(0).pos();
     }
     private static List<IFluidHandler> tanks(FuelModule module) {
-        if (!(module instanceof LatexFuelAccess access) || !(access.changede$parent() instanceof HeatingStructureBlockEntity parent)
+        if (!(module instanceof LatexFuelAccess access) || !(access.changed_extra$parent() instanceof HeatingStructureBlockEntity parent)
                 || parent.getLevel() == null || parent.getStructure() == null) return List.of();
         List<IFluidHandler> tanks = new ArrayList<>();
         for (BlockPos pos : parent.getStructure().getTanks()) {
@@ -95,7 +95,7 @@ public final class LatexSmelteryRules {
         return tanks;
     }
     public static int temperature(FuelModule module, Fluid fluid) {
-        if (isLatex(fluid) && !((LatexFuelAccess) module).changede$coreReady()) return 0;
+        if (isLatex(fluid) && !((LatexFuelAccess) module).changed_extra$coreReady()) return 0;
         var recipe = MeltingFuelLookup.findFuel(fluid);
         return recipe == null ? 0 : recipe.getTemperature();
     }
@@ -124,7 +124,7 @@ public final class LatexSmelteryRules {
         return FuelModule.FuelInfo.of(new FluidStack(selected, amount), capacity, temperature(module, selected.getFluid()));
     }
     public static List<Component> tooltip(FuelModule module, FuelModule.FuelInfo info, List<Component> original) {
-        if (!(module instanceof LatexFuelAccess access) || !(access.changede$parent() instanceof HeatingStructureBlockEntity)) return original;
+        if (!(module instanceof LatexFuelAccess access) || !(access.changed_extra$parent() instanceof HeatingStructureBlockEntity)) return original;
         List<IFluidHandler> tanks = tanks(module);
         boolean relevant = isLatex(info.getFluid().getFluid());
         int dark = 0, white = 0, moltenDark = 0, moltenWhite = 0;
@@ -138,15 +138,15 @@ public final class LatexSmelteryRules {
         }
         if (!relevant && dark == 0 && white == 0 && moltenDark == 0 && moltenWhite == 0) return original;
         List<Component> result = new ArrayList<>(original);
-        if (isLatex(info.getFluid().getFluid()) && !access.changede$coreReady() && result.size() > 1)
-            result.set(1, Component.translatable("gui.changede.smeltery.requires_core").withStyle(ChatFormatting.RED));
-        if (!info.isEmpty()) result.add(Component.translatable("gui.changede.smeltery.fuel_capacity", info.getTotalAmount(), info.getCapacity()).withStyle(ChatFormatting.GRAY));
-        result.add(Component.translatable("gui.changede.smeltery.latex_amounts", dark, white).withStyle(ChatFormatting.GRAY));
+        if (isLatex(info.getFluid().getFluid()) && !access.changed_extra$coreReady() && result.size() > 1)
+            result.set(1, Component.translatable("gui.changed_extra.smeltery.requires_core").withStyle(ChatFormatting.RED));
+        if (!info.isEmpty()) result.add(Component.translatable("gui.changed_extra.smeltery.fuel_capacity", info.getTotalAmount(), info.getCapacity()).withStyle(ChatFormatting.GRAY));
+        result.add(Component.translatable("gui.changed_extra.smeltery.latex_amounts", dark, white).withStyle(ChatFormatting.GRAY));
         if (moltenDark > 0 || moltenWhite > 0)
-            result.add(Component.translatable("gui.changede.smeltery.molten_latex_amounts", moltenDark, moltenWhite).withStyle(ChatFormatting.GRAY));
-        if (!isLatex(info.getFluid().getFluid()) || access.changede$coreReady() || result.size() <= 1)
-            result.add(Component.translatable(access.changede$coreReady() ? "gui.changede.smeltery.core_ready" : "gui.changede.smeltery.requires_core")
-                    .withStyle(access.changede$coreReady() ? ChatFormatting.GREEN : ChatFormatting.RED));
+            result.add(Component.translatable("gui.changed_extra.smeltery.molten_latex_amounts", moltenDark, moltenWhite).withStyle(ChatFormatting.GRAY));
+        if (!isLatex(info.getFluid().getFluid()) || access.changed_extra$coreReady() || result.size() <= 1)
+            result.add(Component.translatable(access.changed_extra$coreReady() ? "gui.changed_extra.smeltery.core_ready" : "gui.changed_extra.smeltery.requires_core")
+                    .withStyle(access.changed_extra$coreReady() ? ChatFormatting.GREEN : ChatFormatting.RED));
         return result;
     }
 }

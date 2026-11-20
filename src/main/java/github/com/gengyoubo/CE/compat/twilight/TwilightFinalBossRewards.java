@@ -23,9 +23,9 @@ import twilightforest.loot.TFLootTables;
 
 /** Extra rewards are rolled once at death and saved through the native death animation. */
 public final class TwilightFinalBossRewards {
-    private static final String REWARDS = "changede_final_rewards";
-    private static final String CLAIMED = "changede_final_rewards_claimed";
-    public static final ResourceLocation TABLE = ResourceLocation.parse("changede:chests/twilight_final_boss");
+    private static final String REWARDS = "changed_extra_final_rewards";
+    private static final String CLAIMED = "changed_extra_final_rewards_claimed";
+    public static final ResourceLocation TABLE = ResourceLocation.parse("changed_extra:chests/twilight_final_boss");
     private TwilightFinalBossRewards() {}
     public static void prepare(LivingDeathEvent event) {
         var boss = event.getEntity();

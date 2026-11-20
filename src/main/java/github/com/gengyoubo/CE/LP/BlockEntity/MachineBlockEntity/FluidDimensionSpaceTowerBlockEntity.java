@@ -6,7 +6,7 @@ import github.com.gengyoubo.CE.LP.energy.DimensionTowerChannels;
 import github.com.gengyoubo.CE.LP.energy.DimensionTowerChunks;
 import github.com.gengyoubo.CE.LP.energy.DimensionTowerManager;
 import github.com.gengyoubo.CE.LP.init.CELPBlockEntity;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -81,7 +81,7 @@ public final class FluidDimensionSpaceTowerBlockEntity extends BlockEntity {
             if (!anchored) {
                 anchored = true;
                 for (var chunk : DimensionTowerChunks.around(worldPosition.getX(), worldPosition.getZ())) {
-                    ForgeChunkManager.forceChunk(serverLevel, changede.MODID, worldPosition, chunk.x(), chunk.z(), true, true);
+                    ForgeChunkManager.forceChunk(serverLevel, changed_extra.MODID, worldPosition, chunk.x(), chunk.z(), true, true);
                 }
             }
             if (!registered) {
@@ -103,7 +103,7 @@ public final class FluidDimensionSpaceTowerBlockEntity extends BlockEntity {
         if (level instanceof ServerLevel serverLevel && anchored) {
             anchored = false;
             for (var chunk : DimensionTowerChunks.around(worldPosition.getX(), worldPosition.getZ())) {
-                ForgeChunkManager.forceChunk(serverLevel, changede.MODID, worldPosition, chunk.x(), chunk.z(), false, true);
+                ForgeChunkManager.forceChunk(serverLevel, changed_extra.MODID, worldPosition, chunk.x(), chunk.z(), false, true);
             }
         }
     }

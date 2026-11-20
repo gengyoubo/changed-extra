@@ -24,5 +24,5 @@ public enum LatexBurnerJade implements IBlockComponentProvider, IServerDataProvi
             if (component != null) tooltip.add(component);
         }
     }
-    @Override public ResourceLocation getUid() { return ResourceLocation.parse("changede:latex_burner"); }
+    @Override public ResourceLocation getUid() { return ResourceLocation.parse("changed_extra:latex_burner"); }
 }

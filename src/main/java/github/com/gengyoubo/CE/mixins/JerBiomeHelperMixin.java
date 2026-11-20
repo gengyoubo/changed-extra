@@ -16,7 +16,7 @@ public abstract class JerBiomeHelperMixin {
             value = "INVOKE",
             target = "Lnet/minecraft/data/registries/VanillaRegistries;createLookup()Lnet/minecraft/core/HolderLookup$Provider;",
             remap = true), remap = false, require = 3)
-    private static HolderLookup.Provider changede$useLoadedBiomes() {
+    private static HolderLookup.Provider changed_extra$useLoadedBiomes() {
         var connection = Minecraft.getInstance().getConnection();
         return connection != null ? connection.registryAccess() : VanillaRegistries.createLookup();
     }

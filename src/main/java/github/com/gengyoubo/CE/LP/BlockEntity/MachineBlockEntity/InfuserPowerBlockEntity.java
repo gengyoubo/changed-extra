@@ -61,7 +61,7 @@ public class InfuserPowerBlockEntity extends BlockEntity implements WorkbenchEne
     }
 
     @Override
-    public WorkbenchEnergyStorage changede$getWorkbenchEnergy() {
+    public WorkbenchEnergyStorage changed_extra$getWorkbenchEnergy() {
         return energy;
     }
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Mixin(value = AccessorySlots.class, remap = false)
 public abstract class AccessorySlotsSafetyMixin {
     @Inject(method = "getForEntity", at = @At("RETURN"), cancellable = true, remap = false)
-    private static void changede$neverReturnEmptyForAddonCompatibility(
+    private static void changed_extra$neverReturnEmptyForAddonCompatibility(
             LivingEntity livingEntity,
             CallbackInfoReturnable<Optional<AccessorySlots>> cir
     ) {

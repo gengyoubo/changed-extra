@@ -7,7 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class CEMenus {
-    public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changede");
+    public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "changed_extra");
     public static final RegistryObject<MenuType<github.com.gengyoubo.CE.skill.LatexSkillResearchMenu>> LATEX_SKILL_RESEARCH =
             REGISTRY.register("latex_skill_research",()->IForgeMenuType.create(github.com.gengyoubo.CE.skill.LatexSkillResearchMenu::new));
     public static final RegistryObject<MenuType<MachineStatusMenu>> MACHINE_STATUS = REGISTRY.register("machine_status", () -> IForgeMenuType.create(MachineStatusMenu::new));

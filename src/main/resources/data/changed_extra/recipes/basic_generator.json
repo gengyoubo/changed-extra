@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXZ",
+    "XYZ",
+    "XZZ"
+  ],
+  "key": {
+    "X": {
+      "item": "changed:white_latex_goo"
+    },
+    "Y": {
+      "item": "changed:generator"
+    },
+    "Z": {
+      "item": "changed:dark_latex_goo"
+    }
+  },
+  "result": {
+    "item": "changed_extra:basic_generator",
+    "count": 1
+  }
+}

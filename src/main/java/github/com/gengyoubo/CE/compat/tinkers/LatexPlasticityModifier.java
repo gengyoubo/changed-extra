@@ -18,7 +18,7 @@ import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 
 @SuppressWarnings("deprecation")
 public final class LatexPlasticityModifier extends Modifier implements InventoryTickModifierHook {
-    private static final ResourceLocation LAST_REPAIR = ResourceLocation.parse("changede:last_plasticity_repair");
+    private static final ResourceLocation LAST_REPAIR = ResourceLocation.parse("changed_extra:last_plasticity_repair");
     @Override protected void registerHooks(ModuleHookMap.Builder builder) { builder.addHook(this, ModifierHooks.INVENTORY_TICK); }
     @Override public void onInventoryTick(IToolStackView tool, ModifierEntry modifier, Level level, LivingEntity holder,
                                           int slot, boolean selected, boolean correctSlot, ItemStack stack) {

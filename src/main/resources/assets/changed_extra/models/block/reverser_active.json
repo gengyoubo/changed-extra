@@ -1,0 +1,6 @@
+{
+  "parent": "changed_extra:block/reverser",
+  "textures": {
+    "front": "changed_extra:block/reverser_front_on"
+  }
+}

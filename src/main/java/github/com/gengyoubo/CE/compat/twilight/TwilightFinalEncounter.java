@@ -26,10 +26,10 @@ import twilightforest.entity.EnforcedHomePoint;
 
 /** Seven 400-HP segments, using Addon's original forms in a 2/2/3 distribution. */
 public final class TwilightFinalEncounter {
-    public static final String STAGE = "changede_twilight_stage", LOCKED = "changede_twilight_locked";
-    public static final String WAVE = "changede_twilight_guardians", GUARDIAN = "changede_twilight_guardian", OWNER = "changede_twilight_owner";
-    private static final String PREVIOUS_AI = "changede_twilight_previous_no_ai";
-    public static final String ATTACK = "changede_twilight_009_attack";
+    public static final String STAGE = "changed_extra_twilight_stage", LOCKED = "changed_extra_twilight_locked";
+    public static final String WAVE = "changed_extra_twilight_guardians", GUARDIAN = "changed_extra_twilight_guardian", OWNER = "changed_extra_twilight_owner";
+    private static final String PREVIOUS_AI = "changed_extra_twilight_previous_no_ai";
+    public static final String ATTACK = "changed_extra_twilight_009_attack";
     private static final java.util.Set<String> TWILIGHT_BOSSES = java.util.Set.of("naga", "lich", "minoshroom", "knight_phantom",
             "alpha_yeti", "snow_queen", "hydra", "ur_ghast");
     public static final int SEGMENT = 400;
@@ -43,15 +43,15 @@ public final class TwilightFinalEncounter {
     private TwilightFinalEncounter() {}
     public static boolean isFinal(Entity entity) {
         return entity instanceof Experiment009BossEntity && (entity.level().isClientSide
-                ? entity instanceof Twilight009StateAccess access && access.changede$stage() >= 0
+                ? entity instanceof Twilight009StateAccess access && access.changed_extra$stage() >= 0
                 : entity.getPersistentData().getBoolean(TwilightFinalBossCompat.MARKER));
     }
     public static int stage(Experiment009BossEntity boss) {
-        return boss.level().isClientSide ? Math.max(0, ((Twilight009StateAccess) boss).changede$stage())
+        return boss.level().isClientSide ? Math.max(0, ((Twilight009StateAccess) boss).changed_extra$stage())
                 : Math.max(0, Math.min(6, boss.getPersistentData().getInt(STAGE)));
     }
     public static boolean locked(Experiment009BossEntity boss) {
-        return boss.level().isClientSide ? ((Twilight009StateAccess) boss).changede$locked() : boss.getPersistentData().getBoolean(LOCKED);
+        return boss.level().isClientSide ? ((Twilight009StateAccess) boss).changed_extra$locked() : boss.getPersistentData().getBoolean(LOCKED);
     }
     public static int form(int stage) { return stage < 2 ? 1 : stage < 4 ? 2 : 3; }
     public static float floor(Experiment009BossEntity boss) { return TwilightFinalBossCompat.HEALTH - SEGMENT * (stage(boss) + 1); }
@@ -65,7 +65,7 @@ public final class TwilightFinalEncounter {
     }
     private static void sync(Experiment009BossEntity boss) {
         var access = (Twilight009StateAccess) boss;
-        access.changede$setStage(stage(boss)); access.changede$setLocked(locked(boss));
+        access.changed_extra$setStage(stage(boss)); access.changed_extra$setLocked(locked(boss));
         boss.setPhase2(form(stage(boss)) >= 2); boss.setPhase3(form(stage(boss)) == 3);
         // Older CE saves froze AI during a guardian wave. Restore the pre-lock setting once.
         var data = boss.getPersistentData();
@@ -129,7 +129,7 @@ public final class TwilightFinalEncounter {
         for (int i = 0; i < wave.size(); i++) deaths.forget(wave.getCompound(i).getUUID("id"));
         int before = form(stage(boss)); data.putInt(STAGE, stage(boss) + 1); data.putBoolean(LOCKED, false); data.remove(WAVE);
         sync(boss);
-        if (form(stage(boss)) != before) ((Twilight009StateAccess) boss).changede$phaseChanged(phase(boss));
+        if (form(stage(boss)) != before) ((Twilight009StateAccess) boss).changed_extra$phaseChanged(phase(boss));
     }
     public static Experiment009BossEntity.Exp9Phase phase(Experiment009BossEntity boss) {
         return switch (form(stage(boss))) {

@@ -1,0 +1,70 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_latex_bee",
+    "changed:form_latex_moth",
+    "changed:form_latex_stiger"
+  ],
+  "nodes": [
+    {
+      "id": "changed_extra:arthropod_core",
+      "title": "skill.changed_extra.arthropod_core",
+      "description": "skill.changed_extra.arthropod_core.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:common_strength_2"
+      ],
+      "x": -35,
+      "y": 11,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "arthropod",
+          "value": 1
+        }
+      ],
+      "research": "race"
+    },
+    {
+      "id": "changed_extra:arthropod_shell_1",
+      "title": "skill.changed_extra.arthropod_shell_1",
+      "description": "skill.changed_extra.arthropod_shell_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:arthropod_core"
+      ],
+      "x": -36,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:arthropod_shell_2",
+      "title": "skill.changed_extra.arthropod_shell_2",
+      "description": "skill.changed_extra.arthropod_shell_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:arthropod_shell_1"
+      ],
+      "x": -35,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.armor",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

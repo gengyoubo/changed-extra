@@ -42,13 +42,13 @@ public class CESpaceTowerPonderScenes {
         createScene.idle(10);
 
         createScene.overlay().showText(100)
-                .text(I18n.get("changede.ponder.space_tower.text_1"))
+                .text(I18n.get("changed_extra.ponder.space_tower.text_1"))
                 .pointAt(util.vector().topOf(tower))
                 .placeNearTarget();
         createScene.idle(110);
 
         createScene.overlay().showText(100)
-                .text(I18n.get("changede.ponder.space_tower.text_2"))
+                .text(I18n.get("changed_extra.ponder.space_tower.text_2"))
                 .pointAt(util.vector().topOf(tower))
                 .placeNearTarget();
         createScene.idle(110);
@@ -81,7 +81,7 @@ public class CESpaceTowerPonderScenes {
         ), 256.0f);
 
         createScene.overlay().showText(100)
-                .text(I18n.get("changede.ponder.space_tower.text_3"))
+                .text(I18n.get("changed_extra.ponder.space_tower.text_3"))
                 .pointAt(util.vector().topOf(tower))
                 .placeNearTarget();
         createScene.idle(110);
@@ -131,7 +131,7 @@ public class CESpaceTowerPonderScenes {
         createScene.idle(10);
 
         createScene.overlay().showText(100)
-                .text(I18n.get("changede.ponder.space_tower.text_4"))
+                .text(I18n.get("changed_extra.ponder.space_tower.text_4"))
                 .pointAt(util.vector().topOf(tower))
                 .placeNearTarget();
         createScene.idle(110);

@@ -13,16 +13,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "net.ltxprogrammer.changed.world.inventory.InfuserMenu$1", remap = false)
 public abstract class InfuserResultSlotEnergyMixin {
     @Inject(method = {"onTake", "m_142406_"}, at = @At("HEAD"))
-    private void changede$consumeEnergyOnCraft(Player player, ItemStack stack, CallbackInfo ci) {
+    private void changed_extra$consumeEnergyOnCraft(Player player, ItemStack stack, CallbackInfo ci) {
         if (!stack.isEmpty()) {
-            InfuserMenu menu = changede$getMenu();
+            InfuserMenu menu = changed_extra$getMenu();
             if (menu != null) {
                 WorkbenchEnergyRules.consumeInfuserCraft(menu.world, new BlockPos(menu.x, menu.y, menu.z), false);
             }
         }
     }
 
-    private InfuserMenu changede$getMenu() {
+    private InfuserMenu changed_extra$getMenu() {
         try {
             var field = this.getClass().getDeclaredField("this$0");
             field.setAccessible(true);

@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#changed_extra:latex_space",
+  "features": [
+    "changed_extra:ore_morphic_crystal",
+    "changed_extra:ore_morphic_crystal_buried",
+    "changed_extra:ore_morphic_crystal_large"
+  ],
+  "step": "underground_ores"
+}

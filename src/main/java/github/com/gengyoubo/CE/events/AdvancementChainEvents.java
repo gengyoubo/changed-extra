@@ -11,8 +11,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class AdvancementChainEvents {
     private static final ChainStep[] ITEM_CHAIN = {
-            new ChainStep("technology_latex_ingot", "empty_head", "changede:space_tower"),
-            new ChainStep("empty_head", "wonderful_art", "changede:latex_painting_portal")
+            new ChainStep("technology_latex_ingot", "empty_head", "changed_extra:space_tower"),
+            new ChainStep("empty_head", "wonderful_art", "changed_extra:latex_painting_portal")
     };
 
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -55,8 +55,8 @@ public class AdvancementChainEvents {
     private record ChainStep(ResourceLocation parentId, ResourceLocation advancementId, ResourceLocation itemId) {
         private ChainStep(String parentPath, String advancementPath, String itemId) {
             this(
-                    ResourceLocation.fromNamespaceAndPath("changede", parentPath),
-                    ResourceLocation.fromNamespaceAndPath("changede", advancementPath),
+                    ResourceLocation.fromNamespaceAndPath("changed_extra", parentPath),
+                    ResourceLocation.fromNamespaceAndPath("changed_extra", advancementPath),
                     ResourceLocation.parse(itemId)
             );
         }

@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "panel": "changed_extra:block/advanced_fission_cooling",
+    "casing": "changed_extra:block/fission_casing",
+    "particle": "#casing",
+    "down": "#casing",
+    "up": "#panel",
+    "north": "#panel",
+    "south": "#panel",
+    "east": "#panel",
+    "west": "#panel"
+  }
+}

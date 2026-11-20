@@ -5,7 +5,7 @@ import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = "changede")
+@Mod.EventBusSubscriber(modid = "changed_extra")
 public final class LatexSpearCombatEvents {
     @SubscribeEvent public static void knockback(LivingKnockBackEvent event) {
         // Damage's built-in knockback would otherwise bypass fatigue or double the spear's impulse.

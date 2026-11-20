@@ -1,0 +1,12 @@
+{
+  "parent": "changed_extra:technology_latex_ingot",
+  "display": {
+    "icon": { "item": "changed_extra:electric_furnace" },
+    "title": { "translate": "advancements.changed_extra.technology_electric_furnace.title" },
+    "description": { "translate": "advancements.changed_extra.technology_electric_furnace.description" },
+    "frame": "task", "show_toast": true, "announce_to_chat": true, "hidden": false
+  },
+  "criteria": {
+    "electric_furnace": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "items": ["changed_extra:electric_furnace"] }] } }
+  }
+}

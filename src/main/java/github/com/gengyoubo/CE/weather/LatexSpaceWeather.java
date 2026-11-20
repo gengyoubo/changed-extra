@@ -7,19 +7,19 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
 public final class LatexSpaceWeather {
-    public static final ResourceLocation DIMENSION = ResourceLocation.fromNamespaceAndPath("changede", "latex_space");
+    public static final ResourceLocation DIMENSION = ResourceLocation.fromNamespaceAndPath("changed_extra", "latex_space");
     public static final net.minecraft.resources.ResourceKey<net.minecraft.world.damagesource.DamageType> WHITE_FOG_DAMAGE =
-            net.minecraft.resources.ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath("changede", "white_fog"));
+            net.minecraft.resources.ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath("changed_extra", "white_fog"));
     public static final TagKey<Biome> WHITE_BIOMES = TagKey.create(Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath("changede", "white_latex_weather"));
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "white_latex_weather"));
     public static final TagKey<Biome> DARK_BIOMES = TagKey.create(Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath("changede", "dark_latex_weather"));
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "dark_latex_weather"));
 
     private LatexSpaceWeather() { }
     public static boolean isWhite(Holder<Biome> biome) { return biome.is(WHITE_BIOMES); }
     public static boolean isDark(Holder<Biome> biome) { return biome.is(DARK_BIOMES); }
     public static boolean isDarkForest(Holder<Biome> biome) {
         return biome.unwrapKey().map(key -> key.location().equals(
-                ResourceLocation.fromNamespaceAndPath("changede", "dark_latex_forest"))).orElse(false);
+                ResourceLocation.fromNamespaceAndPath("changed_extra", "dark_latex_forest"))).orElse(false);
     }
 }

@@ -17,8 +17,8 @@ import twilightforest.util.LandmarkUtil;
 
 /** Only castle-spawned Experiment 009 bosses receive the final encounter health. */
 public final class TwilightFinalBossCompat {
-    public static final String MARKER = "changede_twilight_final_boss";
-    public static final String HOME = "changede_twilight_final_home";
+    public static final String MARKER = "changed_extra_twilight_final_boss";
+    public static final String HOME = "changed_extra_twilight_final_home";
     public static final float HEALTH = 2800;
     private TwilightFinalBossCompat() {}
     public static void initialize(net.minecraftforge.eventbus.api.IEventBus bus) {
@@ -34,8 +34,8 @@ public final class TwilightFinalBossCompat {
         MinecraftForge.EVENT_BUS.addListener(TwilightFinalEncounter::experience);
         bus.addListener((net.minecraftforge.event.AddPackFindersEvent event) -> {
             if (event.getPackType() != net.minecraft.server.packs.PackType.SERVER_DATA) return;
-            var path = net.minecraftforge.fml.ModList.get().getModFileById("changede").getFile().findResource("resourcepacks", "twilight_final");
-            var pack = net.minecraft.server.packs.repository.Pack.readMetaAndCreate("changede:twilight_final",
+            var path = net.minecraftforge.fml.ModList.get().getModFileById("changed_extra").getFile().findResource("resourcepacks", "twilight_final");
+            var pack = net.minecraft.server.packs.repository.Pack.readMetaAndCreate("changed_extra:twilight_final",
                     net.minecraft.network.chat.Component.literal("Changed Extra Final Castle"), true,
                     id -> new net.minecraftforge.resource.PathPackResources(id, true, path), net.minecraft.server.packs.PackType.SERVER_DATA,
                     net.minecraft.server.packs.repository.Pack.Position.BOTTOM, net.minecraft.server.packs.repository.PackSource.BUILT_IN);
@@ -73,7 +73,7 @@ public final class TwilightFinalBossCompat {
         level.getChunkAt(home);
         LandmarkUtil.markStructureConquered(level, GlobalPos.of(level.dimension(), home), TFStructures.FINAL_CASTLE, true);
         if (event.getSource().getEntity() instanceof net.minecraft.server.level.ServerPlayer player) {
-            var advancement = level.getServer().getAdvancements().getAdvancement(net.minecraft.resources.ResourceLocation.parse("changede:twilight_final_boss"));
+            var advancement = level.getServer().getAdvancements().getAdvancement(net.minecraft.resources.ResourceLocation.parse("changed_extra:twilight_final_boss"));
             if (advancement != null) player.getAdvancements().award(advancement, "defeated");
         }
     }

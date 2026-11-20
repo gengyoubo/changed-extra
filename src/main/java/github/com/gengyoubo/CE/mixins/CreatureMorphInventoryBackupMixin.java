@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = CreatureMorphContinuity.class, remap = false)
 public abstract class CreatureMorphInventoryBackupMixin {
     @Inject(method = "transferInternal", at = @At("HEAD"))
-    private static void changede$backupBeforeMorph(ChangedEntity previous, ChangedEntity replacement,
+    private static void changed_extra$backupBeforeMorph(ChangedEntity previous, ChangedEntity replacement,
                                                    ServerLevel level, CallbackInfo ci) {
         CreatureInventoryBackup.checkpoint(previous, "before_morph");
     }
 
     @Inject(method = "transferInternal", at = @At("TAIL"))
-    private static void changede$transferInventoryBackups(ChangedEntity previous, ChangedEntity replacement,
+    private static void changed_extra$transferInventoryBackups(ChangedEntity previous, ChangedEntity replacement,
                                                          ServerLevel level, CallbackInfo ci) {
         CreatureInventoryBackup.transfer(previous, replacement);
     }

@@ -28,9 +28,9 @@ public final class SkillBranchLayout {
         public Layout { nodes=Map.copyOf(nodes); branches=Map.copyOf(branches); groups=Map.copyOf(groups); }
     }
     private SkillBranchLayout() { }
-    private static String name(String branch) { return branch.startsWith("changede:") ? branch.substring(9) : branch; }
+    private static String name(String branch) { return branch.startsWith("changed_extra:") ? branch.substring(9) : branch; }
     private static String group(String branch) {
-        return Set.of("changede:insect","changede:arachnid").contains(branch) ? "changede:arthropod" : branch;
+        return Set.of("changed_extra:insect","changed_extra:arachnid").contains(branch) ? "changed_extra:arthropod" : branch;
     }
     public static Side preferredSide(String branch, double originalX) {
         String name=name(group(branch));

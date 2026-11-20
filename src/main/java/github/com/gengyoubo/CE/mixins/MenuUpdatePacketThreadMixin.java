@@ -17,7 +17,7 @@ public abstract class MenuUpdatePacketThreadMixin {
     @Redirect(method = "handle", at = @At(value = "INVOKE",
             target = "Ljava/util/concurrent/CompletableFuture;thenAccept(Ljava/util/function/Consumer;)Ljava/util/concurrent/CompletableFuture;"),
             remap = false)
-    private CompletableFuture<Void> changede$dispatchMenuUpdate(CompletableFuture<Level> future, Consumer<Level> update,
+    private CompletableFuture<Void> changed_extra$dispatchMenuUpdate(CompletableFuture<Level> future, Consumer<Level> update,
             NetworkEvent.Context context, CompletableFuture<Level> levelFuture, Executor sidedExecutor) {
         return future.thenAcceptAsync(update, sidedExecutor);
     }

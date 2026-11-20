@@ -29,7 +29,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = "changed_extra", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LatexSpaceWeatherEvents {
     private static final double RAIN_MIN_CHANCE_PER_SECOND = 0.05;
     private static final double RAIN_MAX_CHANCE_PER_SECOND = 0.50;
@@ -39,11 +39,11 @@ public final class LatexSpaceWeatherEvents {
     private static final float RAIN_DAMAGE_PER_SECOND = 1.0F;
     private static final float THUNDER_DAMAGE_PER_SECOND = 2.0F;
     private static final ResourceKey<DamageType> WEATHER_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
-            ResourceLocation.fromNamespaceAndPath("changede", "latex_weather"));
-    private static final ResourceLocation WEATHER_TRANSFUR = ResourceLocation.fromNamespaceAndPath("changede", "weather_transfur");
-    private static final ResourceLocation WEATHER_DEATH = ResourceLocation.fromNamespaceAndPath("changede", "weather_death");
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "latex_weather"));
+    private static final ResourceLocation WEATHER_TRANSFUR = ResourceLocation.fromNamespaceAndPath("changed_extra", "weather_transfur");
+    private static final ResourceLocation WEATHER_DEATH = ResourceLocation.fromNamespaceAndPath("changed_extra", "weather_death");
     private static final TagKey<EntityType<?>> WHITE_FORMS = TagKey.create(Registries.ENTITY_TYPE,
-            ResourceLocation.fromNamespaceAndPath("changede", "white_latex_weather_immune"));
+            ResourceLocation.fromNamespaceAndPath("changed_extra", "white_latex_weather_immune"));
 
     private LatexSpaceWeatherEvents() { }
 

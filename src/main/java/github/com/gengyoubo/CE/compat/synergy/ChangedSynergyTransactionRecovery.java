@@ -1,6 +1,6 @@
 package github.com.gengyoubo.CE.compat.synergy;
 
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.nbt.CompoundTag;
@@ -66,7 +66,7 @@ public final class ChangedSynergyTransactionRecovery {
             // source respawning, or its broader abandon/relationship cleanup paths.
             ChangedSynergyNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player),
                     new AbsorptionNegotiationStatePacket(false));
-            changede.LOGGER.info("Removed stranded Changed: Synergy absorption transaction for {}",
+            changed_extra.LOGGER.info("Removed stranded Changed: Synergy absorption transaction for {}",
                     player.getGameProfile().getName());
         }
     }

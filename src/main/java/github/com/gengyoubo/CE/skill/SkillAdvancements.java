@@ -6,10 +6,10 @@ import net.minecraft.server.level.ServerPlayer;
 
 /** Milestones derive from persistent, successfully learned nodes, never UI clicks or research. */
 public final class SkillAdvancements {
-    private static final ResourceLocation START=ResourceLocation.parse("changede:latex_mastery");
-    private static final ResourceLocation PAGE=ResourceLocation.parse("changede:changed_skills");
-    private static final ResourceLocation DISTINCT=ResourceLocation.parse("changede:skill_distinction");
-    private static final ResourceLocation EVOLUTION=ResourceLocation.parse("changede:skill_evolution");
+    private static final ResourceLocation START=ResourceLocation.parse("changed_extra:latex_mastery");
+    private static final ResourceLocation PAGE=ResourceLocation.parse("changed_extra:changed_skills");
+    private static final ResourceLocation DISTINCT=ResourceLocation.parse("changed_extra:skill_distinction");
+    private static final ResourceLocation EVOLUTION=ResourceLocation.parse("changed_extra:skill_evolution");
     private SkillAdvancements() { }
     public static void reconcile(ServerPlayer player) {
         var learned=LatexSkills.unlocked(player);

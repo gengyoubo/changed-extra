@@ -42,7 +42,7 @@ public final class CEWoodFamilies {
         private Family(String name, RegistryObject<Block> log, RegistryObject<Block> planks) {
             this.name = name;
             this.log = log;
-            woodType = WoodType.register(new WoodType("changede:" + name, BlockSetType.OAK));
+            woodType = WoodType.register(new WoodType("changed_extra:" + name, BlockSetType.OAK));
             add("wood", () -> new RotatedPillarBlock(props(Blocks.OAK_WOOD)));
             add("stripped_log", () -> new RotatedPillarBlock(props(Blocks.STRIPPED_OAK_LOG)));
             add("stripped_wood", () -> new RotatedPillarBlock(props(Blocks.STRIPPED_OAK_WOOD)));

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "YYY",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "changed_extra:white_latex_ingot"
+    },
+    "Y": {
+      "item": "changed_extra:basic_wire"
+    }
+  },
+  "result": {
+    "item": "changed_extra:wlp_pipe",
+    "count": 3
+  }
+}

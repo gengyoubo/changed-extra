@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class LatexCreativeExtranalbodyCraftTableBlock extends BaseEntityBlock implements EntityBlock {
-    private static final Component TITLE = Component.translatable("block.changede.latexcreative_extranalbody_craft_table_block");
+    private static final Component TITLE = Component.translatable("block.changed_extra.latexcreative_extranalbody_craft_table_block");
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public LatexCreativeExtranalbodyCraftTableBlock(Properties properties) {

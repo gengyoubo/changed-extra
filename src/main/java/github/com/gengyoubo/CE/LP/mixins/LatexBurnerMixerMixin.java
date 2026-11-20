@@ -19,31 +19,31 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = MechanicalMixerBlockEntity.class, remap = false)
 public abstract class LatexBurnerMixerMixin extends BasinOperatingBlockEntity {
-    @Unique private final LatexBurnerRules.Progress changede$burnerProgress = new LatexBurnerRules.Progress();
-    @Unique private Object changede$previousRecipe;
+    @Unique private final LatexBurnerRules.Progress changed_extra$burnerProgress = new LatexBurnerRules.Progress();
+    @Unique private Object changed_extra$previousRecipe;
     protected LatexBurnerMixerMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) { super(type, pos, state); }
     @Inject(method = "tick", at = @At("HEAD"))
-    private void changede$resetBurnerProgress(CallbackInfo callback) {
+    private void changed_extra$resetBurnerProgress(CallbackInfo callback) {
         MechanicalMixerBlockEntity mixer = (MechanicalMixerBlockEntity) (Object) this;
-        if (currentRecipe != changede$previousRecipe || !mixer.running || mixer.processingTicks < 0) changede$burnerProgress.reset();
-        changede$previousRecipe = currentRecipe;
+        if (currentRecipe != changed_extra$previousRecipe || !mixer.running || mixer.processingTicks < 0) changed_extra$burnerProgress.reset();
+        changed_extra$previousRecipe = currentRecipe;
     }
 
     @Redirect(method = "tick", at = @At(value = "FIELD",
             target = "Lcom/simibubi/create/content/kinetics/mixer/MechanicalMixerBlockEntity;processingTicks:I",
             opcode = Opcodes.PUTFIELD, ordinal = 1))
-    private void changede$advanceBurnerRecipe(MechanicalMixerBlockEntity mixer, int decremented) {
+    private void changed_extra$advanceBurnerRecipe(MechanicalMixerBlockEntity mixer, int decremented) {
         if (level == null || level.isClientSide || !(currentRecipe instanceof BasinRecipe recipe)
                 || recipe.getRequiredHeat() == HeatCondition.NONE) {
-            changede$burnerProgress.reset(); mixer.processingTicks = decremented; return;
+            changed_extra$burnerProgress.reset(); mixer.processingTicks = decremented; return;
         }
         var basin = getBasin().orElse(null);
         if (basin == null || !(level.getBlockEntity(basin.getBlockPos().below()) instanceof LatexBurnerBlockEntity burner)) {
-            changede$burnerProgress.reset(); mixer.processingTicks = decremented; return;
+            changed_extra$burnerProgress.reset(); mixer.processingTicks = decremented; return;
         }
         if (getSpeed() == 0 || !isSpeedRequirementFulfilled() || !recipe.getRequiredHeat().testBlazeBurner(burner.heat()) || !BasinRecipe.match(basin, recipe)) {
-            changede$burnerProgress.reset(); mixer.processingTicks = decremented + 1; return;
+            changed_extra$burnerProgress.reset(); mixer.processingTicks = decremented + 1; return;
         }
-        mixer.processingTicks = changede$burnerProgress.advance(decremented + 1, burner.profile().speedUnits());
+        mixer.processingTicks = changed_extra$burnerProgress.advance(decremented + 1, burner.profile().speedUnits());
     }
 }

@@ -1,0 +1,185 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_dark_dragon",
+    "changed:form_latex_blue_dragon",
+    "changed:form_latex_golden_dragon",
+    "changed:form_latex_pink_wyvern",
+    "changed:form_latex_pink_yuin_dragon",
+    "changed:form_latex_red_dragon",
+    "changed:form_latex_traffic_cone_dragon",
+    "changed_addon:form_latex_dragon_snow_leopard_shark"
+  ],
+  "nodes": [
+    {
+      "id": "changed_extra:dragon_core",
+      "title": "skill.changed_extra.dragon_core",
+      "description": "skill.changed_extra.dragon_core.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:common_strength_2"
+      ],
+      "x": -27,
+      "y": 11,
+      "key": true,
+      "rewards": [],
+      "research": "race"
+    },
+    {
+      "id": "changed_extra:dragon_fortune_1",
+      "title": "skill.changed_extra.dragon_fortune_1",
+      "description": "skill.changed_extra.dragon_fortune_1.description",
+      "cost": 200,
+      "parents": [
+        "changed_extra:dragon_core"
+      ],
+      "x": -26,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "dragon_fortune",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dragon_looting_1",
+      "title": "skill.changed_extra.dragon_looting_1",
+      "description": "skill.changed_extra.dragon_looting_1.description",
+      "cost": 200,
+      "parents": [
+        "changed_extra:dragon_core"
+      ],
+      "x": -28,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "dragon_looting",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dragon_ore_cache",
+      "title": "skill.changed_extra.dragon_ore_cache",
+      "description": "skill.changed_extra.dragon_ore_cache.description",
+      "cost": 300,
+      "parents": [
+        "changed_extra:dragon_fortune_1"
+      ],
+      "x": -26,
+      "y": 14,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "dragon_ore",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dragon_hunt_cache",
+      "title": "skill.changed_extra.dragon_hunt_cache",
+      "description": "skill.changed_extra.dragon_hunt_cache.description",
+      "cost": 250,
+      "parents": [
+        "changed_extra:dragon_looting_1"
+      ],
+      "x": -28,
+      "y": 15,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "dragon_hunt",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dragon_scales_1",
+      "title": "skill.changed_extra.dragon_scales_1",
+      "description": "skill.changed_extra.dragon_scales_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:dragon_core"
+      ],
+      "x": -28,
+      "y": 16,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.armor_toughness",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dragon_scales_2",
+      "title": "skill.changed_extra.dragon_scales_2",
+      "description": "skill.changed_extra.dragon_scales_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:dragon_scales_1"
+      ],
+      "x": -27,
+      "y": 17,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.armor_toughness",
+          "amount": 0.5,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dragon_health_1",
+      "title": "skill.changed_extra.dragon_health_1",
+      "description": "skill.changed_extra.dragon_health_1.description",
+      "cost": 50,
+      "parents": [
+        "changed_extra:dragon_core"
+      ],
+      "x": -28,
+      "y": 18,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:dragon_health_2",
+      "title": "skill.changed_extra.dragon_health_2",
+      "description": "skill.changed_extra.dragon_health_2.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:dragon_health_1"
+      ],
+      "x": -27,
+      "y": 19,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 1,
+          "operation": "addition"
+        }
+      ]
+    }
+  ]
+}

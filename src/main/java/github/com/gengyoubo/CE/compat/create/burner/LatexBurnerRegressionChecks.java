@@ -47,16 +47,16 @@ public final class LatexBurnerRegressionChecks {
     private static void check(boolean condition, String message) {
         if (!condition) throw new AssertionError(message);
         assertions++;
-        github.com.gengyoubo.CE.changede.LOGGER.info("BURNER PASS: {}", message);
+        github.com.gengyoubo.CE.changed_extra.LOGGER.info("BURNER PASS: {}", message);
     }
     public static void started(ServerStartedEvent event) {
         try {
             check(event.getServer().getPlayerCount() == 0, "Disposable test server has no players");
             rules(); captureAndFuel(event.getServer().overworld()); captureDelivery(event.getServer().overworld()); mixers(event.getServer().overworld());
             Files.writeString(Path.of("latex-burner-checks.txt"), "PASS: " + assertions + " assertions\n");
-            github.com.gengyoubo.CE.changede.LOGGER.info("LATEX BURNER CHECKS PASSED: {} assertions", assertions);
+            github.com.gengyoubo.CE.changed_extra.LOGGER.info("LATEX BURNER CHECKS PASSED: {} assertions", assertions);
         } catch (Throwable error) {
-            github.com.gengyoubo.CE.changede.LOGGER.error("LATEX BURNER CHECKS FAILED", error);
+            github.com.gengyoubo.CE.changed_extra.LOGGER.error("LATEX BURNER CHECKS FAILED", error);
             try { Files.writeString(Path.of("latex-burner-checks.txt"), "FAIL: " + error + "\n"); }
             catch (Exception ignored) { }
         } finally { event.getServer().execute(() -> event.getServer().halt(false)); }
@@ -109,10 +109,10 @@ public final class LatexBurnerRegressionChecks {
         var creature = (net.minecraft.world.entity.LivingEntity) type.create(level);
         creature.setPos(POS.getX(), POS.getY(), POS.getZ()); level.addFreshEntity(creature);
         fake.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(LatexBurnerCompat.EMPTY.get()));
-        creature.getPersistentData().putUUID("changede_maid_work_owner", fake.getUUID());
+        creature.getPersistentData().putUUID("changed_extra_maid_work_owner", fake.getUUID());
         check(LatexBurnerCapture.capture(fake.getMainHandItem(), fake, creature, InteractionHand.MAIN_HAND) == InteractionResult.FAIL
                 && !creature.isRemoved(), "Working creature rejected without losing entity or cage");
-        creature.getPersistentData().remove("changede_maid_work_owner");
+        creature.getPersistentData().remove("changed_extra_maid_work_owner");
         check(fake.interactOn(creature, InteractionHand.MAIN_HAND) == InteractionResult.SUCCESS
                 && creature.isRemoved() && fake.getMainHandItem().is(LatexBurnerCompat.FILLED.get()), "Survival right-click retains the filled cage after vanilla interaction cleanup");
         CompoundTag captured = fake.getMainHandItem().getTagElement("BlockEntityTag").copy();

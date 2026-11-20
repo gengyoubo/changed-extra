@@ -1,0 +1,15 @@
+{
+  "parent": "changed_extra:changed_technology",
+  "display": {
+    "icon": { "item": "changed_extra:latex_spear" },
+    "title": { "translate": "advancements.changed_extra.aerial_assassin.title" },
+    "description": { "translate": "advancements.changed_extra.aerial_assassin.description" },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "spear_one_shot": { "trigger": "minecraft:impossible" }
+  }
+}

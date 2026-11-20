@@ -38,7 +38,7 @@ public final class GasTechnologyChecks {
     private static long decay;
     private static void check(boolean condition, String message) {
         if (!condition) throw new AssertionError(message);
-        checks++; github.com.gengyoubo.CE.changede.LOGGER.info("GAS PASS: {}", message);
+        checks++; github.com.gengyoubo.CE.changed_extra.LOGGER.info("GAS PASS: {}", message);
     }
     public static void started(ServerStartedEvent event) {
         server = event.getServer();
@@ -157,13 +157,13 @@ public final class GasTechnologyChecks {
     private static void recipes() {
         var manager = server.getRecipeManager();
         for (var entry : GasCompat.BASIC_GASES.entrySet()) {
-            check(MekanismAPI.gasRegistry().containsKey(ResourceLocation.parse("changede:" + entry.getKey())), "Basic gas registered: " + entry.getKey());
-            var recipe = manager.byKey(ResourceLocation.parse("changede:gas/rotary/" + entry.getKey()));
+            check(MekanismAPI.gasRegistry().containsKey(ResourceLocation.parse("changed_extra:" + entry.getKey())), "Basic gas registered: " + entry.getKey());
+            var recipe = manager.byKey(ResourceLocation.parse("changed_extra:gas/rotary/" + entry.getKey()));
             check(recipe.isPresent() && recipe.get() instanceof mekanism.api.recipes.RotaryRecipe rotary && rotary.hasFluidToGas() && rotary.hasGasToFluid(), "Bidirectional Changed fluid conversion: " + entry.getKey());
         }
         for (String base : new String[]{"white_latex_gas", "dark_latex_gas"}) for (String species : new String[]{"skunk_gas", "tiger_gas", "wolf_gas"})
-            check(manager.byKey(ResourceLocation.parse("changede:gas/infusing/" + species + "_from_" + base)).isPresent(), "Gas synthesis recipe: " + base + "/" + species);
-        var recipe = (ReversingRecipe) manager.byKey(ResourceLocation.parse("changede:reversing/spent_nuclear_waste_to_fissile_fuel")).orElseThrow();
+            check(manager.byKey(ResourceLocation.parse("changed_extra:gas/infusing/" + species + "_from_" + base)).isPresent(), "Gas synthesis recipe: " + base + "/" + species);
+        var recipe = (ReversingRecipe) manager.byKey(ResourceLocation.parse("changed_extra:reversing/spent_nuclear_waste_to_fissile_fuel")).orElseThrow();
         check(recipe.ticks() == 20 && recipe.whiteRate() == 20 && recipe.darkRate() == 20, "Approved reverse defaults loaded from JSON");
         check(!recipe.getInput().testType(MekanismGases.NUCLEAR_WASTE.get()), "Ordinary nuclear waste cannot bypass upstream processing");
         var buffer = new FriendlyByteBuf(Unpooled.buffer());
@@ -172,7 +172,7 @@ public final class GasTechnologyChecks {
             var restored = recipe.getSerializer().fromNetwork(recipe.getId(), buffer);
             check(recipe.signature().equals(restored.signature()), "Network preserves gas quantities, time and both energy costs");
         } finally { buffer.release(); }
-        for (String id : new String[]{"reverser", "basic_gas_pipe"}) check(manager.byKey(ResourceLocation.parse("changede:gas/" + id)).isPresent(), "Machine crafting recipe: " + id);
+        for (String id : new String[]{"reverser", "basic_gas_pipe"}) check(manager.byKey(ResourceLocation.parse("changed_extra:gas/" + id)).isPresent(), "Machine crafting recipe: " + id);
     }
     private static void persistence(ServerLevel level, ReverserBlockEntity source) {
         source.receiveTypedEnergy(LatexEnergyType.WLP, 90_000, null); source.receiveTypedEnergy(LatexEnergyType.DLP, 80_000, null);
@@ -206,7 +206,7 @@ public final class GasTechnologyChecks {
         MekanismConfig.general.radioactiveWasteBarrelDecayAmount.set(decay);
         try { Files.writeString(Path.of("gas-checks.txt"), error == null ? "PASS: " + checks + " assertions\n" : "FAIL: " + error + "\n"); }
         catch (Exception ignored) {}
-        if (error != null) github.com.gengyoubo.CE.changede.LOGGER.error("GAS TECHNOLOGY CHECKS FAILED", error);
+        if (error != null) github.com.gengyoubo.CE.changed_extra.LOGGER.error("GAS TECHNOLOGY CHECKS FAILED", error);
         server.execute(() -> server.halt(false));
     }
     private GasTechnologyChecks() {}

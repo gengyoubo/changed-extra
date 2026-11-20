@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class LatexSpearMovementMixin {
     @Redirect(method = {"aiStep", "canStartSprinting"}, at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/player/LocalPlayer;isUsingItem()Z"))
-    private boolean changede$spearAllowsRunning(LocalPlayer player) {
+    private boolean changed_extra$spearAllowsRunning(LocalPlayer player) {
         return player.isUsingItem() && !(player.getUseItem().getItem() instanceof LatexSpearItem);
     }
 }

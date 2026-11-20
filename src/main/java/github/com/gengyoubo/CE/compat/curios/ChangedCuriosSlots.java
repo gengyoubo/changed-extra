@@ -35,7 +35,7 @@ import top.theillusivec4.curios.common.slottype.SlotType;
 
 /** Adds missing slot types after Curios has merged all datapacks and configuration. */
 public final class ChangedCuriosSlots {
-    private static final ResourceLocation VALIDATOR = ResourceLocation.fromNamespaceAndPath("changede", "changed_accessory");
+    private static final ResourceLocation VALIDATOR = ResourceLocation.fromNamespaceAndPath("changed_extra", "changed_accessory");
 
     static void initialize(IEventBus modBus) {
         CuriosApi.registerCurioPredicate(VALIDATOR,
@@ -71,7 +71,7 @@ public final class ChangedCuriosSlots {
     public static void installSlots() {
         var slots = new LinkedHashMap<>(CuriosSlotManager.SERVER.getSlots());
         var accessor = (CuriosEntityManagerAccessor) CuriosEntityManager.SERVER;
-        var entities = new LinkedHashMap<>(accessor.changede$getEntitySlots());
+        var entities = new LinkedHashMap<>(accessor.changed_extra$getEntitySlots());
         var playerSlots = new LinkedHashMap<>(entities.getOrDefault(EntityType.PLAYER, Map.of()));
         for (var type : ChangedRegistry.ACCESSORY_SLOTS.get().getValues()) {
             // Prefer an alias already assigned to players, then an existing global type.
@@ -90,9 +90,9 @@ public final class ChangedCuriosSlots {
             slots.put(id, resolved);
             playerSlots.put(id, resolved);
         }
-        ((CuriosSlotManagerAccessor) CuriosSlotManager.SERVER).changede$setSlots(Map.copyOf(slots));
+        ((CuriosSlotManagerAccessor) CuriosSlotManager.SERVER).changed_extra$setSlots(Map.copyOf(slots));
         entities.put(EntityType.PLAYER, Map.copyOf(playerSlots));
-        accessor.changede$setEntitySlots(Map.copyOf(entities));
+        accessor.changed_extra$setEntitySlots(Map.copyOf(entities));
     }
 
     public static Optional<AccessorySlotType> typeFor(String identifier, ItemStack stack) {

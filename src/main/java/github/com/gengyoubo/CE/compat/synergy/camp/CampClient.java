@@ -11,7 +11,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public final class CampClient {
     static void initialize(IEventBus bus) { bus.addListener(CampClient::setup); MinecraftForge.EVENT_BUS.register(CampClient.class); }
     @SubscribeEvent public static void render(RenderLivingEvent.Pre<?, ?> event) {
-        if (event.getEntity().getPersistentData().getBoolean("changede_camp_hidden")) event.setCanceled(true);
+        if (event.getEntity().getPersistentData().getBoolean("changed_extra_camp_hidden")) event.setCanceled(true);
     }
     private static void setup(FMLClientSetupEvent event) { event.enqueueWork(() -> MenuScreens.register(LatexCampfireCompat.MENU.get(), LatexCampfireScreen::new)); }
     static void snapshot(CampNetwork.Snapshot packet) {
@@ -25,6 +25,6 @@ public final class CampClient {
         var level = Minecraft.getInstance().level;
         if (level == null) return;
         var entity = level.getEntity(packet.entity());
-        if (entity != null && entity.getUUID().equals(packet.id())) entity.getPersistentData().putBoolean("changede_camp_hidden", packet.hidden());
+        if (entity != null && entity.getUUID().equals(packet.id())) entity.getPersistentData().putBoolean("changed_extra_camp_hidden", packet.hidden());
     }
 }

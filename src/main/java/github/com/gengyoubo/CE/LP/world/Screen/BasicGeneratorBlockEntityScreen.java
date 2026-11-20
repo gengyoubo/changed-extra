@@ -33,7 +33,7 @@ public class BasicGeneratorBlockEntityScreen extends AbstractContainerScreen<Bas
 
     @Override protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
         graphics.drawString(font, title, 10, 6, MachineGuiStyle.TITLE, false);
-        graphics.drawString(font, Component.translatable("gui.changede.machine.fuel"), 70, 26, MachineGuiStyle.LABEL, false);
+        graphics.drawString(font, Component.translatable("gui.changed_extra.machine.fuel"), 70, 26, MachineGuiStyle.LABEL, false);
         graphics.drawString(font, playerInventoryTitle, 35, 80, MachineGuiStyle.LABEL, false);
     }
 
@@ -57,6 +57,6 @@ public class BasicGeneratorBlockEntityScreen extends AbstractContainerScreen<Bas
 
     private void updateRedstoneModeButton() {
         if (redstoneModeButton != null) redstoneModeButton.setMessage(Component.translatable(
-                "gui.changede.redstone." + menu.getRedstoneMode().name().toLowerCase(Locale.ROOT)));
+                "gui.changed_extra.redstone." + menu.getRedstoneMode().name().toLowerCase(Locale.ROOT)));
     }
 }

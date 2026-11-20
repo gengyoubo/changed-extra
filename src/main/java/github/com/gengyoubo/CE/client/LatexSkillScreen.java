@@ -31,7 +31,7 @@ import java.util.*;
 public final class LatexSkillScreen extends Screen {
     private static final int COLUMN = 150, ROW = 64, TOP = 36;
     /** Node frames from tools/generate_machine_gui.py: greyscale frames plus white accents tinted per state. */
-    private static final ResourceLocation NODES = ResourceLocation.fromNamespaceAndPath("changede", "textures/gui/skill_nodes.png");
+    private static final ResourceLocation NODES = ResourceLocation.fromNamespaceAndPath("changed_extra", "textures/gui/skill_nodes.png");
     private static final int ATLAS_W = 296, ATLAS_H = 164, SMALL_W = 40, SMALL_H = 32, KEY_W = 148, KEY_H = 44;
     private static final int PAW_U = 240, PAW_W = 12, PAW_H = 11;
     private static final List<String> MOTIFS = List.of("grid", "latex", "wings");
@@ -49,7 +49,7 @@ public final class LatexSkillScreen extends Screen {
     private List<SkillRegion> layoutRegions = List.of();
 
     public LatexSkillScreen(Screen parent) {
-        super(Component.translatable("screen.changede.skills.title"));
+        super(Component.translatable("screen.changed_extra.skills.title"));
         this.parent = parent;
     }
 
@@ -136,7 +136,7 @@ public final class LatexSkillScreen extends Screen {
 
     @Override
     protected void init() {
-        addRenderableWidget(Button.builder(Component.translatable("screen.changede.skills.next_branch"), b -> {
+        addRenderableWidget(Button.builder(Component.translatable("screen.changed_extra.skills.next_branch"), b -> {
             var keys=nodes().stream().filter(n->n.getBoolean("key")).toList();
             if(keys.isEmpty())return;
             int nearest=0; double distance=Double.MAX_VALUE;
@@ -149,7 +149,7 @@ public final class LatexSkillScreen extends Screen {
             panX=width/2.0-key.getDouble("x")*COLUMN*zoom;
             panY=TOP+50-key.getInt("y")*ROW*zoom;
         }).bounds(6,6,70,20).build());
-        addRenderableWidget(Button.builder(Component.translatable("screen.changede.skills.center"), b -> centerRoot())
+        addRenderableWidget(Button.builder(Component.translatable("screen.changed_extra.skills.center"), b -> centerRoot())
                 .bounds(width - 64, 6, 58, 20).build());
         centerRoot();
     }
@@ -397,50 +397,50 @@ public final class LatexSkillScreen extends Screen {
     private Component requirement(CompoundTag tag, Map<String, CompoundTag> byId) {
         String type = tag.getString("type"), subject = tag.getString("subject");
         Component detail;
-        if (type.equals("changede:parent") || type.equals("changede:inactive_parent")) {
+        if (type.equals("changed_extra:parent") || type.equals("changed_extra:inactive_parent")) {
             CompoundTag parent = byId.get(subject);
-            detail = Component.translatable("screen.changede.skills.reason." + (type.endsWith("inactive_parent") ? "inactive_parent" : "parent"),
+            detail = Component.translatable("screen.changed_extra.skills.reason." + (type.endsWith("inactive_parent") ? "inactive_parent" : "parent"),
                     parent == null ? Component.literal(subject) : Component.translatable(parent.getString("title")));
-        } else if (type.equals("changede:experience")) {
-            detail = Component.translatable("screen.changede.skills.reason.experience", tag.getInt("current"), tag.getInt("required"));
-        } else if (type.equals("changede:latex_type")) {
-            detail = Component.translatable("screen.changede.skills.reason.latex_type", Component.translatable("screen.changede.skills.type." + subject));
-        } else if (type.equals("changede:entity_tag")) {
+        } else if (type.equals("changed_extra:experience")) {
+            detail = Component.translatable("screen.changed_extra.skills.reason.experience", tag.getInt("current"), tag.getInt("required"));
+        } else if (type.equals("changed_extra:latex_type")) {
+            detail = Component.translatable("screen.changed_extra.skills.reason.latex_type", Component.translatable("screen.changed_extra.skills.type." + subject));
+        } else if (type.equals("changed_extra:entity_tag")) {
             ResourceLocation id = ResourceLocation.tryParse(subject);
             String key = id == null ? subject : "skill_tag." + id.getNamespace() + "." + id.getPath().replace('/', '.');
-            detail = Component.translatable("screen.changede.skills.reason.form", Component.translatableWithFallback(key, subject));
-        } else if (type.equals("changede:form")) {
-            detail = Component.translatable("screen.changede.skills.reason.form", Component.translatableWithFallback("skill_branch." + subject.replace(':','.'),subject));
-        } else if (type.equals("changede:latex_form") || type.equals("changede:player_state") || type.equals("changede:research_table")) {
-            detail = Component.translatable("screen.changede.skills.reason." + type.substring(type.indexOf(':') + 1));
-        } else detail = Component.translatable("screen.changede.skills.reason.other", type, subject);
+            detail = Component.translatable("screen.changed_extra.skills.reason.form", Component.translatableWithFallback(key, subject));
+        } else if (type.equals("changed_extra:form")) {
+            detail = Component.translatable("screen.changed_extra.skills.reason.form", Component.translatableWithFallback("skill_branch." + subject.replace(':','.'),subject));
+        } else if (type.equals("changed_extra:latex_form") || type.equals("changed_extra:player_state") || type.equals("changed_extra:research_table")) {
+            detail = Component.translatable("screen.changed_extra.skills.reason." + type.substring(type.indexOf(':') + 1));
+        } else detail = Component.translatable("screen.changed_extra.skills.reason.other", type, subject);
         return Component.literal(tag.getBoolean("met") ? "✓ " : "✗ ").append(detail)
                 .withStyle(tag.getBoolean("met") ? ChatFormatting.GREEN : ChatFormatting.RED);
     }
 
     private Component reward(CompoundTag tag) {
-        if (tag.getString("type").equals("changede:mechanic"))
-            return Component.translatable("skill.changede.mechanic." + tag.getString("effect"), tag.getDouble("value")).withStyle(ChatFormatting.AQUA);
+        if (tag.getString("type").equals("changed_extra:mechanic"))
+            return Component.translatable("skill.changed_extra.mechanic." + tag.getString("effect"), tag.getDouble("value")).withStyle(ChatFormatting.AQUA);
         ResourceLocation id = ResourceLocation.tryParse(tag.getString("attribute"));
         var attribute = id == null ? null : ForgeRegistries.ATTRIBUTES.getValue(id);
         Component label = attribute == null ? Component.literal(tag.getString("attribute")) : Component.translatable(attribute.getDescriptionId());
         double amount = tag.getDouble("amount") * (tag.getInt("operation") == 0 ? 1 : 100);
         String growth = switch (tag.getString("attribute")) {
-            case "changede:regeneration_speed" -> "regeneration";
-            case "changede:exhaustion_reduction" -> "exhaustion";
-            case "changede:food_saturation" -> "food_saturation";
-            case "changede:saturation_capacity" -> "saturation_capacity";
-            case "changede:white_latex_resistance" -> "white_latex_resistance";
-            case "changede:white_fog_resistance" -> "white_fog_resistance";
+            case "changed_extra:regeneration_speed" -> "regeneration";
+            case "changed_extra:exhaustion_reduction" -> "exhaustion";
+            case "changed_extra:food_saturation" -> "food_saturation";
+            case "changed_extra:saturation_capacity" -> "saturation_capacity";
+            case "changed_extra:white_latex_resistance" -> "white_latex_resistance";
+            case "changed_extra:white_fog_resistance" -> "white_fog_resistance";
             default -> "";
         };
         if (!growth.isEmpty() && tag.getInt("operation") == 0) {
             String value = String.format(Locale.ROOT, "%.2f", tag.getDouble("amount") * (growth.equals("saturation_capacity") ? 1 : 100))
                     .replaceAll("\\.?0+$", "");
-            return Component.translatable("screen.changede.skills.reward." + growth, value).withStyle(ChatFormatting.AQUA);
+            return Component.translatable("screen.changed_extra.skills.reward." + growth, value).withStyle(ChatFormatting.AQUA);
         }
         String value = String.format(Locale.ROOT, "%.2f", amount).replaceAll("\\.?0+$", "") + (tag.getInt("operation") == 0 ? "" : "%");
-        return Component.translatable("screen.changede.skills.reward.attribute", label, value).withStyle(ChatFormatting.AQUA);
+        return Component.translatable("screen.changed_extra.skills.reward.attribute", label, value).withStyle(ChatFormatting.AQUA);
     }
 
     @Override
@@ -538,31 +538,31 @@ public final class LatexSkillScreen extends Screen {
         graphics.pose().popPose();
         graphics.disableScissor();
         graphics.drawCenteredString(font, title, width / 2, 10, 0xFFFFFF);
-        graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.legend"), width / 2, 25, 0xB9BED0);
-        graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.experience", data.getInt("experience")), width / 2, height - 26, 0xBFE8FF);
-        graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.navigation"), width / 2, height - 13, 0xAABBCD);
-        if (nodes.isEmpty()) graphics.drawCenteredString(font, Component.translatable("screen.changede.skills.empty"), width / 2, TOP + 50, 0xAAAAAA);
+        graphics.drawCenteredString(font, Component.translatable("screen.changed_extra.skills.legend"), width / 2, 25, 0xB9BED0);
+        graphics.drawCenteredString(font, Component.translatable("screen.changed_extra.skills.experience", data.getInt("experience")), width / 2, height - 26, 0xBFE8FF);
+        graphics.drawCenteredString(font, Component.translatable("screen.changed_extra.skills.navigation"), width / 2, height - 13, 0xAABBCD);
+        if (nodes.isEmpty()) graphics.drawCenteredString(font, Component.translatable("screen.changed_extra.skills.empty"), width / 2, TOP + 50, 0xAAAAAA);
         super.render(graphics, mouseX, mouseY, partialTick);
         CompoundTag hovered = hit(mouseX, mouseY);
         if (hovered != null) {
             List<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.translatable(hovered.getString("title")));
             tooltip.add(Component.translatable(hovered.getString("description")));
-            tooltip.add(Component.translatable("screen.changede.skills.cost", hovered.getInt("cost")));
+            tooltip.add(Component.translatable("screen.changed_extra.skills.cost", hovered.getInt("cost")));
             String state = hovered.getBoolean("active") ? "learned" : hovered.getBoolean("unlocked") ? "inactive"
                     : hovered.getBoolean("purchasable") ? "unlock" : "locked";
-            tooltip.add(Component.translatable("screen.changede.skills." + state));
-            tooltip.add(Component.translatable("screen.changede.skills.requirements").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("screen.changed_extra.skills." + state));
+            tooltip.add(Component.translatable("screen.changed_extra.skills.requirements").withStyle(ChatFormatting.GRAY));
             for (Tag tag : hovered.getList("requirements", Tag.TAG_COMPOUND)) tooltip.add(requirement((CompoundTag) tag, byId));
-            tooltip.add(Component.translatable("screen.changede.skills.effects").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("screen.changed_extra.skills.effects").withStyle(ChatFormatting.GRAY));
             boolean effect = false;
-            for (Tag tag : hovered.getList("rewards", Tag.TAG_COMPOUND)) if (!((CompoundTag) tag).getString("type").equals("changede:none")) {
+            for (Tag tag : hovered.getList("rewards", Tag.TAG_COMPOUND)) if (!((CompoundTag) tag).getString("type").equals("changed_extra:none")) {
                 tooltip.add(reward((CompoundTag) tag));
                 effect = true;
             }
-            if (!effect) tooltip.add(Component.translatable("screen.changede.skills.reward.none"));
-            if (hovered.getString("id").equals("changede:feline_nine_lives"))
-                tooltip.add(Component.translatable("screen.changede.skills.lives", data.getInt("lives")));
+            if (!effect) tooltip.add(Component.translatable("screen.changed_extra.skills.reward.none"));
+            if (hovered.getString("id").equals("changed_extra:feline_nine_lives"))
+                tooltip.add(Component.translatable("screen.changed_extra.skills.lives", data.getInt("lives")));
             graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
         }
     }

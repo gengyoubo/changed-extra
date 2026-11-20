@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = "changed_extra", bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedEntitiesFix {
     public static final DeferredRegister<EntityType<?>> REGISTRY;
     public static final RegistryObject<EntityType<SpecialLatex>> SPECIAL_LATEX;

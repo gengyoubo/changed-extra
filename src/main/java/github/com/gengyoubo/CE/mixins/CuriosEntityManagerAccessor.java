@@ -9,6 +9,6 @@ import top.theillusivec4.curios.common.data.CuriosEntityManager;
 
 @Mixin(value = CuriosEntityManager.class, remap = false)
 public interface CuriosEntityManagerAccessor {
-    @Accessor("entitySlots") Map<EntityType<?>, Map<String, ISlotType>> changede$getEntitySlots();
-    @Accessor("entitySlots") void changede$setEntitySlots(Map<EntityType<?>, Map<String, ISlotType>> slots);
+    @Accessor("entitySlots") Map<EntityType<?>, Map<String, ISlotType>> changed_extra$getEntitySlots();
+    @Accessor("entitySlots") void changed_extra$setEntitySlots(Map<EntityType<?>, Map<String, ISlotType>> slots);
 }

@@ -1,7 +1,0 @@
-{
-  "parent": "tconstruct:block/template/tank",
-  "textures": {
-    "top": "changede:block/latex_fuel_tank_top",
-    "side": "changede:block/latex_fuel_tank_side"
-  }
-}

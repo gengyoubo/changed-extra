@@ -8,9 +8,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-@Mod.EventBusSubscriber(modid = "changede", bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = "changed_extra", bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class CESkillAbilities {
-    public static final DeferredRegister<AbstractAbility<?>> REGISTRY = ChangedRegistry.ABILITY.createDeferred("changede");
+    public static final DeferredRegister<AbstractAbility<?>> REGISTRY = ChangedRegistry.ABILITY.createDeferred("changed_extra");
     public static final RegistryObject<YufengFlightAbility> TAKEOFF = REGISTRY.register("yufeng_takeoff", () -> new YufengFlightAbility(true));
     public static final RegistryObject<YufengFlightAbility> BOOST = REGISTRY.register("yufeng_boost", () -> new YufengFlightAbility(false));
 

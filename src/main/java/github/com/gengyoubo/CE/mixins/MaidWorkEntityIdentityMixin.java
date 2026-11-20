@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = EntityUtil.class, remap = false)
 public class MaidWorkEntityIdentityMixin {
     @Inject(method = "maybeGetOverlaying", at = @At("HEAD"), cancellable = true)
-    private static void changede$resolveWorkBody(LivingEntity entity, CallbackInfoReturnable<LivingEntity> cir) {
+    private static void changed_extra$resolveWorkBody(LivingEntity entity, CallbackInfoReturnable<LivingEntity> cir) {
         if (entity instanceof MaidWorkBody work && work.workBody() != null) cir.setReturnValue(work.workBody());
     }
 }

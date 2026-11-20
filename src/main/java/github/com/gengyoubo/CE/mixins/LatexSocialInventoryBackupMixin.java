@@ -13,16 +13,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = LatexSocialMemory.class, remap = false)
 public abstract class LatexSocialInventoryBackupMixin {
     @Inject(method = "usesNativePetMenu", at = @At("HEAD"), cancellable = true)
-    private static void changede$inspectPetMenuWithoutClientClasses(ChangedEntity creature, CallbackInfoReturnable<Boolean> cir) {
+    private static void changed_extra$inspectPetMenuWithoutClientClasses(ChangedEntity creature, CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(github.com.gengyoubo.CE.compat.synergy.SafeNativePetMenu.hasMenu(creature));
     }
     @Inject(method = "promoteNativePet", at = @At("HEAD"))
-    private static void changede$backupBeforeTaming(ChangedEntity creature, ServerPlayer player, CallbackInfo ci) {
+    private static void changed_extra$backupBeforeTaming(ChangedEntity creature, ServerPlayer player, CallbackInfo ci) {
         CreatureInventoryBackup.beforePromotion(creature);
     }
 
     @Inject(method = "promoteNativePet", at = @At("RETURN"))
-    private static void changede$preserveHandsAfterTaming(ChangedEntity creature, ServerPlayer player, CallbackInfo ci) {
+    private static void changed_extra$preserveHandsAfterTaming(ChangedEntity creature, ServerPlayer player, CallbackInfo ci) {
         CreatureInventoryBackup.afterPromotion(creature);
     }
 }

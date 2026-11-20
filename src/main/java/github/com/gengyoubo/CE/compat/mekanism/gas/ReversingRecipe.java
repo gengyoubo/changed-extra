@@ -33,7 +33,7 @@ public final class ReversingRecipe extends GasToGasRecipe {
     public String signature() { return signature; }
     @Override public RecipeType<ReversingRecipe> getType() { return GasCompat.REVERSING_TYPE.get(); }
     @Override public RecipeSerializer<ReversingRecipe> getSerializer() { return GasCompat.REVERSING_SERIALIZER.get(); }
-    @Override public String getGroup() { return "changede:reversing"; }
+    @Override public String getGroup() { return "changed_extra:reversing"; }
     @Override public ItemStack getToastSymbol() { return GasCompat.REVERSER.getItemStack(); }
     @Override public void write(FriendlyByteBuf buffer) {
         super.write(buffer); buffer.writeVarInt(ticks); buffer.writeVarInt(whiteRate); buffer.writeVarInt(darkRate);

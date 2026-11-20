@@ -20,7 +20,7 @@ public abstract class LatexSpearChangedAnimatorMixin {
     @Shadow public float partialTicks;
 
     @Inject(method = "setupAnim", at = @At("TAIL"))
-    private void changede$stabChangedHand(ChangedEntity entity, float limbSwing, float limbAmount, float ageInTicks,
+    private void changed_extra$stabChangedHand(ChangedEntity entity, float limbSwing, float limbAmount, float ageInTicks,
                                          float yaw, float pitch, CallbackInfo ci) {
         if (entity.getItemUseMode() != UseItemMode.NORMAL) return;
         LatexSpearAnimations.thirdPersonHand(entity, entityModel.getArm(HumanoidArm.RIGHT), entityModel.getHead(),

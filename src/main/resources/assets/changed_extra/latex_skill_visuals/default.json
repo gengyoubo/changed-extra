@@ -1,0 +1,259 @@
+{
+  "themes": [
+    {
+      "id": "changed_extra:laboratory",
+      "tile": "changed:block/wall_white",
+      "stripe": "changed:block/wall_blue_striped",
+      "tint": "#FFFFFF",
+      "active": "#74CE99",
+      "available": "#E6C66B",
+      "dormant": "#A6BAC9",
+      "locked": "#566478",
+      "surface": "#172335",
+      "motif": "grid"
+    },
+    {
+      "id": "changed_extra:dark_latex",
+      "tile": "changed:block/dark_latex_block_side",
+      "tint": "#B8C0D2",
+      "active": "#B6BCD9",
+      "available": "#E5B879",
+      "dormant": "#8A8D9F",
+      "locked": "#4B495F",
+      "surface": "#17141F",
+      "motif": "latex"
+    },
+    {
+      "id": "changed_extra:white_latex",
+      "tile": "changed:block/white_latex_block_side",
+      "tint": "#E9F3FA",
+      "active": "#91D7E8",
+      "available": "#ECD287",
+      "dormant": "#AEBBC2",
+      "locked": "#647985",
+      "surface": "#253B48",
+      "motif": "latex"
+    },
+    {
+      "id": "changed_extra:yufeng",
+      "tile": "changed:block/dark_latex_block_side",
+      "tint": "#AA8DCB",
+      "active": "#DBB9F5",
+      "available": "#F1CD83",
+      "dormant": "#9986AD",
+      "locked": "#564466",
+      "surface": "#251A36",
+      "motif": "wings"
+    }
+  ],
+  "regions": [
+    {
+      "id": "changed_extra:dark_branch",
+      "theme": "changed_extra:dark_latex",
+      "feather": 0.8,
+      "priority": 10,
+      "branch": "dark",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:white_branch",
+      "theme": "changed_extra:white_latex",
+      "feather": 0.8,
+      "priority": 10,
+      "branch": "white",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:sea_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "sea",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:land_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "land",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:air_branch",
+      "theme": "changed_extra:yufeng",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "air",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:feline_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "feline",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:reptile_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "reptile",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:dragon_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "dragon",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:arthropod_branch",
+      "theme": "changed_extra:dark_latex",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "arthropod",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:insect_branch",
+      "theme": "changed_extra:dark_latex",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "insect",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:arachnid_branch",
+      "theme": "changed_extra:dark_latex",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "arachnid",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:biped_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "biped",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:feral_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "feral",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:taur_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "taur",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:snake_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "snake",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:mer_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "mer",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:canine_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "canine",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:bird_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "bird",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:shark_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "shark",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:ray_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "ray",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:fish_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "fish",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:marine_mammal_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "marine_mammal",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:cephalopod_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "cephalopod",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:plant_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "plant",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:other_mammal_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "other_mammal",
+      "padding": 0.75
+    },
+    {
+      "id": "changed_extra:humanoid_branch",
+      "theme": "changed_extra:laboratory",
+      "feather": 0.6,
+      "priority": 10,
+      "branch": "humanoid",
+      "padding": 0.75
+    }
+  ]
+}

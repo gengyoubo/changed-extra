@@ -1,0 +1,249 @@
+{
+  "scope": "group",
+  "forms": [
+    "changed:form_dark_dragon",
+    "changed:form_dark_latex_double_yufeng",
+    "changed:form_dark_latex_yufeng",
+    "changed:form_latex_crow",
+    "changed:form_latex_golden_dragon",
+    "changed:form_latex_pink_yuin_dragon",
+    "changed:form_latex_red_dragon",
+    "changed:special/form_8922cbbc-0c40-4262-b0b8-a153ec94ecdc",
+    "changed_addon:form_avali",
+    "changed_addon:form_avali_zergodmaster",
+    "changed_addon:form_dark_latex_yufeng_queen",
+    "changed_addon:form_latex_dragon_snow_leopard_shark",
+    "changed_addon:form_luminara_flower_beast"
+  ],
+  "nodes": [
+    {
+      "id": "changed_extra:air_core",
+      "title": "skill.changed_extra.air_core",
+      "description": "skill.changed_extra.air_core.description",
+      "cost": 200,
+      "parents": [
+        "changed_extra:common_strength_2"
+      ],
+      "x": 19,
+      "y": 11,
+      "key": true,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "air_core",
+          "value": 1
+        }
+      ],
+      "research": "race"
+    },
+    {
+      "id": "changed_extra:air_endurance_1",
+      "title": "skill.changed_extra.air_endurance_1",
+      "description": "skill.changed_extra.air_endurance_1.description",
+      "cost": 150,
+      "parents": [
+        "changed_extra:air_core"
+      ],
+      "x": 18,
+      "y": 12,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "air_endurance",
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:air_endurance_2",
+      "title": "skill.changed_extra.air_endurance_2",
+      "description": "skill.changed_extra.air_endurance_2.description",
+      "cost": 300,
+      "parents": [
+        "changed_extra:air_endurance_1"
+      ],
+      "x": 18,
+      "y": 13,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "air_endurance",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:air_load_adaptation_1",
+      "title": "skill.changed_extra.air_load_adaptation_1",
+      "description": "skill.changed_extra.air_load_adaptation_1.description",
+      "cost": 150,
+      "parents": [
+        "changed_extra:air_core"
+      ],
+      "x": 20,
+      "y": 14,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "air_load",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:air_load_adaptation_2",
+      "title": "skill.changed_extra.air_load_adaptation_2",
+      "description": "skill.changed_extra.air_load_adaptation_2.description",
+      "cost": 300,
+      "parents": [
+        "changed_extra:air_load_adaptation_1"
+      ],
+      "x": 20,
+      "y": 15,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:mechanic",
+          "effect": "air_load",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:flight_technique",
+      "title": "skill.changed_extra.flight_technique",
+      "description": "skill.changed_extra.flight_technique.description",
+      "cost": 100,
+      "parents": [
+        "changed_extra:air_core"
+      ],
+      "x": 20,
+      "y": 16,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:flight_control",
+          "amount": 0.15
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:yufeng_body_growth",
+      "title": "skill.changed_extra.yufeng_body_growth",
+      "description": "skill.changed_extra.yufeng_body_growth.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:air_core"
+      ],
+      "x": 19,
+      "y": 17,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:aerobatics",
+      "title": "skill.changed_extra.aerobatics",
+      "description": "skill.changed_extra.aerobatics.description",
+      "cost": 150,
+      "parents": [
+        "changed_extra:flight_technique"
+      ],
+      "x": 20,
+      "y": 18,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:flight_control",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:yufeng_endurance",
+      "title": "skill.changed_extra.yufeng_endurance",
+      "description": "skill.changed_extra.yufeng_endurance.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:yufeng_body_growth"
+      ],
+      "x": 19,
+      "y": 19,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "minecraft:generic.max_health",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:flight_mastery",
+      "title": "skill.changed_extra.flight_mastery",
+      "description": "skill.changed_extra.flight_mastery.description",
+      "cost": 250,
+      "parents": [
+        "changed_extra:aerobatics"
+      ],
+      "x": 20,
+      "y": 20,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:flight_control",
+          "amount": 0.1
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:safe_landing",
+      "title": "skill.changed_extra.safe_landing",
+      "description": "skill.changed_extra.safe_landing.description",
+      "cost": 75,
+      "parents": [
+        "changed_extra:aerobatics"
+      ],
+      "x": 19,
+      "y": 21,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:landing_resistance",
+          "amount": 0.25
+        }
+      ]
+    },
+    {
+      "id": "changed_extra:soft_landing",
+      "title": "skill.changed_extra.soft_landing",
+      "description": "skill.changed_extra.soft_landing.description",
+      "cost": 125,
+      "parents": [
+        "changed_extra:safe_landing"
+      ],
+      "x": 20,
+      "y": 22,
+      "key": false,
+      "rewards": [
+        {
+          "type": "changed_extra:attribute",
+          "attribute": "changed_extra:landing_resistance",
+          "amount": 0.25
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed_extra:block/latex_skill_research_table"
+    },
+    "facing=east": {
+      "model": "changed_extra:block/latex_skill_research_table",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed_extra:block/latex_skill_research_table",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed_extra:block/latex_skill_research_table",
+      "y": 270
+    }
+  }
+}

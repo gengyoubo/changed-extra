@@ -115,7 +115,7 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
         if (data.contains(ITEM_NAME_KEY) && data.contains(ITEM_COUNT_KEY)) {
             Component itemName = Component.Serializer.fromJson(data.getString(ITEM_NAME_KEY));
             if (itemName != null) {
-                tooltip.add(Component.translatable("tooltip.changede.pipe_items",
+                tooltip.add(Component.translatable("tooltip.changed_extra.pipe_items",
                         itemName, data.getInt(ITEM_COUNT_KEY)));
             }
         }
@@ -123,6 +123,6 @@ public enum LPEnergyProvider implements IBlockComponentProvider, IServerDataProv
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.parse("changede:lp_energy");
+        return ResourceLocation.parse("changed_extra:lp_energy");
     }
 }

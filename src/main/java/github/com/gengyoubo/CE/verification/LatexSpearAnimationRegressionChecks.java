@@ -15,12 +15,12 @@ import org.apache.logging.log4j.LogManager;
 import java.util.UUID;
 
 /** Opt-in client smoke check, then exit. Does not open a world or run in normal games. */
-@Mod.EventBusSubscriber(modid = "changede", value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "changed_extra", value = Dist.CLIENT)
 public final class LatexSpearAnimationRegressionChecks {
     private static boolean finished;
 
     @SubscribeEvent public static void verify(TickEvent.ClientTickEvent event) {
-        if (finished || event.phase != TickEvent.Phase.END || !Boolean.getBoolean("changede.verifySpearAnimations")) return;
+        if (finished || event.phase != TickEvent.Phase.END || !Boolean.getBoolean("changed_extra.verifySpearAnimations")) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (!(minecraft.screen instanceof TitleScreen) || minecraft.getOverlay() != null) return;
         finished = true;
@@ -38,7 +38,7 @@ public final class LatexSpearAnimationRegressionChecks {
                     throw new AssertionError("Spear animation packet round trip failed");
                 }
             } finally { buffer.release(); }
-            LogManager.getLogger("changede-spear-animation-check").info("ALL SPEAR ANIMATION CLIENT CHECKS PASSED");
+            LogManager.getLogger("changed_extra-spear-animation-check").info("ALL SPEAR ANIMATION CLIENT CHECKS PASSED");
         } catch (ClassNotFoundException exception) {
             throw new AssertionError("Spear rendering target missing", exception);
         } finally { minecraft.stop(); }

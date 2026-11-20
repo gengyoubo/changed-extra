@@ -10,7 +10,7 @@ import github.com.gengyoubo.CE.LP.BlockEntity.MachineBlockEntity.LatexEnergyConv
 import github.com.gengyoubo.CE.LP.compat.jade.LPEnergyProvider;
 import github.com.gengyoubo.CE.LP.init.CELPBlock;
 import github.com.gengyoubo.CE.init.CEBlock;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +25,7 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 
 /** Opt-in isolated server checks; never compiled into a normal release. */
-@Mod.EventBusSubscriber(modid="changede")
+@Mod.EventBusSubscriber(modid="changed_extra")
 public final class TypedPipeIntegrationProbe {
     private static void check(boolean result,String message) { if(!result)throw new AssertionError(message); }
     private static void mode(BasePipeBlockEntity pipe,Direction side,PipeConnectionMode mode) {
@@ -43,7 +43,7 @@ public final class TypedPipeIntegrationProbe {
         var tag=new CompoundTag();LPEnergyProvider.INSTANCE.appendServerData(tag,accessor);return tag;
     }
     @SubscribeEvent public static void started(ServerStartedEvent event) {
-        if(!Boolean.getBoolean("changede.typedPipeProbe") || !event.getServer().isDedicatedServer())return;
+        if(!Boolean.getBoolean("changed_extra.typedPipeProbe") || !event.getServer().isDedicatedServer())return;
         var server=event.getServer();var level=server.overworld();var clock=server.getWorldData().overworldData();
         try {
             BlockPos origin=new BlockPos(0,100,0);
@@ -110,9 +110,9 @@ public final class TypedPipeIntegrationProbe {
             check(dark.getOutputStored()==0 && darkPipe.getTypedEnergyStored()+secondDark.getTypedEnergyStored()==500
                     && secondDark.getTypedEnergyStored()>0 && wrongSink.getTypedEnergyStored()==0,"DLP travels through DLP pipes and cannot enter research table");
             check(jade(secondDark).getString("TypedEnergyType").equals("DLP"),"Jade DLP label");
-            changede.LOGGER.info("TYPED_PIPE_INTEGRATION_PASS: multi-segment supply, conservation, port modes, type isolation, throughput, NBT, Jade data");
+            changed_extra.LOGGER.info("TYPED_PIPE_INTEGRATION_PASS: multi-segment supply, conservation, port modes, type isolation, throughput, NBT, Jade data");
         } catch(Throwable error) {
-            changede.LOGGER.error("TYPED_PIPE_INTEGRATION_FAIL",error);
+            changed_extra.LOGGER.error("TYPED_PIPE_INTEGRATION_FAIL",error);
         } finally {server.halt(false);}
     }
 }

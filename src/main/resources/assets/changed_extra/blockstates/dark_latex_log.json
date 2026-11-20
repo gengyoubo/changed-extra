@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=x": { "model": "changed_extra:block/dark_latex_log", "x": 90, "y": 90 },
+    "axis=y": { "model": "changed_extra:block/dark_latex_log" },
+    "axis=z": { "model": "changed_extra:block/dark_latex_log", "x": 90 }
+  }
+}

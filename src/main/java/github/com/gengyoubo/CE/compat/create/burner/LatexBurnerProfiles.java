@@ -1,7 +1,7 @@
 package github.com.gengyoubo.CE.compat.create.burner;
 
 import com.google.gson.*;
-import github.com.gengyoubo.CE.changede;
+import github.com.gengyoubo.CE.changed_extra;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -25,12 +25,12 @@ public final class LatexBurnerProfiles extends SimpleJsonResourceReloadListener 
                 "white", new LatexBurnerRules.Profile("white", 4, 3600));
     }
     private static JsonObject bundledEntities() {
-        try (var stream = LatexBurnerProfiles.class.getResourceAsStream("/data/changede/latex_burner/profiles.json")) {
+        try (var stream = LatexBurnerProfiles.class.getResourceAsStream("/data/changed_extra/latex_burner/profiles.json")) {
             if (stream != null) {
                 JsonObject root = JsonParser.parseReader(new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();
                 return root.getAsJsonObject("entities");
             }
-        } catch (Exception error) { changede.LOGGER.error("Unable to read bundled latex burner profiles", error); }
+        } catch (Exception error) { changed_extra.LOGGER.error("Unable to read bundled latex burner profiles", error); }
         return new JsonObject();
     }
     private static Map<String, LatexBurnerRules.Profile> builtIns(Map<String, LatexBurnerRules.Profile> fallback) {
@@ -51,9 +51,9 @@ public final class LatexBurnerProfiles extends SimpleJsonResourceReloadListener 
                 roots.put(entry.getKey(), root);
                 if (root.has("defaults")) root.getAsJsonObject("defaults").entrySet().forEach(value -> {
                     try { nextDefaults.put(value.getKey(), parse(value.getValue().getAsJsonObject(), value.getKey(), nextDefaults)); }
-                    catch (RuntimeException error) { changede.LOGGER.warn("Invalid latex burner default {} in {}", value.getKey(), entry.getKey(), error); }
+                    catch (RuntimeException error) { changed_extra.LOGGER.warn("Invalid latex burner default {} in {}", value.getKey(), entry.getKey(), error); }
                 });
-            } catch (RuntimeException error) { changede.LOGGER.warn("Invalid latex burner data {}", entry.getKey(), error); }
+            } catch (RuntimeException error) { changed_extra.LOGGER.warn("Invalid latex burner data {}", entry.getKey(), error); }
         });
         // Species without an explicit duration inherit the final defaults, irrespective of file order.
         Map<String, LatexBurnerRules.Profile> nextEntities = new HashMap<>(builtIns(nextDefaults));
@@ -64,9 +64,9 @@ public final class LatexBurnerProfiles extends SimpleJsonResourceReloadListener 
                         if (ResourceLocation.tryParse(value.getKey()) == null) throw new IllegalArgumentException("Invalid entity id");
                         JsonObject object = value.getValue().getAsJsonObject();
                         nextEntities.put(value.getKey(), parse(object, object.get("latex").getAsString(), nextDefaults));
-                    } catch (RuntimeException error) { changede.LOGGER.warn("Invalid latex burner species {} in {}", value.getKey(), id, error); }
+                    } catch (RuntimeException error) { changed_extra.LOGGER.warn("Invalid latex burner species {} in {}", value.getKey(), id, error); }
                 });
-            } catch (RuntimeException error) { changede.LOGGER.warn("Invalid latex burner data {}", id, error); }
+            } catch (RuntimeException error) { changed_extra.LOGGER.warn("Invalid latex burner data {}", id, error); }
         });
         defaults = Map.copyOf(nextDefaults);
         entities = Map.copyOf(nextEntities);

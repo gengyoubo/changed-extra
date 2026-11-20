@@ -32,7 +32,7 @@ public abstract class SyncTransfurPacketMixin {
      * @reason Support dynamic special/form_uuid variants that are not in TRANSFUR_VARIANT registry IDs.
      */
     @Inject(method = "handle", at = @At("HEAD"), cancellable = true)
-    private void changede$handle(
+    private void changed_extra$handle(
             NetworkEvent.Context context,
             CompletableFuture<net.minecraft.world.level.Level> levelFuture,
             Executor sidedExecutor,
@@ -48,14 +48,14 @@ public abstract class SyncTransfurPacketMixin {
                 }
 
                 SyncTransfurPacketListingAccessor listing = (SyncTransfurPacketListingAccessor) rawListing;
-                int formId = listing.changede$getForm();
+                int formId = listing.changed_extra$getForm();
                 TransfurVariant<?> variant = ChangedRegistry.TRANSFUR_VARIANT.getValue(formId);
                 boolean usedSpecialFallback = false;
-                var data = listing.changede$getData();
+                var data = listing.changed_extra$getData();
                 boolean hasData = data != null && !data.isEmpty();
                 boolean looksLikeActiveTransfur =
-                        listing.changede$getProgress() > 0.0001f ||
-                        listing.changede$isTemporaryFromSuit() ||
+                        listing.changed_extra$getProgress() > 0.0001f ||
+                        listing.changed_extra$isTemporaryFromSuit() ||
                         hasData;
 
                 // Dynamic special variants may be synced as NO_FORM (-1), but NO_FORM is also used by untf.
@@ -70,9 +70,9 @@ public abstract class SyncTransfurPacketMixin {
                             entityId,
                             player.getScoreboardName(),
                             formId,
-                            listing.changede$getProgress(),
+                            listing.changed_extra$getProgress(),
                             false,
-                            listing.changede$isTemporaryFromSuit()
+                            listing.changed_extra$isTemporaryFromSuit()
                     );
                     ProcessTransfur.setPlayerTransfurVariant(player, null, null, 0.0f, false);
                     return;
@@ -88,9 +88,9 @@ public abstract class SyncTransfurPacketMixin {
                         entityId,
                         player.getScoreboardName(),
                         formId,
-                        listing.changede$getProgress(),
+                        listing.changed_extra$getProgress(),
                         hasData,
-                        listing.changede$isTemporaryFromSuit(),
+                        listing.changed_extra$isTemporaryFromSuit(),
                         variant == null ? "null" : variant.getFormId(),
                         usedSpecialFallback
                 );
@@ -98,12 +98,12 @@ public abstract class SyncTransfurPacketMixin {
                 var instance = ProcessTransfur.setPlayerTransfurVariant(
                         player,
                         variant,
-                        TransfurContext.hazard(listing.changede$getCause()),
-                        listing.changede$getProgress(),
-                        listing.changede$isTemporaryFromSuit()
+                        TransfurContext.hazard(listing.changed_extra$getCause()),
+                        listing.changed_extra$getProgress(),
+                        listing.changed_extra$isTemporaryFromSuit()
                 );
                 if (instance != null) {
-                    instance.load(listing.changede$getData());
+                    instance.load(listing.changed_extra$getData());
                     if (instance.getChangedEntity() instanceof SpecialLatex specialLatex) {
                         specialLatex.setSpecialForm(player.getUUID());
                     }

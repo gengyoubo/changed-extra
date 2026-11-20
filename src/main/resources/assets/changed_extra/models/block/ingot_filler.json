@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "changed_extra:block/machine_side",
+    "down": "changed_extra:block/machine_top",
+    "up": "changed_extra:block/machine_top",
+    "north": "changed_extra:block/ingot_filler_front",
+    "south": "changed_extra:block/machine_rear",
+    "west": "changed_extra:block/machine_side",
+    "east": "changed_extra:block/machine_side"
+  }
+}

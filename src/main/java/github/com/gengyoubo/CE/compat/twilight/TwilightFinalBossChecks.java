@@ -57,7 +57,7 @@ public final class TwilightFinalBossChecks {
             for (BlockPos pos : BlockPos.betweenClosed(orePos.offset(-6, -6, -6), orePos.offset(6, 6, 6)))
                 level.setBlockAndUpdate(pos, Blocks.STONE.defaultBlockState());
             var feature = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
-                    .get(ResourceLocation.parse("changede:twilight_" + name + "_ore"));
+                    .get(ResourceLocation.parse("changed_extra:twilight_" + name + "_ore"));
             boolean placed = false;
             for (int i = 0; i < 20; i++) placed |= feature.place(level, level.getChunkSource().getGenerator(), level.random, orePos);
             check.accept(placed, "Native ore generation places " + name + " in Twilight stone");
@@ -84,7 +84,7 @@ public final class TwilightFinalBossChecks {
         var player = FakePlayerFactory.get(level, new com.mojang.authlib.GameProfile(java.util.UUID.fromString("c7ae3aab-1d38-4e67-971d-003800000009"), "CEIssue38Twilight"));
         player.setPos(home.getX() + 1, home.getY(), home.getZ()); player.tickCount = 40;
         // This opt-in test recreates the same arena on every run; reset only its test-world upgrade ledger.
-        level.getDataStorage().set("changede_final_castle_upgrades", new TwilightCastleUpgrade());
+        level.getDataStorage().set("changed_extra_final_castle_upgrades", new TwilightCastleUpgrade());
         level.setBlockAndUpdate(home, Blocks.AIR.defaultBlockState());
         level.setBlockAndUpdate(new BlockPos(home.getX(), home.getY(), bounds.minZ()), TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState());
         var text = new net.minecraft.world.entity.decoration.ArmorStand(level, home.getX() + .5, home.getY() + 2.3, home.getZ() + .5);
@@ -115,8 +115,8 @@ public final class TwilightFinalBossChecks {
         check.accept(boss.getMaxHealth() == 2800 && boss.getHealth() == 2800, "Final encounter has exactly 1400 hearts");
         var ordinary = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(level);
         check.accept(ordinary.getMaxHealth() == 425, "Ordinary Experiment 009 boss retains Addon's health");
-        check.accept(!TwilightFinalEncounter.isFinal(ordinary) && ((Twilight009StateAccess) ordinary).changede$stage() == -1
-                && !((Twilight009StateAccess) ordinary).changede$locked(), "Ordinary 009 construction initializes CE data without entering the encounter");
+        check.accept(!TwilightFinalEncounter.isFinal(ordinary) && ((Twilight009StateAccess) ordinary).changed_extra$stage() == -1
+                && !((Twilight009StateAccess) ordinary).changed_extra$locked(), "Ordinary 009 construction initializes CE data without entering the encounter");
         ordinary.setPhase2(true);
         check.accept(ordinary.getPhase() == Experiment009BossEntity.Exp9Phase.PHASE2, "Ordinary 009 retains native phase selection");
         movement(level, boss, ordinary, home, player, check);
@@ -133,7 +133,7 @@ public final class TwilightFinalBossChecks {
             stages(level, boss, home, player, check);
             boss.setLastHurtByPlayer(player); boss.setHealth(0); boss.die(level.damageSources().playerAttack(player));
             check.accept(level.getBlockEntity(home.below()) == null, "Chest waits until the native death animation ends");
-            check.accept(boss.getPersistentData().contains("changede_final_rewards"), "Extra loot is buffered in entity NBT at death");
+            check.accept(boss.getPersistentData().contains("changed_extra_final_rewards"), "Extra loot is buffered in entity NBT at death");
             check.accept(start.isConquered(), "Final castle is marked conquered through Twilight's API");
             for (int tick = 0; tick < 200 && !boss.isRemoved(); tick++) boss.tick();
             check.accept(boss.isRemoved() && boss.getRemovalReason() == Entity.RemovalReason.KILLED, "Native death animation removes the boss as KILLED");
@@ -276,13 +276,13 @@ public final class TwilightFinalBossChecks {
             boss.setHealth(1); boss.heal(100);
             check.accept(boss.getHealth() == expected, "Damage and healing cannot move the locked checkpoint");
             boss.die(level.damageSources().genericKill());
-            check.accept(!boss.getPersistentData().contains("changede_final_rewards"), "Locked stage cannot award final rewards");
+            check.accept(!boss.getPersistentData().contains("changed_extra_final_rewards"), "Locked stage cannot award final rewards");
             var saved = new CompoundTag(); boss.save(saved);
             var reload = ChangedAddonEntities.EXPERIMENT_009_BOSS.get().create(level); reload.load(saved);
             check.accept(reload.getPersistentData().getList(TwilightFinalEncounter.WAVE, net.minecraft.nbt.Tag.TAG_COMPOUND).size() == wave.size()
                     && reload.getHealth() == expected && !reload.isNoAi(), "Locked wave, checkpoint and active AI survive NBT reload");
             if (waveIndex == 0) {
-                reload.setNoAi(true); reload.getPersistentData().putBoolean("changede_twilight_previous_no_ai", false);
+                reload.setNoAi(true); reload.getPersistentData().putBoolean("changed_extra_twilight_previous_no_ai", false);
                 TwilightFinalEncounter.initialize(reload);
                 check.accept(!reload.isNoAi() && TwilightFinalEncounter.locked(reload), "Legacy locked saves restore moving AI without unlocking health");
             }

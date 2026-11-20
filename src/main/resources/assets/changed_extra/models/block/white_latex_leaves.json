@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "changed_extra:block/white_latex_leaf"
+  }
+}

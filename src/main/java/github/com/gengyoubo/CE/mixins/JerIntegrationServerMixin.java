@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "fr.alasdiablo.jerintegration.compat.CompatibilityHandler", remap = false)
 public abstract class JerIntegrationServerMixin {
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
-    private static void changede$skipClientWorldgenOnServer(CallbackInfo ci) {
+    private static void changed_extra$skipClientWorldgenOnServer(CallbackInfo ci) {
         ci.cancel();
     }
 }
