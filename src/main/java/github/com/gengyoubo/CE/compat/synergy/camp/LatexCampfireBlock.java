@@ -51,7 +51,9 @@ public final class LatexCampfireBlock extends BaseEntityBlock {
         if (level instanceof ServerLevel server && player instanceof ServerPlayer owner
                 && level.getBlockEntity(pos) instanceof LatexCampfireBlockEntity core) {
             if (LatexSettlementService.resolve(server, core) == null) LatexSettlementService.claim(server, core, owner);
-            LatexSettlementService.open(owner, core);
+            // Use opens the CS camp GUI; sneak-use (and other players) get the CE camp GUI.
+            if (owner.isShiftKeyDown() || !LatexSettlementService.openOutpost(server, core, owner))
+                LatexSettlementService.open(owner, core);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

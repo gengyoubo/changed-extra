@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "changed_addon"
+    }
+  ],
+  "type": "changede:damage_tool_shaped",
+  "category": "misc",
+  "pattern": [
+    "XY",
+    "Z "
+  ],
+  "key": {
+    "X": { "item": "changed_addon:luminara_bloom_petals" },
+    "Y": { "item": "minecraft:flint_and_steel" },
+    "Z": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "item": "changede:lumen_torch",
+    "count": 4
+  }
+}

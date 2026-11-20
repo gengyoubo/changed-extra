@@ -122,7 +122,58 @@ repositories {
     maven { url "https://maven.shadowsoffire.dev/releases" }
     maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     mavenLocal()
+    maven {
+        name = 'EntityCulling dev split'
+        url = layout.buildDirectory.dir('entityculling-dev-repo').get().asFile
+        content { includeGroup 'local.entityculling' }
+        metadataSources { artifact() }
+    }
 }
+
+// EntityCulling ships TRansition and TRender as jar-in-jar. ForgeGradle only deobfuscates the outer jar,
+// so in the dev run the nested jars keep SRG names and fail with NoSuchMethodError (Minecraft.m_91087_ ...).
+// Split them into a local repo, without the outer jar's jar-in-jar, so fg.deobf remaps each one.
+// Dev runtime only: Changed: Extra does not depend on EntityCulling (it is reached through CullableBridge).
+def entityCullingCoordinate = 'curse.maven:entityculling-448233:9594018'
+def entityCullingDevRepo = layout.buildDirectory.dir('entityculling-dev-repo').get().asFile
+def entityCullingSplit = { ->
+    def marker = new File(entityCullingDevRepo, 'split-9594018')
+    def artifacts = [entityculling: '9594018']
+    if (marker.exists()) {
+        marker.readLines().each { line -> def parts = line.split('='); artifacts[parts[0]] = parts[1] }
+        return artifacts
+    }
+    def source = configurations.detachedConfiguration(dependencies.create(entityCullingCoordinate)).singleFile
+    def put = { String name, String version, Closure write ->
+        def target = new File(entityCullingDevRepo, "local/entityculling/${name}/${version}/${name}-${version}.jar")
+        target.parentFile.mkdirs()
+        target.withOutputStream(write)
+        artifacts[name] = version
+    }
+    def zip = new java.util.zip.ZipFile(source)
+    try {
+        zip.entries().findAll { !it.directory && it.name ==~ /META-INF\/jars\/.+\.jar/ }.each { entry ->
+            def matcher = (entry.name =~ /META-INF\/jars\/([A-Za-z]+)-(.+)\.jar/)
+            if (!matcher.matches()) throw new GradleException("Unexpected EntityCulling nested jar ${entry.name}")
+            put(matcher.group(1).toLowerCase(), matcher.group(2)) { out -> out << zip.getInputStream(entry) }
+        }
+        put('entityculling', '9594018') { out ->
+            def jar = new java.util.zip.ZipOutputStream(out)
+            zip.entries().each { entry ->
+                if (entry.name.startsWith('META-INF/jars/') || entry.name.startsWith('META-INF/jarjar/')) return
+                jar.putNextEntry(new java.util.zip.ZipEntry(entry.name))
+                if (!entry.directory) jar << zip.getInputStream(entry)
+                jar.closeEntry()
+            }
+            jar.finish()
+        }
+    } finally {
+        zip.close()
+    }
+    marker.text = artifacts.collect { k, v -> "${k}=${v}" }.join('\n')
+    return artifacts
+}
+
 dependencies {
     // Opt-in reproduction of issue #40; these mods are not dependencies of Changed: Extra.
     if (providers.gradleProperty('verifyIssue40').getOrElse('false').toBoolean()) {
@@ -207,6 +258,8 @@ dependencies {
     //正版
     implementation fg.deobf("curse.maven:oauth-513857:4575495")
     //compileOnly()
+    //兼容：EntityCulling 及其 jar-in-jar 拆开后分别 deobf，见上方 entityCullingSplit
+    entityCullingSplit().each { name, version -> runtimeOnly fg.deobf("local.entityculling:${name}:${version}") }
 }
 minecraft {
     mappings channel: mapping_channel, version: mapping_version

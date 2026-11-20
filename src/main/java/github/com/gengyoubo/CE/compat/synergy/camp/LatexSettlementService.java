@@ -60,6 +60,52 @@ public final class LatexSettlementService {
         }
         camp.nextRaid = now(level) + 12000; camp.nextVisitor = now(level) + 2400;
         core.bind(camp); data.setDirty();
+        bindOutpost(level, core.getBlockPos(), owner);
+    }
+    /**
+     * The latex campfire is also the owner's CS player camp marker (it is in #minecraft:campfires),
+     * so its use opens the CS camp GUI and CS crews share this campfire with the CE settlement.
+     */
+    static void bindOutpost(ServerLevel level, BlockPos core, ServerPlayer owner) {
+        try {
+            String result = PlayerOutpostData.get(level.getServer()).claim(level, owner.getUUID(), core);
+            if ("claimed".equals(result)) {
+                net.parkabird.changedsynergy.advancement.SynergyAdvancements.grant(owner, "player_camp");
+            } else if (!"disabled".equals(result)) {
+                owner.displayClientMessage(Component.translatable("camp.changede.outpost_bind_failed." + result), true);
+            }
+        } catch (LinkageError error) {
+            // Older CS builds without this player camp API keep the CE settlement working alone.
+        }
+    }
+    /**
+     * Opens the CS camp GUI for the owner of this latex campfire. Campfires placed before the binding
+     * existed are adopted when the owner has no live CS camp. False: fall back to the CE camp GUI.
+     */
+    static boolean openOutpost(ServerLevel level, LatexCampfireBlockEntity core, ServerPlayer player) {
+        Settlement camp = resolve(level, core);
+        if (camp == null || !camp.owner.equals(player.getUUID())) return false;
+        try {
+            var data = PlayerOutpostData.get(level.getServer());
+            var outpost = data.byOwner(player.getUUID()).orElse(null);
+            if (outpost == null || !outpost.active(level)) bindOutpost(level, core.getBlockPos(), player);
+            if (data.byOwner(player.getUUID()).isEmpty() || !PlayerOutpostService.enabled(level)) return false;
+            net.parkabird.changedsynergy.world.inventory.PlayerOutpostMenu.open(player, 0);
+            return true;
+        } catch (LinkageError error) {
+            return false;
+        }
+    }
+    /** Sneak-use opens the CE camp GUI; it runs before CS's sneak-use on its camp marker takes it. */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void sneakUseCampfire(PlayerInteractEvent.RightClickBlock event) {
+        if (!(event.getEntity() instanceof ServerPlayer player) || event.getHand() != InteractionHand.MAIN_HAND
+                || !player.isShiftKeyDown() || !player.getMainHandItem().isEmpty()
+                || !(player.serverLevel().getBlockEntity(event.getPos()) instanceof LatexCampfireBlockEntity core)) return;
+        if (resolve(player.serverLevel(), core) == null) claim(player.serverLevel(), core, player);
+        open(player, core);
+        event.setCancellationResult(InteractionResult.SUCCESS);
+        event.setCanceled(true);
     }
     static void open(ServerPlayer player, LatexCampfireBlockEntity core) {
         ServerLevel level = player.serverLevel();

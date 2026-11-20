@@ -48,6 +48,15 @@ public class CEItem {
             ITEMS.register("white_latex_cobblestone", () -> new BlockItem(CEBlock.WHITE_LATEX_COBBLESTONE.get(), new Item.Properties()));
     public static final RegistryObject<Item> LUMINARA_GRASS_BLOCK =
             ITEMS.register("luminara_grass_block", () -> new BlockItem(CEBlock.LUMINARA_GRASS_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Item> LUMEN_TORCH =
+            ITEMS.register("lumen_torch", () -> new net.minecraft.world.item.StandingAndWallBlockItem(CEBlock.LUMEN_TORCH.get(),
+                    CEBlock.LUMEN_WALL_TORCH.get(), new Item.Properties(), net.minecraft.core.Direction.DOWN) {
+                @Override public void appendHoverText(net.minecraft.world.item.ItemStack stack, net.minecraft.world.level.Level level,
+                        List<net.minecraft.network.chat.Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+                    tooltip.add(net.minecraft.network.chat.Component.translatable("tooltip.changede.lumen_torch")
+                            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+                }
+            });
     public static final RegistryObject<Item> LATEX_PAINTING_PORTAL =
             ITEMS.register("latex_painting_portal", () -> new LatexPaintingPortalItem(new Item.Properties()));
     public static final RegistryObject<Item> PEACH =

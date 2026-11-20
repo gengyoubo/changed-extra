@@ -34,6 +34,8 @@ public final class CELPRecipes {
             DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, MOD_ID);
     public static final RegistryObject<RecipeType<AlloyFurnaceRecipe>> ALLOY_FURNACE_TYPE_REGISTRY =
             RECIPE_TYPES.register("alloy_furnace", () -> ALLOY_FURNACE_TYPE);
+    public static final RegistryObject<RecipeSerializer<DamageToolShapedRecipe>> DAMAGE_TOOL_SHAPED_SERIALIZER =
+            RECIPE_SERIALIZERS.register("damage_tool_shaped", DamageToolShapedRecipe.Serializer::new);
     public static final RecipeType<IngotFillingRecipe> INGOT_FILLING_TYPE =
             RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MOD_ID,"ingot_filling"));
     public static final RegistryObject<RecipeSerializer<IngotFillingRecipe>> INGOT_FILLING_SERIALIZER =

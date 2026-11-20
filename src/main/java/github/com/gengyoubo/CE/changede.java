@@ -106,6 +106,7 @@ public class changede {
         if (CHANGED_SYNERGY) {
             github.com.gengyoubo.CE.compat.synergy.camp.LatexCampfireCompat.initialize(bus);
             github.com.gengyoubo.CE.compat.synergy.CreatureInventoryBackup.initialize();
+            github.com.gengyoubo.CE.compat.synergy.LumenTorchRepel.initialize();
             try {
                 Class<?> recovery = Class.forName("github.com.gengyoubo.CE.compat.synergy.ChangedSynergyTransactionRecovery");
                 recovery.getMethod("initialize").invoke(null);

@@ -25,7 +25,52 @@ public final class CullableBridge {
         }
     };
 
+    /** NMSCullingHelper moved to the util package in newer EntityCulling; look it up in either place. */
+    private static final String[] HELPERS = {
+            "dev.tr7zw.entityculling.util.NMSCullingHelper",
+            "dev.tr7zw.entityculling.NMSCullingHelper"
+    };
+    private static final MethodHandle IGNORES_CULLING = helper("ignoresCulling",
+            MethodType.methodType(boolean.class, net.minecraft.world.entity.Entity.class));
+    private static final MethodHandle GET_RENDER_OFFSET = helper("getRenderOffset",
+            MethodType.methodType(net.minecraft.world.phys.Vec3.class, net.minecraft.client.renderer.entity.EntityRenderer.class,
+                    net.minecraft.world.entity.Entity.class, float.class));
+
+    private static MethodHandle helper(String name, MethodType type) {
+        for (String className : HELPERS) {
+            try {
+                Class<?> helper = Class.forName(className, false, CullableBridge.class.getClassLoader());
+                return MethodHandles.publicLookup().findStatic(helper, name, type);
+            } catch (ReflectiveOperationException | LinkageError ignored) {
+                // Try the next location.
+            }
+        }
+        return null;
+    }
+
     private CullableBridge() {}
+
+    /** Replaces Changed's link to {@code NMSCullingHelper.ignoresCulling}. */
+    public static boolean ignoresCulling(net.minecraft.world.entity.Entity entity) {
+        if (IGNORES_CULLING == null) return false;
+        try {
+            return (boolean) IGNORES_CULLING.invokeExact(entity);
+        } catch (Throwable exception) {
+            throw propagate(exception);
+        }
+    }
+
+    /** Replaces Changed's link to {@code NMSCullingHelper.getRenderOffset}; vanilla offset if the helper is gone. */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static net.minecraft.world.phys.Vec3 getRenderOffset(net.minecraft.client.renderer.entity.EntityRenderer renderer,
+                                                               net.minecraft.world.entity.Entity entity, float partialTick) {
+        if (GET_RENDER_OFFSET == null) return renderer.getRenderOffset(entity, partialTick);
+        try {
+            return (net.minecraft.world.phys.Vec3) GET_RENDER_OFFSET.invokeExact(renderer, entity, partialTick);
+        } catch (Throwable exception) {
+            throw propagate(exception);
+        }
+    }
 
     public static boolean isForcedVisible(Object entity) {
         try {

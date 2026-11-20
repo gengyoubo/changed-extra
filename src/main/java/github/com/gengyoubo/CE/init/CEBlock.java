@@ -48,4 +48,11 @@ public class CEBlock {
             () -> new GrassBlock(BlockBehaviour.Properties.copy(Blocks.GRASS_BLOCK)));
     public static final RegistryObject<Block> LATEX_PAINTING_PORTAL = BLOCKS.register("latex_painting_portal",
             LatexPaintingPortalBlock::new);
+    /** Repels latex from Changed: Synergy pursuit squads; see compat.synergy.LumenTorchRepel. */
+    public static final RegistryObject<Block> LUMEN_TORCH = BLOCKS.register("lumen_torch",
+            () -> new net.minecraft.world.level.block.TorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH)
+                    .lightLevel(state -> 15), net.minecraft.core.particles.ParticleTypes.GLOW));
+    public static final RegistryObject<Block> LUMEN_WALL_TORCH = BLOCKS.register("lumen_wall_torch",
+            () -> new net.minecraft.world.level.block.WallTorchBlock(BlockBehaviour.Properties.copy(Blocks.WALL_TORCH)
+                    .lightLevel(state -> 15).lootFrom(LUMEN_TORCH), net.minecraft.core.particles.ParticleTypes.GLOW));
 }
